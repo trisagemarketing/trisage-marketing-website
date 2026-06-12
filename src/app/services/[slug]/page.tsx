@@ -35,9 +35,12 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
             <span className="text-primary-600 dark:text-primary-400 font-semibold tracking-wider uppercase text-sm mb-4 block">
               Our Services
             </span>
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
               {service.title}
             </h1>
+            <h2 className="text-xl md:text-2xl font-semibold text-primary-600 dark:text-primary-400 mb-6 max-w-3xl mx-auto leading-relaxed">
+              {service.description}
+            </h2>
             <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed mb-10 max-w-3xl mx-auto">
               {service.longDescription}
             </p>

@@ -58,7 +58,7 @@ export default function DeviceManagement() {
                 variants={fadeUp}
                 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white leading-tight"
               >
-                Marketing That <br className="hidden lg:block" /> Solves Problems
+                Marketing That <br className="hidden lg:block" /> Solves <span className="text-primary-600 dark:text-primary-400">Problems</span>
               </motion.h2>
               <motion.p 
                 variants={fadeUp}
