@@ -41,19 +41,19 @@ export default function Founder() {
       <div className="container mx-auto px-4 md:px-8">
         <div className="text-center max-w-3xl mx-auto mb-12 lg:mb-16">
           <motion.span 
-            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+            initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
             className="text-primary-600 dark:text-primary-400 font-semibold tracking-wider uppercase text-sm mb-4 block"
           >
             Leadership Team
           </motion.span>
           <motion.h2 
-            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+            initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
             className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6"
           >
             The Leadership Behind Trisage
           </motion.h2>
           <motion.p 
-            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+            initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
             className="text-gray-700 dark:text-gray-300 text-lg"
           >
             A collective of industry veterans dedicated to engineering scalable growth.
@@ -64,7 +64,7 @@ export default function Founder() {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: false, margin: "-100px" }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10 lg:pb-16"
         >
           {founders.map((founder, index) => (

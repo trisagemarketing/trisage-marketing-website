@@ -1,77 +1,80 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
-import { caseStudies } from "@/data/caseStudies";
-import { fadeUp } from "@/lib/animations";
-import { ArrowRight } from "lucide-react";
+import { fadeUp, blurIn, scaleUp, staggerContainer } from "@/lib/animations";
+import { Sparkles, Megaphone, Heart, CalendarCheck, Handshake } from "lucide-react";
+
+const journeyPoints = [
+  {
+    title: "Stronger Branding",
+    description: "Through strategic positioning",
+    icon: Sparkles,
+  },
+  {
+    title: "Increased Visibility",
+    description: "Through creative digital solutions",
+    icon: Megaphone,
+  },
+  {
+    title: "Guest Engagement",
+    description: "Through innovative execution",
+    icon: Heart,
+  },
+  {
+    title: "More Direct Bookings",
+    description: "Through measurable campaigns",
+    icon: CalendarCheck,
+  },
+  {
+    title: "Long-Term Partnerships",
+    description: "Focused on sustainable revenue",
+    icon: Handshake,
+  }
+];
 
 export default function CaseStudies() {
   return (
-    <section className="py-12 md:py-16 bg-gray-50 dark:bg-gray-900 transition-colors duration-300" id="case-studies">
-      <div className="container mx-auto px-4 md:px-8">
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 lg:mb-16 gap-6 lg:gap-8">
-          <div className="max-w-2xl text-left">
-            <motion.h2 
-              initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
-              className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4 md:mb-6 tracking-tight"
-            >
-              Proven Results
-            </motion.h2>
-            <motion.p 
-              initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
-              className="text-gray-600 dark:text-gray-300 text-base md:text-lg leading-relaxed"
-            >
-              Explore how we've helped leading brands overcome challenges and achieve unprecedented growth.
-            </motion.p>
-          </div>
-          <motion.div 
-            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
-            className="mt-2 lg:mt-0"
+    <section className="py-12 md:py-12 bg-gray-50 dark:bg-gray-900 transition-colors duration-300" id="growth-journey">
+      <div className="container mx-auto px-4 md:px-8 max-w-7xl">
+        <div className="text-center mb-12 md:mb-12">
+          <motion.h2 
+            initial="hidden" whileInView="visible" viewport={{ once: false }} variants={blurIn}
+            className="text-3xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 tracking-tight"
           >
-            <a 
-              href="/case-studies"
-              className="inline-flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 text-white font-medium px-6 py-3.5 md:py-3 rounded-full transition-all duration-300 w-full sm:w-auto shadow-md hover:shadow-lg active:scale-95"
-            >
-              View All Case Studies <ArrowRight size={18} />
-            </a>
-          </motion.div>
+            Growth <span className="text-[#243384] dark:text-[#5c7ae0]">Journey</span>
+          </motion.h2>
+          <motion.p 
+            initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
+            className="text-gray-600 dark:text-gray-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed"
+          >
+            A proven path to elevating your hospitality brand and driving sustainable, long-term revenue.
+          </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {caseStudies.map((study, index) => (
+        <motion.div 
+          variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false, margin: "-100px" }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 justify-center"
+        >
+          {journeyPoints.map((point, index) => (
             <motion.div
-              key={study.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
-              className="bg-white dark:bg-gray-950 rounded-3xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-800 group cursor-pointer hover:shadow-xl dark:hover:shadow-primary-900/10 transition-all"
+              key={index}
+              variants={scaleUp}
+              className={`bg-white dark:bg-gray-950 p-8 md:p-10 rounded-[2rem] shadow-sm hover:shadow-xl dark:shadow-none dark:border dark:border-gray-800 transition-all group ${
+                index === 3 ? "lg:col-start-1 lg:ml-auto lg:mr-4 lg:w-[calc(100%-1rem)]" : ""
+              } ${
+                index === 4 ? "lg:col-start-2 lg:col-span-2 lg:mr-auto lg:ml-4 lg:w-[calc(50%-1rem)]" : ""
+              }`}
             >
-              <div className="relative h-64 overflow-hidden bg-gray-100 dark:bg-gray-800">
-                <Image
-                  src="/case-study-placeholder.png"
-                  alt={study.client}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
-                />
+              <div className="w-16 h-16 rounded-2xl bg-[#243384]/10 dark:bg-[#5c7ae0]/20 flex items-center justify-center mb-8 text-[#243384] dark:text-[#5c7ae0] group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                <point.icon className="w-8 h-8" strokeWidth={2} />
               </div>
-              <div className="p-8 md:p-10">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{study.client}</h3>
-                <p className="text-gray-700 dark:text-gray-300 mb-6 line-clamp-2">{study.problem}</p>
-                
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-6 gap-x-4 pt-6 border-t border-gray-100 dark:border-gray-800 mt-6">
-                  {study.metrics.map((metric, i) => (
-                    <div key={i}>
-                      <p className="text-xl sm:text-2xl font-bold text-primary-600 dark:text-primary-400">{metric.value}</p>
-                      <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-500 uppercase tracking-wider mt-1">{metric.label}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-4">{point.title}</h3>
+              <p className="text-gray-600 dark:text-gray-400 text-base md:text-lg leading-relaxed">
+                {point.description}
+              </p>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

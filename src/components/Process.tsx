@@ -37,19 +37,19 @@ export default function Process() {
       <div className="container mx-auto px-4 md:px-8">
         <div className="text-center max-w-3xl mx-auto mb-12 md:mb-20">
           <motion.span 
-            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+            initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
             className="text-primary-600 dark:text-primary-400 font-semibold tracking-wider uppercase text-sm block mb-4"
           >
             How We Work
           </motion.span>
           <motion.h2 
-            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+            initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
             className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6"
           >
             Our Growth Methodology
           </motion.h2>
           <motion.p 
-            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+            initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
             className="text-gray-700 dark:text-gray-300 text-lg"
           >
             A systematic, predictable approach to scaling your digital presence.
@@ -61,7 +61,7 @@ export default function Process() {
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-6 relative"
           >
             {processSteps.map((step, index) => (

@@ -22,7 +22,7 @@ export default function DirectorsVision() {
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: false, margin: "-100px" }}
           transition={{ duration: 0.6 }}
           className="relative rounded-3xl md:rounded-[2.5rem] overflow-hidden bg-primary-900 shadow-2xl"
         >
@@ -30,8 +30,8 @@ export default function DirectorsVision() {
           <div 
             className="absolute inset-0 opacity-20 pointer-events-none"
             style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,50 Q100,0 200,50 T400,50 T600,50 T800,50 T1000,50 T1200,50' fill='none' stroke='%23ffffff' stroke-width='1'/%3E%3Cpath d='M0,150 Q150,100 300,150 T600,150 T900,150 T1200,150' fill='none' stroke='%23ffffff' stroke-width='1'/%3E%3Cpath d='M0,250 Q200,200 400,250 T800,250 T1200,250' fill='none' stroke='%23ffffff' stroke-width='1'/%3E%3Cpath d='M0,350 Q100,300 200,350 T400,350 T600,350 T800,350 T1000,350 T1200,350' fill='none' stroke='%23ffffff' stroke-width='1'/%3E%3Cpath d='M0,450 Q250,400 500,450 T1000,450 T1200,450' fill='none' stroke='%23ffffff' stroke-width='1'/%3E%3Cpath d='M0,550 Q150,500 300,550 T600,550 T900,550 T1200,550' fill='none' stroke='%23ffffff' stroke-width='1'/%3E%3Cpath d='M0,650 Q200,600 400,650 T800,650 T1200,650' fill='none' stroke='%23ffffff' stroke-width='1'/%3E%3Cpath d='M0,750 Q100,700 200,750 T400,750 T600,750 T800,750 T1000,750 T1200,750' fill='none' stroke='%23ffffff' stroke-width='1'/%3E%3C/svg%3E")`,
-              backgroundSize: 'cover',
+              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 800' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,50 Q100,0 200,50 T400,50 T600,50 T800,50 T1000,50 T1200,50' fill='none' stroke='%23ffffff' stroke-width='1'/%3E%3Cpath d='M0,150 Q150,100 300,150 T600,150 T900,150 T1200,150' fill='none' stroke='%23ffffff' stroke-width='1'/%3E%3Cpath d='M0,250 Q200,200 400,250 T800,250 T1200,250' fill='none' stroke='%23ffffff' stroke-width='1'/%3E%3Cpath d='M0,350 Q100,300 200,350 T400,350 T600,350 T800,350 T1000,350 T1200,350' fill='none' stroke='%23ffffff' stroke-width='1'/%3E%3Cpath d='M0,450 Q250,400 500,450 T1000,450 T1200,450' fill='none' stroke='%23ffffff' stroke-width='1'/%3E%3Cpath d='M0,550 Q150,500 300,550 T600,550 T900,550 T1200,550' fill='none' stroke='%23ffffff' stroke-width='1'/%3E%3Cpath d='M0,650 Q200,600 400,650 T800,650 T1200,650' fill='none' stroke='%23ffffff' stroke-width='1'/%3E%3Cpath d='M0,750 Q100,700 200,750 T400,750 T600,750 T800,750 T1000,750 T1200,750' fill='none' stroke='%23ffffff' stroke-width='1'/%3E%3C/svg%3E")`,
+              backgroundSize: '100% 100%',
               backgroundPosition: 'center',
             }}
           />

@@ -11,19 +11,19 @@ export default function Services() {
       <div className="container mx-auto px-4 md:px-8">
         <div className="text-center max-w-5xl mx-auto mb-10 lg:mb-16">
           <motion.span 
-            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+            initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
             className="text-primary-600 dark:text-primary-400 font-semibold tracking-wider uppercase text-sm"
           >
             Our Services
           </motion.span>
           <motion.h1 
-            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+            initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
             className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mt-4 mb-6"
           >
             End-to-End Solutions, Under One Roof
           </motion.h1>
           <motion.p 
-            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+            initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
             className="text-gray-700 dark:text-gray-300 text-lg"
           >
             From branding to revenue management, we handle every aspect of your digital growth journey as a strategic long-term partner.
@@ -34,7 +34,7 @@ export default function Services() {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: false, margin: "-100px" }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8"
         >
           {services.map((service) => (

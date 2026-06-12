@@ -14,7 +14,7 @@ export default function FAQ() {
       <div className="container mx-auto px-4 md:px-8 max-w-4xl">
         <div className="text-center mb-16">
           <motion.h2 
-            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+            initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
             className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6"
           >
             Frequently Asked Questions
@@ -22,7 +22,7 @@ export default function FAQ() {
         </div>
 
         <motion.div 
-          initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+          initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
           className="space-y-4"
         >
           {faqs.map((faq, index) => (

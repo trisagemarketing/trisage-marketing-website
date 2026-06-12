@@ -13,7 +13,7 @@ const stats = [
 function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: false, margin: "-100px" });
 
   useEffect(() => {
     if (isInView) {
@@ -52,7 +52,7 @@ export default function WhyChooseUs() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             variants={fadeUp}
           >
             <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
@@ -86,7 +86,7 @@ export default function WhyChooseUs() {
                 key={stat.id}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: false }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className={`p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm ${
                   index === 2 ? "sm:col-span-2 text-center" : ""

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import { motion, useTransform, useSpring, useReducedMotion, useMotionTemplate } from "framer-motion";
+import { motion, useTransform, useSpring, useReducedMotion, useMotionTemplate, useMotionValue } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { teamMembers } from "@/data/teamMembers";
@@ -90,8 +90,11 @@ export default function TeamShowcase() {
   
   const angleIncrement = 360 / loopedMembers.length;
 
-  // Standalone physics spring for manual control (starts at 0)
-  const globalRotation = useSpring(0, { stiffness: 300, damping: 30 });
+  // Standalone motion value for manual control (starts at 0)
+  // CRITICAL FIX: This MUST be a plain useMotionValue, NOT a useSpring! 
+  // Dragging a spring while trying to read its current value causes catastrophic physics tearing.
+  // The individual Cards already wrap this value in their own useSpring, so snapping will still be silky smooth!
+  const globalRotation = useMotionValue(0);
 
   // Native DOM Reference for non-passive event listeners
   const trackpadRef = useRef<HTMLDivElement>(null);
@@ -148,19 +151,19 @@ export default function TeamShowcase() {
       {/* Section Header */}
       <div className="container mx-auto px-4 md:px-8 text-center relative z-20 mb-10 md:mb-20 mt-6 md:mt-1">
         <motion.span 
-          initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+          initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
           className="text-primary-600 dark:text-primary-400 font-semibold tracking-wider uppercase text-sm"
         >
           Leadership Team
         </motion.span>
         <motion.h2 
-          initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+          initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
           className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mt-4 mb-4 md:mb-6 leading-tight"
         >
           Team Work Makes the Dream Work
         </motion.h2>
         <motion.p 
-          initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+          initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
           className="text-gray-600 dark:text-gray-300 text-base md:text-xl max-w-2xl mx-auto leading-relaxed"
         >
           Meet the brilliant minds behind our award-winning campaigns. We combine data-driven precision with world-class creativity to scale your brand.

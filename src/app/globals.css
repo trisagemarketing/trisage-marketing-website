@@ -36,6 +36,11 @@
   --foreground: #030712;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 100px;
+}
+
 html.dark {
   --background: #050b14;
   --foreground: #f9fafb;

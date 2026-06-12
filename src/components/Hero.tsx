@@ -3,7 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { fadeUp, staggerContainer } from "@/lib/animations";
+import { fadeUp, staggerContainer, blurIn, springUp } from "@/lib/animations";
+import HeroBack from "../../public/hero-back.jpg";
+import HeroFront from "../../public/hero-front.jpg";
 
 export default function Hero() {
   return (
@@ -25,7 +27,7 @@ export default function Hero() {
           >
 
             
-            <motion.h1 variants={fadeUp} className="poppins-bold text-4xl md:text-5xl lg:text-[4rem] tracking-tight text-gray-900 dark:text-white mb-8 leading-[1.1]">
+            <motion.h1 variants={blurIn} className="poppins-bold text-4xl md:text-5xl lg:text-[4rem] tracking-tight text-gray-900 dark:text-white mb-8 leading-[1.1]">
               Crafting Content <br />
               that drives <br />
               <span className="text-primary-600 dark:text-primary-500 relative inline-block mt-2 md:mt-0">
@@ -37,7 +39,7 @@ export default function Hero() {
               Trisage Marketing is a 360° hospitality marketing partner helping hotels, resorts, restaurants, and hospitality brands grow visibility, direct bookings, guest engagement, and long-term revenue.
             </motion.p>
             
-            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-5">
+            <motion.div variants={springUp} className="flex flex-col sm:flex-row gap-5">
               <a 
                 href="#why-choose-us" 
                 className="inline-flex justify-center items-center px-8 py-4 text-base font-semibold text-white bg-secondary-600 hover:bg-secondary-700 dark:bg-secondary-500 dark:hover:bg-secondary-600 rounded-full transition-all shadow-lg hover:shadow-secondary-600/25 dark:hover:shadow-secondary-500/25 hover:-translate-y-1"
@@ -53,38 +55,41 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             className="relative lg:ml-auto w-full max-w-lg xl:max-w-xl mx-auto lg:mx-0 lg:ml-auto"
           >
-            <div className="relative aspect-square md:aspect-4/3 lg:aspect-4/3 w-full mt-10 lg:mt-0">
-              {/* Top Right Image */}
+            <div className="relative w-full mt-12 lg:mt-0 pb-[15%] md:pb-[20%] lg:pb-[15%]">
+              {/* Top Right Image (Relative to dictate height naturally) */}
               <motion.div 
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-0 right-0 w-[60%] h-[75%] z-10 rounded-sm md:rounded-md overflow-hidden shadow-lg bg-gray-100 dark:bg-gray-800"
+                className="relative ml-auto w-[85%] md:w-[80%] lg:w-[75%] z-10"
               >
                 <Image
-                  src="/Image 1.svg"
-                  alt="Interior Design"
-                  fill
-                  className="object-cover"
+                  src={HeroBack}
+                  alt="Hero Back"
+                  className="w-full h-auto drop-shadow-[0_20px_40px_rgba(36,51,132,0.25)] dark:drop-shadow-[0_20px_40px_rgba(92,122,224,0.15)] rounded-sm md:rounded-md"
+                  placeholder="blur"
                   priority
+                  decoding="async"
                 />
               </motion.div>
               
-              {/* Bottom Left Image with offset border */}
+              {/* Bottom Left Image (Absolute to overlap, forced rectangle) */}
               <motion.div 
                 animate={{ y: [0, 10, 0] }}
                 transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="absolute bottom-[5%] left-0 w-[80%] h-[55%] z-20"
+                className="absolute bottom-[-5%] md:bottom-[-15%] left-0 w-[95%] md:w-[90%] lg:w-[90%] z-20"
               >
                 {/* Decorative outline */}
-                <div className="absolute -top-4 -left-4 md:-top-5 md:-left-5 w-full h-full border border-gray-800 dark:border-gray-400 z-0 rounded-sm md:rounded-md" />
+                <div className="absolute -top-3 -left-3 md:-top-4 md:-left-4 w-full h-full border-2 border-gray-800 dark:border-gray-400 z-0 rounded-sm md:rounded-md" />
                 
-                <div className="relative w-full h-full overflow-hidden shadow-2xl z-10 bg-gray-100 dark:bg-gray-800 rounded-sm md:rounded-md">
+                <div className="relative w-full aspect-[4/3] md:aspect-[16/10] z-10 overflow-hidden shadow-[0_30px_60px_rgba(36,51,132,0.3)] dark:shadow-[0_30px_60px_rgba(92,122,224,0.2)] rounded-sm md:rounded-md">
                   <Image
-                    src="/Image 2.svg"
-                    alt="Interior Design Couch"
+                    src={HeroFront}
+                    alt="Hero Front"
                     fill
                     className="object-cover"
+                    placeholder="blur"
                     priority
+                    decoding="async"
                   />
                 </div>
               </motion.div>

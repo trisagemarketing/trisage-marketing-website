@@ -47,7 +47,7 @@ export default function ContactForm() {
 
   return (
     <motion.div 
-      initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+      initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
       className="bg-white dark:bg-gray-950 rounded-3xl p-8 md:p-12 shadow-xl border border-gray-100 dark:border-gray-800"
     >
       <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Send us a message</h3>

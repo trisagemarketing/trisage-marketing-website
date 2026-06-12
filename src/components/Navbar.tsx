@@ -71,7 +71,7 @@ export default function Navbar() {
         transition={{ duration: 0.35, ease: "easeInOut" }}
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-colors duration-300 py-4",
-          isScrolled
+          isScrolled || pathname === "/about"
             // Apple Glassmorphism: Heavy blur, sheer background, subtle bottom border
             ? "bg-white/70 dark:bg-[#1d1d1f]/70 backdrop-blur-xl saturate-150 border-b border-black/5 dark:border-white/10"
             : "bg-transparent border-b border-transparent"

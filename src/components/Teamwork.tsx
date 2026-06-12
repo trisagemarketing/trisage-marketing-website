@@ -51,7 +51,7 @@ export default function Teamwork() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           transition={{ duration: 0.6 }}
           className="flex flex-col md:flex-row md:items-end justify-between gap-6"
         >
@@ -90,7 +90,7 @@ export default function Teamwork() {
               key={img.id}
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, margin: "-100px" }}
+              viewport={{ once: false, margin: "-100px" }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               // Removed heavy inline styling from the loop
               className="relative flex-none w-[85vw] md:w-[60vw] lg:w-[40vw] aspect-[4/3] rounded-2xl overflow-hidden shadow-sm group transform-gpu"
