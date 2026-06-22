@@ -29,7 +29,7 @@ export default function CTA() {
             initial="hidden" whileInView="visible" viewport={{ once: false }} variants={springUp}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <Link href="/contact" className="inline-flex justify-center items-center px-8 py-4 text-base font-bold text-primary-900 dark:text-primary-900 bg-white dark:bg-gray-50 hover:bg-gray-50 dark:hover:bg-white rounded-full transition-all shadow-xl hover:-translate-y-1 w-full sm:w-auto">
+            <Link href="/clients" className="inline-flex justify-center items-center px-8 py-4 text-base font-bold text-primary-900 dark:text-primary-900 bg-white dark:bg-gray-50 hover:bg-gray-50 dark:hover:bg-white rounded-full transition-all shadow-xl hover:-translate-y-1 w-full sm:w-auto">
               Book Your Free Consultation
             </Link>
             <Link href="/services" className="inline-flex justify-center items-center gap-2 px-8 py-4 text-base font-semibold text-white border border-primary-400 dark:border-primary-600 hover:bg-primary-700/50 dark:hover:bg-primary-800/50 rounded-full transition-all w-full sm:w-auto">

@@ -90,7 +90,7 @@ export default function MobileMenu({ navLinks, pathname, onClose }: MobileMenuPr
         
         <p className="text-sm text-gray-500 dark:text-gray-400 mb-2 mt-2">Ready to scale your brand?</p>
         <Link
-          href="/contact"
+          href="/clients"
           onClick={onClose}
           className="w-full inline-flex items-center justify-center px-6 py-4 text-lg font-medium text-white bg-gray-900 hover:bg-black dark:bg-primary-600 dark:hover:bg-primary-500 rounded-full transition-all hover:scale-[1.02] active:scale-95 shadow-xl"
         >

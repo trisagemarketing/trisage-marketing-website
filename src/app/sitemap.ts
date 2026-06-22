@@ -35,10 +35,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/results`,
+      url: `${baseUrl}/methodology`,
       lastModified: nowIST,
       changeFrequency: 'monthly',
       priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/case-studies`,
+      lastModified: nowIST,
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/clients`,
+      lastModified: nowIST,
+      changeFrequency: 'monthly',
+      priority: 0.6,
     },
     {
       url: `${baseUrl}/blog`,

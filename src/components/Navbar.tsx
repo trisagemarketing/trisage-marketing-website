@@ -14,9 +14,9 @@ const navLinks = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
   { name: "Services", href: "/services" },
-  { name: "Results", href: "/results" },
-  { name: "Blog", href: "/blog" },
-  { name: "Contact", href: "/contact" },
+  { name: "Methodology", href: "/methodology" },
+  { name: "Case Studies", href: "/case-studies" },
+  { name: "Clients", href: "/clients" },
 ];
 
 export default function Navbar() {
@@ -57,7 +57,7 @@ export default function Navbar() {
       <motion.header
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-colors duration-300 py-4",
-          isScrolled || pathname === "/about"
+          isScrolled || pathname === "/about" || pathname === "/methodology"
             // Apple Glassmorphism: Heavy blur, sheer background, subtle bottom border
             ? "bg-white/70 dark:bg-[#1d1d1f]/70 backdrop-blur-xl saturate-150 border-b border-black/5 dark:border-white/10"
             : "bg-transparent border-b border-transparent"
@@ -118,7 +118,7 @@ export default function Navbar() {
             <ThemeToggle />
             
             <Link
-              href="/contact"
+              href="/clients"
               className="hidden md:inline-flex shrink-0 whitespace-nowrap items-center justify-center px-6 py-2.5 text-sm font-medium text-white bg-gray-900 hover:bg-black dark:bg-white dark:text-black dark:hover:bg-gray-200 rounded-full transition-all hover:scale-105 shadow-md"
             >
               Book Consultation

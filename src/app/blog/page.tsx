@@ -74,7 +74,7 @@ export default function BlogPage() {
       <div className="container mx-auto px-4 md:px-8 pb-32">
         {/* Featured Post (Hero) */}
         {featuredPost && (
-          <Link href={`/blog/${featuredPost.id}`} className="group block mb-16 md:mb-24">
+          <Link href={`/case-studies/${featuredPost.id}`} className="group block mb-16 md:mb-24">
             <div className="relative rounded-[2rem] overflow-hidden bg-gray-100 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-800 shadow-sm transition-all duration-500 hover:shadow-xl dark:hover:shadow-primary-500/10">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
                 {/* Image Side */}
@@ -129,7 +129,7 @@ export default function BlogPage() {
         {/* Grid Posts */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {regularPosts.map((post) => (
-            <Link key={post.id} href={`/blog/${post.id}`} className="group flex flex-col h-full bg-white dark:bg-[#0a1220] rounded-3xl overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+            <Link key={post.id} href={`/case-studies/${post.id}`} className="group flex flex-col h-full bg-white dark:bg-[#0a1220] rounded-3xl overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
               <div className="relative aspect-[3/2] w-full overflow-hidden">
                 <Image 
                   src={post.imageUrl} 

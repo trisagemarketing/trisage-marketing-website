@@ -45,11 +45,11 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
               {service.longDescription}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/contact" className="w-full sm:w-auto inline-flex justify-center items-center px-8 py-4 text-base font-semibold text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-full transition-all shadow-lg hover:shadow-primary-600/25 dark:hover:shadow-primary-500/25 hover:-translate-y-1">
+              <Link href="/clients" className="w-full sm:w-auto inline-flex justify-center items-center px-8 py-4 text-base font-semibold text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-full transition-all shadow-lg hover:shadow-primary-600/25 dark:hover:shadow-primary-500/25 hover:-translate-y-1">
                 Book a Consultation
               </Link>
-              <Link href="/results" className="w-full sm:w-auto inline-flex justify-center items-center px-8 py-4 text-base font-semibold text-gray-900 dark:text-white bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-full transition-all hover:-translate-y-1">
-                View Related Case Studies
+              <Link href="/methodology" className="w-full sm:w-auto inline-flex justify-center items-center px-8 py-4 text-base font-semibold text-gray-900 dark:text-white bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-full transition-all hover:-translate-y-1">
+                View Methodology
               </Link>
             </div>
           </div>
@@ -112,7 +112,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
             <p className="text-primary-100 dark:text-primary-200 text-lg md:text-xl mb-10 max-w-2xl mx-auto relative z-10 leading-relaxed">
               Let's build a customized strategy that drives highly qualified traffic and predictable revenue.
             </p>
-            <Link href="/contact" className="inline-flex justify-center items-center px-8 py-4 text-lg font-semibold text-white bg-secondary-600 hover:bg-secondary-700 dark:bg-secondary-500 dark:hover:bg-secondary-600 rounded-full transition-all hover:scale-105 shadow-xl hover:shadow-secondary-600/25 relative z-10">
+            <Link href="/clients" className="inline-flex justify-center items-center px-8 py-4 text-lg font-semibold text-white bg-secondary-600 hover:bg-secondary-700 dark:bg-secondary-500 dark:hover:bg-secondary-600 rounded-full transition-all hover:scale-105 shadow-xl hover:shadow-secondary-600/25 relative z-10">
               Get Your Custom Strategy
             </Link>
           </div>
