@@ -3,7 +3,7 @@ import CTA from "@/components/CTA";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Case Studies | Trisage Marketing",
+  title: "Results | Trisage Marketing",
   description: "Discover how we've helped leading brands achieve unprecedented growth and ROI.",
 };
 

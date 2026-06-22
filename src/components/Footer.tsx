@@ -114,7 +114,7 @@ export default function Footer() {
             <ul className="flex flex-col gap-3 text-sm">
               <li><Link href="/about" className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors">About Us</Link></li>
               <li><Link href="/services" className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Our Services</Link></li>
-              <li><Link href="/case-studies" className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Results</Link></li>
+              <li><Link href="/results" className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Results</Link></li>
               <li><Link href="/blog" className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Blog & News</Link></li>
               <li><Link href="/contact" className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Contact</Link></li>
             </ul>
