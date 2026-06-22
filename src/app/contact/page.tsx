@@ -36,7 +36,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900 dark:text-white mb-1">Email</h4>
-                    <a href="mailto:hello@trisage.com" className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">hello@trisage.com</a>
+                    <a href="mailto:Admin@trisagemarketing.com" className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Admin@trisagemarketing.com</a>
                   </div>
                 </div>
 
@@ -46,7 +46,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900 dark:text-white mb-1">Phone</h4>
-                    <a href="tel:+919876543210" className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">+91 98765 43210</a>
+                    <a href="tel:+919217900934" className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">+91 92179 00934</a>
                   </div>
                 </div>
 
@@ -57,8 +57,9 @@ export default function ContactPage() {
                   <div>
                     <h4 className="font-semibold text-gray-900 dark:text-white mb-1">Office</h4>
                     <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                      Level 5, DLF Cyber City<br />
-                      Gurugram, Haryana 122002
+                      Basement, Office No.4,<br/>
+                      SSBK & ASSOCIATES, B-11, Block B,<br/>
+                      Sector 4, Noida, Uttar Pradesh - 201301
                     </p>
                   </div>
                 </div>
