@@ -26,29 +26,21 @@ export default function Navbar() {
   const pathname = usePathname();
   const { scrollY } = useScroll();
 
-  // Smart Scroll Engine: Auto-hide on scroll down, reveal on scroll up
+  // Smart Scroll Engine
   useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = scrollY.getPrevious() || 0;
-
-    // Determine target states
-    // Rule 1: Never hide if mobile menu is open (prevents trapping the user)
-    // Rule 2: Never hide if previous === 0 (prevents hiding on mid-page refresh hydration)
-    // Rule: Always keep the navbar sticky and visible
-    const shouldHide = false;
-      
     const shouldScrolled = latest > 20;
 
-    // State Guards: Only trigger React renders if the boolean actually flipped!
-    // This prevents flooding the JS event loop with 120 state updates per second.
-    if (shouldHide !== hidden) {
-      setHidden(shouldHide);
-    }
-    
     if (shouldScrolled !== isScrolled) {
       setIsScrolled(shouldScrolled);
     }
   });
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
+
+  // Handle body scroll lock
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -63,12 +55,6 @@ export default function Navbar() {
   return (
     <>
       <motion.header
-        variants={{
-          visible: { y: 0 },
-          hidden: { y: "-100%" },
-        }}
-        animate={hidden ? "hidden" : "visible"}
-        transition={{ duration: 0.35, ease: "easeInOut" }}
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-colors duration-300 py-4",
           isScrolled || pathname === "/about"
@@ -99,7 +85,10 @@ export default function Navbar() {
           {/* Desktop Navigation - Glassmorphism Linkbar */}
           <nav className="hidden lg:flex flex-none items-center gap-1 bg-black/5 dark:bg-white/5 backdrop-blur-md border border-black/5 dark:border-white/10 rounded-full p-1 shadow-inner">
             {navLinks.map((link) => {
-              const isActive = pathname === link.href;
+              const isActive = link.href === "/" 
+                ? pathname === "/" 
+                : pathname.startsWith(link.href);
+                
               return (
                 <Link
                   key={link.name}

@@ -8,7 +8,7 @@ import { ArrowRight } from "lucide-react";
 export default function CTA() {
   return (
     <section className="py-12 md:py-16 relative overflow-hidden bg-primary-600 dark:bg-primary-900 transition-colors duration-300">
-      <div className="absolute inset-0 bg-[url('/hero-placeholder.png')] opacity-10 bg-cover bg-center mix-blend-overlay dark:mix-blend-lighten" />
+      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2000&auto=format&fit=crop')] opacity-10 bg-cover bg-center mix-blend-overlay dark:mix-blend-lighten" />
       <div className="absolute inset-0 bg-gradient-to-r from-primary-700/80 to-primary-500/80 dark:from-primary-950/80 dark:to-primary-800/80" />
       
       <div className="container mx-auto px-4 md:px-8 relative z-10">
