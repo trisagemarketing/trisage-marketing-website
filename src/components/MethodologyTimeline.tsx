@@ -90,7 +90,7 @@ const SvgConnector = ({ isLeft }: { isLeft: boolean }) => {
         whileInView={{ pathLength: 0.05, pathOffset: 1, opacity: [0, 1, 1, 0] }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 2, ease: "easeInOut", delay: 0.2 }}
-        style={{ filter: "drop-shadow(0 0 8px rgba(34,211,238,1))" }}
+        className="will-change-transform"
       />
     </>
   );
@@ -119,21 +119,21 @@ export default function MethodologyTimeline() {
     <section className="pt-24 pb-20 md:pt-32 md:pb-24 bg-white dark:bg-[#081120] overflow-hidden transition-colors duration-300 relative">
       
       {/* Background Ambient Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-1/2 bg-[#3ca2d9]/5 dark:bg-[#3ca2d9]/10 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-1/2 bg-[#3ca2d9]/5 dark:bg-[#3ca2d9]/10 blur-[120px] rounded-full pointer-events-none transform-gpu" />
       
       <div className="container mx-auto px-4 md:px-8 max-w-6xl relative z-10">
         
         {/* Top Header */}
         <div className="text-center mb-16 md:mb-24">
           <motion.span 
-            initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
-            className="text-[#3ca2d9] font-bold tracking-[0.2em] uppercase text-xs md:text-sm mb-4 md:mb-6 block"
+            initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeUp}
+            className="text-[#3ca2d9] font-bold tracking-[0.2em] uppercase text-xs md:text-sm mb-4 md:mb-6 block will-change-transform"
           >
             OUR METHODOLOGY
           </motion.span>
           <motion.h2 
-            initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
-            className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-12 md:mb-16 tracking-tight"
+            initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeUp}
+            className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-12 md:mb-16 tracking-tight will-change-transform"
           >
             The 4 Pillars of Hospitality Marketing
           </motion.h2>
@@ -158,7 +158,7 @@ export default function MethodologyTimeline() {
                   "gap-0 lg:gap-16" // Remove gap on mobile to allow negative margin overlap
                 )}>
                   {/* Text Card Side */}
-                  <motion.div variants={fadeUp} className="flex-1 w-full relative z-20">
+                  <motion.div variants={fadeUp} className="flex-1 w-full relative z-20 will-change-transform">
                     <div className="bg-white/40 dark:bg-[#0c162d]/40 backdrop-blur-xl border border-gray-200 dark:border-white/5 rounded-2xl md:rounded-3xl p-6 md:p-10 lg:p-12 pb-16 md:pb-20 lg:pb-12 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] relative overflow-hidden transition-all duration-500 hover:shadow-[0_8px_40px_rgb(60,162,217,0.1)] dark:hover:shadow-[0_8px_40px_rgb(60,162,217,0.1)] hover:-translate-y-1">
                       
                       {/* Faded Background Number */}
@@ -179,7 +179,7 @@ export default function MethodologyTimeline() {
                   </motion.div>
 
                   {/* Icon Illustration Side (Mobile/Tablet Overlap) */}
-                  <motion.div variants={fadeUp} className="w-full lg:flex-1 flex justify-end lg:justify-center relative z-30 -mt-16 md:-mt-24 lg:mt-0 pr-4 md:pr-12 lg:pr-0 pointer-events-none">
+                  <motion.div variants={fadeUp} className="w-full lg:flex-1 flex justify-end lg:justify-center relative z-30 -mt-16 md:-mt-24 lg:mt-0 pr-4 md:pr-12 lg:pr-0 pointer-events-none will-change-transform">
                     <div className="relative p-6 md:p-12 flex items-center justify-center group-hover:scale-105 transition-transform duration-700 pointer-events-auto">
                       {/* Premium Glow Blobs behind the icon */}
                       <div className="absolute inset-0 bg-[#3ca2d9]/20 dark:bg-[#3ca2d9]/40 blur-[40px] md:blur-[60px] rounded-full" />
