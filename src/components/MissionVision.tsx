@@ -78,6 +78,7 @@ export default function MissionVision() {
               src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200&auto=format&fit=crop"
               alt="Our Mission"
               fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover transition-transform duration-700 hover:scale-105"
             />
           </motion.div>
@@ -101,6 +102,7 @@ export default function MissionVision() {
                   src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=800&auto=format&fit=crop"
                   alt="Vision Strategy"
                   fill
+                  sizes="(max-width: 1024px) 50vw, 25vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
               </div>
@@ -112,6 +114,7 @@ export default function MissionVision() {
                     src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=800&auto=format&fit=crop"
                     alt="Vision Data"
                     fill
+                    sizes="(max-width: 1024px) 50vw, 25vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                 </div>
@@ -120,6 +123,7 @@ export default function MissionVision() {
                     src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop"
                     alt="Vision Teamwork"
                     fill
+                    sizes="(max-width: 1024px) 50vw, 25vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                 </div>

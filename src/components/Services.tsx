@@ -51,8 +51,8 @@ function ServiceFlipCard({ service }: { service: typeof services[0] }) {
               {service.description}
             </p>
 
-            <div className="w-10 h-10 mt-auto rounded-full bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-gray-400 group-hover:bg-primary-50 dark:group-hover:bg-gray-700 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors shadow-sm shrink-0">
-              <ArrowRight size={18} />
+            <div className="w-10 h-10 mt-auto rounded-full bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-gray-400 group-hover:bg-secondary-600 dark:group-hover:bg-secondary-500 group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-md shrink-0">
+              <ArrowRight size={18} className="group-hover:translate-x-0.5 transition-transform duration-300" />
             </div>
           </div>
         </div>
@@ -74,13 +74,23 @@ function ServiceFlipCard({ service }: { service: typeof services[0] }) {
           <div className="relative z-10 flex flex-col h-full">
             <div className="shrink-0 border-b border-white/20 pb-3 mb-3">
               <h3 className="text-lg font-bold mb-1">{service.title}</h3>
-              <h4 className="text-sm font-medium text-primary-200 leading-snug">
-                {service.description}
-              </h4>
+              {service.subheading && (
+                <h4 className="text-sm font-medium text-primary-200 leading-snug">
+                  {service.subheading}
+                </h4>
+              )}
             </div>
-            <p className="text-sm text-primary-50 leading-relaxed overflow-y-auto flex-grow custom-scrollbar pr-2 pb-2">
-              {service.longDescription}
-            </p>
+            <div className="flex-grow overflow-y-auto custom-scrollbar pr-2 pb-2 flex flex-col gap-2 text-primary-50">
+              <span className="text-xs font-bold uppercase tracking-wider text-white/70">Includes:</span>
+              <ul className="space-y-2">
+                {service.features.map((feature, idx) => (
+                  <li key={idx} className="flex items-start gap-2 text-sm leading-snug">
+                    <span className="text-white opacity-50 mt-0.5">•</span>
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           <div className="relative z-10 flex items-center justify-between mt-4 pt-4 border-t border-white/20">
@@ -139,7 +149,7 @@ export default function Services() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: false, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-14"
         >
           {services.map((service) => (
             <motion.div key={service.id} variants={fadeUp} className="h-full">

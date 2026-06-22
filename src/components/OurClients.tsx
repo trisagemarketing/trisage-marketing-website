@@ -44,6 +44,8 @@ export default function OurClients() {
               <img
                 src="/Frame 31.svg"
                 alt="Our Clients"
+                loading="lazy"
+                decoding="async"
                 className="h-20 md:h-28 w-auto max-w-none"
               />
             </div>
@@ -53,6 +55,8 @@ export default function OurClients() {
               <img
                 src="/Frame 31.svg"
                 alt="Our Clients Duplicate"
+                loading="lazy"
+                decoding="async"
                 className="h-20 md:h-28 w-auto max-w-none"
               />
             </div>

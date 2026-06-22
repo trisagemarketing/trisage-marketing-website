@@ -65,9 +65,11 @@ export default function Hero() {
                 <Image
                   src={HeroBack}
                   alt="Hero Back"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="w-full h-auto drop-shadow-[0_20px_40px_rgba(36,51,132,0.25)] dark:drop-shadow-[0_20px_40px_rgba(92,122,224,0.15)] rounded-sm md:rounded-md"
                   placeholder="blur"
                   priority
+                  fetchPriority="high"
                   decoding="async"
                 />
               </motion.div>
@@ -86,9 +88,11 @@ export default function Hero() {
                     src={HeroFront}
                     alt="Hero Front"
                     fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover"
                     placeholder="blur"
                     priority
+                    fetchPriority="high"
                     decoding="async"
                   />
                 </div>

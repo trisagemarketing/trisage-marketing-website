@@ -10,12 +10,12 @@ export const services = [
     longDescription: "A brand is the emotional connection between your business and your guests. We help ambitious hotels, resorts, and restaurants discover their unique voice, design stunning visual identities, and position themselves strategically in crowded markets. We create brands that are not just seen, but remembered, trusted, and booked.",
     icon: Fingerprint,
     features: [
-      "Brand Positioning & Strategy",
-      "Logo Design & Visual Identity Systems",
-      "Brand Voice & Messaging Frameworks",
-      "Comprehensive Brand Guidelines",
-      "Marketing Collateral & Menu Design",
-      "Rebranding & Market Repositioning"
+      "Brand positioning",
+      "Visual identity system",
+      "Moodboard design",
+      "Typography and colour palette",
+      "Messaging framework",
+      "Campaign concept direction"
     ],
     benefits: [
       "Stand out in highly competitive hospitality markets",
@@ -33,12 +33,13 @@ export const services = [
     longDescription: "Stop leaving money on the table. Our revenue management experts analyze market trends, competitor pricing, and historical data to implement dynamic pricing strategies. We optimize your distribution channels to ensure you sell the right room, to the right guest, at the exact right time and price.",
     icon: Headset,
     features: [
-      "Dynamic Pricing Strategies",
-      "Competitor Rate Analysis",
-      "Distribution Channel Optimization (OTA & Direct)",
-      "Demand Forecasting & Yield Management",
-      "RevPAR & TrevPAR Growth Strategies",
-      "Inventory Management"
+      "OTA management",
+      "Dynamic pricing support",
+      "Yield management",
+      "Distribution optimisation",
+      "Competitor analysis",
+      "TRevPAR-focused strategy",
+      "Revenue growth planning"
     ],
     benefits: [
       "Maximize overall property revenue and profitability",
@@ -56,12 +57,14 @@ export const services = [
     longDescription: "Your website is your most profitable digital storefront. We design and develop lightning-fast, beautifully interactive websites optimized for conversions. Combined with our technical SEO expertise, we ensure your property ranks highly on Google and seamlessly guides visitors straight to the booking engine.",
     icon: PenTool,
     features: [
-      "Custom UI/UX Hospitality Design",
-      "Modern Front-End Development",
-      "Direct Booking Engine Integration",
-      "Comprehensive Technical SEO Audits",
-      "On-Page Optimization & Content Gap Analysis",
-      "Continuous Maintenance & Support"
+      "Hotel website design",
+      "Landing page creation",
+      "Mobile-first architecture",
+      "Booking engine integration",
+      "Technical SEO",
+      "Local SEO",
+      "Keyword optimisation",
+      "Conversion-focused page structure"
     ],
     benefits: [
       "Deliver a seamless, premium experience to your guests",
@@ -79,12 +82,14 @@ export const services = [
     longDescription: "Stop guessing with your ad spend. Our performance marketing methodology relies on strict ROI tracking and relentless optimization. We deploy highly targeted campaigns across Google Ads and Meta to ensure every advertising dollar translates into scalable revenue for your property.",
     icon: Zap,
     features: [
-      "Google Ads (Search, Display, Performance Max)",
-      "Meta Ads (Facebook & Instagram)",
-      "Retargeting & Abandoned Booking Funnels",
-      "Conversion Rate Optimization (CRO)",
-      "Custom Audience Creation",
-      "Real-time Dashboard Analytics"
+      "Meta Ads",
+      "Google Ads",
+      "Retargeting campaigns",
+      "Lead generation campaigns",
+      "Conversion-focused advertising",
+      "Peak-season demand campaigns",
+      "Budget allocation strategy",
+      "ROAS and CPA tracking"
     ],
     benefits: [
       "Immediate visibility and direct booking generation",
@@ -102,12 +107,12 @@ export const services = [
     longDescription: "Local visibility is everything in hospitality. We hyper-optimize your Google Business Profile (GMB) and execute targeted local SEO strategies to ensure you own the 'near me' searches. From review management to authoritative local citations, we put your property on the map.",
     icon: Users,
     features: [
-      "Google Business Profile (GMB) Optimization",
-      "Local Citation Building & Management",
-      "Review Generation & Reputation Management",
-      "Local Keyword Targeting",
-      "Geographic Landing Page Creation",
-      "Map Pack Ranking Strategies"
+      "Google Business Profile optimisation",
+      "Review management",
+      "High-fidelity asset uploads",
+      "Local SEO improvement",
+      "Direct booking link integration",
+      "Map pack visibility strategy"
     ],
     benefits: [
       "Dominate local Google Maps search results",
@@ -125,12 +130,13 @@ export const services = [
     longDescription: "Content is the voice of your brand. Our expert writers produce high-value, evocative copy that transports guests to your property before they even book. From website copy that sells the experience to engaging blogs and newsletters, we write words that work.",
     icon: Briefcase,
     features: [
-      "Website Copywriting & Editing",
-      "Email Newsletter Campaigns",
-      "SEO-Optimized Blog & Article Writing",
-      "Menu & Brochure Copywriting",
-      "Property Description Optimization",
-      "Tone of Voice Development"
+      "Hotel photography",
+      "Video production",
+      "Reels and short-form content",
+      "Promotional shoots",
+      "Storytelling concepts",
+      "Menu and experience content",
+      "Hospitality-focused copywriting"
     ],
     benefits: [
       "Create an emotional connection with potential guests",
@@ -148,12 +154,13 @@ export const services = [
     longDescription: "Word of mouth is digital now. We connect your brand with highly vetted travel influencers, food bloggers, and digital publications. Our strategic outreach generates authentic buzz, stunning user-generated content, and authoritative backlinks that elevate your brand's prestige.",
     icon: Users,
     features: [
-      "Influencer Vetting & Selection",
-      "Campaign Negotiation & Management",
-      "Press Release Writing & Distribution",
-      "Digital PR & Media Outreach",
-      "FAM Trip Organization",
-      "Campaign ROI Tracking"
+      "Influencer campaign planning",
+      "Creator shortlisting",
+      "Collaboration coordination",
+      "Content execution",
+      "PR outreach",
+      "Audience engagement strategy",
+      "Trust-building campaigns"
     ],
     benefits: [
       "Tap into established, highly engaged audiences",
@@ -171,12 +178,13 @@ export const services = [
     longDescription: "Hospitality is visual, and social media is your digital lookbook. We craft data-driven social strategies that stop the scroll, spark wanderlust, and drive bookings across Instagram, Facebook, and TikTok. We handle everything from content creation to daily community engagement.",
     icon: LayoutGrid,
     features: [
-      "Custom Social Media Strategy",
-      "High-Quality Content Creation & Curation",
-      "Community Management & Daily Engagement",
-      "Reels & Short-Form Video Production",
-      "Aesthetic Grid Planning",
-      "Monthly Growth Analytics"
+      "Instagram feed planning",
+      "Reels and story concepts",
+      "Monthly content calendars",
+      "Creative design",
+      "Caption and copywriting",
+      "Audience engagement",
+      "Campaign-led posting"
     ],
     benefits: [
       "Showcase your property's unique aesthetic daily",
