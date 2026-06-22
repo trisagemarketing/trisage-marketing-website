@@ -1,80 +1,164 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { fadeUp, blurIn, scaleUp, staggerContainer } from "@/lib/animations";
-import { Sparkles, Megaphone, Heart, CalendarCheck, Handshake } from "lucide-react";
+import { fadeUp, staggerContainer } from "@/lib/animations";
+import { Sparkles } from "lucide-react";
+import Image from "next/image";
 
-const journeyPoints = [
+const caseStudies = [
   {
-    title: "Stronger Branding",
-    description: "Through strategic positioning",
-    icon: Sparkles,
+    id: "villasita",
+    headline: "Proof of Impact: The Villasita Resort",
+    challengeSolution: "Trisage implemented a targeted social media revival strategy, OTA optimisation, GMB enhancement, and premium content positioning to strengthen Villasita Resort’s digital presence, increase room night bookings, and improve local search visibility.",
+    results: [
+      { metric: "+94%", label: "Growth in Room Bookings", highlight: true },
+      { metric: "+95%", label: "Increase in Room Nights", highlight: true },
+      { metric: "₹8.46L", label: "Revenue Generated Online", highlight: true },
+      { metric: "21,877+", label: "Google Business Profile Views" },
+      { metric: "2,381+", label: "Customer Actions Generated" },
+    ],
+    closingCopy: "The campaign delivered massive improvement in online visibility, guest engagement, and direct customer interest.",
+    imageColor: "from-blue-500/20 to-cyan-500/20",
+    themeColor: "text-blue-600 dark:text-blue-400",
+    themeHighlight: "text-blue-400",
+    imageUrl: "/hero-front.jpg"
   },
   {
-    title: "Increased Visibility",
-    description: "Through creative digital solutions",
-    icon: Megaphone,
-  },
-  {
-    title: "Guest Engagement",
-    description: "Through innovative execution",
-    icon: Heart,
-  },
-  {
-    title: "More Direct Bookings",
-    description: "Through measurable campaigns",
-    icon: CalendarCheck,
-  },
-  {
-    title: "Long-Term Partnerships",
-    description: "Focused on sustainable revenue",
-    icon: Handshake,
+    id: "avyanta",
+    headline: "Proof of Impact: Avyanta Hotels",
+    challengeSolution: "Trisage implemented a luxury-focused digital branding, social media growth strategy, premium storytelling content, and visibility-driven hospitality marketing approach to strengthen Avyanta Hotels’ online presence and audience engagement.",
+    results: [
+      { metric: "+180%", label: "Growth in Social Media Reach", highlight: true },
+      { metric: "+140%", label: "Increase in Audience Engagement", highlight: true },
+      { metric: "Premium", label: "Luxury Brand Positioning Established" },
+      { metric: "Visuals", label: "Strong Improvement in Storytelling" },
+      { metric: "Visibility", label: "Enhanced Online Instagram Presence" },
+    ],
+    closingCopy: "Avyanta Hotels was successfully positioned as a premium hospitality destination through aesthetic content strategy, luxury-focused branding, and engaging digital storytelling.",
+    imageColor: "from-purple-500/20 to-pink-500/20",
+    themeColor: "text-purple-600 dark:text-purple-400",
+    themeHighlight: "text-purple-400",
+    imageUrl: "/hero-back.jpg"
   }
 ];
 
 export default function CaseStudies() {
   return (
-    <section className="py-12 md:py-12 bg-gray-50 dark:bg-gray-900 transition-colors duration-300" id="growth-journey">
-      <div className="container mx-auto px-4 md:px-8 max-w-7xl">
-        <div className="text-center mb-12 md:mb-12">
-          <motion.h2 
-            initial="hidden" whileInView="visible" viewport={{ once: false }} variants={blurIn}
-            className="text-3xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 tracking-tight"
-          >
-            Growth <span className="text-[#243384] dark:text-[#5c7ae0]">Journey</span>
-          </motion.h2>
-          <motion.p 
-            initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
-            className="text-gray-600 dark:text-gray-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed"
-          >
-            A proven path to elevating your hospitality brand and driving sustainable, long-term revenue.
-          </motion.p>
-        </div>
-
-        <motion.div 
-          variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 justify-center"
-        >
-          {journeyPoints.map((point, index) => (
-            <motion.div
-              key={index}
-              variants={scaleUp}
-              className={`bg-white dark:bg-gray-950 p-8 md:p-10 rounded-[2rem] shadow-sm hover:shadow-xl dark:shadow-none dark:border dark:border-gray-800 transition-all group ${
-                index === 3 ? "lg:col-start-1 lg:ml-auto lg:mr-4 lg:w-[calc(100%-1rem)]" : ""
-              } ${
-                index === 4 ? "lg:col-start-2 lg:col-span-2 lg:mr-auto lg:ml-4 lg:w-[calc(50%-1rem)]" : ""
-              }`}
+    <section className="pt-8 pb-20 md:pt-16 md:pb-32 bg-gray-50 dark:bg-gray-900 transition-colors duration-300" id="case-studies">
+      <div className="container mx-auto px-4 md:px-8 max-w-7xl space-y-24 md:space-y-40">
+        
+        {caseStudies.map((study, index) => {
+          const isEven = index % 2 === 0;
+          
+          return (
+            <motion.div 
+              key={study.id}
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              className={`flex flex-col lg:flex-row gap-12 lg:gap-20 items-center ${isEven ? "" : "lg:flex-row-reverse"}`}
             >
-              <div className="w-16 h-16 rounded-2xl bg-[#243384]/10 dark:bg-[#5c7ae0]/20 flex items-center justify-center mb-8 text-[#243384] dark:text-[#5c7ae0] group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
-                <point.icon className="w-8 h-8" strokeWidth={2} />
-              </div>
-              <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-4">{point.title}</h3>
-              <p className="text-gray-600 dark:text-gray-400 text-base md:text-lg leading-relaxed">
-                {point.description}
-              </p>
+              
+              {/* Image/Visual Column */}
+              <motion.div 
+                variants={fadeUp}
+                className="w-full lg:w-1/2 drop-shadow-2xl dark:drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+              >
+                <div 
+                  className={`relative w-full aspect-[4/3] overflow-hidden bg-gradient-to-br ${study.imageColor} flex items-center justify-center group`}
+                  style={{ 
+                    clipPath: isEven 
+                      ? "polygon(0 0, 100% 0, 100% 85%, 0 100%)" 
+                      : "polygon(0 0, 100% 0, 100% 100%, 0 85%)",
+                    borderTopLeftRadius: "2rem",
+                    borderTopRightRadius: "2rem"
+                  }}
+                >
+                  {/* High-end luxury hotel stock image with sharp Tilt crop */}
+                  <Image 
+                    src={study.imageUrl}
+                    alt={study.headline}
+                    fill
+                    className="object-cover transform-gpu group-hover:scale-105 transition-transform duration-[1.5s] ease-out will-change-transform"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+
+                  {/* Holographic "Holosphere" Sparkle Effect Overlay - Hardware Accelerated */}
+                  <div className="absolute inset-0 z-10 mix-blend-screen opacity-70 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none overflow-hidden transform-gpu will-change-opacity backface-hidden">
+                    {/* Glowing Iridescent Orbs */}
+                    <motion.div 
+                      animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.8, 0.4], x: [0, 30, 0] }} 
+                      transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                      className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-[#8a2be2]/40 rounded-full blur-[80px] md:blur-[100px] transform-gpu will-change-transform backface-hidden" 
+                    />
+                    <motion.div 
+                      animate={{ scale: [1, 1.4, 1], opacity: [0.3, 0.7, 0.3], y: [0, -40, 0] }} 
+                      transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                      className="absolute bottom-[-10%] right-[-10%] w-[80%] h-[80%] bg-[#00ffff]/40 rounded-full blur-[80px] md:blur-[100px] transform-gpu will-change-transform backface-hidden" 
+                    />
+                    
+                    {/* Floating Sparkles */}
+                    <motion.div animate={{ opacity: [0, 1, 0], scale: [0.5, 1.2, 0.5] }} transition={{ duration: 3, repeat: Infinity, delay: 0.5 }} className="absolute top-[20%] left-[25%] text-white/80 transform-gpu will-change-transform backface-hidden">
+                      <Sparkles className="w-6 h-6" />
+                    </motion.div>
+                    <motion.div animate={{ opacity: [0, 0.8, 0], scale: [0.8, 1.5, 0.8], rotate: [0, 90, 0] }} transition={{ duration: 4, repeat: Infinity, delay: 1.2 }} className="absolute bottom-[35%] right-[20%] text-white/60 transform-gpu will-change-transform backface-hidden">
+                      <Sparkles className="w-8 h-8" />
+                    </motion.div>
+                    <motion.div animate={{ opacity: [0, 0.9, 0], scale: [0.4, 1, 0.4] }} transition={{ duration: 2.5, repeat: Infinity, delay: 2 }} className="absolute top-[45%] left-[60%] text-white/90 transform-gpu will-change-transform backface-hidden">
+                      <Sparkles className="w-4 h-4" />
+                    </motion.div>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Content Column */}
+              <motion.div 
+                variants={fadeUp}
+                className="w-full lg:w-1/2 space-y-8"
+              >
+                <div className="space-y-4">
+                  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white tracking-tight">
+                    {study.headline}
+                  </h2>
+                  <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
+                    <strong className="text-gray-900 dark:text-gray-200">Challenge & Solution: </strong> 
+                    {study.challengeSolution}
+                  </p>
+                </div>
+
+                {/* Results Grid */}
+                <div className="pt-6 border-t border-gray-200 dark:border-gray-800">
+                  <h4 className="text-sm uppercase tracking-wider font-bold text-gray-400 dark:text-gray-500 mb-6">
+                    Key Results
+                  </h4>
+                  <div className="grid grid-cols-2 gap-6 md:gap-8">
+                    {study.results.map((result, i) => (
+                      <div key={i} className="space-y-2">
+                        <div className={`text-3xl md:text-4xl font-black ${result.highlight ? study.themeColor : "text-gray-900 dark:text-white"}`}>
+                          {result.metric}
+                        </div>
+                        <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 font-medium">
+                          {result.label}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Closing Copy Blockquote */}
+                <div className="relative pt-6">
+                  <div className={`absolute left-0 top-6 bottom-0 w-1 rounded-full bg-gradient-to-b ${study.imageColor.replace('/20', '/100')}`} />
+                  <p className="pl-6 text-lg md:text-xl font-medium text-gray-800 dark:text-gray-300 italic">
+                    &quot;{study.closingCopy}&quot;
+                  </p>
+                </div>
+              </motion.div>
+
             </motion.div>
-          ))}
-        </motion.div>
+          );
+        })}
+        
       </div>
     </section>
   );

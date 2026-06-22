@@ -16,7 +16,7 @@ const navLinks = [
   { name: "Services", href: "/services" },
   { name: "Methodology", href: "/methodology" },
   { name: "Case Studies", href: "/case-studies" },
-  { name: "Clients", href: "/clients" },
+  { name: "Contact Us", href: "/contact" },
 ];
 
 export default function Navbar() {
@@ -37,6 +37,7 @@ export default function Navbar() {
 
   // Close mobile menu on route change
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
