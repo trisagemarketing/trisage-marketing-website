@@ -3,6 +3,7 @@ import "./globals.css";
 import LenisProvider from "@/components/LenisProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import CustomCursor from "@/components/CustomCursor";
+import GlobalClickSpark from "@/components/GlobalClickSpark";
 import LayoutWrapper from "@/components/LayoutWrapper";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
 import { Toaster } from "sonner";
@@ -19,11 +20,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="scroll-smooth" data-scroll-behavior="smooth">
-      <body suppressHydrationWarning className="font-sans antialiased bg-white dark:bg-[#050b14] transition-colors duration-300">
+      <body suppressHydrationWarning className="font-sans antialiased bg-white dark:bg-[#050b14]">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <LenisProvider>
             <Toaster richColors position="top-right" />
             <CustomCursor />
+            <GlobalClickSpark />
             <AnalyticsTracker />
             <LayoutWrapper>
               {children}

@@ -7,14 +7,12 @@ import { ArrowRight, RotateCcw } from "lucide-react";
 import { services } from "@/data/services";
 import { fadeUp, staggerContainer } from "@/lib/animations";
 
-function ServiceFlipCard({ service }: { service: typeof services[0] }) {
-  const [isFlipped, setIsFlipped] = useState(false);
-
+function ServiceFlipCard({ service, isFlipped, onFlip }: { service: typeof services[0], isFlipped: boolean, onFlip: () => void }) {
   return (
     <div 
       className="relative w-full h-full min-h-[320px] cursor-pointer group mt-8"
       style={{ perspective: "1000px" }}
-      onClick={() => setIsFlipped(!isFlipped)}
+      onClick={onFlip}
     >
       <motion.div
         className="w-full h-full relative"
@@ -106,7 +104,7 @@ function ServiceFlipCard({ service }: { service: typeof services[0] }) {
                className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors"
                onClick={(e) => {
                  e.stopPropagation();
-                 setIsFlipped(false);
+                 onFlip();
                }}
                aria-label="Flip back"
              >
@@ -120,6 +118,8 @@ function ServiceFlipCard({ service }: { service: typeof services[0] }) {
 }
 
 export default function Services() {
+  const [flippedCardId, setFlippedCardId] = useState<string | number | null>(null);
+
   return (
     <section className="py-12 md:py-16 bg-[#fafbfc] dark:bg-gray-950 transition-colors duration-300" id="services">
       <div className="container mx-auto px-4 md:px-8">
@@ -153,7 +153,11 @@ export default function Services() {
         >
           {services.map((service) => (
             <motion.div key={service.id} variants={fadeUp} className="h-full">
-              <ServiceFlipCard service={service} />
+              <ServiceFlipCard 
+                service={service} 
+                isFlipped={flippedCardId === service.id}
+                onFlip={() => setFlippedCardId(flippedCardId === service.id ? null : service.id)}
+              />
             </motion.div>
           ))}
         </motion.div>

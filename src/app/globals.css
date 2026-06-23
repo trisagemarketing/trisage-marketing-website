@@ -29,10 +29,54 @@
   --color-secondary-800: #115e59;
   --color-secondary-900: #134e4a;
   --color-secondary-950: #042f2e;
+
+  --animate-blob: blob 10s infinite;
+  @keyframes blob {
+    0%   { transform: translate(0px,   0px)  scale(1);   }
+    33%  { transform: translate(40px, -60px) scale(1.1); }
+    66%  { transform: translate(-30px, 30px) scale(0.9); }
+    100% { transform: translate(0px,   0px)  scale(1);   }
+  }
+}
+
+/* ── Performance-safe compositor-thread animations ── */
+@keyframes iconFloat {
+  0%   { opacity: 0;    transform: translateY(0px)   rotate(0deg)  scale(0.85); }
+  20%  { opacity: 0.22; transform: translateY(-12px) rotate(3deg)  scale(1);    }
+  50%  { opacity: 0.28; transform: translateY(0px)   rotate(0deg)  scale(1.05); }
+  80%  { opacity: 0.22; transform: translateY(12px)  rotate(-3deg) scale(1);    }
+  100% { opacity: 0;    transform: translateY(0px)   rotate(0deg)  scale(0.85); }
+}
+
+@keyframes bokehPulse {
+  0%   { opacity: 0.5; transform: scale(0.95); }
+  50%  { opacity: 1;   transform: scale(1.06); }
+  100% { opacity: 0.5; transform: scale(0.95); }
+}
+
+@keyframes cometFly {
+  0% {
+    transform: translateX(-100px);
+    opacity: 1;
+  }
+  15% {
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(120vw);
+    opacity: 0;
+  }
+}
+
+/* Native GPU View Transitions for buttery smooth dark mode toggle */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.7s;
+  animation-timing-function: ease-in-out;
 }
 
 :root {
-  --background: #ffffff;
+  --background: #fefcf8;
   --foreground: #030712;
 }
 
@@ -80,7 +124,14 @@ body {
   display: none; /* Chrome, Safari and Opera */
 }
 @media (pointer: fine) {
-  body, a, button, input, textarea, select, [role="button"] {
+  *, *::before, *::after {
     cursor: none !important;
   }
+}
+ 
+/* ── Homepage: Transparent sections so fixed background shows through ── */
+/* Preserve intentionally dark sections: WhyChooseUs (#why-choose-us) and CTA (#cta-section) */
+.homepage-wrapper section:not(#why-choose-us):not(#cta-section) {
+  background-color: transparent !important;
+  background-image: none !important;
 }

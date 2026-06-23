@@ -119,7 +119,7 @@ export default function Navbar() {
             <ThemeToggle />
             
             <Link
-              href="/clients"
+              href="/contact"
               className="hidden md:inline-flex shrink-0 whitespace-nowrap items-center justify-center px-6 py-2.5 text-sm font-medium text-white bg-gray-900 hover:bg-black dark:bg-white dark:text-black dark:hover:bg-gray-200 rounded-full transition-all hover:scale-105 shadow-md"
             >
               Book Consultation
