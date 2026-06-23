@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import LenisProvider from "@/components/LenisProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import CustomCursor from "@/components/CustomCursor";
+import LayoutWrapper from "@/components/LayoutWrapper";
+import AnalyticsTracker from "@/components/AnalyticsTracker";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Trisage Marketing | Premium Digital Agency in India",
@@ -21,12 +22,12 @@ export default function RootLayout({
       <body suppressHydrationWarning className="font-sans antialiased bg-white dark:bg-[#050b14] transition-colors duration-300">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <LenisProvider>
+            <Toaster richColors position="top-right" />
             <CustomCursor />
-            <Navbar />
-            <main className="min-h-screen">
+            <AnalyticsTracker />
+            <LayoutWrapper>
               {children}
-            </main>
-            <Footer />
+            </LayoutWrapper>
           </LenisProvider>
         </ThemeProvider>
       </body>

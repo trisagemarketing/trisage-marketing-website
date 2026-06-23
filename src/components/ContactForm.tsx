@@ -33,13 +33,24 @@ export default function ContactForm() {
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log("Form Data:", data);
-    setIsSubmitting(false);
-    setIsSuccess(true);
-    reset();
-    setTimeout(() => setIsSuccess(false), 5000);
+    
+    try {
+      const { submitContactForm } = await import("@/app/actions/contact");
+      const result = await submitContactForm(data);
+      
+      if (result.success) {
+        setIsSuccess(true);
+        reset();
+        setTimeout(() => setIsSuccess(false), 5000);
+      } else {
+        alert(result.error || "Failed to submit form");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("An unexpected error occurred.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const inputClasses = (hasError: boolean) => 

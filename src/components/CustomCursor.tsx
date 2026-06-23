@@ -49,7 +49,7 @@ export default function CustomCursor() {
     <>
       {/* The precise inner dot */}
       <motion.div
-        className="hidden md:block fixed top-0 left-0 w-2 h-2 bg-primary-600 dark:bg-primary-500 rounded-full pointer-events-none z-[9999]"
+        className="hidden md:block fixed top-0 left-0 w-2 h-2 bg-primary-600 dark:bg-primary-500 rounded-full pointer-events-none z-[99999]"
         style={{
           x: mouseX,
           y: mouseY,
@@ -60,7 +60,7 @@ export default function CustomCursor() {
       
       {/* The trailing outer circle */}
       <motion.div
-        className="hidden md:block fixed top-0 left-0 w-8 h-8 border-[1.5px] border-primary-600/50 dark:border-primary-500/50 rounded-full pointer-events-none z-[9998]"
+        className="hidden md:block fixed top-0 left-0 w-8 h-8 border-[1.5px] border-primary-600/50 dark:border-primary-500/50 rounded-full pointer-events-none z-[99998]"
         style={{
           x: springX,
           y: springY,
