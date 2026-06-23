@@ -6,6 +6,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { LogOut, LayoutDashboard, Settings, Mail, ChevronLeft, ChevronRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useState, useEffect } from "react";
+import { toast } from "sonner";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -35,9 +36,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   const handleLogout = async () => {
+    toast.success(
+      <div className="flex flex-col">
+        <span className="sm:hidden">Signed out</span>
+        <span className="hidden sm:inline">Successfully signed out. Redirecting...</span>
+      </div>
+    );
     await supabase.auth.signOut();
-    router.push("/admin/login");
-    router.refresh();
+    setTimeout(() => {
+      router.push("/admin/login");
+      router.refresh();
+    }, 1000);
   };
 
   if (pathname === "/admin/login") {
@@ -70,9 +79,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </Link>
         <button 
           onClick={handleLogout}
-          className="p-2 text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors"
+          className="flex items-center gap-1.5 p-2 text-sm font-semibold text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors"
           title="Sign Out"
         >
+          <span className="hidden sm:inline-block">Sign Out</span>
           <LogOut className="w-5 h-5" />
         </button>
       </header>
