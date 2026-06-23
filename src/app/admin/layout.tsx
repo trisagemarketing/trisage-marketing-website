@@ -79,10 +79,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </Link>
         <button 
           onClick={handleLogout}
-          className="flex items-center gap-1.5 p-2 text-sm font-semibold text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors"
-          title="Sign Out"
+          className="flex items-center gap-2 p-2 text-sm font-bold text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors"
+          title="Logout"
         >
-          <span className="hidden sm:inline-block">Sign Out</span>
+          <span>Logout</span>
           <LogOut className="w-5 h-5" />
         </button>
       </header>
