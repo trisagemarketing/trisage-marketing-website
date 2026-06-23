@@ -29,5 +29,5 @@ export async function login(formData: FormData) {
     return { error: "Authentication failed. Please check your email and password." };
   }
 
-  redirect("/admin");
+  return { success: true };
 }

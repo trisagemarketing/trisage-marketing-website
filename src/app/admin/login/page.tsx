@@ -3,11 +3,13 @@
 import { useTransition } from "react";
 import { login } from "./actions";
 import { Lock, Mail, Loader2, ArrowRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Toaster, toast } from "sonner";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -23,13 +25,16 @@ export default function LoginPage() {
             <span className="hidden sm:inline">{result.error}</span>
           </>
         );
-      } else {
+      } else if (result?.success) {
         toast.success(
           <>
             <span className="sm:hidden">Login successful</span>
-            <span className="hidden sm:inline">Login successful.</span>
+            <span className="hidden sm:inline">Login successful. Redirecting...</span>
           </>
         );
+        setTimeout(() => {
+          router.push("/admin");
+        }, 1000);
       }
     });
   };
