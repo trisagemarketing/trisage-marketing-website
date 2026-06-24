@@ -8,7 +8,7 @@ const caveat = Caveat({ subsets: ["latin"], weight: "600" });
 
 export default function CaseStudiesHero() {
   return (
-    <section className="relative w-full overflow-hidden bg-[#f3fbf9] dark:bg-slate-950 pt-24 pb-20 md:pt-32 md:pb-28 transition-colors duration-300">
+    <section className="relative w-full overflow-hidden bg-[#f3fbf9] dark:bg-slate-950 pt-24 pb-20 md:pt-32 md:pb-28 ">
       {/* Abstract Background Elements (Light Pluses & Dots) */}
       <div className="absolute inset-0 pointer-events-none z-0">
         <svg className="absolute top-1/4 right-1/4 opacity-20 dark:opacity-10" width="20" height="20" viewBox="0 0 20 20">
@@ -86,7 +86,7 @@ export default function CaseStudiesHero() {
         >
           <path 
             d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.08,130.83,119.5,193.31,104.22c60.3-14.73,121.71-33.15,183.08-47.78Z" 
-            className="fill-gray-50 dark:fill-gray-900 transition-colors duration-300" 
+            className="fill-gray-50 dark:fill-gray-900 " 
           />
         </svg>
       </div>

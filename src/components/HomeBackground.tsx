@@ -72,7 +72,7 @@ const Cloud = ({ top, delay, dur, scale, opacity, zIndex = 0 }: any) => (
 );
 
 const Astronaut = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 120 120" className={className} style={{ filter: "drop-shadow(0px 0px 10px rgba(255,255,255,0.2))" }}>
+  <svg viewBox="0 0 120 120" className={className}>
     <g className="animate-[planetBounce_4s_infinite]">
       <path d="M 28 75 Q 32 95 38 75" fill="#ef4444" className="animate-pulse" />
       <path d="M 31 75 Q 32 85 35 75" fill="#fcd34d" />
@@ -111,10 +111,10 @@ export default function HomeBackground() {
         window.requestAnimationFrame(() => {
           const sy = window.scrollY;
           // Apply extreme parallax offsets to uncover deep space
-          if (p1Ref.current) p1Ref.current.style.transform = `translateY(${sy * -0.15}px)`;
-          if (p2Ref.current) p2Ref.current.style.transform = `translateY(${sy * -0.3}px)`;
-          if (p3Ref.current) p3Ref.current.style.transform = `translateY(${sy * -0.5}px)`;
-          if (pLightRef.current) pLightRef.current.style.transform = `translateY(${sy * -0.2}px)`;
+          if (p1Ref.current) p1Ref.current.style.transform = `translate3d(0, ${sy * -0.15}px, 0)`;
+          if (p2Ref.current) p2Ref.current.style.transform = `translate3d(0, ${sy * -0.3}px, 0)`;
+          if (p3Ref.current) p3Ref.current.style.transform = `translate3d(0, ${sy * -0.5}px, 0)`;
+          if (pLightRef.current) pLightRef.current.style.transform = `translate3d(0, ${sy * -0.2}px, 0)`;
           ticking = false;
         });
         ticking = true;
@@ -170,8 +170,8 @@ export default function HomeBackground() {
                         background: "radial-gradient(circle at 30% 30%, #f1f5f9 0%, #cbd5e1 40%, #334155 100%)",
                         boxShadow: "0 0 15px 2px rgba(255,255,255,0.1), inset -3px -3px 8px rgba(0,0,0,0.6)"
                       }}>
-                        <div className="absolute rounded-full bg-slate-800/30 w-[30%] h-[30%] top-[20%] left-[25%] blur-[0.5px]" />
-                        <div className="absolute rounded-full bg-slate-800/40 w-[20%] h-[20%] top-[55%] left-[60%] blur-[0.5px]" />
+                        <div className="absolute rounded-full bg-slate-800/30 w-[30%] h-[30%] top-[20%] left-[25%]" />
+                        <div className="absolute rounded-full bg-slate-800/40 w-[20%] h-[20%] top-[55%] left-[60%]" />
                       </div>
                     </div>
                   </div>
@@ -184,9 +184,9 @@ export default function HomeBackground() {
               boxShadow: "0 0 40px 15px rgba(255, 255, 255, 0.15), inset -15px -15px 30px rgba(0, 0, 0, 0.4)",
             }}>
               <div className="absolute inset-0 w-full h-full animate-[planetSpin_40s_linear_infinite] rounded-full overflow-hidden">
-                <div className="absolute rounded-full bg-slate-800/20" style={{ left: "20%", top: "35%", width: "18%", height: "18%", filter: "blur(2px)" }} />
-                <div className="absolute rounded-full bg-slate-800/15" style={{ left: "55%", top: "60%", width: "25%", height: "25%", filter: "blur(3px)" }} />
-                <div className="absolute rounded-full bg-slate-800/20" style={{ left: "65%", top: "25%", width: "12%", height: "12%", filter: "blur(1px)" }} />
+                <div className="absolute rounded-full bg-slate-800/20" style={{ left: "20%", top: "35%", width: "18%", height: "18%" }} />
+                <div className="absolute rounded-full bg-slate-800/15" style={{ left: "55%", top: "60%", width: "25%", height: "25%" }} />
+                <div className="absolute rounded-full bg-slate-800/20" style={{ left: "65%", top: "25%", width: "12%", height: "12%" }} />
               </div>
             </div>
           </div>
@@ -221,8 +221,8 @@ export default function HomeBackground() {
               boxShadow: "inset -8px -8px 15px rgba(0, 0, 0, 0.6)",
             }}>
               <div className="absolute inset-0 w-full h-full animate-[planetSpin_30s_linear_infinite] rounded-full overflow-hidden">
-                <div className="absolute rounded-full bg-red-950/30" style={{ left: "30%", top: "40%", width: "25%", height: "25%", filter: "blur(1px)" }} />
-                <div className="absolute rounded-full bg-red-950/30" style={{ left: "60%", top: "20%", width: "15%", height: "15%", filter: "blur(1px)" }} />
+                <div className="absolute rounded-full bg-red-950/30" style={{ left: "30%", top: "40%", width: "25%", height: "25%" }} />
+                <div className="absolute rounded-full bg-red-950/30" style={{ left: "60%", top: "20%", width: "15%", height: "15%" }} />
               </div>
             </div>
           </div>

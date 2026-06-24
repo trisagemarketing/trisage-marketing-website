@@ -26,7 +26,7 @@ export default async function BlogPage() {
   const regularPosts = featuredPost ? displayBlogs.filter(post => post.id !== featuredPost.id) : displayBlogs;
 
   return (
-    <main className="min-h-screen bg-white dark:bg-[#050b14] transition-colors duration-300">
+    <main className="min-h-screen bg-white dark:bg-[#050b14] ">
       
       {/* Header Section */}
       <section className="relative pt-32 pb-16 md:pt-40 md:pb-24 overflow-hidden">

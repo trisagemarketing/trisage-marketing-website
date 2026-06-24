@@ -13,15 +13,19 @@ import { createClient } from "@/lib/supabase/server";
 
 export default async function Home() {
   const supabase = await createClient();
-  const { data: recentPosts } = await supabase
+  const { data: recentPosts, error } = await supabase
     .from("blogs")
     .select("id, slug, title, excerpt, category, cover_image, published_at")
     .eq("status", "published")
     .order("published_at", { ascending: false })
     .limit(3);
 
+  if (error) {
+    console.error("Supabase Error on Homepage:", error.message, error.hint);
+  }
+
   return (
-    <main className="relative min-h-screen bg-[#fefcf8] dark:bg-[#050b14] transition-colors duration-500">
+    <main className="relative min-h-screen bg-[#fefcf8] dark:bg-[#050b14] ">
 
       {/* ── Creative Animated Background (fixed, behind everything) ── */}
       <HomeBackground />

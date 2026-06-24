@@ -43,6 +43,11 @@ export default function CustomCursor() {
     const onMove = (e: MouseEvent) => {
       pos.current.x = e.clientX;
       pos.current.y = e.clientY;
+      // Murphy's Law fallback: If the cursor ever gets stuck hidden (e.g. closing devtools bug),
+      // moving the mouse will forcefully resurrect it.
+      if (wrap.style.opacity === "0" || wrap.style.opacity === "") {
+        wrap.style.opacity = "1";
+      }
     };
 
     const onLeave  = () => { wrap.style.opacity = "0"; };

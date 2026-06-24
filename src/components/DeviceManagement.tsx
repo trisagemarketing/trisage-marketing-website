@@ -41,7 +41,7 @@ const outcomes = [
 
 export default function DeviceManagement() {
   return (
-    <section className="py-12 md:py-12 bg-white dark:bg-[#050b14] overflow-hidden transition-colors duration-300">
+    <section className="py-12 md:py-12 bg-white dark:bg-[#050b14] overflow-hidden ">
       <div className="container mx-auto px-4 md:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           

@@ -3,7 +3,7 @@ import { Home } from 'lucide-react';
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center text-center px-4 relative overflow-hidden bg-white dark:bg-[#050b14] transition-colors duration-300">
+    <div className="min-h-screen flex flex-col items-center justify-center text-center px-4 relative overflow-hidden bg-white dark:bg-[#050b14] ">
       
       {/* Background Glow Effect for extra contrast and premium feel */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-primary-500/10 dark:bg-primary-500/20 blur-[100px] rounded-full pointer-events-none" />

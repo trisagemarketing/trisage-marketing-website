@@ -29,7 +29,7 @@ const growthDrivers = [
 
 export default function GrowthEngine() {
   return (
-    <section className="py-20 md:py-32 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <section className="py-20 md:py-32 bg-gray-50 dark:bg-gray-900 ">
       <div className="container mx-auto px-4 md:px-8 max-w-7xl">
         <div className="text-center max-w-4xl mx-auto mb-16 md:mb-24">
           <motion.span 

@@ -10,7 +10,7 @@ export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section className="relative py-12 md:py-16 bg-gray-50 dark:bg-[#050b14]/20 transition-colors duration-300 overflow-hidden">
+    <section className="relative py-12 md:py-16 bg-gray-50 dark:bg-[#050b14]/20 overflow-hidden">
       
       {/* Ice Giant Planet */}
       <div className="absolute hidden dark:block right-[5%] top-[15%] w-[100px] h-[100px] md:w-[200px] md:h-[200px] pointer-events-none z-0" style={{

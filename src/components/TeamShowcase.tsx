@@ -144,7 +144,7 @@ export default function TeamShowcase() {
   };
 
   return (
-    <section className="relative min-h-[90vh] py-12 md:py-16 bg-white dark:bg-gray-950 transition-colors duration-300 flex flex-col justify-center items-center overflow-hidden">
+    <section className="relative min-h-[90vh] py-12 md:py-16 bg-white dark:bg-gray-950 flex flex-col justify-center items-center overflow-hidden">
       {/* Ambient Radial Glow */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--tw-gradient-stops))] from-primary-500/10 via-transparent to-transparent opacity-80 dark:opacity-40 pointer-events-none" />
 

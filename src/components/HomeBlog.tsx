@@ -53,7 +53,7 @@ export default function HomeBlog({ recentPosts = [] }: HomeBlogProps) {
   })) : blogPosts;
 
   return (
-    <section className="relative py-8 md:py-12 bg-white dark:bg-[#050b14]/30 transition-colors duration-300 overflow-hidden" id="insights">
+    <section className="relative py-[4px] md:py-[4px] bg-white dark:bg-[#050b14]/30 overflow-hidden" id="insights">
       {/* Background Ambience */}
       <div className="absolute hidden dark:block left-[-10%] top-[10%] w-[30%] h-[30%] bg-primary-500/10 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute hidden dark:block right-[-10%] bottom-[-10%] w-[30%] h-[30%] bg-secondary-500/10 rounded-full blur-[120px] pointer-events-none" />
@@ -61,7 +61,7 @@ export default function HomeBlog({ recentPosts = [] }: HomeBlogProps) {
       <div className="container relative z-10 mx-auto px-4 md:px-8">
         
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10 md:mb-14">
+        <div className="text-center max-w-3xl mx-auto mb-6 md:mb-6 pt-8 md:pt-22">
           <motion.h2 
             initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
             className="text-3xl md:text-5xl font-bold text-[#2A3F64] dark:text-white mb-4 md:mb-6"

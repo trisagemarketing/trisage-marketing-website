@@ -33,7 +33,7 @@ const processSteps = [
 
 export default function Process() {
   return (
-    <section className="py-12 md:py-16 bg-white dark:bg-[#050b14] overflow-hidden transition-colors duration-300">
+    <section className="pt-12 md:pt-16 pb-4 md:pb-6 bg-white dark:bg-[#050b14] overflow-hidden ">
       <div className="container mx-auto px-4 md:px-8">
         <div className="text-center max-w-3xl mx-auto mb-12 md:mb-20">
           <motion.span 

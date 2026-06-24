@@ -62,7 +62,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <main className="min-h-screen bg-white dark:bg-[#050b14] transition-colors duration-300">
+      <main className="min-h-screen bg-white dark:bg-[#050b14] ">
 
         {/* ── Hero / Header ── */}
         <header className="relative pt-28 pb-10 md:pt-36 md:pb-14 overflow-hidden">

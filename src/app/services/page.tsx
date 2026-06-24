@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function ServicesPage() {
   return (
     <>
-      <div className="pt-20 md:pt-28 bg-white dark:bg-gray-950 transition-colors duration-300" />
+      <div className="pt-20 md:pt-28 bg-white dark:bg-gray-950 " />
       <Services />
       <CTA />
     </>

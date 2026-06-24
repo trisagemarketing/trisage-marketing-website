@@ -9,7 +9,7 @@ import HeroFront from "../../public/hero-front.jpg";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen lg:min-h-[70vh] flex flex-col justify-center pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden bg-transparent transition-colors duration-300">
+    <section className="relative min-h-screen lg:min-h-[70vh] flex flex-col justify-center pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden bg-transparent ">
       {/* Background Decor - Extremely subtle proper gradient for pure white/dark */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
         <div className="absolute top-0 right-0 w-full h-125 bg-linear-to-b from-primary-50/50 dark:from-primary-900/10 to-transparent" />

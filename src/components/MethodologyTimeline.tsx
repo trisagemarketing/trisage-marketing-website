@@ -116,7 +116,7 @@ const SvgConnector = ({ isLeft }: { isLeft: boolean }) => {
 
 export default function MethodologyTimeline() {
   return (
-    <section className="pt-24 pb-20 md:pt-32 md:pb-24 bg-white dark:bg-[#081120] overflow-hidden transition-colors duration-300 relative">
+    <section className="pt-24 pb-20 md:pt-32 md:pb-24 bg-white dark:bg-[#081120] overflow-hidden relative">
       
       {/* Background Ambient Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-1/2 bg-[#3ca2d9]/5 dark:bg-[#3ca2d9]/10 blur-[120px] rounded-full pointer-events-none transform-gpu" />

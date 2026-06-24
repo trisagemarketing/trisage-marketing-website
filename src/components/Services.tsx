@@ -121,7 +121,7 @@ export default function Services() {
   const [flippedCardId, setFlippedCardId] = useState<string | number | null>(null);
 
   return (
-    <section className="py-12 md:py-16 bg-[#fafbfc] dark:bg-gray-950 transition-colors duration-300" id="services">
+    <section className="py-12 md:py-16 bg-[#fafbfc] dark:bg-gray-950 " id="services">
       <div className="container mx-auto px-4 md:px-8">
         <div className="text-center max-w-5xl mx-auto mb-10 lg:mb-16">
           <motion.span 

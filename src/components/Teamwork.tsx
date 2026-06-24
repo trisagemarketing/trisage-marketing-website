@@ -95,7 +95,7 @@ export default function Teamwork() {
               // Removed heavy inline styling from the loop
               className="relative flex-none w-[85vw] md:w-[60vw] lg:w-[40vw] aspect-[4/3] rounded-2xl overflow-hidden shadow-sm group transform-gpu"
             >
-              <div className="absolute inset-0 bg-gray-900/20 group-hover:bg-transparent transition-colors duration-500 z-10 pointer-events-none" />
+              <div className="absolute inset-0 bg-gray-900/20 group-hover:bg-transparent z-10 pointer-events-none" />
               <Image
                 src={img.src}
                 alt={img.alt}

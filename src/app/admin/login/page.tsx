@@ -40,7 +40,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-[100dvh] pb-[env(safe-area-inset-bottom)] z-100 flex items-center justify-center bg-[#f3fbf9] dark:bg-[#050b14] relative transition-colors duration-300 py-10 px-4">
+    <div className="min-h-[100dvh] pb-[env(safe-area-inset-bottom)] z-100 flex items-center justify-center bg-[#f3fbf9] dark:bg-[#050b14] relative py-10 px-4">
 
       
       {/* Background Ambience */}

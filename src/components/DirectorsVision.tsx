@@ -16,7 +16,7 @@ const QuoteMark = ({ className }: { className?: string }) => (
 
 export default function DirectorsVision() {
   return (
-    <section className="pt-12 pb-4 md:pt-16 md:pb-8 bg-gray-50 dark:bg-[#050b14] transition-colors duration-300">
+    <section className="pt-12 pb-4 md:pt-16 md:pb-8 bg-gray-50 dark:bg-[#050b14] ">
       <div className="container mx-auto px-4 md:px-8">
         
         <motion.div 

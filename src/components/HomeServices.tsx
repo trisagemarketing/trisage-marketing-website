@@ -20,7 +20,7 @@ const solutions = [
 
 export default function HomeServices() {
   return (
-    <section className="py-16 md:py-16 lg:py-16 bg-[#fafbfc] dark:bg-[#03070d] transition-colors duration-300 overflow-hidden">
+    <section className="py-16 md:py-16 lg:py-16 bg-[#fafbfc] dark:bg-[#03070d] overflow-hidden">
       <div className="container mx-auto px-4 md:px-8">
         
         {/* Header */}

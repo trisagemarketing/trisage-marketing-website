@@ -54,7 +54,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="h-[100dvh] bg-[#f3fbf9] dark:bg-[#050b14] flex flex-col md:flex-row relative overflow-hidden transition-colors duration-300">
+    <div className="h-[100dvh] bg-[#f3fbf9] dark:bg-[#050b14] flex flex-col md:flex-row relative overflow-hidden ">
       
       {/* Background Ambience */}
       <div className="absolute inset-0 pointer-events-none z-0">

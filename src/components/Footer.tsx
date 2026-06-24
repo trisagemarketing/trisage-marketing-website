@@ -58,7 +58,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-50 dark:bg-[#050b14] text-gray-700 dark:text-gray-300 pt-16 pb-6 border-t border-gray-200 dark:border-gray-800 transition-colors duration-300 relative overflow-hidden">
+    <footer className="bg-gray-50 dark:bg-[#050b14] text-gray-700 dark:text-gray-300 pt-16 pb-6 border-t border-gray-200 dark:border-gray-800 relative overflow-hidden">
       {/* Massive Background Marquee (Desktop Only) */}
       <div className="hidden md:flex absolute inset-0 items-center pointer-events-none select-none opacity-5 overflow-hidden">
         <motion.div 

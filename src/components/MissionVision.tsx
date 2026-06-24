@@ -9,7 +9,7 @@ export default function MissionVision() {
   const [visionExpanded, setVisionExpanded] = useState(false);
 
   return (
-    <section className="pt-12 pb-8 md:pt-16 md:pb-12 bg-white dark:bg-[#050b14] overflow-hidden transition-colors duration-300">
+    <section className="pt-12 pb-8 md:pt-16 md:pb-12 bg-white dark:bg-[#050b14] overflow-hidden ">
       <div className="container mx-auto px-4 md:px-8 max-w-7xl">
         
         {/* Block 1: Our Mission */}

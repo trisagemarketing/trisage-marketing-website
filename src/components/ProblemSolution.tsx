@@ -5,7 +5,7 @@ import { fadeUp } from "@/lib/animations";
 
 export default function ProblemSolution() {
   return (
-    <section className="py-16 md:py-24 bg-white dark:bg-[#03070d] transition-colors duration-300 relative overflow-hidden">
+    <section className="py-16 md:py-24 bg-white dark:bg-[#03070d] relative overflow-hidden">
       <div className="container mx-auto px-4 md:px-8">
         
         {/* Header & Intro */}

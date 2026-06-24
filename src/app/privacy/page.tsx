@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <main className="min-h-screen pt-32 pb-24 bg-white dark:bg-[#050b14] transition-colors duration-300">
+    <main className="min-h-screen pt-32 pb-24 bg-white dark:bg-[#050b14] ">
       <div className="container mx-auto px-4 md:px-8 max-w-4xl">
         
         {/* Header */}

@@ -44,7 +44,7 @@ const caseStudies = [
 
 export default function CaseStudies() {
   return (
-    <section className="relative pt-8 pb-20 md:pt-16 md:pb-32 bg-gray-50 dark:bg-[#050b14]/40 transition-colors duration-300 overflow-hidden" id="case-studies">
+    <section className="relative pt-8 pb-20 md:pt-16 md:pb-32 bg-gray-50 dark:bg-[#050b14]/40 overflow-hidden" id="case-studies">
       
       {/* Majestic Spiral Galaxy Background (Hidden in Light Mode) */}
       <div className="absolute hidden dark:block left-[-20%] top-[10%] w-[600px] h-[600px] md:w-[1200px] md:h-[1200px] pointer-events-none z-0 opacity-40 mix-blend-screen" style={{

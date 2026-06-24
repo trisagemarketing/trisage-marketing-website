@@ -21,7 +21,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
   const Icon = service.icon;
 
   return (
-    <div className="pt-24 pb-0 bg-white dark:bg-[#050b14] transition-colors duration-300">
+    <div className="pt-24 pb-0 bg-white dark:bg-[#050b14] ">
       
       {/* Hero Section */}
       <section className="relative py-20 lg:py-32 overflow-hidden">

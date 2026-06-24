@@ -8,7 +8,7 @@ import { Star } from "lucide-react";
 
 export default function Testimonials() {
   return (
-    <section className="relative py-6 md:py-16 bg-white dark:bg-[#050b14]/50 overflow-hidden transition-colors duration-300">
+    <section className="relative py-6 md:py-16 bg-white dark:bg-[#050b14]/50 overflow-hidden ">
       
       {/* Kepler Exoplanet (Hidden in Light Mode) */}
       <div className="absolute hidden dark:block right-[-10%] top-[10%] w-[120px] h-[120px] md:w-[320px] md:h-[320px] pointer-events-none z-0" style={{
