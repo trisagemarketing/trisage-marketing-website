@@ -6,10 +6,20 @@ import Testimonials from "@/components/Testimonials";
 import CaseStudies from "@/components/CaseStudies";
 import FAQ from "@/components/FAQ";
 import OurClients from "@/components/OurClients";
+import HomeBlog from "@/components/HomeBlog";
 import CTA from "@/components/CTA";
 import HomeBackground from "@/components/HomeBackground";
+import { createClient } from "@/lib/supabase/server";
 
-export default function Home() {
+export default async function Home() {
+  const supabase = await createClient();
+  const { data: recentPosts } = await supabase
+    .from("blogs")
+    .select("id, slug, title, excerpt, category, cover_image, published_at")
+    .eq("status", "published")
+    .order("published_at", { ascending: false })
+    .limit(3);
+
   return (
     <main className="relative min-h-screen bg-[#fefcf8] dark:bg-[#050b14] transition-colors duration-500">
 
@@ -25,6 +35,7 @@ export default function Home() {
         <Testimonials />
         <CaseStudies />
         <OurClients />
+        <HomeBlog recentPosts={recentPosts || []} />
         <FAQ />
         <CTA />
       </div>

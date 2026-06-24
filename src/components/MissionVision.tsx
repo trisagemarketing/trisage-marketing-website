@@ -78,6 +78,9 @@ export default function MissionVision() {
               src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200&auto=format&fit=crop"
               alt="Our Mission"
               fill
+              priority
+              fetchPriority="high"
+              loading="eager"
               sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover transition-transform duration-700 hover:scale-105"
             />

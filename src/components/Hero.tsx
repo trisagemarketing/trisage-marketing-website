@@ -30,7 +30,7 @@ export default function Hero() {
             <motion.h1 variants={blurIn} className="poppins-bold text-4xl md:text-5xl lg:text-[4rem] tracking-tight text-gray-900 dark:text-white mb-8 leading-[1.1]">
               Crafting Content <br />
               that drives <br />
-              <span className="text-primary-600 dark:text-primary-500 relative inline-block mt-2 md:mt-0">
+              <span className="text-transparent bg-clip-text bg-[length:200%_auto] bg-gradient-to-r from-amber-500 via-teal-500 to-amber-500 animate-[bgPan_6s_linear_infinite] dark:text-primary-500 dark:bg-none relative inline-block mt-2 md:mt-0 pb-2">
                 Revenue
               </span>
             </motion.h1>
@@ -66,7 +66,7 @@ export default function Hero() {
                   src={HeroBack}
                   alt="Hero Back"
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  className="w-full h-auto drop-shadow-[0_20px_40px_rgba(36,51,132,0.25)] dark:drop-shadow-[0_20px_40px_rgba(92,122,224,0.15)] rounded-sm md:rounded-md"
+                  className="w-full h-auto drop-shadow-[0_20px_40px_rgba(245,158,11,0.3)] dark:drop-shadow-[0_20px_40px_rgba(92,122,224,0.15)] rounded-sm md:rounded-md"
                   placeholder="blur"
                   priority
                   fetchPriority="high"
@@ -83,7 +83,7 @@ export default function Hero() {
                 {/* Decorative outline */}
                 <div className="absolute -top-3 -left-3 md:-top-4 md:-left-4 w-full h-full border-2 border-gray-800 dark:border-gray-400 z-0 rounded-sm md:rounded-md" />
                 
-                <div className="relative w-full aspect-[4/3] md:aspect-[16/10] z-10 overflow-hidden shadow-[0_30px_60px_rgba(36,51,132,0.3)] dark:shadow-[0_30px_60px_rgba(92,122,224,0.2)] rounded-sm md:rounded-md">
+                <div className="relative w-full aspect-[4/3] md:aspect-[16/10] z-10 overflow-hidden shadow-[0_30px_60px_rgba(20,184,166,0.25)] dark:shadow-[0_30px_60px_rgba(92,122,224,0.2)] rounded-sm md:rounded-md">
                   <Image
                     src={HeroFront}
                     alt="Hero Front"

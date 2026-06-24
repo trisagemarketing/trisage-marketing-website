@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
-import { LogOut, LayoutDashboard, Settings, Mail, ChevronLeft, ChevronRight } from "lucide-react";
+import { LogOut, LayoutDashboard, Settings, Mail, ChevronLeft, ChevronRight, FileText } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
@@ -71,6 +71,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             width={120}
             height={30}
             priority
+            fetchPriority="high"
+            loading="eager"
             className="h-6 w-auto transition-all mix-blend-multiply dark:mix-blend-screen dark:invert dark:hue-rotate-180"
           />
           <span className="px-2.5 py-1.5 rounded-md bg-primary-50 dark:bg-primary-500/10 text-xs font-black uppercase tracking-wider text-primary-600 dark:text-primary-400 border border-primary-200/50 dark:border-primary-500/20 shadow-sm leading-none flex items-center">
@@ -89,7 +91,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Sidebar (Desktop) / Bottom Nav (Mobile) */}
       <aside 
-        className={`${isCollapsed ? "md:w-20" : "md:w-72"} fixed bottom-0 left-0 right-0 md:relative w-full md:w-auto h-16 md:h-screen bg-white/80 dark:bg-[#0a1220]/80 backdrop-blur-2xl border-t md:border-t-0 md:border-r border-gray-200/50 dark:border-white/5 flex flex-row md:flex-col z-50 shadow-[0_-4px_24px_rgba(0,0,0,0.02)] md:shadow-[4px_0_24px_rgba(0,0,0,0.02)] dark:shadow-none transition-all duration-300 ease-in-out flex-shrink-0 pb-safe`}
+        suppressHydrationWarning
+        className={`${isCollapsed ? "md:w-20" : "md:w-72"} fixed bottom-0 left-0 right-0 md:relative w-full md:w-auto h-16 md:h-screen bg-white/80 dark:bg-[#0a1220]/80 backdrop-blur-2xl border-t md:border-t-0 md:border-r border-gray-200/50 dark:border-white/5 flex flex-row md:flex-col z-50 shadow-[0_-4px_24px_rgba(0,0,0,0.02)] md:shadow-[4px_0_24px_rgba(0,0,0,0.02)] dark:shadow-none transition-all duration-300 ease-in-out flex-shrink-0 pb-[env(safe-area-inset-bottom)] md:pb-0`}
       >
         <div className={`hidden md:flex h-24 border-b border-gray-200/50 dark:border-white/5 items-center overflow-hidden flex-shrink-0 transition-all duration-300 ${isCollapsed ? "justify-center px-0 w-20" : "justify-start px-6 w-72"}`}>
           <Link href="/admin/dashboard" className="relative z-50 flex items-center gap-2.5 flex-shrink-0">
@@ -101,6 +104,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   width={160}
                   height={40}
                   priority
+                  fetchPriority="high"
+                  loading="eager"
                   className="h-8 w-[160px] max-w-none transition-all mix-blend-multiply dark:mix-blend-screen dark:invert dark:hue-rotate-180 object-left"
                 />
               </div>
@@ -112,6 +117,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   width={120}
                   height={30}
                   priority
+                  fetchPriority="high"
+                  loading="eager"
                   className="h-6 w-auto transition-all mix-blend-multiply dark:mix-blend-screen dark:invert dark:hue-rotate-180"
                 />
                 <span className="px-2.5 py-1.5 rounded-md bg-primary-50 dark:bg-primary-500/10 text-xs font-black uppercase tracking-wider text-primary-600 dark:text-primary-400 border border-primary-200/50 dark:border-primary-500/20 shadow-sm leading-none flex items-center whitespace-nowrap">
@@ -125,6 +132,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <nav className="flex-1 px-4 md:p-4 flex flex-row md:flex-col justify-around md:justify-start items-center md:items-stretch space-x-2 md:space-x-0 md:space-y-2 overflow-y-visible md:overflow-y-auto overflow-x-hidden h-full">
           {[
             { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard, exact: true },
+            { name: "Content", href: "/admin/blog", icon: FileText, exact: false },
             { name: "Leads", href: "/admin/leads", icon: Mail, exact: false },
             { name: "Settings", href: "/admin/settings", icon: Settings, exact: false },
           ].map((item) => {
@@ -187,7 +195,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 overflow-y-auto overflow-x-hidden relative z-10 w-full pb-20 md:pb-0" data-lenis-prevent="true">
+      <main className="flex-1 overflow-y-auto overflow-x-hidden relative z-10 w-full pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-0" data-lenis-prevent="true">
         {children}
       </main>
     </div>

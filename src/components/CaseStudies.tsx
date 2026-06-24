@@ -44,8 +44,69 @@ const caseStudies = [
 
 export default function CaseStudies() {
   return (
-    <section className="pt-8 pb-20 md:pt-16 md:pb-32 bg-gray-50 dark:bg-gray-900 transition-colors duration-300" id="case-studies">
-      <div className="container mx-auto px-4 md:px-8 max-w-7xl space-y-24 md:space-y-40">
+    <section className="relative pt-8 pb-20 md:pt-16 md:pb-32 bg-gray-50 dark:bg-[#050b14]/40 transition-colors duration-300 overflow-hidden" id="case-studies">
+      
+      {/* Majestic Spiral Galaxy Background (Hidden in Light Mode) */}
+      <div className="absolute hidden dark:block left-[-20%] top-[10%] w-[600px] h-[600px] md:w-[1200px] md:h-[1200px] pointer-events-none z-0 opacity-40 mix-blend-screen" style={{
+        transform: "rotateX(60deg) rotateY(15deg) rotateZ(-20deg)",
+        transformStyle: "preserve-3d"
+      }}>
+        {/* Rotating Galaxy Core */}
+        <div className="absolute inset-0 animate-[planetSpin_60s_linear_infinite]" style={{ transformStyle: "preserve-3d" }}>
+           {/* Core Glow */}
+           <div className="absolute top-1/2 left-1/2 w-[30%] h-[30%] -translate-x-1/2 -translate-y-1/2 bg-rose-500/80 rounded-full blur-[60px]" />
+           <div className="absolute top-1/2 left-1/2 w-[15%] h-[15%] -translate-x-1/2 -translate-y-1/2 bg-white/90 rounded-full blur-[20px]" />
+           
+           {/* Spiral Arms (Using conic gradients & borders) */}
+           <div className="absolute top-1/2 left-1/2 w-[80%] h-[80%] -translate-x-1/2 -translate-y-1/2 rounded-full border-[20px] border-t-purple-500/40 border-r-transparent border-b-fuchsia-500/30 border-l-transparent blur-[15px] animate-[planetSpin_40s_linear_infinite_reverse]" />
+           <div className="absolute top-1/2 left-1/2 w-[100%] h-[100%] -translate-x-1/2 -translate-y-1/2 rounded-full border-[40px] border-t-transparent border-r-indigo-500/20 border-b-transparent border-l-blue-500/20 blur-[25px] animate-[planetSpin_50s_linear_infinite]" />
+           
+           {/* Stardust particles in galaxy */}
+           <div className="absolute inset-0 rounded-full border-[2px] border-dashed border-white/20 blur-[1px] animate-[planetSpin_30s_linear_infinite]" />
+           <div className="absolute inset-8 rounded-full border-[3px] border-dotted border-pink-300/30 blur-[2px] animate-[planetSpin_25s_linear_infinite_reverse]" />
+        </div>
+      </div>
+
+      {/* 3D Gas Giant Planet (Right Side Blank Space Filler for Avyanta) */}
+      <div className="absolute hidden dark:block right-[2%] bottom-[5%] w-[200px] h-[200px] md:w-[350px] md:h-[350px] pointer-events-none z-0" style={{
+        animation: "planetFloat 8s ease-in-out infinite",
+        transformStyle: "preserve-3d"
+      }}>
+        {/* Exo-Rings */}
+        <div className="absolute top-1/2 left-1/2 w-[220%] h-[220%] pointer-events-none" style={{
+          transform: "translate(-50%, -50%) rotateZ(15deg) rotateX(75deg)",
+          transformStyle: "preserve-3d"
+        }}>
+          <div className="absolute inset-0 animate-[planetSpin_40s_linear_infinite]" style={{ transformStyle: "preserve-3d" }}>
+            <div className="absolute inset-0 border-[8px] border-purple-500/30 rounded-full blur-[2px]" />
+            <div className="absolute inset-8 border-[2px] border-solid border-pink-400/40 rounded-full" />
+            <div className="absolute inset-16 border-[1px] border-dashed border-fuchsia-300/50 rounded-full" />
+          </div>
+        </div>
+        {/* Planet Sphere */}
+        <div className="absolute inset-0 rounded-full" style={{
+          transform: "translateZ(1px)",
+          background: "radial-gradient(circle at 35% 35%, #e879f9 0%, #a21caf 40%, #030712 100%)",
+          boxShadow: "0 0 60px 15px rgba(192, 38, 211, 0.2), inset -25px -25px 50px rgba(0, 0, 0, 0.9)",
+        }}>
+          {/* Atmospheric Swirls (Spinning on axis) */}
+          <div className="absolute inset-0 w-full h-full rounded-full overflow-hidden opacity-50 mix-blend-overlay">
+             <div className="absolute w-[150%] h-[150%] top-1/2 left-1/2" style={{ transform: "translate(-50%, -50%)" }}>
+                <div className="absolute inset-0 animate-[planetSpin_25s_linear_infinite]">
+                  <div className="absolute top-[20%] left-[-10%] w-[120%] h-[30%] bg-white blur-[12px] transform rotate-12 rounded-[50%]" />
+                  <div className="absolute top-[50%] left-[-10%] w-[120%] h-[20%] bg-purple-300 blur-[8px] transform -rotate-6 rounded-[50%]" />
+                  <div className="absolute top-[75%] left-[10%] w-[120%] h-[15%] bg-pink-300 blur-[6px] transform rotate-6 rounded-[50%]" />
+                  
+                  {/* Great Storm */}
+                  <div className="absolute top-[55%] left-[60%] w-[30%] h-[20%] bg-fuchsia-900 blur-[5px] rounded-full mix-blend-multiply" />
+                  <div className="absolute top-[58%] left-[62%] w-[15%] h-[10%] bg-purple-400 blur-[3px] rounded-full" />
+                </div>
+             </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container relative z-10 mx-auto px-4 md:px-8 max-w-7xl space-y-24 md:space-y-40">
         
         {caseStudies.map((study, index) => {
           const isEven = index % 2 === 0;

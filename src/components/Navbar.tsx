@@ -78,6 +78,8 @@ export default function Navbar() {
               width={200}
               height={60}
               priority
+              fetchPriority="high"
+              loading="eager"
               className="h-10 md:h-12 lg:h-14 w-auto transition-all mix-blend-multiply dark:mix-blend-screen dark:invert dark:hue-rotate-180"
             />
           </Link>

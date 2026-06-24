@@ -109,7 +109,7 @@ export default function CustomCursor() {
         top:           0,
         left:          0,
         pointerEvents: "none",
-        zIndex:        99999,
+        zIndex:        2147483647, // Max 32-bit integer to guarantee it's always on top of portals/toasts
         willChange:    "transform",
         transform:     "translate(-400px, -400px)",
         opacity:       0,

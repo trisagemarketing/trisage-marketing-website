@@ -15,6 +15,8 @@ export default function MethodologyHero() {
           fill
           className="object-cover object-center"
           priority
+          fetchPriority="high"
+          loading="eager"
           unoptimized
         />
         {/* Opacity Overlay to ensure text readability */}

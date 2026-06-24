@@ -6,10 +6,35 @@ import { fadeUp } from "@/lib/animations";
 
 export default function OurClients() {
   return (
-    <section className="py-16 md:py-24 bg-white dark:bg-[#050b14] transition-colors duration-300" id="our-clients">
-      <div className="container mx-auto px-4 md:px-8">
+    <section className="relative py-8 md:py-12 bg-white dark:bg-[#050b14]/30 transition-colors duration-300 overflow-hidden" id="our-clients">
+      
+      {/* Skyblue Cosmic Beams */}
+      <div className="absolute hidden dark:block left-[-20%] top-[40%] w-[150%] h-[150px] pointer-events-none z-0 mix-blend-screen rotate-[-10deg]">
+         {/* Main diffuse beam */}
+         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-sky-400/20 to-transparent blur-[50px] animate-[pulse_8s_infinite]" />
+         {/* Intense core beam */}
+         <div className="absolute inset-y-1/3 inset-x-0 bg-gradient-to-r from-transparent via-sky-300/40 to-transparent blur-[20px] animate-[pulse_5s_infinite_reverse]" />
+         {/* Laser thin beam */}
+         <div className="absolute top-1/2 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-sky-200/60 to-transparent blur-[2px]" />
+      </div>
+
+      {/* Cosmic Creative Stuff: Floating Skyblue Orbs & Twinkling Stars */}
+      <div className="absolute hidden dark:block inset-0 pointer-events-none z-0 overflow-hidden">
+        {/* Skyblue Glowing Orb 1 */}
+        <div className="absolute left-[8%] top-[20%] w-[100px] h-[100px] bg-sky-500/20 rounded-full blur-[40px] animate-[planetBounce_12s_infinite]" />
+        {/* Skyblue Glowing Orb 2 */}
+        <div className="absolute right-[15%] bottom-[10%] w-[150px] h-[150px] bg-cyan-400/10 rounded-full blur-[60px] animate-[planetBounce_15s_infinite_reverse]" />
         
-        <div className="text-center max-w-3xl mx-auto mb-6 md:mb-8">
+        {/* Twinkling Stars */}
+        <div className="absolute left-[20%] top-[30%] w-1 h-1 bg-sky-100 rounded-full shadow-[0_0_8px_2px_#bae6fd] animate-[ping_3s_infinite]" />
+        <div className="absolute right-[30%] top-[50%] w-1.5 h-1.5 bg-white rounded-full shadow-[0_0_10px_3px_#e0f2fe] animate-[ping_4s_infinite]" />
+        <div className="absolute left-[40%] bottom-[20%] w-1 h-1 bg-cyan-100 rounded-full shadow-[0_0_6px_2px_#cffafe] animate-[ping_5s_infinite]" />
+        <div className="absolute right-[10%] top-[15%] w-2 h-2 bg-sky-200 rounded-full shadow-[0_0_12px_4px_#7dd3fc] animate-[ping_6s_infinite_reverse]" />
+      </div>
+
+      <div className="container relative z-10 mx-auto px-4 md:px-8">
+        
+        <div className="text-center max-w-3xl mx-auto mb-6 md:mb-8 pt-8">
           <motion.h2 
             initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
             className="text-3xl md:text-5xl font-bold text-[#2A3F64] dark:text-white"
@@ -23,12 +48,8 @@ export default function OurClients() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false }}
           transition={{ duration: 0.6 }}
-          className="w-full bg-[#EAF3F1] md:my-10 dark:bg-gray-900 rounded-4xl md:rounded-[3rem] py-8 md:py-12 shadow-sm overflow-hidden flex items-center relative"
+          className="w-full bg-[#EAF3F1] md:my-10 dark:bg-gray-800 rounded-4xl md:rounded-[3rem] py-4 md:py-6 shadow-sm flex items-center relative overflow-hidden"
         >
-          {/* Gradient masks for smooth fade-in/fade-out at the edges (Fixed Safari hard-edge bug) */}
-          <div className="absolute inset-y-0 left-0 w-16 md:w-32 bg-linear-to-r from-[#EAF3F1] to-[#EAF3F1]/0 dark:from-gray-900 dark:to-gray-900/0 z-10 pointer-events-none" />
-          <div className="absolute inset-y-0 right-0 w-16 md:w-32 bg-linear-to-l from-[#EAF3F1] to-[#EAF3F1]/0 dark:from-gray-900 dark:to-gray-900/0 z-10 pointer-events-none" />
-
           {/* Infinite Marquee Wrapper */}
           <motion.div
             animate={{ x: [0, "-50%"] }}
@@ -40,24 +61,24 @@ export default function OurClients() {
             className="flex w-max items-center"
           >
             {/* First Set of Logos */}
-            <div className="flex items-center justify-center pr-8 md:pr-12">
+            <div className="flex items-center justify-center pr-4 sm:pr-8 md:pr-12">
               <img
                 src="/Frame 31.svg"
                 alt="Our Clients"
                 loading="lazy"
                 decoding="async"
-                className="h-20 md:h-28 w-auto max-w-none"
+                className="h-[60px] sm:h-[80px] md:h-[120px] lg:h-[161px] w-auto max-w-none dark:drop-shadow-none md:dark:drop-shadow-[0_0_15px_rgba(255,255,255,0.7)]"
               />
             </div>
             
             {/* Duplicate Set of Logos for Seamless Looping */}
-            <div className="flex items-center justify-center pr-8 md:pr-12">
+            <div className="flex items-center justify-center pr-4 sm:pr-8 md:pr-12">
               <img
                 src="/Frame 31.svg"
                 alt="Our Clients Duplicate"
                 loading="lazy"
                 decoding="async"
-                className="h-20 md:h-28 w-auto max-w-none"
+                className="h-[60px] sm:h-[80px] md:h-[120px] lg:h-[161px] w-auto max-w-none dark:drop-shadow-none md:dark:drop-shadow-[0_0_15px_rgba(255,255,255,0.7)]"
               />
             </div>
           </motion.div>

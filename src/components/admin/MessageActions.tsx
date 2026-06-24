@@ -61,21 +61,21 @@ export default function MessageActions({ msg }: { msg: any }) {
   return (
     <>
       {/* Table Actions */}
-      <div className={`flex items-center justify-center md:justify-end w-full gap-1 sm:gap-2 transition-opacity ${isPending ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
+      <div className={`flex flex-wrap items-center justify-end w-full gap-2 transition-opacity ${isPending ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
         <button 
           onClick={() => setIsSlideOverOpen(true)}
           disabled={isPending}
-          className="bg-primary-50 dark:bg-primary-500/10 text-primary-700 dark:text-primary-300 border border-primary-200 dark:border-primary-500/30 shadow-[0_2px_10px_-3px_rgba(var(--primary-rgb),0.2)] hover:shadow-[0_4px_12px_-2px_rgba(var(--primary-rgb),0.3)] hover:-translate-y-0.5 text-sm font-bold transition-all px-4 py-2 rounded-xl flex items-center gap-1.5 whitespace-nowrap"
+          className="w-full sm:w-auto flex-1 sm:flex-none justify-center bg-primary-50 dark:bg-primary-500/10 text-primary-700 dark:text-primary-300 border border-primary-200 dark:border-primary-500/30 shadow-[0_2px_10px_-3px_rgba(var(--primary-rgb),0.2)] hover:shadow-[0_4px_12px_-2px_rgba(var(--primary-rgb),0.3)] hover:-translate-y-0.5 text-xs sm:text-sm font-bold transition-all px-3 py-2 sm:px-4 sm:py-2 rounded-xl flex items-center gap-1.5 whitespace-nowrap"
         >
           <Eye className="w-4 h-4" />
-          <span className="hidden sm:inline">View</span>
+          <span>View</span>
         </button>
 
         {!msg.meeting_booked && (
           <button 
             onClick={handleBook}
             disabled={isPending}
-            className="bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30 shadow-[0_2px_10px_-3px_rgba(16,185,129,0.2)] hover:shadow-[0_4px_12px_-2px_rgba(16,185,129,0.3)] hover:-translate-y-0.5 text-sm font-bold transition-all px-4 py-2 rounded-xl flex items-center whitespace-nowrap"
+            className="w-full sm:w-auto flex-1 sm:flex-none justify-center bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30 shadow-[0_2px_10px_-3px_rgba(16,185,129,0.2)] hover:shadow-[0_4px_12px_-2px_rgba(16,185,129,0.3)] hover:-translate-y-0.5 text-xs sm:text-sm font-bold transition-all px-3 py-2 sm:px-4 sm:py-2 rounded-xl flex items-center whitespace-nowrap"
           >
             {isPending ? "Saving..." : "Mark Booked"}
           </button>
@@ -84,7 +84,7 @@ export default function MessageActions({ msg }: { msg: any }) {
         <button 
           onClick={() => setIsModalOpen(true)}
           disabled={isPending}
-          className="bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-500/30 shadow-[0_2px_10px_-3px_rgba(244,63,94,0.2)] hover:shadow-[0_4px_12px_-2px_rgba(244,63,94,0.3)] hover:-translate-y-0.5 text-sm font-bold transition-all px-4 py-2 rounded-xl flex items-center whitespace-nowrap"
+          className="w-full sm:w-auto flex-1 sm:flex-none justify-center bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-500/30 shadow-[0_2px_10px_-3px_rgba(244,63,94,0.2)] hover:shadow-[0_4px_12px_-2px_rgba(244,63,94,0.3)] hover:-translate-y-0.5 text-xs sm:text-sm font-bold transition-all px-3 py-2 sm:px-4 sm:py-2 rounded-xl flex items-center whitespace-nowrap"
         >
           {isPending ? "..." : "Delete"}
         </button>

@@ -192,7 +192,15 @@ export default async function AdminDashboard() {
                 </div>
               </div>
               <h3 className="text-gray-500 dark:text-gray-400 text-sm font-semibold mb-1 uppercase tracking-wider">{stat.name}</h3>
-              <p className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">{stat.value}</p>
+              <p className="text-[clamp(1.5rem,5vw,1.875rem)] font-bold text-gray-900 dark:text-white tracking-tight">
+                {(() => {
+                  const val = stat.value;
+                  if (typeof val === 'string' && val.includes('%')) return val;
+                  const num = typeof val === 'string' ? parseFloat(val.replace(/,/g, '')) : val;
+                  if (isNaN(num)) return val;
+                  return new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(num);
+                })()}
+              </p>
             </div>
           );
         })}
