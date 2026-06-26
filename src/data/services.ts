@@ -101,13 +101,13 @@ export const services = [
   {
     id: 5,
     slug: "seo-gmb",
-    title: "Google Business Profile Optimisation",
+    title: "GEO & GMB",
     subheading: "Control the First Trust Touchpoint",
     description: "Before guests visit your website, they often discover you on Google. We optimise your Google Business Profile to improve local visibility, strengthen trust, manage reviews, upload high-quality assets, and drive users toward direct booking links.",
     longDescription: "Local visibility is everything in hospitality. We hyper-optimize your Google Business Profile (GMB) and execute targeted local SEO strategies to ensure you own the 'near me' searches. From review management to authoritative local citations, we put your property on the map.",
     icon: Users,
     features: [
-      "Google Business Profile optimisation",
+      "GEO & GMB",
       "Review management",
       "High-fidelity asset uploads",
       "Local SEO improvement",

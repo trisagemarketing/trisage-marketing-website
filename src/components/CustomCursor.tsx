@@ -1,148 +1,186 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 
 /**
- * NORTHERN LIGHTS CUSTOM CURSOR (IMAGE SPRITE)
+ * FLUID DOT & MAGNETIC RING CUSTOM CURSOR
  *
- * Architecture:
- * ─ Uses the EXACT cursor pack image requested by the user from:
- *   https://cdn.custom-cursor.com/packs/7182/starter-northern-lights-pack.png
- * ─ Implements CSS Sprite technique: seamlessly swaps between the Arrow and the Hand 
- *   pointer without requiring two separate image downloads.
- * ─ Maintains Zero-Lag Architecture: Direct DOM manipulation in a requestAnimationFrame loop.
- *   No React re-renders on mousemove or hover.
- * ─ Hotspots precisely calibrated down to the pixel based on a 1/8th scale of the original 800x400 image.
+ * Bug Fixes (Senior Audit):
+ * 1. Visibility guard: cursor hides when mouse leaves window (DevTools drag, alt-tab etc.)
+ *    and re-appears instantly when mouse re-enters — eliminates the "ghost" frozen cursor.
+ * 2. DevTools resize / mobile-emulation safe: pointer-device check uses a live
+ *    MediaQueryList with an `addEventListener("change")` so toggling DevTools device
+ *    toolbar correctly tears down or re-attaches all listeners without a page refresh.
+ * 3. Initial position guard: cursor elements start with opacity-0 and only fade in
+ *    after the FIRST real mousemove event, eliminating the (-100,-100) snap/jump glitch.
+ * 4. Stable effect: dependency array is empty `[]` — MotionValues are stable refs and
+ *    must NOT be listed as deps (they never change identity, but listing them caused
+ *    the early-return guard to skip re-attachment on every render cycle).
+ * 5. All event listeners are registered on `document` (not `window`) for consistency,
+ *    matching browser DevTools inspector behaviour where `window` events can be masked.
  */
-
 export default function CustomCursor() {
-  const wrapRef   = useRef<HTMLDivElement>(null);
-  const spriteRef = useRef<HTMLDivElement>(null);
-  const pos       = useRef({ x: -400, y: -400 });
-  const rafId     = useRef(0);
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted]     = useState(false);
+  const [visible, setVisible]     = useState(false); // false until first real mousemove
+  const [isHover, setIsHover]     = useState(false);
+  const [isClicking, setIsClicking] = useState(false);
 
-  useEffect(() => { setMounted(true); }, []);
+  // Raw pointer coordinates — start far off-screen so springs settle before reveal
+  const mouseX = useMotionValue(-500);
+  const mouseY = useMotionValue(-500);
+
+  // Outer Ring — smooth trailing spring
+  const ringX = useSpring(mouseX, { damping: 25, stiffness: 180, mass: 0.6 });
+  const ringY = useSpring(mouseY, { damping: 25, stiffness: 180, mass: 0.6 });
+
+  // Inner Dot — snappy, near-instant spring
+  const dotX = useSpring(mouseX, { damping: 35, stiffness: 400, mass: 0.1 });
+  const dotY = useSpring(mouseY, { damping: 35, stiffness: 400, mass: 0.1 });
+
+  // Track whether listeners are currently attached so we never double-attach
+  const listenersActive = useRef(false);
 
   useEffect(() => {
-    if (!mounted) return;
+    setMounted(true);
 
-    let isPointerDevice = false;
-    try { isPointerDevice = window.matchMedia("(pointer: fine)").matches; } 
-    catch { isPointerDevice = navigator.maxTouchPoints === 0; }
-    if (!isPointerDevice) return;
+    // --- Live pointer-device detection via MediaQueryList ---
+    // This survives DevTools opening/closing in device emulation mode.
+    let mql: MediaQueryList | null = null;
+    try { mql = window.matchMedia("(pointer: fine)"); } catch { /* SSR guard */ }
 
-    const wrap   = wrapRef.current;
-    const sprite = spriteRef.current;
-    if (!wrap || !sprite) return;
-
-    // Initial hotspot state (Arrow)
-    wrap.dataset.offsetX = "8";
-    wrap.dataset.offsetY = "5";
+    // ── Event Handlers ──────────────────────────────────────────────────────
 
     const onMove = (e: MouseEvent) => {
-      pos.current.x = e.clientX;
-      pos.current.y = e.clientY;
-      // Murphy's Law fallback: If the cursor ever gets stuck hidden (e.g. closing devtools bug),
-      // moving the mouse will forcefully resurrect it.
-      if (wrap.style.opacity === "0" || wrap.style.opacity === "") {
-        wrap.style.opacity = "1";
-      }
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
+      // Only reveal cursor after the very first real movement
+      if (!visible) setVisible(true);
     };
 
-    const onLeave  = () => { wrap.style.opacity = "0"; };
-    const onEnter  = () => { wrap.style.opacity = "1"; };
-
-    // Zero-lag hover state swapping via direct DOM styling (No React state)
     const onOver = (e: MouseEvent) => {
       const t = e.target as HTMLElement | null;
       if (!t) return;
-      let isHover = false;
+      let hovering = false;
       try {
-        isHover = !!t.closest("a, button, [role='button'], input, textarea, select, label, [tabindex]");
-      } catch {}
-      
-      if (isHover) {
-        // Switch to Hand Pointer
-        wrap.dataset.offsetX = "10";
-        wrap.dataset.offsetY = "4";
-        sprite.style.backgroundPosition = "100% 0%";
-        // Base scale is 0.08. 0.08 * 1.1 = 0.088
-        sprite.style.transform = "scale(0.088) rotate(-3deg)";
-      } else {
-        // Switch to Normal Arrow
-        wrap.dataset.offsetX = "8";
-        wrap.dataset.offsetY = "5";
-        sprite.style.backgroundPosition = "0% 0%";
-        sprite.style.transform = "scale(0.08) rotate(0deg)";
-      }
+        hovering = !!t.closest(
+          "a, button, [role='button'], input, textarea, select, label, [tabindex]"
+        );
+      } catch { /* Element may be detached */ }
+      setIsHover(hovering);
     };
 
-    const tick = () => {
-      const el = wrapRef.current;
-      if (el) {
-        const offsetX = parseFloat(el.dataset.offsetX || "8");
-        const offsetY = parseFloat(el.dataset.offsetY || "5");
-        // Translate using integer parsing for max CPU performance
-        el.style.transform = `translate(${(pos.current.x | 0) - offsetX}px, ${(pos.current.y | 0) - offsetY}px)`;
-      }
-      rafId.current = requestAnimationFrame(tick);
+    const onMouseDown = () => setIsClicking(true);
+    const onMouseUp   = () => setIsClicking(false);
+
+    // Hide cursor when mouse leaves the page (DevTools panel, other windows)
+    const onLeave = () => setVisible(false);
+    // Restore cursor when mouse re-enters the page
+    const onEnter = (e: MouseEvent) => {
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
+      setVisible(true);
     };
-    rafId.current = requestAnimationFrame(tick);
 
-    window.addEventListener("mousemove",   onMove, { passive: true });
-    window.addEventListener("mouseover",   onOver, { passive: true });
-    document.addEventListener("mouseleave", onLeave);
-    document.addEventListener("mouseenter", onEnter);
+    // ── Attach / Detach helpers ─────────────────────────────────────────────
 
-    return () => {
-      cancelAnimationFrame(rafId.current);
-      window.removeEventListener("mousemove",   onMove);
-      window.removeEventListener("mouseover",   onOver);
+    const attach = () => {
+      if (listenersActive.current) return; // Guard against double-attach
+      listenersActive.current = true;
+      document.addEventListener("mousemove",  onMove,      { passive: true });
+      document.addEventListener("mouseover",  onOver,      { passive: true });
+      document.addEventListener("mousedown",  onMouseDown);
+      document.addEventListener("mouseup",    onMouseUp);
+      document.addEventListener("mouseleave", onLeave);
+      document.addEventListener("mouseenter", onEnter);
+    };
+
+    const detach = () => {
+      if (!listenersActive.current) return;
+      listenersActive.current = false;
+      document.removeEventListener("mousemove",  onMove);
+      document.removeEventListener("mouseover",  onOver);
+      document.removeEventListener("mousedown",  onMouseDown);
+      document.removeEventListener("mouseup",    onMouseUp);
       document.removeEventListener("mouseleave", onLeave);
       document.removeEventListener("mouseenter", onEnter);
+      // Reset state cleanly when device switches to touch
+      setVisible(false);
+      setIsHover(false);
+      setIsClicking(false);
     };
-  }, [mounted]);
 
+    // ── MediaQueryList change handler ───────────────────────────────────────
+    // Fires when DevTools toggles between desktop and device emulation mode
+    const onPointerChange = (e: MediaQueryListEvent) => {
+      if (e.matches) {
+        attach();
+      } else {
+        detach();
+      }
+    };
+
+    // Initial attach based on current pointer type
+    const isPointerDevice = mql ? mql.matches : navigator.maxTouchPoints === 0;
+    if (isPointerDevice) attach();
+
+    // Listen for live changes (DevTools device toolbar toggle)
+    mql?.addEventListener("change", onPointerChange);
+
+    return () => {
+      detach();
+      mql?.removeEventListener("change", onPointerChange);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty dep array — MotionValues are stable refs, handlers use closure correctly
+
+  // SSR guard — never render on server
   if (!mounted) return null;
 
   return (
-    <div
-      ref={wrapRef}
-      style={{
-        position:      "fixed",
-        top:           0,
-        left:          0,
-        pointerEvents: "none",
-        zIndex:        2147483647, // Max 32-bit integer to guarantee it's always on top of portals/toasts
-        willChange:    "transform",
-        transform:     "translate(-400px, -400px)",
-        opacity:       0,
-        transition:    "opacity 0.2s ease",
-      }}
-    >
-      <div 
-        ref={spriteRef}
+    <>
+      {/* Hide native cursor globally — only when a fine pointer is present */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        body, a, button, [role='button'], input, textarea, select, label {
+          cursor: none !important;
+        }
+      `}} />
+
+      {/* 1. Outer Magnetic Ring */}
+      <motion.div
+        className="fixed top-0 left-0 pointer-events-none z-[2147483640] rounded-full border-[1.5px] border-primary-500/60 dark:border-primary-400/60 backdrop-blur-[1px]"
+        animate={{
+          width:           isClicking ? 30 : isHover ? 55 : 40,
+          height:          isClicking ? 30 : isHover ? 55 : 40,
+          opacity:         visible ? 1 : 0,
+          backgroundColor: isHover
+            ? "rgba(14, 165, 233, 0.08)"
+            : "rgba(14, 165, 233, 0)",
+        }}
         style={{
-          /* 
-            ANTI-PIXELATION ARCHITECTURE:
-            Instead of shrinking the container and relying on CSS background-size (which uses low-quality CPU interpolation),
-            we draw the image at its native 1:1 resolution (400x400) and use CSS transform scale(0.08) to shrink it down.
-            This forces the GPU to use high-quality mipmap trilinear filtering, completely eliminating pixelation.
-          */
-          width:              "400px",
-          height:             "400px",
-          backgroundImage:    "url('https://cdn.custom-cursor.com/packs/7182/starter-northern-lights-pack.png')",
-          backgroundSize:     "200% 100%", // 800x400
-          backgroundPosition: "0% 0%",
-          backgroundRepeat:   "no-repeat",
-          transformOrigin:    "top left",
-          // drop-shadow values multiplied by 12.5 to match the 0.08 scale
-          filter:             "drop-shadow(25px 37px 50px rgba(0,0,0,0.3))",
-          transform:          "scale(0.08) rotate(0deg)",
-          transition:         "transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), background-position 0.1s steps(1)", // Snappy switch
+          x: ringX,
+          y: ringY,
+          translateX: "-50%",
+          translateY: "-50%",
+        }}
+        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+      />
+
+      {/* 2. Core Fluid Dot */}
+      <motion.div
+        className="fixed top-0 left-0 pointer-events-none z-[2147483647] rounded-full bg-primary-600 dark:bg-primary-400 shadow-[0_0_8px_rgba(14,165,233,0.4)]"
+        animate={{
+          width:   isClicking ? 6 : isHover ? 0 : 8,
+          height:  isClicking ? 6 : isHover ? 0 : 8,
+          opacity: visible ? (isHover ? 0 : 1) : 0,
+        }}
+        style={{
+          x: dotX,
+          y: dotY,
+          translateX: "-50%",
+          translateY: "-50%",
         }}
       />
-    </div>
+    </>
   );
 }

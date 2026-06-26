@@ -10,6 +10,14 @@ import { fadeUp } from "@/lib/animations";
 const Card = ({ member, index, total, globalRotation }: { member: any, index: number, total: number, globalRotation: any }) => {
   const prefersReducedMotion = useReducedMotion();
 
+  const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+useEffect(() => {
+  setMounted(true);
+  setIsMobile(window.innerWidth < 768);
+}, []);
+
   // The angle increment perfectly divides 360 degrees by the number of cards
   // to create a fully closed, physical 3D ring!
   const angleIncrement = 360 / total;
@@ -56,7 +64,9 @@ const Card = ({ member, index, total, globalRotation }: { member: any, index: nu
         // we must mathematically ensure the cylinder radius is large enough.
         // For 21 cards, Radius > CardWidth / sin(17.14deg). Minimum safe radius is 700px!
         // Max radius is clamped to 1250px so desktop cards have a tight 20px gap instead of a massive void!
-        transformOrigin: "center center clamp(700px, 150vw, 1250px)",
+        transformOrigin: mounted
+  ? (isMobile ? "center center 580px" : "center center 720px")
+  : "center center 800px",
         transformStyle: "preserve-3d"
       }}
       className="group absolute inset-0 w-full h-full rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.3)] will-change-transform [mask-image:-webkit-radial-gradient(white,black)] [-webkit-mask-image:-webkit-radial-gradient(white,black)]"
@@ -87,6 +97,7 @@ export default function TeamShowcase() {
   // We need exactly 21 items (3 copies of 7) to tighten the gap between cards.
   // This physically squeezes them closer together, perfectly showing 3+ images on screen!
   const loopedMembers = [...teamMembers, ...teamMembers, ...teamMembers];
+
   
   const angleIncrement = 360 / loopedMembers.length;
 
@@ -95,6 +106,8 @@ export default function TeamShowcase() {
   // Dragging a spring while trying to read its current value causes catastrophic physics tearing.
   // The individual Cards already wrap this value in their own useSpring, so snapping will still be silky smooth!
   const globalRotation = useMotionValue(0);
+
+  
 
   // Native DOM Reference for non-passive event listeners
   const trackpadRef = useRef<HTMLDivElement>(null);
@@ -178,7 +191,7 @@ export default function TeamShowcase() {
         {/* This is the physical "Center Stage". All cards are absolutely positioned inside it. */}
         <motion.div 
           ref={trackpadRef}
-          className="relative w-[65vw] sm:w-[280px] md:w-[320px] lg:w-[350px] aspect-[4/5] sm:aspect-[3/4] mb-8 md:mb-12 cursor-grab active:cursor-grabbing"
+          className="relative w-[82vw] max-w-[340px] sm:w-[280px] md:w-[320px] lg:w-[350px] aspect-[4/5] sm:aspect-[3/4] mb-8 md:mb-12 cursor-grab active:cursor-grabbing"
           style={{ transformStyle: "preserve-3d", touchAction: "pan-y" }}
           drag="x"
           dragConstraints={{ left: 0, right: 0 }} // Don't let the container itself move

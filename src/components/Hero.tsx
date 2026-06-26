@@ -1,104 +1,189 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { fadeUp, staggerContainer, blurIn, springUp } from "@/lib/animations";
-import HeroBack from "../../public/hero-back.jpg";
-import HeroFront from "../../public/hero-front.jpg";
+import { useRef } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
 
 export default function Hero() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const textWrapperRef = useRef<HTMLDivElement>(null);
+  const lettersRef = useRef<(HTMLSpanElement | null)[]>([]);
+  const bottomWordsRef = useRef<(HTMLHeadingElement | null)[]>([]);
+
+  useGSAP(() => {
+    // Media Query context for safe mobile degradation
+    let mm = gsap.matchMedia();
+
+    mm.add({
+      isDesktop: "(min-width: 768px)",
+      isMobile: "(max-width: 767px)"
+    }, (context) => {
+      const { isMobile, isDesktop } = context.conditions as any;
+      
+      // Fallback state protection: ensure wrapper is visible 
+      gsap.set(textWrapperRef.current, { opacity: 1 });
+
+      const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
+
+      // Set initial states explicitly to hide text behind mask
+      gsap.set(lettersRef.current, { 
+        y: isMobile ? 80 : 160, 
+        scaleY: isMobile ? 1.05 : 1.15, 
+        skewY: isMobile ? 4 : 8, 
+        opacity: 0 
+      });
+      // DIGITAL and MARKETING: Whole word center-to-origin bounce setup
+      // Starts clumped horizontally in the center
+      gsap.set(bottomWordsRef.current[0], { 
+        x: isMobile ? "35vw" : "38vw",
+        opacity: 0 
+      });
+      gsap.set(bottomWordsRef.current[1], { 
+        x: isMobile ? "-35vw" : "-38vw",
+        opacity: 0 
+      });
+
+      // Part 1 & 2: Initial Load Reveal with kinetic settling
+      tl.to(lettersRef.current, {
+        y: 0,
+        scaleY: 1,
+        skewY: 0,
+        opacity: 1,
+        duration: isMobile ? 1.0 : 1.4,
+        stagger: 0.04,
+        ease: "back.out(1.2)", // Elegant physical settling overshoot
+        force3D: true,
+      })
+      // DIGITAL: Whole word center-to-origin bounce
+      .to(bottomWordsRef.current[0], {
+        x: 0,
+        opacity: 1,
+        duration: isMobile ? 1.5 : 2.0,
+        ease: "bounce.out",
+        force3D: true,
+      }, "-=0.8")
+      // MARKETING: Whole word center-to-origin bounce
+      .to(bottomWordsRef.current[1], {
+        x: 0,
+        opacity: 1,
+        duration: isMobile ? 1.5 : 2.0,
+        ease: "bounce.out",
+        force3D: true,
+      }, "<0.15"); // Slight stagger between the two words
+
+      // Part 3 & 4: Scroll Parallax & Velocity Distortion
+      if (isDesktop) {
+        const scrollTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: 1, // Smooth interpolation
+          }
+        });
+
+        scrollTl.to(textWrapperRef.current, {
+          y: -100,
+          scale: 0.94,
+          skewY: -2,
+          ease: "none",
+          force3D: true,
+        });
+
+        // Velocity-based Elastic Distortion
+        const skewTo = gsap.quickTo(textWrapperRef.current, "skewX", { duration: 0.4, ease: "power3.out" });
+        
+        ScrollTrigger.create({
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom top",
+          onUpdate: (self) => {
+            const velocity = self.getVelocity();
+            // Map velocity to subtle skew: target max ~3deg at high speed
+            let skew = velocity / 500;
+            skew = Math.max(-3, Math.min(3, skew)); // Clamp between -3 and 3
+            skewTo(skew);
+          }
+        });
+      }
+    });
+
+  }, { scope: containerRef });
+
   return (
-    <section className="relative min-h-screen lg:min-h-[70vh] flex flex-col justify-center pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden bg-transparent ">
+    <section className="relative w-full flex flex-col justify-center pt-32 pb-8 lg:pt-40 lg:pb-12 overflow-hidden bg-transparent">
+
       {/* Background Decor - Extremely subtle proper gradient for pure white/dark */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-0 hidden dark:block">
         <div className="absolute top-0 right-0 w-full h-125 bg-linear-to-b from-primary-50/50 dark:from-primary-900/10 to-transparent" />
         <div className="absolute top-20 right-10 w-150 h-150 bg-primary-400/5 dark:bg-primary-600/10 rounded-full blur-[100px]" />
         <div className="absolute -bottom-20 -left-20 w-125 h-125 bg-secondary-400/10 dark:bg-secondary-600/10 rounded-full blur-[100px]" />
       </div>
 
-      <div className="container mx-auto px-4 md:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-8 items-center">
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate="visible"
-            className="max-w-2xl"
-          >
-
-            
-            <motion.h1 variants={blurIn} className="poppins-bold text-4xl md:text-5xl lg:text-[4rem] tracking-tight text-gray-900 dark:text-white mb-8 leading-[1.1]">
-              Crafting Content <br />
-              that drives <br />
-              <span className="text-transparent bg-clip-text bg-[length:200%_auto] bg-gradient-to-r from-amber-500 via-teal-500 to-amber-500 animate-[bgPan_6s_linear_infinite] dark:text-primary-500 dark:bg-none relative inline-block mt-2 md:mt-0 pb-2">
-                Revenue
-              </span>
-            </motion.h1>
-            
-            <motion.p variants={fadeUp} className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              Trisage Marketing is a 360° hospitality marketing partner helping hotels, resorts, restaurants, and hospitality brands grow visibility, direct bookings, guest engagement, and long-term revenue.
-            </motion.p>
-            
-            <motion.div variants={springUp} className="flex flex-col sm:flex-row gap-5">
-              <a 
-                href="#why-choose-us" 
-                className="inline-flex justify-center items-center px-8 py-4 text-base font-semibold text-white bg-secondary-600 hover:bg-secondary-700 dark:bg-secondary-500 dark:hover:bg-secondary-600 rounded-full transition-all shadow-lg hover:shadow-secondary-600/25 dark:hover:shadow-secondary-500/25 hover:-translate-y-1"
-              >
-                Know More
-              </a>
-            </motion.div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="relative lg:ml-auto w-full max-w-lg xl:max-w-xl mx-auto lg:mx-0 lg:ml-auto"
-          >
-            <div className="relative w-full mt-12 lg:mt-0 pb-[15%] md:pb-[20%] lg:pb-[15%]">
-              {/* Top Right Image (Relative to dictate height naturally) */}
-              <motion.div 
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                className="relative ml-auto w-[85%] md:w-[80%] lg:w-[75%] z-10"
-              >
-                <Image
-                  src={HeroBack}
-                  alt="Hero Back"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="w-full h-auto drop-shadow-[0_20px_40px_rgba(245,158,11,0.3)] dark:drop-shadow-[0_20px_40px_rgba(92,122,224,0.15)] rounded-sm md:rounded-md"
-                  placeholder="blur"
-                  priority
-                  fetchPriority="high"
-                  decoding="async"
-                />
-              </motion.div>
-              
-              {/* Bottom Left Image (Absolute to overlap, forced rectangle) */}
-              <motion.div 
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="absolute bottom-[-5%] md:bottom-[-15%] left-0 w-[95%] md:w-[90%] lg:w-[90%] z-20"
-              >
-                {/* Decorative outline */}
-                <div className="absolute -top-3 -left-3 md:-top-4 md:-left-4 w-full h-full border-2 border-gray-800 dark:border-gray-400 z-0 rounded-sm md:rounded-md" />
-                
-                <div className="relative w-full aspect-[4/3] md:aspect-[16/10] z-10 overflow-hidden shadow-[0_30px_60px_rgba(20,184,166,0.25)] dark:shadow-[0_30px_60px_rgba(92,122,224,0.2)] rounded-sm md:rounded-md">
-                  <Image
-                    src={HeroFront}
-                    alt="Hero Front"
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover"
-                    placeholder="blur"
-                    priority
-                    fetchPriority="high"
-                    decoding="async"
-                  />
+      {/* --- Massive Typography Design (Light & Dark Mode) --- */}
+      <div 
+        ref={containerRef}
+        className="w-full relative z-20 overflow-hidden flex flex-col justify-center items-center"
+      >
+        {/* Container-constrained layout for massive typography to align with Navbar on 4K */}
+        <div className="container mx-auto px-4 md:px-8 flex flex-col justify-center">
+          
+          <div ref={textWrapperRef} className="w-full flex flex-col will-change-transform opacity-0">
+            {/* Top Giant Text - TRISAGE */}
+            <div 
+              className="w-full flex justify-between items-center font-medium text-primary-500 dark:text-primary-300 uppercase cursor-default tracking-tighter"
+              style={{ 
+                fontSize: 'clamp(5rem, 27.5vw, 420px)',
+                lineHeight: '1',
+              }}
+              aria-label="TRISAGE"
+            >
+              {['T', 'R', 'I', 'S', 'A', 'G', 'E'].map((letter, i) => (
+                <div key={i} className={`overflow-hidden inline-block pb-8 -mb-8 pt-8 -mt-8 ${i !== 0 && i !== 6 ? 'px-4 -mx-4' : ''}`}>
+                  <span 
+                    ref={el => { lettersRef.current[i] = el; }}
+                    aria-hidden="true" 
+                    className="inline-block will-change-transform transform-gpu opacity-0"
+                  >
+                    {letter}
+                  </span>
                 </div>
-              </motion.div>
+              ))}
             </div>
-          </motion.div>
+            
+            {/* Bottom Split Text - DIGITAL / MARKETING */}
+            <div className="flex flex-row w-full justify-between items-end mt-2 md:mt-4 lg:mt-6">
+              <h2 
+                ref={el => { bottomWordsRef.current[0] = el; }}
+                className="font-bold text-secondary-600 dark:text-secondary-400 uppercase flex will-change-transform transform-gpu opacity-0"
+                style={{ 
+                  fontSize: 'clamp(1.5rem, 5vw, 4rem)', 
+                  lineHeight: '1', 
+                  letterSpacing: '0.04em',
+                }}
+              >
+                DIGITAL
+              </h2>
+              
+              <h2 
+                ref={el => { bottomWordsRef.current[1] = el; }}
+                className="font-bold text-secondary-600 dark:text-secondary-400 uppercase text-right flex mt-0 will-change-transform transform-gpu opacity-0"
+                style={{ 
+                  fontSize: 'clamp(1.5rem, 5vw, 4rem)', 
+                  lineHeight: '1', 
+                  letterSpacing: '0.04em',
+                }}
+              >
+                MARKETING
+              </h2>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>

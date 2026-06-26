@@ -20,7 +20,7 @@ export default function ProblemSolution() {
             initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
             className="text-gray-600 dark:text-gray-400 text-lg md:text-xl leading-relaxed max-w-3xl mx-auto"
           >
-            Most hospitality brands struggle not because the property lacks potential, but because the digital ecosystem around the brand is incomplete. Weak visibility, inconsistent branding, low guest engagement, and high OTA dependency can quietly reduce revenue opportunities.
+            Most <strong className="font-semibold text-gray-900 dark:text-white">hospitality brands</strong> struggle not because the property lacks potential, but because the digital ecosystem around the brand is incomplete. <strong className="font-semibold text-gray-900 dark:text-white">Weak visibility</strong>, <strong className="font-semibold text-gray-900 dark:text-white">inconsistent branding</strong>, <strong className="font-semibold text-gray-900 dark:text-white">low guest engagement</strong>, and <strong className="font-semibold text-gray-900 dark:text-white">high OTA dependency</strong> can quietly reduce revenue opportunities.
           </motion.p>
         </div>
 

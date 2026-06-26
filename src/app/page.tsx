@@ -3,7 +3,6 @@ import MissionVision from "@/components/MissionVision";
 import HomeServices from "@/components/HomeServices";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import Testimonials from "@/components/Testimonials";
-import CaseStudies from "@/components/CaseStudies";
 import FAQ from "@/components/FAQ";
 import OurClients from "@/components/OurClients";
 import HomeBlog from "@/components/HomeBlog";
@@ -25,10 +24,12 @@ export default async function Home() {
   }
 
   return (
-    <main className="relative min-h-screen bg-[#fefcf8] dark:bg-[#050b14] ">
+    <main className="relative min-h-screen bg-white dark:bg-[#050b14]">
 
-      {/* ── Creative Animated Background (fixed, behind everything) ── */}
-      <HomeBackground />
+      {/* ── Creative Animated Background (Hero Only) ── */}
+      <div className="absolute top-0 left-0 w-full h-[120vh] overflow-hidden pointer-events-none z-0">
+        <HomeBackground />
+      </div>
 
       {/* ── Page Content ── */}
       <div className="homepage-wrapper relative z-10">
@@ -37,7 +38,6 @@ export default async function Home() {
         <HomeServices />
         <WhyChooseUs />
         <Testimonials />
-        <CaseStudies />
         <OurClients />
         <HomeBlog recentPosts={recentPosts || []} />
         <FAQ />

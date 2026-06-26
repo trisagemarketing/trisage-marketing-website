@@ -57,9 +57,9 @@ export default function ContactPage() {
                   <div>
                     <h4 className="font-semibold text-gray-900 dark:text-white mb-1">Office</h4>
                     <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                      Basement, Office No.4,<br/>
-                      SSBK & ASSOCIATES, B-11, Block B,<br/>
-                      Sector 4, Noida, Uttar Pradesh - 201301
+                      B-11, Amaltash Marg,<br/>
+                      Block B, Sector 4,<br/>
+                      Noida, Uttar Pradesh 201301
                     </p>
                   </div>
                 </div>

@@ -2,12 +2,15 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { fadeUp } from "@/lib/animations";
 
 export default function OurClients() {
   return (
-    <section className="relative py-[4px] md:py-[4px] bg-white dark:bg-[#050b14]/30 overflow-hidden" id="our-clients">
+    <section className="relative py-[4px] md:py-[4px] bg-transparent overflow-hidden" id="our-clients">
       
+
+
       {/* Skyblue Cosmic Beams */}
       <div className="absolute hidden dark:block left-[-20%] top-[40%] w-[150%] h-[150px] pointer-events-none z-0 rotate-[-10deg]">
          {/* Main diffuse beam */}
@@ -39,7 +42,7 @@ export default function OurClients() {
             initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
             className="text-3xl md:text-5xl font-bold text-[#2A3F64] dark:text-white"
           >
-            Our Clients
+            Our Valued Clients
           </motion.h2>
         </div>
 
@@ -48,7 +51,7 @@ export default function OurClients() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false }}
           transition={{ duration: 0.6 }}
-          className="w-full bg-[#EAF3F1] md:my-4 dark:bg-gray-800 rounded-4xl md:rounded-[3rem] py-4 md:py-6 shadow-sm flex items-center relative overflow-hidden"
+          className="w-full bg-transparent md:my-4 rounded-4xl md:rounded-[3rem] py-4 md:py-6 flex items-center relative overflow-hidden"
         >
           {/* Infinite Marquee Wrapper */}
           <motion.div

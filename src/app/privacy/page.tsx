@@ -78,8 +78,8 @@ export default function PrivacyPage() {
             </p>
             <address className="mt-4 not-italic">
               <p><strong>Trisage Marketing Pvt Ltd</strong></p>
-              <p>Basement, Office No.4, SSBK & ASSOCIATES</p>
-              <p>B-11, Block B, Sector 4</p>
+              <p>B-11, Amaltash Marg,</p>
+              <p>Block B, Sector 4</p>
               <p>Noida, Uttar Pradesh - 201301</p>
               <p className="mt-2">
                 Email: <a href="mailto:Admin@trisagemarketing.com" className="text-primary-600 dark:text-primary-500 hover:underline">Admin@trisagemarketing.com</a>

@@ -128,7 +128,7 @@ export default function HomeBackground() {
 
   return (
     <div
-      className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden"
+      className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden"
       style={{ willChange: "transform" }}
       aria-hidden="true"
     >
@@ -407,91 +407,7 @@ export default function HomeBackground() {
       {/* ══════════════════════════════════
           LIGHT MODE
           ══════════════════════════════════ */}
-      <div className="absolute inset-0 block dark:hidden pointer-events-none">
-        <div className="absolute inset-0" style={{
-          background:"linear-gradient(135deg, rgba(254,243,199,0.8) 0%, rgba(255,252,248,0.5) 50%, rgba(240,253,250,0.65) 100%)"
-        }} />
-
-        <div ref={pLightRef} className="absolute inset-0 pointer-events-none will-change-transform">
-          {/* Sunrise Glowing Sun */}
-          <div className="absolute rounded-full w-[90px] h-[90px] md:w-[240px] md:h-[240px]" style={{
-            left: "12%", top: "8%",
-            background: "radial-gradient(circle at 50% 50%, #ffffff 0%, #fef08a 25%, #f59e0b 70%, #ea580c 100%)",
-            boxShadow: "0 0 100px 40px rgba(245, 158, 11, 0.4), inset -10px -10px 40px rgba(234, 88, 12, 0.3)",
-            animation: "iconFloat 16s ease-in-out infinite"
-          }} />
-
-          {/* Structural Floating Clouds */}
-          <Cloud top="8%" delay="-10s" dur="55s" scale="0.9" opacity="0.8" zIndex={1} />
-          <Cloud top="18%" delay="-40s" dur="75s" scale="1.4" opacity="0.9" zIndex={2} />
-          <Cloud top="42%" delay="-25s" dur="60s" scale="0.7" opacity="0.6" zIndex={0} />
-          <Cloud top="68%" delay="-55s" dur="85s" scale="1.6" opacity="0.95" zIndex={3} />
-          <Cloud top="85%" delay="-15s" dur="50s" scale="1.1" opacity="0.85" zIndex={1} />
-        </div>
-
-        <div className="absolute inset-0 opacity-40">
-          <div className="absolute animate-[bgPan_20s_infinite_ease-in-out]" style={{
-            left:"-20%", top:"-10%", width:"80vw", height:"60vw",
-            background:"radial-gradient(ellipse at center, rgba(255,255,255,0.8) 0%, transparent 70%)"
-          }} />
-          <div className="absolute animate-[bgPan_25s_infinite_ease-in-out_reverse]" style={{
-            right:"-30%", top:"20%", width:"90vw", height:"70vw",
-            background:"radial-gradient(ellipse at center, rgba(255,255,255,0.6) 0%, transparent 70%)"
-          }} />
-        </div>
-
-        {/* Morning Sunbeams */}
-        <div className="absolute inset-0 flex justify-around opacity-30">
-          <div className="w-[10vw] h-[150vh] bg-gradient-to-b from-amber-200/40 to-transparent -rotate-12 animate-[sunbeamFloat_8s_ease-in-out_infinite]" style={{ transformOrigin: "top" }} />
-          <div className="w-[15vw] h-[150vh] bg-gradient-to-b from-orange-200/30 to-transparent -rotate-12 animate-[sunbeamFloat_12s_ease-in-out_infinite_1s]" style={{ transformOrigin: "top" }} />
-          <div className="w-[8vw] h-[150vh] bg-gradient-to-b from-teal-100/40 to-transparent -rotate-12 animate-[sunbeamFloat_10s_ease-in-out_infinite_2s]" style={{ transformOrigin: "top" }} />
-        </div>
-
-        {/* Floating Light Dust Particles */}
-        <div className="absolute inset-0">
-          {[...Array(12)].map((_, i) => (
-            <div key={i} className="absolute rounded-full animate-[dustFloat_15s_ease-in-out_infinite]" style={{
-              left: `${10 + (i * 15) % 80}%`, 
-              top: `${20 + (i * 25) % 60}%`,
-              width: i % 2 === 0 ? '4px' : '6px',
-              height: i % 2 === 0 ? '4px' : '6px',
-              background: i % 3 === 0 ? '#fcd34d' : '#fef08a',
-              animationDelay: `${i * 1.5}s`,
-              animationDuration: `${10 + (i % 5)}s`
-            }} />
-          ))}
-        </div>
-
-        {/* 3 bokeh orbs */}
-        <div className="absolute rounded-full" style={{
-          left:"10%", top:"5%", width:110, height:110,
-          background:"radial-gradient(circle, rgba(251,191,36,0.28) 0%, transparent 60%)",
-          animation:"bokehPulse 6s 0s ease-in-out infinite",
-        }} />
-        <div className="absolute rounded-full" style={{
-          left:"82%", top:"35%", width:85, height:85,
-          background:"radial-gradient(circle, rgba(20,184,166,0.20) 0%, transparent 60%)",
-          animation:"bokehPulse 7.5s 1.5s ease-in-out infinite",
-        }} />
-        <div className="absolute rounded-full" style={{
-          left:"30%", top:"72%", width:95, height:95,
-          background:"radial-gradient(circle, rgba(251,191,36,0.22) 0%, transparent 60%)",
-          animation:"bokehPulse 5.5s 2.8s ease-in-out infinite",
-        }} />
-
-        {/* 8 floating icons */}
-        {ICONS.map(({ Icon, x, y, size, delay, dur, color }, i) => (
-          <div key={i} className="absolute" style={{
-            left:x, top:y,
-            animation:`iconFloat ${dur} ${delay} ease-in-out infinite`,
-          }}>
-            <Icon style={{ width:size, height:size, color, opacity:0.20 }} strokeWidth={1.3} />
-          </div>
-        ))}
-
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background:"radial-gradient(ellipse 65% 55% at 50% 45%, transparent 25%, rgba(254,252,248,0.50) 100%)"
-        }} />
+      <div className="absolute inset-0 block dark:hidden pointer-events-none bg-white">
       </div>
     </div>
   );
