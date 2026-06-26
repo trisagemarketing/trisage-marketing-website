@@ -21,7 +21,7 @@ const caseStudies = [
     imageColor: "from-blue-500/20 to-cyan-500/20",
     themeColor: "text-blue-600 dark:text-blue-400",
     themeHighlight: "text-blue-400",
-    imageUrl: "/hero-front.jpg"
+    imageUrl: "/AYU08772.webp"
   },
   {
     id: "avyanta",
@@ -38,7 +38,7 @@ const caseStudies = [
     imageColor: "from-purple-500/20 to-pink-500/20",
     themeColor: "text-purple-600 dark:text-purple-400",
     themeHighlight: "text-purple-400",
-    imageUrl: "/hero-back.jpg"
+    imageUrl: "/avyanta.webp"
   }
 ];
 
