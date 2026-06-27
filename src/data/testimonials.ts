@@ -1,0 +1,36 @@
+export const testimonials = [
+  {
+    id: 1,
+    name: "Sarah Jenkins",
+    company: "TechFlow Solutions",
+    // Part 1 renders in primary accent color, part 2 in base text color
+    reviewPart1: "Trisage completely transformed our",
+    reviewHighlight1: "digital presence.",
+    reviewPart2: "Within 6 months, our inbound leads increased by",
+    reviewHighlight2: "300%.",
+    reviewPart3: "Their team is responsive, strategic, and an absolute",
+    reviewHighlight3: "pleasure to work with.",
+  },
+  {
+    id: 2,
+    name: "Marcus Chen",
+    company: "Elevate E-commerce",
+    reviewPart1: "The ROI we've seen from their",
+    reviewHighlight1: "performance marketing campaigns",
+    reviewPart2: "is staggering. They treat our ad spend like",
+    reviewHighlight2: "their own money,",
+    reviewPart3: "optimizing every cent.",
+    reviewHighlight3: "Highly recommended.",
+  },
+  {
+    id: 3,
+    name: "Elena Rodriguez",
+    company: "Luxe Real Estate",
+    reviewPart1: "Their SEO expertise put us",
+    reviewHighlight1: "on the map.",
+    reviewPart2: "We now rank",
+    reviewHighlight2: "#1",
+    reviewPart3: "for our most competitive keywords, driving",
+    reviewHighlight3: "consistent, high-quality traffic to our listings daily.",
+  },
+];
