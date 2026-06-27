@@ -14,9 +14,11 @@ interface HomeBlogProps {
 export default function HomeBlog({ recentPosts = [] }: HomeBlogProps) {
   const displayPosts = recentPosts.map((post) => ({
     id: post.slug || post.id,
-    title: post.title,
-    excerpt: post.excerpt || "Read our latest insights and strategies for growth.",
-    category: post.category || "General",
+    title: post.title ? post.title.toLowerCase() : "",
+    excerpt: post.excerpt 
+      ? post.excerpt.charAt(0).toUpperCase() + post.excerpt.slice(1).toLowerCase() 
+      : "Read our latest insights and strategies for growth.",
+    category: post.category ? post.category.toLowerCase() : "general",
     date: post.published_at
       ? new Date(post.published_at).toLocaleDateString("en-US", {
         month: "short",
@@ -30,7 +32,7 @@ export default function HomeBlog({ recentPosts = [] }: HomeBlogProps) {
 
   return (
     <section
-      className="relative py-16 md:py-24 bg-white dark:bg-[#050b14] overflow-hidden normal-case!"
+      className="relative py-16 md:py-24 bg-white dark:bg-[#050b14] overflow-hidden font-poppins"
       id="insights"
     >
       {/* ── Mesh Orbs — same pattern as Testimonials & FAQ ── */}
@@ -77,7 +79,7 @@ export default function HomeBlog({ recentPosts = [] }: HomeBlogProps) {
           </motion.h2>
           <motion.p
             initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
-            className="font-sans font-medium text-lg sm:text-xl lg:text-2xl leading-snug capitalize tracking-tight text-balance text-primary-700 dark:text-primary-300"
+            className="font-medium text-lg sm:text-xl lg:text-2xl leading-snug capitalize tracking-tight text-balance text-primary-700 dark:text-primary-300"
           >
             Industry-leading perspectives on{" "}
             <strong className="font-black text-primary-600 dark:text-primary-400">digital marketing</strong>,{" "}
@@ -87,7 +89,7 @@ export default function HomeBlog({ recentPosts = [] }: HomeBlogProps) {
         </div>
 
         {/* ── Blog Cards Grid ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-14 md:mb-16 normal-case!">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-14 md:mb-16">
           {displayPosts.map((post, index) => (
             <motion.div
               key={post.id}
@@ -134,22 +136,22 @@ export default function HomeBlog({ recentPosts = [] }: HomeBlogProps) {
                 </div>
 
                 {/* Card Body */}
-                <div className="relative z-10 flex flex-col grow p-5 sm:p-6 md:p-7 normal-case!">
-                  <h3 className="font-sans font-black text-lg md:text-xl tracking-tight leading-snug mb-3 text-primary-950 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-300 line-clamp-2 capitalize" style={{ textTransform: "none" }}>
+                <div className="relative z-10 flex flex-col grow p-5 sm:p-6 md:p-7">
+                  <h3 className="font-black text-lg md:text-xl tracking-tight leading-snug mb-3 text-primary-950 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-300 line-clamp-2 capitalize">
                     {post.title}
                   </h3>
 
-                  <p className="font-sans font-medium text-sm leading-relaxed grow mb-5 line-clamp-3 text-primary-700 dark:text-primary-300 normal-case!">
+                  <p className="text-sm leading-relaxed grow mb-5 line-clamp-3 text-primary-700 dark:text-primary-300 normal-case">
                     {post.excerpt}
                   </p>
 
                   {/* Footer meta */}
                   <div className="flex items-center justify-between pt-4 border-t-2 border-primary-100 dark:border-primary-800 mt-auto">
-                    <div className="flex items-center gap-1.5 text-[11px] font-boldcapitalize tracking-widest text-secondary-600 dark:text-secondary-400">
+                    <div className="flex items-center gap-1.5 text-[11px] font-bold tracking-wider uppercase text-secondary-600 dark:text-secondary-400">
                       <Calendar size={13} />
                       {post.date}
                     </div>
-                    <div className="flex items-center gap-1.5 text-[11px] font-bold capitalize tracking-widest text-primary-600 dark:text-primary-400">
+                    <div className="flex items-center gap-1.5 text-[11px] font-bold tracking-wider uppercase text-primary-600 dark:text-primary-400">
                       <Clock size={13} />
                       {post.readTime}
                     </div>

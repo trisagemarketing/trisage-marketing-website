@@ -32,11 +32,12 @@ export default function Hero() {
 
       // Set initial states explicitly to hide text behind mask
       gsap.set(lettersRef.current, { 
-        y: isMobile ? 80 : 160, 
-        scaleY: isMobile ? 1.05 : 1.15, 
-        skewY: isMobile ? 4 : 8, 
+        y: isMobile ? 60 : 160, 
+        scaleY: isMobile ? 1 : 1.15, // NO scaling on mobile
+        skewY: isMobile ? 0 : 8,    // NO skew on mobile (kills mobile GPU)
         opacity: 0 
       });
+      
       // DIGITAL and MARKETING: Whole word center-to-origin bounce setup
       gsap.set(bottomWordsRef.current[0], { 
         x: isMobile ? "35vw" : "38vw",
@@ -54,26 +55,28 @@ export default function Hero() {
         skewY: 0,
         opacity: 1,
         duration: isMobile ? 1.0 : 1.4,
-        stagger: 0.04,
-        ease: "back.out(1.2)", 
+        stagger: isMobile ? 0.08 : 0.04, // Slightly longer stagger on mobile to reduce concurrent paints
+        ease: isMobile ? "power3.out" : "back.out(1.2)", // NO overshoot on mobile
         force3D: true, // Proper hardware acceleration
       })
+      // DIGITAL: Whole word center-to-origin bounce
       .to(bottomWordsRef.current[0], {
         x: 0,
         opacity: 1,
-        duration: isMobile ? 1.5 : 2.0,
-        ease: "bounce.out",
+        duration: isMobile ? 1.2 : 2.0,
+        ease: isMobile ? "power3.out" : "bounce.out", // Bounce is computationally heavy, use smooth slide on mobile
         force3D: true,
-      }, "-=0.8")
+      }, isMobile ? "-=0.6" : "-=0.8")
+      // MARKETING: Whole word center-to-origin bounce
       .to(bottomWordsRef.current[1], {
         x: 0,
         opacity: 1,
-        duration: isMobile ? 1.5 : 2.0,
-        ease: "bounce.out",
+        duration: isMobile ? 1.2 : 2.0,
+        ease: isMobile ? "power3.out" : "bounce.out",
         force3D: true,
-      }, "<0.15");
+      }, "<0.15"); // Slight stagger between the two words
 
-      // Part 3 & 4: Scroll Parallax & Velocity Distortion
+      // Part 3 & 4: Scroll Parallax & Velocity Distortion (Desktop only — mobile skip for perf)
       if (isDesktop) {
         const scrollTl = gsap.timeline({
           scrollTrigger: {

@@ -82,19 +82,16 @@ export default function HomeServices() {
   const headingReveal1Ref = useRef<HTMLSpanElement>(null);
   const headingReveal2Ref = useRef<HTMLSpanElement>(null);
   const headingReveal3Ref = useRef<HTMLSpanElement>(null);
-  
-  // DYNAMIC SPACER: Replaces GSAP pinSpacing for perfect pixel control
-  const spacerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    // ----------------------------------------------------------------------
-    // 1. TEXT READING SCRUB (Before Pin)
-    // ----------------------------------------------------------------------
+    let mm = gsap.matchMedia();
+
+    // 1. UNIVERSAL TEXT READING SCRUB (Before Pin)
     const textTl = gsap.timeline({
       scrollTrigger: {
         trigger: triggerWrapperRef.current,
-        start: "top 85%", // Start revealing as it enters
-        end: "center center", // Finish exactly when it reaches the center (pin point)
+        start: "top 85%", 
+        end: "center center", 
         scrub: 1,
       }
     });
@@ -104,114 +101,173 @@ export default function HomeServices() {
       .to(headingReveal3Ref.current, { clipPath: "inset(0 0% 0 0)", ease: "none", duration: 0.20 })
       .to(".reveal-word", { opacity: 1, stagger: 0.05, ease: "none", duration: 0.50 });
 
-    // ----------------------------------------------------------------------
-    // 2. MASTER PINNED TIMELINE: FLIP ONLY (NATIVE SCROLLING AFTER)
-    // ----------------------------------------------------------------------
-    const wrapperHeight = triggerWrapperRef.current?.offsetHeight || 0;
-    const cardsHeight = cardsContainerRef.current?.offsetHeight || 0;
-    
-    const flipScroll = 800; // Base scroll duration for the flip animation
-    const readDelay = 300; // Scroll distance to pause and let the user read before flipping
-    const totalScroll = readDelay + flipScroll;
-    
-    // Fix 3D axis alignment so the back face rotates around the exact same physical axis as the front face.
-    // This prevents the CSS 3D engine from flinging the cards thousands of pixels off the screen!
-    gsap.set(cardsContainerRef.current, { transformOrigin: `50% ${wrapperHeight / 2}px` });
+    mm.add({
+      isDesktop: "(min-width: 1024px)", // Desktop & Large Tablet
+      isMobile: "(max-width: 1023px)"   // Mobile & Small Tablet
+    }, (context) => {
+      const { isDesktop } = context.conditions as any;
+      
+      if (isDesktop) {
+        // ----------------------------------------------------------------------
+        // DESKTOP: FULL 3D FLIP WITH NATIVE PINNING
+        // ----------------------------------------------------------------------
+        const flipScroll = 800; 
+        const readDelay = 300; 
+        const totalScroll = readDelay + flipScroll;
+        
+        // Setup initial 3D states explicitly for desktop
+        gsap.set(cardsContainerRef.current, { 
+          transformOrigin: `50% ${triggerWrapperRef.current?.offsetHeight! / 2}px`,
+          rotateX: 180 
+        });
+        
+        // Reset mobile layout overrides
+        gsap.set(blockRef.current, { clearProps: "transform,rotateX,scale,yoyo,repeat" });
+        gsap.set(problemCardRef.current, { clearProps: "opacity,y" });
+        gsap.set(solutionCardRef.current, { clearProps: "opacity,y" });
 
-    // Mathematical perfection: WhyChooseUs scrolls up natively during the pin.
-    // To make it exactly touch the cards when the pin releases, the spacer must be exactly:
-    const spacerHeight = Math.max(0, cardsHeight - wrapperHeight + totalScroll);
-    gsap.set(spacerRef.current, { height: spacerHeight });
+        const masterTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: triggerWrapperRef.current,
+            start: "top 15%", 
+            end: `+=${totalScroll}`,
+            pin: true,
+            pinSpacing: true, // Native GSAP compositor-friendly spacing
+            scrub: 1,
+          }
+        });
 
-    const masterTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: triggerWrapperRef.current,
-        start: "top 25%", // Position the block higher so the Problem card is fully visible when it flips
-        end: `+=${totalScroll}`, // Release the pin immediately after the flip! Native scroll takes over.
-        pin: true,
-        pinSpacing: false, // Explicitly disabled as requested!
-        pinType: "transform", // Safari 3D glitch protection
-        scrub: 1,
+        masterTl.add("flipStart", readDelay);
+
+        masterTl.to(blockRef.current, {
+          rotateX: 180,
+          ease: "none",
+          duration: flipScroll * 0.7,
+          force3D: true, // GPU Acceleration
+        }, "flipStart");
+        
+        masterTl.to(blockRef.current, {
+          scale: 0.85,
+          yoyo: true,
+          repeat: 1,
+          ease: "power2.inOut",
+          duration: flipScroll * 0.35,
+          force3D: true,
+        }, "flipStart");
+
+        masterTl.add("linesStart", readDelay + flipScroll * 0.4);
+        
+        masterTl.fromTo(problemLineRef.current, 
+          { clipPath: "circle(0% at 0% 0%)", opacity: 1 }, 
+          { clipPath: "circle(150% at 0% 0%)", ease: "none", duration: flipScroll * 0.5 }, 
+          "linesStart"
+        );
+        
+        masterTl.set({}, {}, totalScroll);
+
+        // Independent Solution Line
+        gsap.fromTo(solutionLineRef.current, 
+          { clipPath: "circle(0% at 100% 100%)", opacity: 1 }, 
+          { 
+            clipPath: "circle(150% at 100% 100%)", 
+            ease: "power2.out", 
+            scrollTrigger: {
+              trigger: solutionCardRef.current,
+              start: "top 75%",
+              end: "top 25%", 
+              scrub: 1,
+            }
+          }
+        );
+
+        // Planet Parallax
+        gsap.to(problemPlanetRef.current, {
+          yPercent: 40,
+          ease: "none",
+          force3D: true,
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          }
+        });
+
+        gsap.to(solutionPlanetRef.current, {
+          yPercent: -50,
+          ease: "none",
+          force3D: true,
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          }
+        });
+
+      } else {
+        // ----------------------------------------------------------------------
+        // MOBILE: GRACEFUL DEGRADATION (ZERO JITTER)
+        // ----------------------------------------------------------------------
+        // No pinning, no 3D flip. Stacked layout for perfect native scroll.
+        gsap.set(cardsContainerRef.current, { rotateX: 0 });
+        gsap.set(blockRef.current, { rotateX: 0 });
+
+        // Slide Up Header Text for Mobile
+        gsap.fromTo(headerRef.current,
+          { opacity: 0, y: 40 },
+          { 
+            opacity: 1, y: 0, duration: 0.8, ease: "power3.out", force3D: true,
+            scrollTrigger: {
+              trigger: triggerWrapperRef.current,
+              start: "top 85%",
+              toggleActions: "play none none reverse"
+            }
+          }
+        );
+
+        // Slide In Problem Card (From Left)
+        gsap.fromTo(problemCardRef.current,
+          { opacity: 0, x: -50 },
+          { 
+            opacity: 1, x: 0, duration: 0.8, ease: "power3.out", force3D: true,
+            scrollTrigger: {
+              trigger: problemCardRef.current,
+              start: "top 85%",
+              toggleActions: "play none none reverse"
+            }
+          }
+        );
+
+        // Slide In Solution Card (From Right)
+        gsap.fromTo(solutionCardRef.current,
+          { opacity: 0, x: 50 },
+          { 
+            opacity: 1, x: 0, duration: 0.8, ease: "power3.out", force3D: true,
+            scrollTrigger: {
+              trigger: solutionCardRef.current,
+              start: "top 85%",
+              toggleActions: "play none none reverse"
+            }
+          }
+        );
+        
+        // Smooth mobile line draw
+        gsap.fromTo(mobileLineRef.current, 
+          { scaleY: 0 }, 
+          { 
+            scaleY: 1, 
+            ease: "none", 
+            scrollTrigger: {
+              trigger: cardsContainerRef.current,
+              start: "top 60%",
+              end: "bottom 80%",
+              scrub: 1
+            }
+          }
+        );
       }
     });
-
-    // Time 0: Read Delay (nothing happens, giving user time to read)
-    // Time readDelay: Flip starts
-    masterTl.add("flipStart", readDelay);
-
-    masterTl.to(blockRef.current, {
-      rotateX: 180,
-      ease: "none",
-      duration: flipScroll * 0.7
-    }, "flipStart");
-    
-    masterTl.to(blockRef.current, {
-      scale: 0.85,
-      yoyo: true,
-      repeat: 1,
-      ease: "power2.inOut",
-      duration: flipScroll * 0.35
-    }, "flipStart");
-
-    // Time: Lines start drawing
-    masterTl.add("linesStart", readDelay + flipScroll * 0.4);
-    
-    // Draw problem line starting from top-left (dot) to the center
-    masterTl.fromTo(problemLineRef.current, 
-      { clipPath: "circle(0% at 0% 0%)", opacity: 1 }, 
-      { clipPath: "circle(150% at 0% 0%)", ease: "none", duration: flipScroll * 0.5 }, 
-      "linesStart"
-    );
-    
-    masterTl.fromTo(mobileLineRef.current, { scaleY: 0 }, { scaleY: 1, ease: "none", duration: flipScroll * 0.5 }, "linesStart");
-
-    // Force the timeline to end EXACTLY at totalScroll
-    masterTl.set({}, {}, totalScroll);
-
-    // ----------------------------------------------------------------------
-    // INDEPENDENT SOLUTION LINE ANIMATION
-    // ----------------------------------------------------------------------
-    // The Solution card is often below the fold during the main flip. 
-    // We trigger its drawing animation independently when the card scrolls into view.
-    gsap.fromTo(solutionLineRef.current, 
-      { clipPath: "circle(0% at 100% 100%)", opacity: 1 }, 
-      { 
-        clipPath: "circle(150% at 100% 100%)", 
-        ease: "power2.out", 
-        scrollTrigger: {
-          trigger: solutionCardRef.current,
-          start: "top 75%", // Start drawing when the card comes well into view
-          end: "top 25%", 
-          scrub: 1,
-        }
-      }
-    );
-
-    // ----------------------------------------------------------------------
-    // 3. PLANET PARALLAX (INDEPENDENT)
-    // ----------------------------------------------------------------------
-    gsap.to(problemPlanetRef.current, {
-      yPercent: 40,
-      ease: "none",
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true,
-      }
-    });
-
-    gsap.to(solutionPlanetRef.current, {
-      yPercent: -50,
-      ease: "none",
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true,
-      }
-    });
-
   }, { scope: containerRef });
 
   return (
@@ -237,7 +293,7 @@ export default function HomeServices() {
             {/* FRONT FACE: HEADER BLOCK */}
             <div 
               ref={headerRef} 
-              className="col-start-1 row-start-1 relative text-center max-w-3xl mx-auto w-full h-full z-20 flex flex-col justify-start" 
+              className="col-start-1 row-start-1 relative text-center max-w-3xl mx-auto w-full lg:h-full z-20 flex flex-col justify-start pb-12 lg:pb-0" 
               style={{ backfaceVisibility: "hidden" }}
             >
               {/* Vela Pulsar Star */}
@@ -290,10 +346,9 @@ export default function HomeServices() {
             {/* BACK FACE: TIMELINE CARDS */}
             <div 
               ref={cardsContainerRef} 
-              className="col-start-1 row-start-1 w-full z-10 flex flex-col items-center" 
+              className="col-start-1 row-start-2 lg:row-start-1 w-full z-10 flex flex-col items-center" 
               style={{ 
                 backfaceVisibility: "hidden", 
-                transform: "rotateX(180deg)", // Flipping the back face upside down
                 transformStyle: "preserve-3d", // Prevent rendering glitches for nested 3D planets
               }}
             >
@@ -447,8 +502,6 @@ export default function HomeServices() {
             </div>
           </div>
         </div>
-        {/* DYNAMIC SPACER: Replaces GSAP pinSpacing to perfectly eliminate overlap */}
-        <div ref={spacerRef} className="w-full pointer-events-none" />
       </div>
     </section>
   );

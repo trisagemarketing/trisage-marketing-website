@@ -17,8 +17,10 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
       touchMultiplier: 2,
     });
 
+    // Sync Lenis scroll events with GSAP ScrollTrigger
     lenis.on("scroll", ScrollTrigger.update);
 
+    // Use GSAP ticker to drive Lenis — prevents double rAF loops
     const update = (time: number) => {
       lenis.raf(time * 1000);
     };
