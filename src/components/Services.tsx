@@ -69,21 +69,21 @@ function ServiceFlipCard({ service, isFlipped, onFlip }: { service: typeof servi
              <service.icon size={160} />
           </div>
 
-          <div className="relative z-10 flex flex-col h-full">
-            <div className="shrink-0 border-b border-white/20 pb-3 mb-3">
-              <h3 className="text-lg font-bold mb-1">{service.title}</h3>
+          <div className="relative z-10 flex flex-col flex-1 min-h-0 overflow-hidden">
+            <div className="shrink-0 border-b border-white/20 pb-2 mb-2">
+              <h3 className="text-base font-bold mb-0.5">{service.title}</h3>
               {service.subheading && (
-                <h4 className="text-sm font-medium text-primary-200 leading-snug">
+                <h4 className="text-xs font-medium text-primary-200 leading-snug line-clamp-2">
                   {service.subheading}
                 </h4>
               )}
             </div>
-            <div className="flex-grow overflow-y-auto custom-scrollbar pr-2 pb-2 flex flex-col gap-2 text-primary-50">
-              <span className="text-xs font-bold uppercase tracking-wider text-white/70">Includes:</span>
-              <ul className="space-y-2">
+            <div className="flex-1 overflow-y-auto pb-1 flex flex-col gap-1.5 text-primary-50 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-white/70">Includes:</span>
+              <ul className="space-y-1 md:space-y-1.5">
                 {service.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-start gap-2 text-sm leading-snug">
-                    <span className="text-white opacity-50 mt-0.5">•</span>
+                  <li key={idx} className="flex items-start gap-1.5 text-[11px] md:text-xs leading-tight">
+                    <span className="text-white opacity-50 mt-0.5 text-[10px]">•</span>
                     <span>{feature}</span>
                   </li>
                 ))}
@@ -91,7 +91,7 @@ function ServiceFlipCard({ service, isFlipped, onFlip }: { service: typeof servi
             </div>
           </div>
 
-          <div className="relative z-10 flex items-center justify-between mt-4 pt-4 border-t border-white/20">
+          <div className="shrink-0 relative z-10 flex items-center justify-between mt-4 pt-4 border-t border-white/20">
              <Link 
                href={`/services/${service.slug}`} 
                className="text-sm font-semibold hover:text-white text-primary-100 flex items-center gap-1 group/link"
