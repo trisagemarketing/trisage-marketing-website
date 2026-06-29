@@ -75,7 +75,7 @@ export default function BlogEditor({
   }, [editor?.state.doc, onAutoSave, editor]);
 
   if (!editor) {
-    return <div className="h-[500px] w-full animate-pulse bg-gray-50 dark:bg-gray-800/50 rounded-2xl" />;
+    return <div className="h-125 w-full animate-pulse bg-gray-50 dark:bg-gray-800/50 rounded-2xl" />;
   }
 
   return (
@@ -95,7 +95,7 @@ export default function BlogEditor({
       )}
 
       {/* Editor Content Area */}
-      <div className="p-4 sm:p-8 md:p-12">
+      <div className="p-4 sm:p-8 md:p-12 font-rubik">
         <EditorContent editor={editor} />
       </div>
     </div>

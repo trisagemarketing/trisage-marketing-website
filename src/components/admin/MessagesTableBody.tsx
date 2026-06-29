@@ -71,14 +71,14 @@ export default async function MessagesTableBody({ limit }: { limit?: number }) {
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 flex-wrap">
                   <span className="truncate">{safeName}</span>
                   {msg.meeting_booked && (
-                    <span className="inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wide uppercase bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30 flex-shrink-0">
+                    <span className="inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wide bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30 shrink-0">
                       Booked
                     </span>
                   )}
                 </h3>
                 <p className="text-sm font-medium text-primary-600 dark:text-primary-400 truncate mt-0.5">{safeCompany}</p>
               </div>
-              <div className="text-right flex flex-col items-end flex-shrink-0">
+              <div className="text-right flex flex-col items-end shrink-0">
                 <span className="inline-flex px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase bg-gray-100 text-gray-700 dark:bg-white/10 dark:text-gray-300 mb-1 border border-gray-200 dark:border-white/10">
                   {safeService}
                 </span>
@@ -92,11 +92,11 @@ export default async function MessagesTableBody({ limit }: { limit?: number }) {
             {/* Contact Details */}
             <div className="flex flex-col gap-2 mb-4 p-3.5 rounded-xl bg-gray-50/80 dark:bg-white/5 border border-gray-100 dark:border-white/5">
               <div className="flex justify-between items-center gap-4">
-                <span className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider flex-shrink-0">Email</span>
+                <span className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider shrink-0">Email</span>
                 <span className="text-sm text-gray-900 dark:text-gray-300 font-medium truncate">{safeEmail}</span>
               </div>
               <div className="flex justify-between items-center gap-4">
-                <span className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider flex-shrink-0">Phone</span>
+                <span className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider shrink-0">Phone</span>
                 <span className="text-sm text-gray-900 dark:text-gray-300 font-medium truncate">{safePhone}</span>
               </div>
             </div>

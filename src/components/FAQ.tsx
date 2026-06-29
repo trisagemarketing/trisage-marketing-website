@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { faqs } from "@/data/faqs";
 import { Plus, Minus } from "lucide-react";
 import { fadeUp } from "@/lib/animations";
@@ -14,16 +14,16 @@ export default function FAQ() {
 
       {/* ── Mesh Orbs (same pattern as Testimonials) ── */}
       <div
-        className="absolute -top-1/4 -left-[10%] w-[50%] h-[80%] rounded-full blur-3xl pointer-events-none animate-[pulse_9s_ease-in-out_infinite]"
+        className="absolute -top-1/4 -left-[10%] hidden md:block w-[50%] h-[80%] rounded-full blur-3xl pointer-events-none animate-[pulse_9s_ease-in-out_infinite]"
         style={{ background: "radial-gradient(circle, rgba(37,99,235,0.07) 0%, transparent 70%)" }}
       />
       <div
-        className="absolute -bottom-1/4 -right-[10%] w-[45%] h-[70%] rounded-full blur-3xl pointer-events-none animate-[pulse_11s_ease-in-out_infinite_reverse]"
+        className="absolute -bottom-1/4 -right-[10%] hidden md:block w-[45%] h-[70%] rounded-full blur-3xl pointer-events-none animate-[pulse_11s_ease-in-out_infinite_reverse]"
         style={{ background: "radial-gradient(circle, rgba(6,182,212,0.07) 0%, transparent 70%)" }}
       />
 
       {/* Ice Giant Planet (dark only) */}
-      <div className="absolute hidden dark:block right-[5%] top-[15%] w-[100px] h-[100px] md:w-[200px] md:h-[200px] pointer-events-none z-0" style={{
+      <div className="absolute hidden md:dark:block right-[5%] top-[15%] w-[100px] h-[100px] md:w-[200px] md:h-[200px] pointer-events-none z-0" style={{
         animation: "planetBounce 15s infinite",
         animationDelay: "-2s",
       }}>
@@ -43,7 +43,7 @@ export default function FAQ() {
         {/* ── Section Header ── */}
         <div className="text-center mb-12 md:mb-16">
           <motion.h2
-            initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
+            initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={fadeUp}
             className="font-sans font-black text-[8vw] sm:text-4xl md:text-6xl uppercase tracking-tight flex flex-wrap justify-center gap-2 mb-4"
           >
             <span className="text-primary-950 dark:text-white">Frequently</span>
@@ -51,7 +51,7 @@ export default function FAQ() {
              <span className="text-transparent bg-clip-text bg-linear-to-r from-primary-600 to-secondary-500 dark:from-primary-400 dark:to-secondary-400">Questions</span>
           </motion.h2>
           <motion.p
-            initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
+            initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={fadeUp}
             className="font-sans font-medium text-lg sm:text-xl uppercase tracking-tight text-primary-700 dark:text-primary-300"
           >
             Everything you need to know about working with <strong className="font-black text-primary-950 dark:text-white">Trisage</strong>.
@@ -60,11 +60,12 @@ export default function FAQ() {
 
         {/* ── FAQ Items ── */}
         <motion.div
-          initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
+          initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={fadeUp}
           className="space-y-3 md:space-y-4"
         >
           {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
+            const panelId = `faq-panel-${index}`;
             return (
               <div
                 key={index}
@@ -94,6 +95,8 @@ export default function FAQ() {
                 <button
                   className="relative z-10 w-full px-5 py-5 sm:px-7 sm:py-6 text-left flex justify-between items-center gap-4 focus:outline-none group"
                   onClick={() => setOpenIndex(isOpen ? null : index)}
+                  aria-expanded={isOpen}
+                  aria-controls={panelId}
                 >
                   <span
                     className={`font-sans font-black text-base sm:text-lg md:text-xl uppercase tracking-tight transition-colors duration-300 ${
@@ -118,23 +121,21 @@ export default function FAQ() {
                 </button>
 
                 {/* Answer */}
-                <AnimatePresence>
-                  {isOpen && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
-                    >
-                      <div className="relative z-10 px-5 pb-6 sm:px-7 sm:pb-7 border-t-2 border-primary-100 dark:border-primary-800 pt-4">
+                <div
+                  id={panelId}
+                  className={`relative z-10 grid transition-[grid-template-rows,opacity] duration-300 ease-out ${
+                    isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="px-5 pb-6 sm:px-7 sm:pb-7 border-t-2 border-primary-100 dark:border-primary-800 pt-4">
                         {/* Two-tone answer text — same MissionVision pattern */}
                         <p className="font-sans font-medium text-base sm:text-lg leading-relaxed uppercase tracking-tight text-balance">
                           <span className="text-secondary-600 dark:text-secondary-400">{faq.answer}</span>
                         </p>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                    </div>
+                  </div>
+                </div>
               </div>
             );
           })}

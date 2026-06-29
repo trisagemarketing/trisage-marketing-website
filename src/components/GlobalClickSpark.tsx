@@ -23,6 +23,9 @@ export default function GlobalClickSpark() {
     const templates = templatesRef.current;
     if (!container || !templates) return;
 
+    const isTouchOrMobile = window.matchMedia("(pointer: coarse), (max-width: 767px)").matches;
+    if (isTouchOrMobile) return;
+
     const onClick = (e: PointerEvent) => {
       // Ignore right clicks
       if (e.button !== 0) return;

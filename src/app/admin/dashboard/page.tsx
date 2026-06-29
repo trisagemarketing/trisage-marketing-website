@@ -181,17 +181,17 @@ export default async function AdminDashboard() {
           return (
             <div key={index} className="relative group bg-white/60 dark:bg-[#0a1220]/60 backdrop-blur-xl p-6 rounded-3xl border border-gray-200/50 dark:border-white/5 hover:border-primary-500/30 dark:hover:border-primary-500/30 transition-all duration-300 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)] hover:-translate-y-1">
               {/* Subtle top gradient line on hover */}
-              <div className="absolute top-0 left-6 right-6 h-[1px] bg-gradient-to-r from-transparent via-primary-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute top-0 left-6 right-6 h-px bg-linear-to-r from-transparent via-primary-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               
               <div className="flex items-center justify-between mb-6">
-                <div className="p-3.5 bg-gradient-to-br from-primary-500/10 to-secondary-500/10 dark:from-primary-500/20 dark:to-secondary-500/20 rounded-2xl shadow-inner">
+                <div className="p-3.5 bg-linear-to-br from-primary-500/10 to-secondary-500/10 dark:from-primary-500/20 dark:to-secondary-500/20 rounded-2xl shadow-inner">
                   <Icon className="w-6 h-6 text-primary-600 dark:text-primary-400" />
                 </div>
                 <div className={`px-2.5 py-1 rounded-full text-xs font-bold ${isPositive ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400" : "bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400"}`}>
                   {safeChange}
                 </div>
               </div>
-              <h3 className="text-gray-500 dark:text-gray-400 text-sm font-semibold mb-1 uppercase tracking-wider">{stat.name}</h3>
+              <h3 className="text-gray-500 dark:text-gray-400 text-sm font-semibold mb-1 tracking-wider">{stat.name}</h3>
               <p className="text-[clamp(1.5rem,5vw,1.875rem)] font-bold text-gray-900 dark:text-white tracking-tight">
                 {(() => {
                   const val = stat.value;
@@ -207,7 +207,7 @@ export default async function AdminDashboard() {
       </div>
 
       {/* Contact Messages Data Table */}
-      <div className="md:bg-white/60 md:dark:bg-[#0a1220]/60 md:backdrop-blur-xl md:rounded-[2rem] md:border border-gray-200/50 md:dark:border-white/5 md:shadow-2xl overflow-hidden">
+      <div className="md:bg-white/60 md:dark:bg-[#0a1220]/60 md:backdrop-blur-xl md:rounded-4xl md:border border-gray-200/50 md:dark:border-white/5 md:shadow-2xl overflow-hidden">
         <div className="p-2 sm:p-4 md:p-10 border-b border-gray-200/50 dark:border-white/5 flex justify-between items-center mb-4 md:mb-0">
           <div>
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight mb-1">Recent Inquiries</h2>

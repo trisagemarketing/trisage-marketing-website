@@ -2,7 +2,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 import { fadeUp } from "@/lib/animations";
 
 export default function OurClients() {
@@ -39,7 +38,7 @@ export default function OurClients() {
         
         <div className="text-center max-w-3xl mx-auto mb-6 md:mb-8">
           <motion.h2 
-            initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
+            initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={fadeUp}
             className="text-3xl md:text-5xl font-bold text-[#2A3F64] dark:text-white"
           >
             Our Valued Clients
@@ -49,7 +48,7 @@ export default function OurClients() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false }}
+          viewport={{ once: true, amount: 0.25 }}
           transition={{ duration: 0.6 }}
           className="w-full bg-transparent md:my-4 rounded-4xl md:rounded-[3rem] py-4 md:py-6 flex items-center relative overflow-hidden"
         >

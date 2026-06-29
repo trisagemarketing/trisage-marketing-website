@@ -3,7 +3,7 @@ import { z } from "zod";
 // =======================
 // DATABASE SCHEMA TYPES
 // =======================
-export type BlogStatus = 'draft' | 'published' | 'archived';
+export type BlogStatus = 'draft' | 'published';
 
 export interface Blog {
   id: string;

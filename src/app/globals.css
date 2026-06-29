@@ -1,10 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Phudu:wght@300..900&display=swap');
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 
+@import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans: "Phudu", sans-serif;
+  --font-sans: "Phudu", "Rubik",sans-serif;
 
   --color-primary-50: #f4f6f8;
   --color-primary-100: #e3e8f0;
@@ -198,5 +199,10 @@ body {
 .homepage-wrapper section:not(#why-choose-us):not(#cta-section) {
   background-color: transparent !important;
   background-image: none !important;
+}
+
+.font-rubik {
+  font-family: "Rubik", sans-serif;
+  font-optical-sizing: auto;
 }
  

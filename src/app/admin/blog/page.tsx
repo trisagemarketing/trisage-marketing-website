@@ -14,7 +14,7 @@ export default async function AdminBlogDashboard() {
     <div className="p-6 md:p-10 max-w-7xl mx-auto">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Content Engine</h1>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Blog Manage</h1>
           <p className="text-gray-500 dark:text-gray-400">Manage your blogs, marketing articles, and case studies.</p>
         </div>
         
@@ -32,11 +32,11 @@ export default async function AdminBlogDashboard() {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-gray-50 dark:bg-[#050b14] border-b border-gray-200 dark:border-gray-800">
-                <th className="px-4 sm:px-6 py-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Post</th>
-                <th className="px-4 sm:px-6 py-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
-                <th className="hidden md:table-cell px-6 py-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Author</th>
-                <th className="hidden sm:table-cell px-6 py-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Published</th>
-                <th className="px-4 sm:px-6 py-4 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
+                <th className="px-4 sm:px-6 py-4 text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">Post</th>
+                <th className="px-4 sm:px-6 py-4 text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">Status</th>
+                <th className="hidden md:table-cell px-6 py-4 text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">Author</th>
+                <th className="hidden sm:table-cell px-6 py-4 text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">Published</th>
+                <th className="px-4 sm:px-6 py-4 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
@@ -51,16 +51,16 @@ export default async function AdminBlogDashboard() {
                   <td className="px-4 sm:px-6 py-4">
                     <div className="flex items-center gap-3 sm:gap-4">
                       {blog.cover_image ? (
-                        <div className="hidden sm:block relative w-16 h-12 rounded-lg overflow-hidden flex-shrink-0">
+                        <div className="hidden sm:block relative w-16 h-12 rounded-lg overflow-hidden shrink-0">
                           <Image src={blog.cover_image} alt="" fill className="object-cover" />
                         </div>
                       ) : (
-                        <div className="hidden sm:flex w-16 h-12 rounded-lg bg-gray-100 dark:bg-gray-800 items-center justify-center flex-shrink-0 text-gray-400">
+                        <div className="hidden sm:flex w-16 h-12 rounded-lg bg-gray-100 dark:bg-gray-800 items-center justify-center shrink-0 text-gray-400">
                           <FileText size={20} />
                         </div>
                       )}
                       <div>
-                        <div className="font-semibold text-gray-900 dark:text-white leading-snug break-words">
+                        <div className="font-semibold text-gray-900 dark:text-white leading-snug wrap-break-word">
                           {blog.title}
                         </div>
                         <div className="text-xs text-gray-500 mt-1.5 break-all">

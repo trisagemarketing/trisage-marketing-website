@@ -54,7 +54,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="h-[100dvh] bg-[#f3fbf9] dark:bg-[#050b14] flex flex-col md:flex-row relative overflow-hidden ">
+    <div className="h-dvh bg-[#f3fbf9] dark:bg-[#050b14] flex flex-col md:flex-row relative overflow-hidden ">
       
       {/* Background Ambience */}
       <div className="absolute inset-0 pointer-events-none z-0">
@@ -63,7 +63,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </div>
 
       {/* Mobile Top Header */}
-      <header className="md:hidden h-16 px-4 bg-white/60 dark:bg-[#0a1220]/60 backdrop-blur-2xl border-b border-gray-200/50 dark:border-white/5 flex items-center justify-between relative z-20 flex-shrink-0">
+      <header className="md:hidden h-16 px-4 bg-white/60 dark:bg-[#0a1220]/60 backdrop-blur-2xl border-b border-gray-200/50 dark:border-white/5 flex items-center justify-between relative z-20 shrink-0">
         <Link href="/admin/dashboard" className="flex items-center gap-2.5">
           <Image
             src="/logo.svg"
@@ -92,10 +92,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Sidebar (Desktop) / Bottom Nav (Mobile) */}
       <aside 
         suppressHydrationWarning
-        className={`${isCollapsed ? "md:w-20" : "md:w-72"} fixed bottom-0 left-0 right-0 md:relative w-full md:w-auto h-16 md:h-screen bg-white/80 dark:bg-[#0a1220]/80 backdrop-blur-2xl border-t md:border-t-0 md:border-r border-gray-200/50 dark:border-white/5 flex flex-row md:flex-col z-50 shadow-[0_-4px_24px_rgba(0,0,0,0.02)] md:shadow-[4px_0_24px_rgba(0,0,0,0.02)] dark:shadow-none transition-all duration-300 ease-in-out flex-shrink-0 pb-[env(safe-area-inset-bottom)] md:pb-0`}
+        className={`${isCollapsed ? "md:w-20" : "md:w-72"} fixed bottom-0 left-0 right-0 md:relative w-full md:w-auto h-16 md:h-screen bg-white/80 dark:bg-[#0a1220]/80 backdrop-blur-2xl border-t md:border-t-0 md:border-r border-gray-200/50 dark:border-white/5 flex flex-row md:flex-col z-50 shadow-[0_-4px_24px_rgba(0,0,0,0.02)] md:shadow-[4px_0_24px_rgba(0,0,0,0.02)] dark:shadow-none transition-all duration-300 ease-in-out shrink-0 pb-[env(safe-area-inset-bottom)] md:pb-0`}
       >
-        <div className={`hidden md:flex h-24 border-b border-gray-200/50 dark:border-white/5 items-center overflow-hidden flex-shrink-0 transition-all duration-300 ${isCollapsed ? "justify-center px-0 w-20" : "justify-start px-6 w-72"}`}>
-          <Link href="/admin/dashboard" className="relative z-50 flex items-center gap-2.5 flex-shrink-0">
+        <div className={`hidden md:flex h-24 border-b border-gray-200/50 dark:border-white/5 items-center overflow-hidden shrink-0 transition-all duration-300 ${isCollapsed ? "justify-center px-0 w-20" : "justify-start px-6 w-72"}`}>
+          <Link href="/admin/dashboard" className="relative z-50 flex items-center gap-2.5 shrink-0">
             {isCollapsed ? (
               <div className="w-8 overflow-hidden flex justify-start items-center">
                 <Image
@@ -106,7 +106,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   priority
                   fetchPriority="high"
                   loading="eager"
-                  className="h-8 w-[160px] max-w-none transition-all mix-blend-multiply dark:mix-blend-screen dark:invert dark:hue-rotate-180 object-left"
+                  className="h-8 w-40 max-w-none transition-all mix-blend-multiply dark:mix-blend-screen dark:invert dark:hue-rotate-180 object-left"
                 />
               </div>
             ) : (
@@ -132,7 +132,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <nav className="flex-1 px-4 md:p-4 flex flex-row md:flex-col justify-around md:justify-start items-center md:items-stretch space-x-2 md:space-x-0 md:space-y-2 overflow-y-visible md:overflow-y-auto overflow-x-hidden h-full">
           {[
             { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard, exact: true },
-            { name: "Content", href: "/admin/blog", icon: FileText, exact: false },
+            { name: "Blogs", href: "/admin/blog", icon: FileText, exact: false },
             { name: "Leads", href: "/admin/leads", icon: Mail, exact: false },
             { name: "Settings", href: "/admin/settings", icon: Settings, exact: false },
           ].map((item) => {
@@ -147,7 +147,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 href={item.href} 
                 className={`flex flex-col md:flex-row items-center transition-all flex-1 md:flex-none rounded-xl ${
                   isActive 
-                    ? "font-semibold text-primary-700 dark:text-primary-300 md:bg-gradient-to-r from-primary-500/10 to-secondary-500/10 dark:from-primary-500/20 dark:to-secondary-500/20 md:border border-primary-500/20 md:shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]" 
+                    ? "font-semibold text-primary-700 dark:text-primary-300 md:bg-linear-to-r from-primary-500/10 to-secondary-500/10 dark:from-primary-500/20 dark:to-secondary-500/20 md:border border-primary-500/20 md:shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]" 
                     : "font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100/50 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white"
                 } ${
                   isCollapsed 
@@ -156,14 +156,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 }`}
                 title={item.name}
               >
-                <item.icon className={`w-5 h-5 flex-shrink-0 mb-1 md:mb-0 ${isActive ? "text-primary-600 dark:text-primary-400" : ""}`} />
+                <item.icon className={`w-5 h-5 shrink-0 mb-1 md:mb-0 ${isActive ? "text-primary-600 dark:text-primary-400" : ""}`} />
                 <span className={`md:block text-xs md:text-sm truncate whitespace-nowrap ${isCollapsed ? "md:hidden" : ""}`}>{item.name}</span>
               </Link>
             );
           })}
         </nav>
 
-        <div className="hidden md:flex p-4 border-t border-gray-200/50 dark:border-white/5 space-y-2 flex-col items-center flex-shrink-0">
+        <div className="hidden md:flex p-4 border-t border-gray-200/50 dark:border-white/5 space-y-2 flex-col items-center shrink-0">
           <button 
             onClick={handleLogout}
             title="Sign Out"
@@ -171,7 +171,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               isCollapsed ? "w-12 h-12 p-0" : "w-full py-3 px-4 gap-2"
             }`}
           >
-            <LogOut className={`w-5 h-5 flex-shrink-0 ${!isCollapsed && "w-4 h-4 group-hover:-translate-x-1 transition-transform"}`} />
+            <LogOut className={`w-5 h-5 shrink-0 ${!isCollapsed && "w-4 h-4 group-hover:-translate-x-1 transition-transform"}`} />
             {!isCollapsed && <span className="truncate whitespace-nowrap">Sign Out</span>}
           </button>
           
@@ -183,10 +183,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             }`}
           >
             {isCollapsed ? (
-              <ChevronRight className="w-5 h-5 flex-shrink-0" />
+              <ChevronRight className="w-5 h-5 shrink-0" />
             ) : (
               <>
-                <ChevronLeft className="w-5 h-5 flex-shrink-0" />
+                <ChevronLeft className="w-5 h-5 shrink-0" />
                 <span className="truncate whitespace-nowrap">Collapse Menu</span>
               </>
             )}

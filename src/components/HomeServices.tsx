@@ -25,38 +25,43 @@ const solutions = [
   "Long-Term Brand Value"
 ];
 
-const SplitWords = ({ text }: { text: string }) => {
+const parseBoldWords = (text: string) => {
+  const parsedWords: { text: string; isBold: boolean }[] = [];
   let isBoldContext = false;
-  
+
+  for (const word of text.split(" ")) {
+    let cleanWord = word;
+    let shouldBeBold = isBoldContext;
+
+    if (cleanWord.startsWith("**")) {
+      isBoldContext = true;
+      shouldBeBold = true;
+      cleanWord = cleanWord.replace("**", "");
+    }
+
+    if (cleanWord.includes("**")) {
+      isBoldContext = false;
+      shouldBeBold = true;
+      cleanWord = cleanWord.replace("**", "");
+    }
+
+    parsedWords.push({ text: cleanWord, isBold: shouldBeBold });
+  }
+
+  return parsedWords;
+};
+
+const SplitWords = ({ text }: { text: string }) => {
   return (
     <>
-      {text.split(" ").map((word, wordIndex) => {
-        let cleanWord = word;
-        let shouldBeBold = isBoldContext;
-        
-        const boldStarts = cleanWord.startsWith("**");
-        
-        if (boldStarts) {
-          isBoldContext = true;
-          shouldBeBold = true;
-          cleanWord = cleanWord.replace("**", "");
-        }
-        
-        if (cleanWord.includes("**")) {
-          isBoldContext = false;
-          shouldBeBold = true;
-          cleanWord = cleanWord.replace("**", "");
-        }
-
-        return (
-          <span 
-            key={wordIndex} 
-            className={`reveal-word inline-block opacity-50 transition-opacity duration-100 mr-[0.25em] ${shouldBeBold ? 'font-black' : 'font-medium'}`}
-          >
-            {cleanWord}
-          </span>
-        );
-      })}
+      {parseBoldWords(text).map((word, wordIndex) => (
+        <span 
+          key={wordIndex} 
+          className={`reveal-word inline-block opacity-50 transition-opacity duration-100 mr-[0.25em] ${word.isBold ? 'font-black' : 'font-medium'}`}
+        >
+          {word.text}
+        </span>
+      ))}
     </>
   );
 };
@@ -86,6 +91,9 @@ export default function HomeServices() {
   const spacerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
+    const mm = gsap.matchMedia();
+
+    mm.add("(min-width: 768px)", () => {
     // ----------------------------------------------------------------------
     // 1. TEXT READING SCRUB (Before Pin)
     // ----------------------------------------------------------------------
@@ -209,6 +217,9 @@ export default function HomeServices() {
         scrub: true,
       }
     });
+    });
+
+    return () => mm.revert();
 
   }, { scope: containerRef });
 
@@ -218,9 +229,80 @@ export default function HomeServices() {
       className="relative pt-4 pb-12 md:pb-16 lg:pt-8 bg-primary-50 dark:bg-primary-950 overflow-x-hidden overflow-y-visible transition-colors duration-700"
     >
       <div className="container relative z-10 mx-auto px-4 md:px-8 w-full">
+        <div className="md:hidden">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.35 }}
+            transition={{ duration: 0.45, ease: "easeOut" }}
+            className="text-center max-w-2xl mx-auto"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight">
+              <span className="text-secondary-600 dark:text-secondary-400">From Hotel Challenges</span>{" "}
+              <span>to</span>{" "}
+              <span className="text-primary-600 dark:text-primary-400">Hospitality Growth</span>
+            </h2>
+            <p className="font-sans font-medium text-lg leading-snug uppercase tracking-tight text-balance text-primary-700 dark:text-primary-200">
+              Most <strong className="font-black">hospitality brands</strong> struggle because the digital ecosystem around the brand is incomplete.
+            </p>
+            <p className="font-sans font-medium text-lg leading-snug uppercase tracking-tight text-balance text-gray-900 dark:text-white mt-4">
+              <strong className="font-black">Weak visibility</strong>, <strong className="font-black">inconsistent branding</strong>, low guest engagement, and high OTA dependency reduce revenue opportunities.
+            </p>
+          </motion.div>
+
+          <div className="relative mt-8 space-y-6">
+            <div className="absolute left-1/2 top-10 bottom-10 w-[2px] -translate-x-1/2 border-l-2 border-dashed border-primary-200 dark:border-primary-800" />
+
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.42, ease: "easeOut" }}
+              className="relative z-10"
+            >
+              <div className="relative bg-white dark:bg-gray-900 rounded-2xl pt-5 pb-6 pr-6 pl-[70px] border border-primary-100 dark:border-primary-800 shadow-lg">
+                <div className="absolute top-0 left-4 w-[45px] h-[75px] bg-[#243384] flex justify-center pt-3" style={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%)" }}>
+                  <Puzzle className="w-6 h-6 text-white -rotate-12" strokeWidth={2.5} />
+                </div>
+                <h3 className="text-lg font-bold text-gray-500 dark:text-gray-400 uppercase tracking-[0.15em] mb-4">PROBLEM</h3>
+                <div className="flex flex-col gap-2">
+                  {challenges.map((challenge) => (
+                    <div key={challenge} className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+                      <XCircle className="w-4 h-4 text-red-500 dark:text-red-400 shrink-0" />
+                      <span className="font-medium text-[13px] leading-tight">{challenge}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.42, ease: "easeOut", delay: 0.08 }}
+              className="relative z-10"
+            >
+              <div className="relative bg-white dark:bg-gray-900 rounded-2xl pt-5 pb-6 pr-6 pl-[70px] border border-primary-100 dark:border-primary-800 shadow-lg">
+                <div className="absolute top-0 left-4 w-[45px] h-[75px] bg-[#243384] flex justify-center pt-3" style={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%)" }}>
+                  <Network className="w-6 h-6 text-white" strokeWidth={2.5} />
+                </div>
+                <h3 className="text-lg font-bold text-gray-500 dark:text-gray-400 uppercase tracking-[0.15em] mb-4">SOLUTION</h3>
+                <div className="flex flex-col gap-2">
+                  {solutions.map((solution) => (
+                    <div key={solution} className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+                      <CheckCircle2 className="w-4 h-4 text-green-500 dark:text-green-400 shrink-0" />
+                      <span className="font-medium text-[13px] leading-tight">{solution}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
         
         {/* STABLE WRAPPER (Prevents GSAP ScrollTrigger Glitching during 3D rotations) */}
-        <div ref={triggerWrapperRef} className="relative w-full">
+        <div ref={triggerWrapperRef} className="relative hidden md:block w-full">
           
           {/* PAN WRAPPER (Moves the block up while pinned to reveal bottom cards) */}
           <div ref={panWrapperRef} className="relative w-full" style={{ perspective: "3000px" }}>
@@ -446,7 +528,7 @@ export default function HomeServices() {
           </div>
         </div>
         {/* DYNAMIC SPACER: Replaces GSAP pinSpacing to perfectly eliminate overlap */}
-        <div ref={spacerRef} className="w-full pointer-events-none" />
+        <div ref={spacerRef} className="hidden md:block w-full pointer-events-none" />
       </div>
     </section>
   );

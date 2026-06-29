@@ -6,15 +6,24 @@ import Link from "next/link";
 import Image from "next/image";
 import { Clock, Calendar, ArrowRight } from "lucide-react";
 
+interface RecentPost {
+  id: string;
+  slug?: string | null;
+  title?: string | null;
+  excerpt?: string | null;
+  category?: string | null;
+  cover_image?: string | null;
+  published_at?: string | null;
+}
 
 interface HomeBlogProps {
-  recentPosts?: any[];
+  recentPosts?: RecentPost[];
 }
 
 export default function HomeBlog({ recentPosts = [] }: HomeBlogProps) {
   const displayPosts = recentPosts.map((post) => ({
     id: post.slug || post.id,
-    title: post.title,
+    title: post.title || "Untitled article",
     excerpt: post.excerpt || "Read our latest insights and strategies for growth.",
     category: post.category || "General",
     date: post.published_at
@@ -63,7 +72,7 @@ export default function HomeBlog({ recentPosts = [] }: HomeBlogProps) {
         {/* ── Section Header — exact same pattern as Testimonials ── */}
         <div className="text-center max-w-4xl mx-auto mb-12 md:mb-16">
           <motion.h2
-            initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
+            initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={fadeUp}
             className="text-[8vw] sm:text-4xl md:text-6xl font-black mb-4 md:mb-6 tracking-tight flex flex-wrap justify-center gap-2"
           >
             <span className="text-primary-950 dark:text-white">Latest</span>
@@ -76,7 +85,7 @@ export default function HomeBlog({ recentPosts = [] }: HomeBlogProps) {
             </span>
           </motion.h2>
           <motion.p
-            initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
+            initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={fadeUp}
             className="font-sans font-medium text-lg sm:text-xl lg:text-2xl leading-snug capitalize tracking-tight text-balance text-primary-700 dark:text-primary-300"
           >
             Industry-leading perspectives on{" "}
@@ -93,7 +102,7 @@ export default function HomeBlog({ recentPosts = [] }: HomeBlogProps) {
               key={post.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
+              viewport={{ once: true, amount: 0.25 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <Link
@@ -162,7 +171,7 @@ export default function HomeBlog({ recentPosts = [] }: HomeBlogProps) {
 
         {/* ── CTA ── */}
         <motion.div
-          initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
+          initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={fadeUp}
           className="text-center pb-4 md:pb-8"
         >
           <Link

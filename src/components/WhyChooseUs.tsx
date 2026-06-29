@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/animations";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -35,42 +35,47 @@ const stats = [
   },
 ];
 
-const SplitChars = ({ text }: { text: string }) => {
-  const words = text.split(" ");
+const parseBoldWords = (text: string) => {
+  const parsedWords: { text: string; isBold: boolean }[] = [];
   let isBoldContext = false;
 
+  for (const word of text.split(" ")) {
+    let cleanWord = word;
+    let shouldBeBold = isBoldContext;
+
+    if (cleanWord.startsWith("**")) {
+      isBoldContext = true;
+      shouldBeBold = true;
+      cleanWord = cleanWord.replace("**", "");
+    }
+
+    if (cleanWord.includes("**")) {
+      isBoldContext = false;
+      shouldBeBold = true;
+      cleanWord = cleanWord.replace("**", "");
+    }
+
+    parsedWords.push({ text: cleanWord, isBold: shouldBeBold });
+  }
+
+  return parsedWords;
+};
+
+const SplitChars = ({ text }: { text: string }) => {
   return (
     <>
-      {words.map((word, wordIndex) => {
-        let cleanWord = word;
-        let shouldBeBold = isBoldContext;
-        
-        const boldStarts = cleanWord.startsWith("**");
-        if (boldStarts) {
-          isBoldContext = true;
-          shouldBeBold = true;
-          cleanWord = cleanWord.replace("**", "");
-        }
-        
-        if (cleanWord.includes("**")) {
-          isBoldContext = false;
-          shouldBeBold = true;
-          cleanWord = cleanWord.replace("**", "");
-        }
-
-        return (
-          <span key={wordIndex} className="inline-block mr-[0.25em] whitespace-nowrap">
-            {cleanWord.split("").map((char, charIndex) => (
-              <span 
-                key={charIndex} 
-                className={`inline-block char-drop ${shouldBeBold ? 'font-black text-secondary-300' : 'font-medium'}`}
-              >
-                {char}
-              </span>
-            ))}
-          </span>
-        );
-      })}
+      {parseBoldWords(text).map((word, wordIndex) => (
+        <span key={wordIndex} className="inline-block mr-[0.25em] whitespace-nowrap">
+          {word.text.split("").map((char, charIndex) => (
+            <span 
+              key={charIndex} 
+              className={`inline-block char-drop ${word.isBold ? 'font-black text-secondary-300' : 'font-medium'}`}
+            >
+              {char}
+            </span>
+          ))}
+        </span>
+      ))}
     </>
   );
 };
@@ -83,10 +88,7 @@ function AnimatedCounter({ value, suffix, animate }: { value: number; suffix: st
     // Murphy's Law guard: clear any running timer before starting a new one
     if (timerRef.current) clearInterval(timerRef.current);
 
-    if (!animate) {
-      setCount(0);
-      return;
-    }
+    if (!animate) return;
 
     // Respect prefers-reduced-motion — snap to final value instantly
     const prefersReduced =
@@ -94,8 +96,8 @@ function AnimatedCounter({ value, suffix, animate }: { value: number; suffix: st
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (prefersReduced) {
-      setCount(value);
-      return;
+      const id = setTimeout(() => setCount(value), 0);
+      return () => clearTimeout(id);
     }
 
     let start = 0;
@@ -121,7 +123,7 @@ function AnimatedCounter({ value, suffix, animate }: { value: number; suffix: st
 
   return (
     <div className="text-5xl md:text-7xl font-bold text-white mb-2 tabular-nums">
-      {count}{suffix}
+      {animate ? count : 0}{suffix}
     </div>
   );
 }
@@ -332,7 +334,7 @@ export default function WhyChooseUs() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: false }}
+            viewport={{ once: true, amount: 0.25 }}
             variants={fadeUp}
           >
             <h2 ref={headingRef} className="text-3xl md:text-5xl font-bold mb-6 [perspective:1000px]">

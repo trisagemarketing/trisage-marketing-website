@@ -66,7 +66,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
 
         {/* ── Hero / Header ── */}
         <header className="relative pt-28 pb-10 md:pt-36 md:pb-14 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-gray-50/80 to-white dark:from-[#0a1220] dark:to-[#050b14]" />
+          <div className="absolute inset-0 bg-linear-to-b from-gray-50/80 to-white dark:from-[#0a1220] dark:to-[#050b14]" />
 
           <div className={`relative ${CONTAINER}`}>
 
@@ -92,25 +92,25 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
             </div>
 
             {/* Title */}
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-white leading-[1.15] tracking-tight mb-6">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-white leading-[1.15] tracking-tight mb-6 font-rubik">
               {post.title}
             </h1>
 
             {/* Excerpt */}
             {post.excerpt && (
-              <p className="text-lg text-gray-500 dark:text-gray-400 leading-relaxed mb-8">
+              <p className="text-lg text-gray-500 dark:text-gray-400 leading-relaxed mb-8 font-rubik">
                 {post.excerpt}
               </p>
             )}
 
             {/* Author + meta bar */}
-            <div className="flex items-center justify-between flex-wrap gap-4 pt-6 border-t border-gray-200 dark:border-gray-800">
+            <div className="flex items-center justify-between flex-wrap gap-4 pt-6 border-t border-gray-200 dark:border-gray-800 font-rubik">
               <div className="flex items-center gap-3">
-                <div className="relative w-10 h-10 rounded-full overflow-hidden bg-gradient-to-br from-primary-400 to-primary-600 ring-2 ring-primary-200 dark:ring-primary-800 flex-shrink-0">
+                <div className="relative w-10 h-10 rounded-full overflow-hidden bg-linear-to-br from-primary-400 to-primary-600 ring-2 ring-primary-200 dark:ring-primary-800 shrink-0">
                   {post.author_avatar ? (
                     <Image src={post.author_avatar} alt={post.author_name} fill className="object-cover" />
                   ) : (
-                    <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-base">
+                    <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-base font-rubik">
                       {post.author_name?.[0] || 'A'}
                     </span>
                   )}
@@ -135,7 +135,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
         {/* ── Cover Image — same CONTAINER as header and content ── */}
         {post.cover_image && (
           <div className={`${CONTAINER} mb-10`}>
-            <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden shadow-2xl dark:shadow-[0_0_60px_rgba(0,0,0,0.4)]">
+            <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl dark:shadow-[0_0_60px_rgba(0,0,0,0.4)]">
               <Image
                 src={post.cover_image}
                 alt={post.title}
@@ -149,7 +149,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
         )}
 
         {/* ── Article Body — same CONTAINER, no extra wrapper ── */}
-        <div className={`${CONTAINER} pb-24`}>
+        <div className={`${CONTAINER} pb-24 font-rubik`}>
           <RichTextRenderer content={post.content} />
 
           {/* Tags footer */}

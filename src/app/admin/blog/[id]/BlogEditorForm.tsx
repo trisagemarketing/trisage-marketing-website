@@ -231,7 +231,8 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
             placeholder="Article Title..."
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-transparent border-none outline-none text-gray-900 dark:text-white placeholder:text-gray-300 dark:placeholder:text-gray-700 mb-6 sm:mb-8 px-0 leading-tight resize-none overflow-hidden"
+            className="font-rubik w-full text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-transparent border-none outline-none text-gray-900 dark:text-white placeholder:text-gray-300 dark:placeholder:text-gray-700 mb-6 sm:mb-8 lg:mb-0
+             px-0 leading-tight resize-none overflow-hidden"
           />
 
           {/* Tiptap Editor */}
@@ -254,7 +255,7 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
 
       <aside
         className={`
-          fixed lg:sticky top-0 right-0 h-screen w-[320px] flex-shrink-0
+          fixed lg:sticky top-0 right-0 h-screen w-[320px] shrink-0
           bg-white dark:bg-[#0a1220] shadow-2xl lg:shadow-none
           border-l border-gray-200 dark:border-gray-800
           overflow-y-auto z-50
@@ -296,7 +297,7 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
               placeholder="A short summary of the article shown on the blog listing page..."
               rows={3}
               maxLength={200}
-              className="w-full px-3 py-2.5 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all resize-none leading-relaxed"
+              className="font-rubik w-full px-3 py-2.5 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all resize-none leading-relaxed"
             />
             <p className="text-xs text-gray-400 mt-1 text-right">{excerpt.length}/200</p>
           </SidebarSection>
@@ -337,14 +338,14 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
 
           {/* ── Tags ── */}
           <SidebarSection icon={<Clock size={14} />} label="Tags">
-            <div className="flex gap-2">
+            <div className="flex gap-2 font-rubik">
               <input
                 type="text"
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addTag(); } }}
                 placeholder="Add tag + Enter"
-                className="flex-1 px-3 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all"
+                className="flex-1 px-3 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all font-rubik"
               />
               <button
                 onClick={addTag}
@@ -375,13 +376,13 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
 
           {/* ── Author ── */}
           <SidebarSection icon={<UserCircle2 size={14} />} label="Author">
-            <div className="space-y-3">
-              <div className="flex items-center gap-3">
+            <div className="space-y-3 font-rubik">
+              <div className="flex items-center gap-3 font-rubik">
                 <NativeUploader
                   blogId={blogId || "drafts"}
                   existingImageUrl={authorAvatar}
                   onUploadComplete={(url) => setAuthorAvatar(url)}
-                  className="!w-12 !h-12 !min-h-0 !rounded-full shrink-0 !border-[1.5px]"
+                  className="w-12! h-12! min-h-0! rounded-full! shrink-0 border-[1.5px]! font-rubik"
                   variant="avatar"
                 />
                 <div className="text-xs text-gray-500">
@@ -428,7 +429,7 @@ function SidebarSection({ icon, label, children }: { icon: React.ReactNode; labe
     <div>
       <div className="flex items-center gap-1.5 mb-2.5">
         <span className="text-primary-500">{icon}</span>
-        <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{label}</label>
+        <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">{label}</label>
       </div>
       {children}
     </div>
@@ -485,7 +486,7 @@ function CategoryManager({
   return (
     <div className="space-y-2">
       {/* Category pills list */}
-      <div className="space-y-1 max-h-52 overflow-y-auto pr-1">
+      <div className="space-y-1 max-h-52 overflow-y-auto pr-1 font-rubik">
         {categories.length === 0 && (
           <p className="text-xs text-gray-400 italic py-2">No categories yet. Add one below.</p>
         )}
@@ -502,12 +503,12 @@ function CategoryManager({
             `}
           >
             <div className="flex items-center gap-2 min-w-0">
-              <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${selected === cat.name ? "bg-primary-500" : "bg-gray-300 dark:bg-gray-600"}`} />
+              <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${selected === cat.name ? "bg-primary-500" : "bg-gray-300 dark:bg-gray-600"}`} />
               <span className="text-sm font-medium truncate">{cat.name}</span>
             </div>
             <button
               onClick={(e) => { e.stopPropagation(); handleDelete(cat.id, cat.name); }}
-              className="opacity-0 group-hover:opacity-100 flex-shrink-0 p-1 rounded-md text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-all ml-2"
+              className="opacity-0 group-hover:opacity-100 shrink-0 p-1 rounded-md text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-all ml-2"
               title={`Remove ${cat.name}`}
             >
               {deletingId === cat.id
@@ -521,7 +522,7 @@ function CategoryManager({
 
       {/* Add new category */}
       {showInput ? (
-        <div className="flex gap-2 mt-2">
+        <div className="flex gap-2 mt-2 font-rubik">
           <input
             type="text"
             value={newName}
@@ -529,7 +530,7 @@ function CategoryManager({
             onKeyDown={(e) => { if (e.key === "Enter") handleAdd(); if (e.key === "Escape") setShowInput(false); }}
             placeholder="Category name..."
             autoFocus
-            className="flex-1 px-3 py-2 bg-gray-50 dark:bg-gray-900 border border-primary-300 dark:border-primary-500/50 rounded-xl text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
+            className="font-rubik flex-1 px-3 py-2 bg-gray-50 dark:bg-gray-900 border border-primary-300 dark:border-primary-500/50 rounded-xl text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
           />
           <button
             onClick={handleAdd}
@@ -548,7 +549,7 @@ function CategoryManager({
       ) : (
         <button
           onClick={() => setShowInput(true)}
-          className="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl border border-dashed border-gray-300 dark:border-gray-700 text-xs font-medium text-gray-500 hover:border-primary-400 hover:text-primary-600 dark:hover:border-primary-500 dark:hover:text-primary-400 transition-all mt-1"
+          className="font-rubik w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl border border-dashed border-gray-300 dark:border-gray-700 text-xs font-medium text-gray-500 hover:border-primary-400 hover:text-primary-600 dark:hover:border-primary-500 dark:hover:text-primary-400 transition-all mt-1"
         >
           <Plus size={12} /> Add Category
         </button>

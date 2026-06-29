@@ -19,36 +19,47 @@ export default function MissionVision() {
   const visionTextRef = useRef<HTMLButtonElement>(null);
 
   useGSAP(() => {
-    // We animate the Mission card scaling down AS the Vision card scrolls over it.
-    // Native CSS 'sticky' handles the actual stacking physics with ZERO artificial gaps.
-    
-    gsap.set(visionTextRef.current, { opacity: 0.3 });
-    
-    // Calculate the top offset based on sticky position to perfectly sync the animation
-    const isMobile = window.innerWidth < 768;
-    const topOffset = isMobile ? "32px" : "48px";
+    const mm = gsap.matchMedia();
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: visionWrapperRef.current,
-        start: "top bottom", // Animation starts when Vision enters viewport from bottom
-        end: `top top+=${topOffset}`, // Animation ends exactly when Vision sticks over Mission
-        scrub: true,
-      }
+    mm.add({
+      isDesktop: "(min-width: 768px)",
+      isMobile: "(max-width: 767px)"
+    }, (context) => {
+      const { isMobile } = context.conditions as { isMobile?: boolean };
+
+      // We animate the Mission card scaling down AS the Vision card scrolls over it.
+      // Native CSS 'sticky' handles the actual stacking physics with ZERO artificial gaps.
+    
+      gsap.set(visionTextRef.current, { opacity: 0.3 });
+    
+      // Calculate the top offset based on sticky position to perfectly sync the animation
+      const topOffset = isMobile ? "32px" : "48px";
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: visionWrapperRef.current,
+          start: "top bottom", // Animation starts when Vision enters viewport from bottom
+          end: `top top+=${topOffset}`, // Animation ends exactly when Vision sticks over Mission
+          scrub: true,
+        }
+      });
+
+      // Animate Mission Card pushing BACK natively under the stacking Vision card.
+      // Mobile avoids filter blur because it repaints during touch scroll.
+      tl.to(missionRef.current, {
+        scale: isMobile ? 0.96 : 0.9,
+        yPercent: isMobile ? -1 : -2,
+        opacity: isMobile ? 0.65 : 0.4,
+        ...(isMobile ? {} : { filter: "blur(4px)" }),
+        ease: "none"
+      }, 0)
+    
+      // Crossfade headers smoothly based on Vision card position
+      .to(missionTextRef.current, { opacity: 0.3, ease: "none" }, 0)
+      .to(visionTextRef.current, { opacity: 1, ease: "none" }, 0);
     });
 
-    // Animate Mission Card pushing BACK natively under the stacking Vision card
-    tl.to(missionRef.current, {
-      scale: 0.9,
-      yPercent: -2,
-      opacity: 0.4,
-      filter: "blur(4px)",
-      ease: "none"
-    }, 0)
-    
-    // Crossfade headers smoothly based on Vision card position
-    .to(missionTextRef.current, { opacity: 0.3, ease: "none" }, 0)
-    .to(visionTextRef.current, { opacity: 1, ease: "none" }, 0);
+    return () => mm.revert();
 
   }, { scope: sectionRef });
 
@@ -120,13 +131,14 @@ export default function MissionVision() {
                       background: "linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)",
                     }}
                   />
+                  <Image src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1782475042/WhatsApp_Image_2026-06-26_at_5.22.31_PM_nazxmy.jpg" alt="Mission campaign preview" fill sizes="(max-width: 768px) 50vw" className="object-cover md:hidden" />
                   <video
                     autoPlay
                     muted
                     loop
                     playsInline
                     preload="none"
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="absolute inset-0 md:block w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   >
                     <source src="https://res.cloudinary.com/dgoclgj0u/video/upload/v1782477285/Akshaya_Tritiya_Comfort_Inn_qlap7z.mp4" type="video/mp4" />
                   </video>
@@ -134,25 +146,25 @@ export default function MissionVision() {
 
                 {/* Top Right */}
                 <div className="col-start-3 row-start-1 relative rounded-xl md:rounded-3xl overflow-hidden shadow-2xl group">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-primary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <div className="absolute inset-0 bg-linear-to-tr from-primary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   <Image src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1782475042/WhatsApp_Image_2026-06-26_at_5.22.31_PM_nazxmy.jpg" alt="Mission 1" fill sizes="(max-width: 768px) 33vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
                 </div>
                 
                 {/* Center */}
                 <div className="col-start-2 row-start-2 relative rounded-xl md:rounded-3xl overflow-hidden shadow-2xl group">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-primary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <div className="absolute inset-0 bg-linear-to-tr from-primary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   <Image src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1782475041/WhatsApp_Image_2026-06-26_at_5.22.31_PM_1_ht8793.jpg" alt="Mission 2" fill sizes="(max-width: 768px) 33vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
                 </div>
 
                 {/* Bottom Left */}
                 <div className="col-start-1 row-start-3 relative rounded-xl md:rounded-3xl overflow-hidden shadow-2xl group">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-primary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <div className="absolute inset-0 bg-linear-to-tr from-primary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   <Image src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1782475040/WhatsApp_Image_2026-06-26_at_5.22.31_PM_2_s6srlm.jpg" alt="Mission 3" fill sizes="(max-width: 768px) 33vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
                 </div>
 
                 {/* Bottom Right */}
                 <div className="col-start-3 row-start-3 relative rounded-xl md:rounded-3xl overflow-hidden shadow-2xl group">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-primary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <div className="absolute inset-0 bg-linear-to-tr from-primary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   <Image src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1782475040/WhatsApp_Image_2026-06-26_at_5.22.31_PM_5_xg4qut.jpg" alt="Mission 4" fill sizes="(max-width: 768px) 33vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
                 </div>
                 
@@ -177,7 +189,7 @@ export default function MissionVision() {
                 {/* BIG Video — tall left column (col 1, row 1-2) — identical to Mission */}
                 <div className="col-start-1 col-span-1 row-start-1 row-span-2 relative rounded-xl md:rounded-3xl overflow-hidden shadow-2xl group">
                   {/* Brand gradient overlay on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-secondary-900/50 via-transparent to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <div className="absolute inset-0 bg-linear-to-br from-secondary-900/50 via-transparent to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   {/* Corner slash inside video tile */}
                   <div
                     className="absolute bottom-0 right-0 w-[45%] h-[45%] pointer-events-none z-10 opacity-[0.18]"
@@ -186,13 +198,14 @@ export default function MissionVision() {
                       background: "linear-gradient(135deg, #22d3ee 0%, #0ea5e9 100%)",
                     }}
                   />
+                  <Image src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1782475040/WhatsApp_Image_2026-06-26_at_5.22.31_PM_7_tnh25f.jpg" alt="Vision campaign preview" fill sizes="(max-width: 768px) 50vw" className="object-cover md:hidden" />
                   <video
                     autoPlay
                     muted
                     loop
                     playsInline
                     preload="none"
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="absolute inset-0 md:block w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   >
                     <source src="https://res.cloudinary.com/dgoclgj0u/video/upload/v1782477449/Reel_1_Taste_Tales_v2_wp7aat.mp4" type="video/mp4" />
                   </video>
@@ -200,25 +213,25 @@ export default function MissionVision() {
 
                 {/* Top Right — col 3, row 1 */}
                 <div className="col-start-3 row-start-1 relative rounded-xl md:rounded-3xl overflow-hidden shadow-2xl group">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-secondary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <div className="absolute inset-0 bg-linear-to-tr from-secondary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   <Image src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1782475040/WhatsApp_Image_2026-06-26_at_5.22.31_PM_7_tnh25f.jpg" alt="Vision 1" fill sizes="(max-width: 768px) 33vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
                 </div>
 
                 {/* Center — col 2, row 2 */}
                 <div className="col-start-2 row-start-2 relative rounded-xl md:rounded-3xl overflow-hidden shadow-2xl group">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-secondary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <div className="absolute inset-0 bg-linear-to-tr from-secondary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   <Image src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1782475040/WhatsApp_Image_2026-06-26_at_5.22.31_PM_6_rabmdp.jpg" alt="Vision 2" fill sizes="(max-width: 768px) 33vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
                 </div>
 
                 {/* Bottom Left — col 1, row 3 */}
                 <div className="col-start-1 row-start-3 relative rounded-xl md:rounded-3xl overflow-hidden shadow-2xl group">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-secondary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <div className="absolute inset-0 bg-linear-to-tr from-secondary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   <Image src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1782475040/WhatsApp_Image_2026-06-26_at_5.22.31_PM_3_vyfqfg.jpg" alt="Vision 3" fill sizes="(max-width: 768px) 33vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
                 </div>
 
                 {/* Bottom Right — col 3, row 3 */}
                 <div className="col-start-3 row-start-3 relative rounded-xl md:rounded-3xl overflow-hidden shadow-2xl group">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-secondary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <div className="absolute inset-0 bg-linear-to-tr from-secondary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   <Image src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1782475040/WhatsApp_Image_2026-06-26_at_5.22.31_PM_4_dm8j8b.jpg" alt="Vision 4" fill sizes="(max-width: 768px) 33vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
                 </div>
 

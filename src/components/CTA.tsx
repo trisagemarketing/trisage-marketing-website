@@ -14,19 +14,19 @@ export default function CTA() {
       <div className="container mx-auto px-4 md:px-8 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <motion.h2 
-            initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeLeft}
+            initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={fadeLeft}
             className="text-4xl md:text-6xl font-bold text-white mb-8 leading-tight"
           >
             Ready to scale your business to new heights?
           </motion.h2>
           <motion.p 
-            initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
+            initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={fadeUp}
             className="text-xl text-primary-100 dark:text-primary-200 mb-10 max-w-2xl mx-auto"
           >
-            Join the ambitious brands that trust Trisage Marketing to drive their digital growth. Let's build something exceptional together.
+            Join the ambitious brands that trust Trisage Marketing to drive their digital growth. Let&apos;s build something exceptional together.
           </motion.p>
           <motion.div 
-            initial="hidden" whileInView="visible" viewport={{ once: false }} variants={springUp}
+            initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={springUp}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <Link href="/clients" className="inline-flex justify-center items-center px-8 py-4 text-base font-bold text-primary-900 dark:text-primary-900 bg-white dark:bg-gray-50 hover:bg-gray-50 dark:hover:bg-white rounded-full transition-all shadow-xl hover:-translate-y-1 w-full sm:w-auto">
