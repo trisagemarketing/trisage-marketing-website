@@ -46,8 +46,8 @@ export default function MobileMenu({ navLinks, pathname, onClose }: MobileMenuPr
       initial="hidden"
       animate="show"
       exit="exit"
-      // Upgraded to premium glassmorphism
-      className="fixed inset-0 z-40 bg-white/90 dark:bg-[#050b14]/90 backdrop-blur-2xl pt-28 pb-8 px-4 md:px-8 lg:px-12 flex flex-col lg:hidden"
+      // Upgraded to premium glassmorphism, optimized for mobile GPUs
+      className="fixed inset-0 z-40 bg-white/95 dark:bg-[#050b14]/95 backdrop-blur-md pt-28 pb-8 px-4 md:px-8 lg:px-12 flex flex-col lg:hidden will-change-transform transform-gpu"
     >
       <nav className="flex flex-col gap-8 items-start justify-center flex-1">
         {navLinks.map((link) => {

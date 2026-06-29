@@ -14,16 +14,16 @@ export default function FAQ() {
 
       {/* ── Mesh Orbs (same pattern as Testimonials) ── */}
       <div
-        className="absolute -top-1/4 -left-[10%] hidden md:block w-[50%] h-[80%] rounded-full blur-3xl pointer-events-none animate-[pulse_9s_ease-in-out_infinite]"
+        className="absolute -top-1/4 -left-[10%] hidden md:block w-[50%] h-[80%] rounded-full pointer-events-none animate-[pulse_9s_ease-in-out_infinite] will-change-opacity transform-gpu"
         style={{ background: "radial-gradient(circle, rgba(37,99,235,0.07) 0%, transparent 70%)" }}
       />
       <div
-        className="absolute -bottom-1/4 -right-[10%] hidden md:block w-[45%] h-[70%] rounded-full blur-3xl pointer-events-none animate-[pulse_11s_ease-in-out_infinite_reverse]"
+        className="absolute -bottom-1/4 -right-[10%] hidden md:block w-[45%] h-[70%] rounded-full pointer-events-none animate-[pulse_11s_ease-in-out_infinite_reverse] will-change-opacity transform-gpu"
         style={{ background: "radial-gradient(circle, rgba(6,182,212,0.07) 0%, transparent 70%)" }}
       />
 
       {/* Ice Giant Planet (dark only) */}
-      <div className="absolute hidden md:dark:block right-[5%] top-[15%] w-[100px] h-[100px] md:w-[200px] md:h-[200px] pointer-events-none z-0" style={{
+      <div className="absolute hidden md:dark:block right-[5%] top-[15%] w-[100px] h-[100px] md:w-[200px] md:h-[200px] pointer-events-none z-0 will-change-transform transform-gpu" style={{
         animation: "planetBounce 15s infinite",
         animationDelay: "-2s",
       }}>

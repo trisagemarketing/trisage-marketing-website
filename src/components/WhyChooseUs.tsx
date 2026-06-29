@@ -65,15 +65,11 @@ const SplitChars = ({ text }: { text: string }) => {
   return (
     <>
       {parseBoldWords(text).map((word, wordIndex) => (
-        <span key={wordIndex} className="inline-block mr-[0.25em] whitespace-nowrap">
-          {word.text.split("").map((char, charIndex) => (
-            <span 
-              key={charIndex} 
-              className={`inline-block char-drop ${word.isBold ? 'font-black text-secondary-300' : 'font-medium'}`}
-            >
-              {char}
-            </span>
-          ))}
+        <span 
+          key={wordIndex} 
+          className={`inline-block mr-[0.25em] char-drop will-change-transform transform-gpu ${word.isBold ? 'font-black text-secondary-300' : 'font-medium'}`}
+        >
+          {word.text}
         </span>
       ))}
     </>
@@ -385,7 +381,7 @@ export default function WhyChooseUs() {
             {stats.map((stat, index) => (
               <div
                 key={stat.id}
-                className={`stat-card p-8 rounded-2xl border backdrop-blur-md shadow-[0_15px_40px_rgba(0,0,0,0.4)] ${stat.bgClass} ${
+                className={`stat-card p-8 rounded-2xl border shadow-[0_15px_40px_rgba(0,0,0,0.4)] will-change-transform transform-gpu ${stat.bgClass} ${
                   index === 2 ? "sm:col-span-2 text-center" : ""
                 }`}
               >

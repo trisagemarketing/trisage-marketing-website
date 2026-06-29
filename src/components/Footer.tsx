@@ -70,11 +70,11 @@ export default function Footer() {
 
       {/* ── Mesh Orbs — same pattern as all sections ── */}
       <div
-        className="absolute -top-1/4 -left-[8%] w-[45%] h-[70%] rounded-full blur-3xl pointer-events-none animate-[pulse_10s_ease-in-out_infinite]"
+        className="absolute -top-1/4 -left-[8%] w-[45%] h-[70%] rounded-full pointer-events-none animate-[pulse_10s_ease-in-out_infinite] will-change-opacity transform-gpu"
         style={{ background: "radial-gradient(circle, rgba(37,99,235,0.06) 0%, transparent 70%)" }}
       />
       <div
-        className="absolute -bottom-1/4 -right-[5%] w-[40%] h-[60%] rounded-full blur-3xl pointer-events-none animate-[pulse_13s_ease-in-out_infinite_reverse]"
+        className="absolute -bottom-1/4 -right-[5%] w-[40%] h-[60%] rounded-full pointer-events-none animate-[pulse_13s_ease-in-out_infinite_reverse] will-change-opacity transform-gpu"
         style={{ background: "radial-gradient(circle, rgba(6,182,212,0.06) 0%, transparent 70%)" }}
       />
 

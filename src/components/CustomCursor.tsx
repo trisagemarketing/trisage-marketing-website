@@ -25,6 +25,7 @@ export default function CustomCursor() {
   const [visible, setVisible]     = useState(false); // false until first real mousemove
   const [isHover, setIsHover]     = useState(false);
   const [isClicking, setIsClicking] = useState(false);
+  const [isPointer, setIsPointer]   = useState(true); // track device type to unmount on mobile
 
   // Raw pointer coordinates — start far off-screen so springs settle before reveal
   const mouseX = useMotionValue(-500);
@@ -113,6 +114,7 @@ export default function CustomCursor() {
     // ── MediaQueryList change handler ───────────────────────────────────────
     // Fires when DevTools toggles between desktop and device emulation mode
     const onPointerChange = (e: MediaQueryListEvent) => {
+      setIsPointer(e.matches);
       if (e.matches) {
         attach();
       } else {
@@ -121,8 +123,9 @@ export default function CustomCursor() {
     };
 
     // Initial attach based on current pointer type
-    const isPointerDevice = mql ? mql.matches : navigator.maxTouchPoints === 0;
-    if (isPointerDevice) attach();
+    const initialIsPointer = mql ? mql.matches : navigator.maxTouchPoints === 0;
+    setIsPointer(initialIsPointer);
+    if (initialIsPointer) attach();
 
     // Listen for live changes (DevTools device toolbar toggle)
     mql?.addEventListener("change", onPointerChange);
@@ -137,6 +140,9 @@ export default function CustomCursor() {
   // SSR guard — never render on server
   if (!mounted) return null;
 
+  // Mobile/Touch guard - completely unmount cursor on mobile to save GPU/RAM
+  if (!isPointer) return null;
+
   return (
     <>
       {/* Hide native cursor globally — only when a fine pointer is present */}
@@ -148,10 +154,10 @@ export default function CustomCursor() {
 
       {/* 1. Outer Magnetic Ring */}
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[2147483640] rounded-full border-[1.5px] border-primary-500/60 dark:border-primary-400/60 backdrop-blur-[1px]"
+        className="fixed top-0 left-0 pointer-events-none z-[2147483640] rounded-full border-[1.5px] border-primary-500/60 dark:border-primary-400/60"
         animate={{
-          width:           isClicking ? 30 : isHover ? 55 : 40,
-          height:          isClicking ? 30 : isHover ? 55 : 40,
+          width:           isClicking ? 24 : isHover ? 45 : 32,
+          height:          isClicking ? 24 : isHover ? 45 : 32,
           opacity:         visible ? 1 : 0,
           backgroundColor: isHover
             ? "rgba(14, 165, 233, 0.08)"

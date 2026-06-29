@@ -391,7 +391,7 @@ export default function HomeServices() {
                 <div className="relative w-full mt-4 md:mt-8">
                   
                   {/* Problem Card Exo-Planet */}
-                  <div ref={problemPlanetRef} className="absolute hidden dark:block -top-20 -right-16 md:-top-32 md:-right-24 w-32 h-32 md:w-48 md:h-48 pointer-events-none z-[-2]" style={{
+                  <div ref={problemPlanetRef} className="absolute hidden dark:block -top-20 -right-16 md:-top-32 md:-right-24 w-32 h-32 md:w-48 md:h-48 pointer-events-none z-[-2] will-change-transform transform-gpu" style={{
                     animation: "planetFloat 12s ease-in-out infinite",
                     transformStyle: "preserve-3d"
                   }}>
@@ -462,7 +462,7 @@ export default function HomeServices() {
                 <div className="relative w-full mt-4 md:mt-8">
                   
                   {/* Solution Card Exo-Planet */}
-                  <div ref={solutionPlanetRef} className="absolute hidden dark:block -bottom-20 -right-16 md:-bottom-32 md:-right-28 w-36 h-36 md:w-56 md:h-56 pointer-events-none z-[-2]" style={{
+                  <div ref={solutionPlanetRef} className="absolute hidden dark:block -bottom-20 -right-16 md:-bottom-32 md:-right-28 w-36 h-36 md:w-56 md:h-56 pointer-events-none z-[-2] will-change-transform transform-gpu" style={{
                     animation: "planetFloat 18s ease-in-out infinite reverse",
                     transformStyle: "preserve-3d"
                   }}>

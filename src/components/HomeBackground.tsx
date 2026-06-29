@@ -62,7 +62,7 @@ const Cloud = ({ top, delay, dur, scale, opacity, zIndex = 0 }: any) => (
     zIndex,
     animation: `cloudDrift ${dur} linear infinite ${delay}` 
   }}>
-    <div style={{ transform: `scale(${scale})` }} className="relative drop-shadow-[0_10px_25px_rgba(251,191,36,0.15)]">
+    <div style={{ transform: `scale(${scale})` }} className="relative">
       <div className="relative w-[250px] h-[80px] bg-white rounded-full">
         <div className="absolute top-[-40px] left-[30px] w-[100px] h-[100px] bg-white rounded-full" />
         <div className="absolute top-[-60px] right-[40px] w-[130px] h-[130px] bg-white rounded-full" />
@@ -241,7 +241,7 @@ export default function HomeBackground() {
         </div>
 
         {/* ── PARALLAX LAYER 2 (Medium drift) ── */}
-        <div ref={p2Ref} className="absolute inset-0 pointer-events-none will-change-transform">
+        <div ref={p2Ref} className="absolute inset-0 pointer-events-none will-change-transform hidden md:block">
           {/* Saturn (Deep Space) */}
           <div className="absolute left-[80%] top-[140%] w-[90px] h-[90px] md:w-[200px] md:h-[200px]" style={{
             animation: "planetBounce 20s infinite",
@@ -310,7 +310,7 @@ export default function HomeBackground() {
         </div>
 
         {/* ── PARALLAX LAYER 3 (Fast drift) ── */}
-        <div ref={p3Ref} className="absolute inset-0 pointer-events-none will-change-transform">
+        <div ref={p3Ref} className="absolute inset-0 pointer-events-none will-change-transform hidden md:block">
           {/* Icy Moon System */}
           <div className="absolute left-[8%] top-[85%] w-[45px] h-[45px] md:w-[110px] md:h-[110px]" style={{
             animation: "planetBounce 14s infinite",

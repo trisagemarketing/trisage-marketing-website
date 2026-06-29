@@ -225,14 +225,14 @@ export default function TeamShowcase() {
         <div className="hidden md:flex items-center gap-6 mt-4 relative z-50">
           <button 
             onClick={handlePrev} 
-            className="w-14 h-14 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 backdrop-blur-md border border-black/10 dark:border-white/10 text-gray-900 dark:text-white hover:bg-black/10 dark:hover:bg-white/20 transition-all shadow-sm hover:scale-105 active:scale-95"
+            className="w-14 h-14 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 backdrop-blur-md border border-black/10 dark:border-white/10 text-gray-900 dark:text-white hover:bg-black/10 dark:hover:bg-white/20 transition-all shadow-sm hover:scale-105 active:scale-95 will-change-transform transform-gpu"
             aria-label="Previous team member"
           >
             <ChevronLeft size={28} />
           </button>
           <button 
             onClick={handleNext}
-            className="w-14 h-14 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 backdrop-blur-md border border-black/10 dark:border-white/10 text-gray-900 dark:text-white hover:bg-black/10 dark:hover:bg-white/20 transition-all shadow-sm hover:scale-105 active:scale-95"
+            className="w-14 h-14 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/10 backdrop-blur-md border border-black/10 dark:border-white/10 text-gray-900 dark:text-white hover:bg-black/10 dark:hover:bg-white/20 transition-all shadow-sm hover:scale-105 active:scale-95 will-change-transform transform-gpu"
             aria-label="Next team member"
           >
             <ChevronRight size={28} />

@@ -164,12 +164,12 @@ export default function Testimonials() {
                 {/* ── IDEA 1: Dual Mesh Orbs ── */}
                 {/* Primary orb — top-left, drifts slowly */}
                 <div
-                  className="absolute -top-1/4 -left-[5%] w-[55%] h-[140%] rounded-full blur-3xl pointer-events-none animate-[pulse_8s_ease-in-out_infinite]"
+                  className="absolute -top-1/4 -left-[5%] w-[55%] h-[140%] rounded-full pointer-events-none animate-[pulse_8s_ease-in-out_infinite] will-change-opacity transform-gpu"
                   style={{ background: "radial-gradient(circle, rgba(37,99,235,0.10) 0%, transparent 70%)" }}
                 />
                 {/* Secondary orb — bottom-right, drifts with delay */}
                 <div
-                  className="absolute -bottom-1/4 -right-[5%] w-[50%] h-[130%] rounded-full blur-3xl pointer-events-none animate-[pulse_10s_ease-in-out_infinite_reverse]"
+                  className="absolute -bottom-1/4 -right-[5%] w-[50%] h-[130%] rounded-full pointer-events-none animate-[pulse_10s_ease-in-out_infinite_reverse] will-change-opacity transform-gpu"
                   style={{ background: "radial-gradient(circle, rgba(6,182,212,0.10) 0%, transparent 70%)" }}
                 />
 
