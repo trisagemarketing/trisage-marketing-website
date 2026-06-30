@@ -131,7 +131,7 @@ export default function MissionVision() {
                       background: "linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)",
                     }}
                   />
-                  <Image src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1782475042/WhatsApp_Image_2026-06-26_at_5.22.31_PM_nazxmy.jpg" alt="Mission campaign preview" fill sizes="(max-width: 768px) 50vw" className="object-cover md:hidden" />
+                  <Image src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1782808259/Hornbill-post.jpg_qdfm4n.jpg" alt="Mission campaign preview" fill sizes="(max-width: 768px) 50vw" className="object-cover md:hidden" />
                   <video
                     autoPlay
                     muted
@@ -147,7 +147,7 @@ export default function MissionVision() {
                 {/* Top Right */}
                 <div className="col-start-3 row-start-1 relative rounded-xl md:rounded-3xl overflow-hidden shadow-2xl group">
                   <div className="absolute inset-0 bg-linear-to-tr from-primary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                  <Image src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1782475042/WhatsApp_Image_2026-06-26_at_5.22.31_PM_nazxmy.jpg" alt="Mission 1" fill sizes="(max-width: 768px) 33vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <Image src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1782808259/Hornbill-post.jpg_qdfm4n.jpg" alt="Mission 1" fill sizes="(max-width: 768px) 33vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
                 </div>
                 
                 {/* Center */}
@@ -165,7 +165,7 @@ export default function MissionVision() {
                 {/* Bottom Right */}
                 <div className="col-start-3 row-start-3 relative rounded-xl md:rounded-3xl overflow-hidden shadow-2xl group">
                   <div className="absolute inset-0 bg-linear-to-tr from-primary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                  <Image src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1782475040/WhatsApp_Image_2026-06-26_at_5.22.31_PM_5_xg4qut.jpg" alt="Mission 4" fill sizes="(max-width: 768px) 33vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <Image src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1782808641/Taste-_-Tales.jpg_1_ovhtss.jpg" alt="Mission 4" fill sizes="(max-width: 768px) 33vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
                 </div>
                 
               </div>
