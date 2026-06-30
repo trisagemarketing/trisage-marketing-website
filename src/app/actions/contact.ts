@@ -7,7 +7,6 @@ export async function submitContactForm(formData: any) {
   try {
     const supabase = await createClient();
     
-    // Insert the data into the contact_messages table
     const { error } = await supabase
       .from('contact_messages')
       .insert([

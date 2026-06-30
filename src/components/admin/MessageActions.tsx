@@ -21,7 +21,15 @@ export default function MessageActions({ msg }: { msg: any }) {
   const safeCompany = msg.company ?? "Not provided";
   const safeEmail = msg.email ?? "No email";
   const safePhone = msg.phone ?? "No phone";
-  const safeService = msg.service ?? "General Inquiry";
+  const rawService = msg.service;
+  let serviceArray: string[] = [];
+  if (Array.isArray(rawService)) {
+    serviceArray = rawService;
+  } else if (typeof rawService === 'string' && rawService.trim() !== '') {
+    serviceArray = rawService.split(',');
+  } else {
+    serviceArray = ["General Inquiry"];
+  }
   const safeMessage = msg.message ?? "";
   
   let safeDate = "Unknown date";
@@ -120,9 +128,15 @@ export default function MessageActions({ msg }: { msg: any }) {
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{safeName}</h3>
-                  <div className="flex items-center gap-2 text-primary-600 dark:text-primary-400 font-medium">
-                    <Briefcase className="w-4 h-4" />
-                    <span>{safeService}</span>
+                  <div className="flex items-center gap-2 text-primary-600 dark:text-primary-400 font-medium flex-wrap">
+                    <Briefcase className="w-4 h-4 shrink-0" />
+                    <div className="flex flex-wrap gap-1.5">
+                      {serviceArray.map((srv, idx) => (
+                        <span key={idx} className="inline-flex px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide bg-primary-100/50 dark:bg-primary-500/10 text-primary-700 dark:text-primary-400 border border-primary-200/50 dark:border-primary-500/20">
+                          {srv.trim()}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
                 {msg.meeting_booked && (

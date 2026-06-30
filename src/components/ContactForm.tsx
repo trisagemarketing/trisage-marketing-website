@@ -12,11 +12,20 @@ const formSchema = z.object({
   company: z.string().min(2, "Company name is required"),
   email: z.string().email("Please enter a valid email address"),
   phone: z.string().min(10, "Please enter a valid phone number"),
-  service: z.string().min(1, "Please select a service"),
+  service: z.array(z.string()).min(1, "Please select at least one service"),
   message: z.string().min(10, "Message must be at least 10 characters"),
 });
 
 type FormData = z.infer<typeof formSchema>;
+
+const servicesList = [
+  { id: "seo", label: "SEO" },
+  { id: "performance", label: "Performance Marketing" },
+  { id: "social", label: "Social Media Marketing" },
+  { id: "branding", label: "Branding" },
+  { id: "web", label: "Website Development" },
+  { id: "content", label: "Content Marketing" },
+];
 
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -26,16 +35,30 @@ export default function ContactForm() {
     register,
     handleSubmit,
     reset,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
+    defaultValues: { service: [] }
   });
+
+  const selectedServices = watch("service") || [];
+
+  const toggleService = (label: string) => {
+    if (selectedServices.includes(label)) {
+      setValue("service", selectedServices.filter(s => s !== label), { shouldValidate: true });
+    } else {
+      setValue("service", [...selectedServices, label], { shouldValidate: true });
+    }
+  };
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
     
     try {
       const { submitContactForm } = await import("@/app/actions/contact");
+      
       const result = await submitContactForm(data);
       
       if (result.success) {
@@ -117,22 +140,36 @@ export default function ContactForm() {
           </div>
         </div>
 
-        <div className="space-y-2">
-          <label htmlFor="service" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Service Required</label>
-          <select
-            id="service"
-            {...register("service")}
-            className={inputClasses(!!errors.service)}
-          >
-            <option value="">Select a service...</option>
-            <option value="seo">SEO</option>
-            <option value="performance">Performance Marketing</option>
-            <option value="social">Social Media Marketing</option>
-            <option value="branding">Branding</option>
-            <option value="web">Website Development</option>
-            <option value="content">Content Marketing</option>
-            <option value="other">Other</option>
-          </select>
+        <div className="space-y-3">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            Services Required <span className="text-gray-400 font-normal ml-1">(Select multiple)</span>
+          </label>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {servicesList.map((srv) => {
+              const isSelected = selectedServices.includes(srv.label);
+              return (
+                <div 
+                  key={srv.id} 
+                  onClick={() => toggleService(srv.label)}
+                  className={`
+                    relative cursor-pointer group w-full h-full px-4 py-3 rounded-xl border flex items-center justify-between gap-2
+                    transition-all duration-200 ease-in-out select-none
+                    ${!!errors.service ? 'border-red-500' : isSelected ? 'border-primary-600 dark:border-primary-500' : 'border-gray-200 dark:border-gray-800'}
+                    ${isSelected ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300' : 'bg-white dark:bg-gray-950 text-gray-600 dark:text-gray-400 hover:border-primary-300 dark:hover:border-primary-700'}
+                  `}
+                >
+                  <span className="text-sm font-semibold leading-tight">{srv.label}</span>
+                  <div className={`w-5 h-5 shrink-0 rounded border flex items-center justify-center transition-colors
+                    ${isSelected ? 'border-primary-600 bg-primary-600 dark:border-primary-500 dark:bg-primary-500' : 'border-gray-300 dark:border-gray-700'}
+                  `}>
+                    <svg className={`w-3 h-3 text-white transition-opacity ${isSelected ? 'opacity-100' : 'opacity-0'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
           {errors.service && <p className="text-red-500 dark:text-red-400 text-xs mt-1">{errors.service.message}</p>}
         </div>
 

@@ -39,7 +39,15 @@ export default async function MessagesTableBody({ limit }: { limit?: number }) {
         const safeCompany = msg.company ?? "Not provided";
         const safeEmail = msg.email ?? "No email";
         const safePhone = msg.phone ?? "No phone";
-        const safeService = msg.service ?? "General Inquiry";
+        const rawService = msg.service;
+        let serviceArray: string[] = [];
+        if (Array.isArray(rawService)) {
+          serviceArray = rawService;
+        } else if (typeof rawService === 'string' && rawService.trim() !== '') {
+          serviceArray = rawService.split(',');
+        } else {
+          serviceArray = ["General Inquiry"];
+        }
         const safeMessage = msg.message ?? "";
         
         let safeDateShort = "Unknown";
@@ -79,9 +87,13 @@ export default async function MessagesTableBody({ limit }: { limit?: number }) {
                 <p className="text-sm font-medium text-primary-600 dark:text-primary-400 truncate mt-0.5">{safeCompany}</p>
               </div>
               <div className="text-right flex flex-col items-end shrink-0">
-                <span className="inline-flex px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase bg-gray-100 text-gray-700 dark:bg-white/10 dark:text-gray-300 mb-1 border border-gray-200 dark:border-white/10">
-                  {safeService}
-                </span>
+                <div className="flex flex-wrap justify-end gap-1 mb-1 max-w-[200px]">
+                  {serviceArray.map((srv: string, idx: number) => (
+                    <span key={idx} className="inline-flex px-2 py-0.5 rounded-full text-[9px] font-bold tracking-wide uppercase bg-gray-100 text-gray-700 dark:bg-white/10 dark:text-gray-300 border border-gray-200 dark:border-white/10">
+                      {srv.trim()}
+                    </span>
+                  ))}
+                </div>
                 <div className="flex flex-col text-right mt-1">
                   <span className="text-xs font-bold text-gray-900 dark:text-white">{safeDateShort}</span>
                   <span className="text-[10px] text-gray-500">{safeTimeShort}</span>
