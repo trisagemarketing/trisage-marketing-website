@@ -1,151 +1,181 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from "framer-motion";
 
 /**
- * FLUID DOT & MAGNETIC RING CUSTOM CURSOR
+ * PREMIUM FLUID DOT & MAGNETIC RING CUSTOM CURSOR
  *
- * Bug Fixes (Senior Audit):
- * 1. Visibility guard: cursor hides when mouse leaves window (DevTools drag, alt-tab etc.)
- *    and re-appears instantly when mouse re-enters — eliminates the "ghost" frozen cursor.
- * 2. DevTools resize / mobile-emulation safe: pointer-device check uses a live
- *    MediaQueryList with an `addEventListener("change")` so toggling DevTools device
- *    toolbar correctly tears down or re-attaches all listeners without a page refresh.
- * 3. Initial position guard: cursor elements start with opacity-0 and only fade in
- *    after the FIRST real mousemove event, eliminating the (-100,-100) snap/jump glitch.
- * 4. Stable effect: dependency array is empty `[]` — MotionValues are stable refs and
- *    must NOT be listed as deps (they never change identity, but listing them caused
- *    the early-return guard to skip re-attachment on every render cycle).
- * 5. All event listeners are registered on `document` (not `window`) for consistency,
- *    matching browser DevTools inspector behaviour where `window` events can be masked.
+ * Architecture Improvements:
+ * 1. 0ms Latency on Core Dot: Inner dot uses raw `mouseX/Y` directly (no spring physics).
+ * 2. 100% GPU Accelerated: Uses `transform: translate3d` and `scale`. Zero width/height layout thrashing.
+ * 3. Bypassed React State for Motion: Interaction states (hover, click) use `MotionValues` directly.
+ * 4. CSS Containment: Applied `contain: layout paint style` to strictly isolate rendering.
+ * 5. Coarse Pointer Guard: Component unmounts gracefully if touch device is detected.
  */
 export default function CustomCursor() {
-  const [mounted, setMounted]     = useState(false);
-  const [visible, setVisible]     = useState(false); // false until first real mousemove
-  const [isHover, setIsHover]     = useState(false);
-  const [isClicking, setIsClicking] = useState(false);
-  const [isPointer, setIsPointer]   = useState(true); // track device type to unmount on mobile
+  const [mounted, setMounted] = useState(false);
+  const [isPointer, setIsPointer] = useState(true); // Tracks capability gracefully via React state
 
-  // Raw pointer coordinates — start far off-screen so springs settle before reveal
+  const prefersReducedMotion = useReducedMotion();
+
+  // ── Raw Pointer Coordinates ── (Started far off-screen)
   const mouseX = useMotionValue(-500);
   const mouseY = useMotionValue(-500);
 
-  // Outer Ring — smooth trailing spring
-  const ringX = useSpring(mouseX, { damping: 25, stiffness: 180, mass: 0.6 });
-  const ringY = useSpring(mouseY, { damping: 25, stiffness: 180, mass: 0.6 });
+  // ── Physics (Ring Only) ──
+  const ringX = useSpring(mouseX, { damping: 25, stiffness: 200, mass: 0.5 });
+  const ringY = useSpring(mouseY, { damping: 25, stiffness: 200, mass: 0.5 });
 
-  // Inner Dot — snappy, near-instant spring
-  const dotX = useSpring(mouseX, { damping: 35, stiffness: 400, mass: 0.1 });
-  const dotY = useSpring(mouseY, { damping: 35, stiffness: 400, mass: 0.1 });
+  // ── High-Frequency Interaction States (Bypass React) ──
+  // 0 = false, 1 = true
+  const hoverState = useMotionValue(0);
+  const clickState = useMotionValue(0);
+  const visibleState = useMotionValue(0);
 
-  // Track whether listeners are currently attached so we never double-attach
+  // ── Smooth Transitions via useSpring ──
+  // Damping controls the "bounciness" (higher = less bounce). Stiffness controls speed.
+  const smoothHover = useSpring(hoverState, { damping: 25, stiffness: 400 });
+  const smoothClick = useSpring(clickState, { damping: 25, stiffness: 400 });
+  const smoothVisible = useSpring(visibleState, { damping: 20, stiffness: 300 });
+
+  // ── Derived Continuous Transforms ──
+  // By mathematically combining the smooth values instead of using if/else logic,
+  // we guarantee buttery smooth interpolation on every single frame.
+  const dotScale = useTransform([smoothHover, smoothClick], ([hover, click]: any) => {
+    const base = 1;
+    const hoverEffect = hover * -1;      // Dot shrinks to 0 on hover
+    const clickEffect = click * -0.25;   // Dot shrinks slightly on click
+    return Math.max(0, base + hoverEffect + clickEffect);
+  });
+
+  const ringScale = useTransform([smoothHover, smoothClick], ([hover, click]: any) => {
+    const base = 1;
+    const hoverEffect = hover * 0.6;     // Ring expands to 1.6 on hover
+    const clickEffect = click * -0.25;   // Ring shrinks on click
+    return Math.max(0, base + hoverEffect + clickEffect);
+  });
+
+  const ringOpacity = useTransform([smoothVisible, smoothHover], ([visible, hover]: any) => {
+    // Opacity goes from 1 to 0.8 on hover, multiplied by global visibility
+    const hoverOpacity = 1 - (hover * 0.2); 
+    return visible * hoverOpacity;
+  });
+
+  const dotOpacity = useTransform([smoothVisible, smoothHover], ([visible, hover]: any) => {
+    // Dot opacity fades out completely on hover
+    return visible * (1 - hover);
+  });
+  
+  // Make the background highly visible yet translucent cyan on hover
+  const ringBg = useTransform(smoothHover, [0, 1], ["rgba(14, 165, 233, 0)", "rgba(14, 165, 233, 0.15)"]);
+
+  // Track if listeners are active
   const listenersActive = useRef(false);
+  // Cache to avoid duplicate node checks
+  const lastHoveredNode = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
 
-    // --- Live pointer-device detection via MediaQueryList ---
-    // This survives DevTools opening/closing in device emulation mode.
     let mql: MediaQueryList | null = null;
     try { mql = window.matchMedia("(pointer: fine)"); } catch { /* SSR guard */ }
 
-    // ── Event Handlers ──────────────────────────────────────────────────────
-
-    const onMove = (e: MouseEvent) => {
+    // ── Event Handlers ──
+    const onMove = (e: PointerEvent) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
-      // Only reveal cursor after the very first real movement
-      if (!visible) setVisible(true);
+      if (visibleState.get() === 0) visibleState.set(1);
     };
 
-    const onOver = (e: MouseEvent) => {
+    // Use pointerover/pointerout for more efficient bubbling evaluation
+    const onPointerOver = (e: PointerEvent) => {
       const t = e.target as HTMLElement | null;
       if (!t) return;
-      let hovering = false;
+      
+      if (t === lastHoveredNode.current) return;
+      lastHoveredNode.current = t;
+
       try {
-        hovering = !!t.closest(
+        const isInteractive = !!t.closest(
           "a, button, [role='button'], input, textarea, select, label, [tabindex]"
         );
-      } catch { /* Element may be detached */ }
-      setIsHover(hovering);
+        hoverState.set(isInteractive ? 1 : 0);
+      } catch { /* Node detached */ }
     };
 
-    const onMouseDown = () => setIsClicking(true);
-    const onMouseUp   = () => setIsClicking(false);
+    const onPointerOut = (e: PointerEvent) => {
+      // Small reset if leaving an element
+      const t = e.target as HTMLElement | null;
+      if (t === lastHoveredNode.current) {
+        lastHoveredNode.current = null;
+        hoverState.set(0);
+      }
+    };
 
-    // Hide cursor when mouse leaves the page (DevTools panel, other windows)
-    const onLeave = () => setVisible(false);
-    // Restore cursor when mouse re-enters the page
-    const onEnter = (e: MouseEvent) => {
+    const onPointerDown = () => clickState.set(1);
+    const onPointerUp = () => clickState.set(0);
+
+    const onLeave = () => visibleState.set(0);
+    const onEnter = (e: PointerEvent) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
-      setVisible(true);
+      visibleState.set(1);
     };
 
-    // ── Attach / Detach helpers ─────────────────────────────────────────────
-
+    // ── Attach/Detach Helpers ──
     const attach = () => {
-      if (listenersActive.current) return; // Guard against double-attach
+      if (listenersActive.current) return;
       listenersActive.current = true;
-      document.addEventListener("mousemove",  onMove,      { passive: true });
-      document.addEventListener("mouseover",  onOver,      { passive: true });
-      document.addEventListener("mousedown",  onMouseDown);
-      document.addEventListener("mouseup",    onMouseUp);
-      document.addEventListener("mouseleave", onLeave);
-      document.addEventListener("mouseenter", onEnter);
+      document.addEventListener("pointermove", onMove, { passive: true });
+      document.addEventListener("pointerover", onPointerOver, { passive: true });
+      document.addEventListener("pointerout", onPointerOut, { passive: true });
+      document.addEventListener("pointerdown", onPointerDown, { passive: true });
+      document.addEventListener("pointerup", onPointerUp, { passive: true });
+      document.addEventListener("pointerleave", onLeave, { passive: true }); // Document leave
+      document.addEventListener("pointerenter", onEnter, { passive: true }); // Document enter
     };
 
     const detach = () => {
       if (!listenersActive.current) return;
       listenersActive.current = false;
-      document.removeEventListener("mousemove",  onMove);
-      document.removeEventListener("mouseover",  onOver);
-      document.removeEventListener("mousedown",  onMouseDown);
-      document.removeEventListener("mouseup",    onMouseUp);
-      document.removeEventListener("mouseleave", onLeave);
-      document.removeEventListener("mouseenter", onEnter);
-      // Reset state cleanly when device switches to touch
-      setVisible(false);
-      setIsHover(false);
-      setIsClicking(false);
+      document.removeEventListener("pointermove", onMove);
+      document.removeEventListener("pointerover", onPointerOver);
+      document.removeEventListener("pointerout", onPointerOut);
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("pointerup", onPointerUp);
+      document.removeEventListener("pointerleave", onLeave);
+      document.removeEventListener("pointerenter", onEnter);
+      
+      visibleState.set(0);
+      hoverState.set(0);
+      clickState.set(0);
     };
 
-    // ── MediaQueryList change handler ───────────────────────────────────────
-    // Fires when DevTools toggles between desktop and device emulation mode
     const onPointerChange = (e: MediaQueryListEvent) => {
       setIsPointer(e.matches);
-      if (e.matches) {
-        attach();
-      } else {
-        detach();
-      }
+      if (e.matches) attach();
+      else detach();
     };
 
-    // Initial attach based on current pointer type
     const initialIsPointer = mql ? mql.matches : navigator.maxTouchPoints === 0;
     setIsPointer(initialIsPointer);
+    
     if (initialIsPointer) attach();
-
-    // Listen for live changes (DevTools device toolbar toggle)
     mql?.addEventListener("change", onPointerChange);
 
     return () => {
       detach();
       mql?.removeEventListener("change", onPointerChange);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Empty dep array — MotionValues are stable refs, handlers use closure correctly
+  }, [mouseX, mouseY, hoverState, clickState, visibleState]);
 
-  // SSR guard — never render on server
-  if (!mounted) return null;
-
-  // Mobile/Touch guard - completely unmount cursor on mobile to save GPU/RAM
-  if (!isPointer) return null;
+  // SSR & Mobile Guard
+  if (!mounted || !isPointer) return null;
 
   return (
     <>
-      {/* Hide native cursor globally — only when a fine pointer is present */}
       <style dangerouslySetInnerHTML={{ __html: `
         body, a, button, [role='button'], input, textarea, select, label {
           cursor: none !important;
@@ -154,37 +184,36 @@ export default function CustomCursor() {
 
       {/* 1. Outer Magnetic Ring */}
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[2147483640] rounded-full border-[1.5px] border-primary-500/60 dark:border-primary-400/60"
-        animate={{
-          width:           isClicking ? 24 : isHover ? 45 : 32,
-          height:          isClicking ? 24 : isHover ? 45 : 32,
-          opacity:         visible ? 1 : 0,
-          backgroundColor: isHover
-            ? "rgba(14, 165, 233, 0.08)"
-            : "rgba(14, 165, 233, 0)",
-        }}
+        className="fixed pointer-events-none z-[2147483640] rounded-full border-[1.5px] border-primary-500/60 dark:border-primary-400/60"
         style={{
-          x: ringX,
-          y: ringY,
-          translateX: "-50%",
-          translateY: "-50%",
+          top: -16,
+          left: -16,
+          width: 32,
+          height: 32,
+          x: prefersReducedMotion ? mouseX : ringX,
+          y: prefersReducedMotion ? mouseY : ringY,
+          scale: ringScale,
+          opacity: ringOpacity,
+          backgroundColor: ringBg,
+          contain: "layout paint style", // Strict rendering isolation
+          willChange: "transform, opacity",
         }}
-        transition={{ type: "spring", stiffness: 300, damping: 25 }}
       />
 
-      {/* 2. Core Fluid Dot */}
+      {/* 2. Core Fluid Dot (0ms Latency) */}
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[2147483647] rounded-full bg-primary-600 dark:bg-primary-400 shadow-[0_0_8px_rgba(14,165,233,0.4)]"
-        animate={{
-          width:   isClicking ? 6 : isHover ? 0 : 8,
-          height:  isClicking ? 6 : isHover ? 0 : 8,
-          opacity: visible ? (isHover ? 0 : 1) : 0,
-        }}
+        className="fixed pointer-events-none z-[2147483647] rounded-full bg-primary-600 dark:bg-primary-400 shadow-[0_0_8px_rgba(14,165,233,0.4)]"
         style={{
-          x: dotX,
-          y: dotY,
-          translateX: "-50%",
-          translateY: "-50%",
+          top: -4,
+          left: -4,
+          width: 8,
+          height: 8,
+          x: mouseX, // Raw 1:1 hardware pointer
+          y: mouseY, // Raw 1:1 hardware pointer
+          scale: dotScale,
+          opacity: dotOpacity,
+          contain: "layout paint style", // Strict rendering isolation
+          willChange: "transform, opacity",
         }}
       />
     </>
