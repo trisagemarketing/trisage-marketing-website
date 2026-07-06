@@ -11,6 +11,10 @@ import { Toaster } from "sonner";
 export const metadata: Metadata = {
   title: "Trisage Marketing | Premium Digital Agency in India",
   description: "Trisage Marketing is a premium digital agency specializing in SEO, Performance Marketing, and Growth Strategies.",
+  icons: {
+    icon: '/icon.png?v=2', // Cache-busting query parameter
+    apple: '/icon.png?v=2',
+  },
 };
 
 export default function RootLayout({
