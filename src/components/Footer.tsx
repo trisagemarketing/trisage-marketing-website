@@ -149,42 +149,46 @@ export default function Footer() {
 
           {/* Column 2: Company */}
           <FooterAccordion title="Company">
-            <ul className="flex flex-col gap-2.5 text-sm lg:pr-4">
-              {[
-                { href: "/about", label: "About Us" },
-                { href: "/services", label: "Our Services" },
-                { href: "/methodology", label: "Methodology" },
-                { href: "/blog", label: "Blog" },
-                { href: "/contact", label: "Contact" },
-              ].map(({ href, label }) => (
-                <li key={href}>
-                  <Link
-                    href={href}
-                    className="font-sans font-medium uppercase tracking-tight text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200 flex items-center gap-1.5 group"
-                  >
-                    <span className="w-0 group-hover:w-2 h-[2px] bg-primary-500 transition-all duration-300 rounded-full" />
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <nav aria-label="Company Navigation">
+              <ul className="flex flex-col gap-2.5 text-sm lg:pr-4">
+                {[
+                  { href: "/about", label: "About Us" },
+                  { href: "/services", label: "Our Services" },
+                  { href: "/methodology", label: "Methodology" },
+                  { href: "/blog", label: "Blog" },
+                  { href: "/contact", label: "Contact" },
+                ].map(({ href, label }) => (
+                  <li key={href}>
+                    <Link
+                      href={href}
+                      className="font-sans font-medium uppercase tracking-tight text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200 flex items-center gap-1.5 group"
+                    >
+                      <span className="w-0 group-hover:w-2 h-[2px] bg-primary-500 transition-all duration-300 rounded-full" />
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </FooterAccordion>
 
           {/* Column 3: Services */}
           <FooterAccordion title="Services">
-            <ul className="flex flex-col gap-2.5 text-sm">
-              {services.slice(0, 5).map((service) => (
-                <li key={service.id}>
-                  <Link
-                    href={`/services/${service.slug}`}
-                    className="font-sans font-medium uppercase tracking-tight text-gray-600 dark:text-gray-400 hover:text-secondary-600 dark:hover:text-secondary-400 transition-colors duration-200 flex items-center gap-1.5 group"
-                  >
-                    <span className="w-0 group-hover:w-2 h-[2px] bg-secondary-500 transition-all duration-300 rounded-full" />
-                    {service.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <nav aria-label="Services Navigation">
+              <ul className="flex flex-col gap-2.5 text-sm">
+                {services.slice(0, 5).map((service) => (
+                  <li key={service.id}>
+                    <Link
+                      href={`/services/${service.slug}`}
+                      className="font-sans font-medium uppercase tracking-tight text-gray-600 dark:text-gray-400 hover:text-secondary-600 dark:hover:text-secondary-400 transition-colors duration-200 flex items-center gap-1.5 group"
+                    >
+                      <span className="w-0 group-hover:w-2 h-[2px] bg-secondary-500 transition-all duration-300 rounded-full" />
+                      {service.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </FooterAccordion>
 
           {/* Column 4: Contact */}

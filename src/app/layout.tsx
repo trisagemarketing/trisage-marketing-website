@@ -9,8 +9,67 @@ import AnalyticsTracker from "@/components/AnalyticsTracker";
 import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://trisagemarketing.com'),
   title: "Trisage Marketing | Premium Digital Agency in India",
   description: "Trisage Marketing is a premium digital agency specializing in SEO, Performance Marketing, and Growth Strategies.",
+  openGraph: {
+    title: "Trisage Marketing | Premium Digital Agency in India",
+    description: "Trisage Marketing is a premium digital agency specializing in SEO, Performance Marketing, and Growth Strategies.",
+    url: 'https://trisagemarketing.com',
+    siteName: 'Trisage Marketing',
+    locale: 'en_IN',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "Trisage Marketing | Premium Digital Agency in India",
+    description: "Trisage Marketing is a premium digital agency specializing in SEO, Performance Marketing, and Growth Strategies.",
+  },
+};
+
+const globalJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://trisagemarketing.com/#website",
+      "url": "https://trisagemarketing.com/",
+      "name": "Trisage Marketing",
+      "description": "Premium digital agency specializing in SEO, Performance Marketing, and Growth Strategies.",
+      "publisher": {
+        "@id": "https://trisagemarketing.com/#organization"
+      },
+      "inLanguage": "en-IN"
+    },
+    {
+      "@type": ["Organization", "LocalBusiness"],
+      "@id": "https://trisagemarketing.com/#organization",
+      "name": "Trisage Marketing",
+      "url": "https://trisagemarketing.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://trisagemarketing.com/logo.png",
+        "width": 1024,
+        "height": 1024
+      },
+      "image": "https://trisagemarketing.com/logo.png",
+      "description": "Trisage Marketing is a premium digital marketing agency in India helping ambitious brands scale through data-driven strategies and exceptional design.",
+      "telephone": "+919217900934",
+      "email": "admin@trisagemarketing.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "B-11, Amaltash Marg, & Block B, Sector 4",
+        "addressLocality": "Noida",
+        "addressRegion": "Uttar Pradesh",
+        "postalCode": "201301",
+        "addressCountry": "IN"
+      },
+      "sameAs": [
+        "https://linkedin.com/company/trisage-marketing/",
+        "https://instagram.com/trisagemarketing"
+      ]
+    }
+  ]
 };
 
 export default function RootLayout({
@@ -20,6 +79,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="scroll-smooth" data-scroll-behavior="smooth">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(globalJsonLd) }}
+        />
+      </head>
       <body suppressHydrationWarning className="font-sans antialiased bg-white dark:bg-[#050b14]">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <LenisProvider>

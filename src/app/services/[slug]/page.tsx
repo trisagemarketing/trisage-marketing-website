@@ -1,7 +1,10 @@
 import { notFound } from "next/navigation";
 import { services } from "@/data/services";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowRight, CheckCircle2, ChevronDown, ChevronRight, FileText } from "lucide-react";
+import ServiceSchema from "@/components/Schema/ServiceSchema";
+import BreadcrumbSchema from "@/components/Schema/BreadcrumbSchema";
+import FaqSchema from "@/components/Schema/FaqSchema";
 
 // For static site generation
 export function generateStaticParams() {
@@ -20,8 +23,17 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
 
   const Icon = service.icon;
 
+  const breadcrumbs = [
+    { name: "Home", item: "/" },
+    { name: "Services", item: "/services" },
+    { name: service.title, item: `/services/${service.slug}` }
+  ];
+
   return (
     <div className="pt-24 pb-0 bg-white dark:bg-[#050b14] ">
+      <ServiceSchema service={service} />
+      <BreadcrumbSchema items={breadcrumbs} />
+      {service.faqs && <FaqSchema faqs={service.faqs} />}
       
       {/* Hero Section */}
       <section className="relative py-20 lg:py-32 overflow-hidden">
@@ -99,6 +111,62 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
           </div>
         </div>
       </section>
+
+      {/* Hub and Spoke: Related Articles */}
+      {service.relatedArticles && service.relatedArticles.length > 0 && (
+        <section aria-labelledby="related-insights-heading" className="py-20 bg-white dark:bg-[#050b14]">
+          <div className="container mx-auto px-4 md:px-8">
+            <div className="max-w-4xl mx-auto">
+              <div className="flex items-center gap-3 mb-8">
+                <FileText className="text-primary-600 dark:text-primary-400" size={28} aria-hidden="true" />
+                <h2 id="related-insights-heading" className="text-3xl font-bold text-gray-900 dark:text-white">Related Insights</h2>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {service.relatedArticles.map((article: any, idx: number) => (
+                  <Link 
+                    key={idx} 
+                    href={`/blog/${article.slug}`}
+                    className="group p-6 bg-gray-50 dark:bg-[#0a1220] rounded-2xl border border-gray-100 dark:border-gray-800 hover:shadow-lg transition-all hover:-translate-y-1"
+                  >
+                    <h3 className="font-semibold text-lg text-gray-900 dark:text-white mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                      {article.title}
+                    </h3>
+                    <div className="flex items-center gap-2 text-primary-600 dark:text-primary-400 text-sm font-medium">
+                      Read Article <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* FAQ Section */}
+      {service.faqs && service.faqs.length > 0 && (
+        <section aria-labelledby="faq-heading" className="py-20 bg-gray-50 dark:bg-[#0a1220] border-t border-gray-100 dark:border-gray-800">
+          <div className="container mx-auto px-4 md:px-8">
+            <div className="max-w-3xl mx-auto">
+              <h2 id="faq-heading" className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-12">Frequently Asked Questions</h2>
+              <div className="space-y-6">
+                {service.faqs.map((faq: any, idx: number) => (
+                  <details key={idx} className="group bg-white dark:bg-[#050b14] rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 [&_summary::-webkit-details-marker]:hidden">
+                    <summary className="flex cursor-pointer items-center justify-between gap-4 p-6 font-semibold text-gray-900 dark:text-white text-lg">
+                      {faq.question}
+                      <span className="relative ml-1.5 h-5 w-5 shrink-0 transition duration-300 group-open:-rotate-180">
+                        <ChevronDown className="h-5 w-5 text-gray-500" />
+                      </span>
+                    </summary>
+                    <div className="px-6 pb-6 text-gray-600 dark:text-gray-400 leading-relaxed">
+                      {faq.answer}
+                    </div>
+                  </details>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CTA Section */}
       <section className="py-24 bg-white dark:bg-[#050b14]">

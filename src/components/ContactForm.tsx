@@ -80,11 +80,12 @@ export default function ContactForm() {
     `w-full px-4 py-3 rounded-xl border ${hasError ? "border-red-500 focus:ring-red-500" : "border-gray-200 dark:border-gray-700 focus:border-primary-500 dark:focus:border-primary-400 focus:ring-primary-500 dark:focus:ring-primary-400"} bg-transparent dark:bg-gray-900 text-gray-900 dark:text-white dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-opacity-50 transition-colors`;
 
   return (
-    <motion.div 
+    <motion.section 
+      aria-labelledby="contact-form-heading"
       initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeUp}
       className="bg-white dark:bg-gray-950 rounded-3xl p-8 md:p-12 shadow-xl border border-gray-100 dark:border-gray-800"
     >
-      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Send us a message</h3>
+      <h2 id="contact-form-heading" className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Send us a message</h2>
       
       {isSuccess && (
         <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded-xl border border-green-200 dark:border-green-900/50">
@@ -203,6 +204,6 @@ export default function ContactForm() {
           )}
         </button>
       </form>
-    </motion.div>
+    </motion.section>
   );
 }

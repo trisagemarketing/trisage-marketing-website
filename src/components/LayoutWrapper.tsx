@@ -11,9 +11,9 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   return (
     <>
       {!isAdmin && <Navbar />}
-      <main className="min-h-screen">
+      <div id="page-wrapper" className="min-h-screen">
         {children}
-      </main>
+      </div>
       {!isAdmin && <Footer />}
     </>
   );

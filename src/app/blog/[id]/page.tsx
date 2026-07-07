@@ -6,6 +6,8 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import RichTextRenderer from "@/components/blog/RichTextRenderer";
 import ShareButton from "@/components/blog/ShareButton";
+import ArticleSchema from "@/components/Schema/ArticleSchema";
+import BreadcrumbSchema from "@/components/Schema/BreadcrumbSchema";
 
 // ==========================================
 // DYNAMIC METADATA + JSON-LD
@@ -27,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       type: 'article',
     },
     alternates: {
-      canonical: post.canonical_url || `https://trisage.com/blog/${post.slug}`,
+      canonical: post.canonical_url || `https://trisagemarketing.com/blog/${post.slug}`,
     }
   };
 }
@@ -39,30 +41,26 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
 
   if (!post) notFound();
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: post.title,
-    description: post.excerpt,
-    image: post.cover_image,
-    datePublished: post.published_at,
-    dateModified: post.updated_at,
-    author: [{ '@type': 'Person', name: post.author_name }],
-    publisher: { '@type': 'Organization', name: 'Trisage Marketing' },
-  };
-
   const publishDate = new Date(post.published_at || post.created_at).toLocaleDateString('en-US', {
     year: 'numeric', month: 'long', day: 'numeric'
   });
+
+  const breadcrumbs = [
+    { name: "Home", item: "/" },
+    { name: "Insights", item: "/blog" },
+    { name: post.title, item: `/blog/${post.slug}` }
+  ];
 
   // ONE shared container class used by every section — guarantees pixel-perfect alignment
   const CONTAINER = "w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8";
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <ArticleSchema article={post} />
+      <BreadcrumbSchema items={breadcrumbs} />
 
       <main className="min-h-screen bg-white dark:bg-[#050b14] ">
+        <article>
 
         {/* ── Hero / Header ── */}
         <header className="relative pt-28 pb-10 md:pt-36 md:pb-14 overflow-hidden">
@@ -167,6 +165,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
           )}
         </div>
 
+        </article>
       </main>
 
       <CTA />
