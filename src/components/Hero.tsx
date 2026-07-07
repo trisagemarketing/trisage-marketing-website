@@ -135,7 +135,7 @@ export default function Hero() {
           
           <div ref={textWrapperRef} className="w-full flex flex-col will-change-transform opacity-0">
             {/* Top Giant Text - TRISAGE */}
-            <div 
+            <h1 
               className="w-full flex justify-between items-center font-medium text-primary-500 dark:text-primary-300 uppercase cursor-default tracking-tighter"
               style={{ 
                 fontSize: 'clamp(5rem, 27.5vw, 420px)',
@@ -154,7 +154,7 @@ export default function Hero() {
                   </span>
                 </div>
               ))}
-            </div>
+            </h1>
             
             {/* Bottom Split Text - DIGITAL / MARKETING */}
             <div className="flex flex-row w-full justify-between items-end mt-2 md:mt-4 lg:mt-6">
