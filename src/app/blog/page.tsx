@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Clock } from "lucide-react";
-import { createClient } from "@/lib/supabase/server";
+import { getAllPublishedPosts } from "@/lib/blog/data";
 
 export const metadata: Metadata = {
   title: "Insights & Strategy | Trisage Marketing",
@@ -11,12 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function BlogPage() {
-  const supabase = await createClient();
-  const { data: blogs } = await supabase
-    .from('blogs')
-    .select('*')
-    .eq('status', 'published')
-    .order('published_at', { ascending: false });
+  const blogs = await getAllPublishedPosts();
 
   // Safety fallback if no blogs exist yet
   const displayBlogs = blogs && blogs.length > 0 ? blogs : [];

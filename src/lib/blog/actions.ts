@@ -52,11 +52,17 @@ export async function saveDraft(formData: z.infer<typeof SaveDraftSchema>) {
 
     if (!targetBlogId) {
       const slug = validated.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+      let uniqueSlug = slug;
+      let counter = 2;
+      
+      // Keep attempting to insert until we don't get a unique violation (23505)
+      while (true) {
+
       const { data: newBlog, error: insertError } = await supabase
         .from('blogs')
         .insert({
           title: validated.title,
-          slug: slug,
+          slug: uniqueSlug,
           content: validated.content,
           status: 'draft',
           author_id: user.id,
@@ -68,9 +74,19 @@ export async function saveDraft(formData: z.infer<typeof SaveDraftSchema>) {
         .select('id')
         .single();
         
-      if (insertError) throw new Error("Failed to create initial draft container: " + insertError.message);
+      if (insertError) {
+        if (insertError.code === '23505') {
+          // Unique violation on slug
+          uniqueSlug = `${slug}-${counter}`;
+          counter++;
+          continue;
+        }
+        throw new Error("Failed to create initial draft container: " + insertError.message);
+      }
       targetBlogId = newBlog.id;
+      break; // Successfully inserted
     }
+  }
 
     // Now upsert into the active `blog_drafts` table
     const { error: draftError } = await supabase
@@ -131,12 +147,16 @@ export async function publishBlog(formData: z.infer<typeof PublishSchema>) {
 
     if (rpcError) throw new Error("Atomic publish transaction failed: " + rpcError.message);
 
-    // We also need to update the meta fields and slug which aren't in the base RPC
-    const { error: metaError } = await supabase
-      .from('blogs')
-      .update({
-        title: validated.title,
-        slug: validated.slug,
+    let finalSlug = validated.slug;
+    let counter = 2;
+
+    while (true) {
+      // We also need to update the meta fields and slug which aren't in the base RPC
+      const { error: metaError } = await supabase
+        .from('blogs')
+        .update({
+          title: validated.title,
+          slug: finalSlug,
         cover_image: validated.coverImage || null,
         category: validated.category,
         tags: validated.tags,
@@ -149,14 +169,23 @@ export async function publishBlog(formData: z.infer<typeof PublishSchema>) {
       })
       .eq('id', validated.blogId);
 
-    if (metaError) throw new Error("Meta update failed: " + metaError.message);
+      if (metaError) {
+        if (metaError.code === '23505') {
+          finalSlug = `${validated.slug}-${counter}`;
+          counter++;
+          continue;
+        }
+        throw new Error("Meta update failed: " + metaError.message);
+      }
+      break; // Successfully updated
+    }
 
     // Trigger On-Demand Revalidation (ISR)
     // This instantly purges the static cache for the blog index and the specific article!
     revalidatePath('/blog');
-    revalidatePath(`/blog/${validated.slug}`);
+    revalidatePath(`/blog/${finalSlug}`);
 
-    console.log(`[CMS Logs] Successfully published and revalidated blog ${validated.slug}`);
+    console.log(`[CMS Logs] Successfully published and revalidated blog ${finalSlug}`);
     return { success: true };
   } catch (error: any) {
     console.error(`[CMS Logs] Publish failed:`, error);

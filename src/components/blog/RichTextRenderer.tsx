@@ -10,6 +10,26 @@ import { toast } from 'sonner';
 import { useState } from 'react';
 
 // =======================
+// SECURITY: XSS ATTRIBUTE BOUNDARY
+// =======================
+function getSafeUrl(url: string | undefined | null): string {
+  if (!url) return '#';
+  try {
+    const parsed = new URL(url, 'https://dummy.com'); // Base required for relative paths
+    const allowedProtocols = ['http:', 'https:', 'mailto:', 'tel:'];
+    if (allowedProtocols.includes(parsed.protocol)) {
+      return url;
+    }
+    // If it's a relative path it will parse with dummy.com and have https: protocol, so it passes.
+    // If it's javascript:, protocol is javascript:, so it falls through to '#'
+    return '#';
+  } catch (e) {
+    // If parsing fails completely, fallback to safe string
+    return url.startsWith('/') || url.startsWith('#') ? url : '#';
+  }
+}
+
+// =======================
 // ERROR BOUNDARY
 // =======================
 class BlockErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
@@ -100,7 +120,7 @@ function renderInlineNodes(nodes: any[] | undefined): React.ReactNode {
             </code>
           );
           if (mark.type === 'link') el = (
-            <Link key={idx} href={mark.attrs.href} target={mark.attrs.target || '_blank'} className="text-primary-600 dark:text-primary-400 underline underline-offset-4 decoration-primary-300 dark:decoration-primary-700 hover:decoration-primary-500 transition-colors">
+            <Link key={idx} href={getSafeUrl(mark.attrs.href)} target={mark.attrs.target || '_blank'} className="text-primary-600 dark:text-primary-400 underline underline-offset-4 decoration-primary-300 dark:decoration-primary-700 hover:decoration-primary-500 transition-colors">
               {el}
             </Link>
           );
@@ -215,7 +235,7 @@ const BlockRegistry: Record<string, React.FC<{ node: any }>> = {
     <figure className="my-10 w-full">
       <div className="relative w-full aspect-[16/9] overflow-hidden rounded-2xl shadow-lg">
         <Image
-          src={node.attrs.src}
+          src={getSafeUrl(node.attrs.src)}
           alt={node.attrs.alt || 'Blog image'}
           fill
           className="object-cover"

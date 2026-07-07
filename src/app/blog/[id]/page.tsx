@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowLeft, Clock, Calendar, Tag } from "lucide-react";
 import CTA from "@/components/CTA";
 import { notFound } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { getPublishedPostBySlug } from "@/lib/blog/data";
 import RichTextRenderer from "@/components/blog/RichTextRenderer";
 import ShareButton from "@/components/blog/ShareButton";
 import ArticleSchema from "@/components/Schema/ArticleSchema";
@@ -14,8 +14,7 @@ import BreadcrumbSchema from "@/components/Schema/BreadcrumbSchema";
 // ==========================================
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const supabase = await createClient();
-  const { data: post } = await supabase.from('blogs').select('*').eq('slug', id).eq('status', 'published').single();
+  const post = await getPublishedPostBySlug(id);
 
   if (!post) return { title: "Post Not Found" };
 
@@ -36,8 +35,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function BlogPostPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const supabase = await createClient();
-  const { data: post } = await supabase.from('blogs').select('*').eq('slug', id).eq('status', 'published').single();
+  const post = await getPublishedPostBySlug(id);
 
   if (!post) notFound();
 
