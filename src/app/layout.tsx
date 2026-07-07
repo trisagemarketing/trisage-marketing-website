@@ -95,13 +95,13 @@ export default function RootLayout({
               toastOptions={{
                 unstyled: true,
                 classNames: {
-                  toast: "pointer-events-auto relative flex items-center gap-2.5 sm:gap-3 !w-max sm:!w-max !max-w-[calc(100vw-32px)] sm:min-w-[320px] px-4 sm:px-5 py-3 sm:py-3.5 rounded-[20px] sm:rounded-[1.25rem] border-2 mb-3 mx-auto transition-all duration-300 shadow-xl",
+                  toast: "pointer-events-auto relative flex items-center gap-3.5 w-full sm:w-max max-w-[calc(100vw-32px)] sm:min-w-[320px] px-4 sm:px-5 py-3.5 rounded-2xl border mb-3 mx-auto transition-all duration-300 shadow-2xl",
                   content: "order-2 flex-1 min-w-0 flex flex-col justify-center",
-                  title: "text-[14px] sm:text-[15px] font-medium leading-snug tracking-wide text-left text-balance sm:truncate sm:pr-6",
-                  error: "bg-[#fcf0f2] dark:bg-[#2b1418] border-[#fc8a9d] text-[#e83655] shadow-[0_4px_24px_-8px_rgba(252,138,157,0.4)]",
-                  success: "bg-[#f2fcf9] dark:bg-[#122b24] border-[#3ebda0] text-[#2ba185] shadow-[0_4px_24px_-8px_rgba(62,189,160,0.4)]",
-                  icon: "order-1 w-5 h-5 sm:w-[18px] sm:h-[18px] flex items-center justify-center flex-shrink-0 drop-shadow-sm",
-                  closeButton: "order-3 ml-auto relative sm:absolute sm:right-3 sm:top-1/2 sm:-translate-y-1/2 w-7 h-7 sm:w-6 sm:h-6 flex items-center justify-center rounded-full bg-black/5 hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10 text-current opacity-100 transition-all border-none cursor-pointer m-0 p-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current [&_svg]:w-3.5 [&_svg]:h-3.5 sm:[&_svg]:w-3 sm:[&_svg]:h-3 [&_svg]:stroke-[2.5px]"
+                  title: "text-[13px] sm:text-[15px] font-medium leading-relaxed tracking-wide text-left line-clamp-2",
+                  error: "bg-white dark:bg-[#0a1220] border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 shadow-red-500/10",
+                  success: "bg-white dark:bg-[#0a1220] border-emerald-200 dark:border-emerald-900/50 text-emerald-600 dark:text-emerald-400 shadow-emerald-500/10",
+                  icon: "order-1 w-5 h-5 flex items-center justify-center shrink-0 drop-shadow-sm",
+                  closeButton: "order-3 ml-2 shrink-0 w-7 h-7 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white opacity-100 transition-colors border-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current [&_svg]:w-3.5 [&_svg]:h-3.5 [&_svg]:stroke-[2.5px]"
                 }
               }} 
             />
