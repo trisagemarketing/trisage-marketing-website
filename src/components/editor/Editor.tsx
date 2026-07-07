@@ -20,8 +20,26 @@ interface EditorProps {
   editable?: boolean;
 }
 
+const extensions = [
+  StarterKit.configure({
+    heading: { levels: [2, 3, 4] }, // H1 is reserved for the blog title
+    codeBlock: false, // We'd use a dedicated syntax highlighting block later
+  }),
+  Image.configure({
+    inline: true,
+    allowBase64: true,
+  }),
+  Link.configure({
+    openOnClick: false,
+    autolink: true,
+  }),
+  Placeholder.configure({
+    placeholder: 'Press / for commands, or start typing your masterpiece...',
+  }),
+];
+
 export default function BlogEditor({ 
-  initialContent = {}, 
+  initialContent = '', 
   onChange, 
   onAutoSave,
   editable = true 
@@ -30,23 +48,8 @@ export default function BlogEditor({
   const [isSaving, setIsSaving] = useState(false);
 
   const editor = useEditor({
-    extensions: [
-      StarterKit.configure({
-        heading: { levels: [2, 3, 4] }, // H1 is reserved for the blog title
-        codeBlock: false, // We'd use a dedicated syntax highlighting block later
-      }),
-      Image.configure({
-        inline: true,
-        allowBase64: true,
-      }),
-      Link.configure({
-        openOnClick: false,
-        autolink: true,
-      }),
-      Placeholder.configure({
-        placeholder: 'Press / for commands, or start typing your masterpiece...',
-      }),
-    ],
+    immediatelyRender: false,
+    extensions,
     content: initialContent,
     editable,
     editorProps: {

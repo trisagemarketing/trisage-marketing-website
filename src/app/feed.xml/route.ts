@@ -1,6 +1,8 @@
 import { Feed } from 'feed';
 import { getAllPublishedPosts } from '@/lib/blog/data';
 
+export const revalidate = 3600; // Cache for 1 hour, allowing ISR
+
 export async function GET() {
   const baseUrl = 'https://trisagemarketing.com';
   const now = new Date();

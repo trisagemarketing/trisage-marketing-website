@@ -1,6 +1,8 @@
 import { MetadataRoute } from 'next';
 import { getAllPublishedPosts } from '@/lib/blog/data';
 
+export const revalidate = 3600; // Cache for 1 hour, allowing ISR
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://trisagemarketing.com';
   const now = new Date();

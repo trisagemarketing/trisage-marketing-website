@@ -1,5 +1,5 @@
 import { cache } from 'react';
-import { createClient } from '@/lib/supabase/server';
+import { createPublicClient } from '@/lib/supabase/public';
 
 /**
  * Cached fetcher for a single published blog post by slug.
@@ -7,7 +7,7 @@ import { createClient } from '@/lib/supabase/server';
  * and `BlogPostPage` both call this, only ONE database query is executed.
  */
 export const getPublishedPostBySlug = cache(async (slug: string) => {
-  const supabase = await createClient();
+  const supabase = createPublicClient();
   const { data: post } = await supabase
     .from('blogs')
     .select('*')
@@ -23,7 +23,7 @@ export const getPublishedPostBySlug = cache(async (slug: string) => {
  * Primarily used by the dynamic sitemap, RSS feed, and blog listing pages.
  */
 export const getAllPublishedPosts = cache(async () => {
-  const supabase = await createClient();
+  const supabase = createPublicClient();
   const { data: posts } = await supabase
     .from('blogs')
     .select('*')

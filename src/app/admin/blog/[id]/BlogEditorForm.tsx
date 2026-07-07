@@ -34,7 +34,7 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
   const [excerpt, setExcerpt] = useState((initialBlog as any)?.excerpt || "");
   const [tags, setTags] = useState<string[]>((initialBlog as any)?.tags || []);
   const [tagInput, setTagInput] = useState("");
-  const [content, setContent] = useState<any>(initialBlog?.content || {});
+  const [content, setContent] = useState<any>(initialBlog?.content || '');
   const [coverImage, setCoverImage] = useState(initialBlog?.cover_image || "");
   const [categories, setCategories] = useState<Category[]>([]);
   const [authorName, setAuthorName] = useState((initialBlog as any)?.author_name || "");
