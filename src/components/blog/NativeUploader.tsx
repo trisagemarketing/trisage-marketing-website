@@ -180,13 +180,19 @@ export default function NativeUploader({
       ) : (
         <button 
           onClick={(e) => { e.preventDefault(); fileInputRef.current?.click(); }}
-          className="flex flex-col items-center justify-center gap-2 text-gray-500 w-full h-full"
+          className="flex flex-col items-center justify-center gap-2 text-gray-500 w-full h-full p-2"
         >
-          <UploadCloud size={32} className="text-gray-400" />
-          <div className="text-center">
-            <span className="text-sm font-medium text-primary-600 dark:text-primary-400">Click to upload native file</span>
-            <p className="text-xs text-gray-400 mt-1">JPG, PNG, WEBP, SVG (Max 10MB)</p>
-          </div>
+          {variant === 'avatar' ? (
+            <UploadCloud size={20} className="text-gray-400 group-hover:text-primary-500 transition-colors" />
+          ) : (
+            <>
+              <UploadCloud size={32} className="text-gray-400" />
+              <div className="text-center">
+                <span className="text-sm font-medium text-primary-600 dark:text-primary-400">Click to upload image</span>
+                <p className="text-xs text-gray-400 mt-1">JPG, PNG, WEBP, SVG (Max 10MB)</p>
+              </div>
+            </>
+          )}
         </button>
       )}
     </div>
