@@ -76,14 +76,14 @@ export default function MissionVision() {
             <h2 className="font-sans font-bold text-[6.5vw] sm:text-4xl md:text-5xl lg:text-6xl tracking-tight flex flex-row items-center gap-2 sm:gap-4 md:gap-6 justify-center whitespace-nowrap w-full">
               <button 
                 ref={missionTextRef}
-                className="text-primary-600 dark:text-primary-400 relative transition-opacity duration-300 cursor-default"
+                className="text-primary-600 dark:text-primary-400 relative transition-opacity duration-300"
               >
                 Our Mission
               </button>
               <span className="text-gray-200 dark:text-gray-800 font-light opacity-50">/</span>
               <button 
                 ref={visionTextRef}
-                className="text-secondary-600 dark:text-secondary-400 relative transition-opacity duration-300 cursor-default"
+                className="text-secondary-600 dark:text-secondary-400 relative transition-opacity duration-300"
               >
                 Our Vision
               </button>

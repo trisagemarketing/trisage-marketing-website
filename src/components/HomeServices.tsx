@@ -134,10 +134,19 @@ export default function HomeServices() {
       scrollTrigger: {
         trigger: triggerWrapperRef.current,
         start: "top 25%", // Position the block higher so the Problem card is fully visible when it flips
-        end: `+=${totalScroll}`, // Release the pin immediately after the flip! Native scroll takes over.
+        end: () => `+=${totalScroll}`, // Dynamic end coordinate
         pin: true,
         pinSpacing: false, // Explicitly disabled as requested!
         scrub: 1,
+        invalidateOnRefresh: true,
+        onRefresh: () => {
+          // ENTERPRISE FIX: Recalculate spacer height mathematically on any browser resize/reflow 
+          // to guarantee zero section overlap.
+          const wH = triggerWrapperRef.current?.offsetHeight || 0;
+          const cH = cardsContainerRef.current?.offsetHeight || 0;
+          const sH = Math.max(0, cH - wH + totalScroll);
+          gsap.set(spacerRef.current, { height: sH });
+        }
       }
     });
 

@@ -6,7 +6,7 @@ import { fadeUp } from "@/lib/animations";
 
 export default function OurClients() {
   return (
-    <section className="relative py-[4px] md:py-[4px] bg-transparent overflow-hidden" id="our-clients">
+    <section className="relative pt-8 pb-16 md:pt-12 md:pb-24 bg-transparent overflow-hidden" id="our-clients">
       
 
 
@@ -58,7 +58,7 @@ export default function OurClients() {
             transition={{
               repeat: Infinity,
               ease: "linear",
-              duration: 30, // 30 seconds for a smooth, readable scroll
+              duration: 30, // Reverted to 30s for a smooth, readable scroll
             }}
             className="flex w-max items-center"
           >

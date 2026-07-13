@@ -13,11 +13,11 @@ export default function MethodologyHero() {
           src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=2000&q=80" 
           alt="Trisage Methodology and Strategy" 
           fill
+          sizes="100vw"
           className="object-cover object-center"
           priority
           fetchPriority="high"
           loading="eager"
-          unoptimized
         />
         {/* Opacity Overlay to ensure text readability */}
         <div className="absolute inset-0 bg-black/70 dark:bg-black/80 z-10" />

@@ -188,11 +188,7 @@ body {
 .hide-scrollbar::-webkit-scrollbar {
   display: none; /* Chrome, Safari and Opera */
 }
-@media (pointer: fine) {
-  *, *::before, *::after {
-    cursor: none !important;
-  }
-}
+
  
 /* ── Homepage: Transparent sections so fixed background shows through ── */
 /* Preserve intentionally dark sections: WhyChooseUs (#why-choose-us) and CTA (#cta-section) */

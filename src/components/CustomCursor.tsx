@@ -56,19 +56,18 @@ export default function CustomCursor() {
     return Math.max(0, base + hoverEffect + clickEffect);
   });
 
-  const ringOpacity = useTransform([smoothVisible, smoothHover], ([visible, hover]: any) => {
-    // Opacity goes from 1 to 0.8 on hover, multiplied by global visibility
-    const hoverOpacity = 1 - (hover * 0.2); 
-    return visible * hoverOpacity;
+  const ringOpacity = useTransform([smoothClick], ([click]: any) => {
+    // Only visible during a click event for the click effect
+    return click * 0.8; 
   });
 
-  const dotOpacity = useTransform([smoothVisible, smoothHover], ([visible, hover]: any) => {
-    // Dot opacity fades out completely on hover
-    return visible * (1 - hover);
+  const dotOpacity = useTransform([smoothClick], ([click]: any) => {
+    // Only visible during a click event
+    return click;
   });
   
-  // Make the background highly visible yet translucent cyan on hover
-  const ringBg = useTransform(smoothHover, [0, 1], ["rgba(14, 165, 233, 0)", "rgba(14, 165, 233, 0.15)"]);
+  // Make the background highly visible yet translucent cyan on click
+  const ringBg = useTransform(smoothClick, [0, 1], ["rgba(14, 165, 233, 0)", "rgba(14, 165, 233, 0.15)"]);
 
   // Track if listeners are active
   const listenersActive = useRef(false);
@@ -176,11 +175,6 @@ export default function CustomCursor() {
 
   return (
     <>
-      <style dangerouslySetInnerHTML={{ __html: `
-        body, a, button, [role='button'], input, textarea, select, label {
-          cursor: none !important;
-        }
-      `}} />
 
       {/* 1. Outer Magnetic Ring */}
       <motion.div

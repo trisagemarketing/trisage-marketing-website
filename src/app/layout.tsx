@@ -1,8 +1,8 @@
+
 import type { Metadata } from "next";
 import "./globals.css";
 import LenisProvider from "@/components/LenisProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import CustomCursor from "@/components/CustomCursor";
 import GlobalClickSpark from "@/components/GlobalClickSpark";
 import LayoutWrapper from "@/components/LayoutWrapper";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
@@ -105,7 +105,6 @@ export default function RootLayout({
                 }
               }} 
             />
-            <CustomCursor />
             <GlobalClickSpark />
             <AnalyticsTracker />
             <LayoutWrapper>

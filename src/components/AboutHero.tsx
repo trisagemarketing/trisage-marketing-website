@@ -13,9 +13,9 @@ export default function AboutHero() {
           src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=2000&q=80" 
           alt="Trisage Team working together" 
           fill
+          sizes="100vw"
           className="object-cover object-center"
           priority
-          unoptimized
         />
         {/* Opacity Overlay to ensure text readability */}
         <div className="absolute inset-0 bg-black/60 dark:bg-black/80 z-10" />

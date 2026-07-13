@@ -1,7 +1,11 @@
 import Hero from "@/components/Hero";
 import MissionVision from "@/components/MissionVision";
+import BusinessPartners from "@/components/BusinessPartners";
 import HomeServices from "@/components/HomeServices";
+import DiverseSolutions from "@/components/DiverseSolutions";
+import GlobalPresence from "@/components/GlobalPresence";
 import WhyChooseUs from "@/components/WhyChooseUs";
+import Process from "@/components/Process";
 import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import OurClients from "@/components/OurClients";
@@ -35,10 +39,14 @@ export default async function Home() {
       <div className="homepage-wrapper relative z-10">
         <Hero />
         <MissionVision />
+        <BusinessPartners />
         <HomeServices />
-        <WhyChooseUs />
-        <Testimonials />
+        <DiverseSolutions />
         <OurClients />
+        <WhyChooseUs />
+        <Process />
+        <GlobalPresence />
+        <Testimonials />
         <HomeBlog recentPosts={recentPosts || []} />
         <FAQ />
         <CTA />

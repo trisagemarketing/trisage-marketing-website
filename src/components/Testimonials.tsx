@@ -10,10 +10,18 @@ import { Star } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// MURPHY'S LAW CORE FIX: Mobile browsers (iOS Safari, Chrome Android) hide their URL bars on scroll down.
+// This changes window.innerHeight and fires a "resize" event.
+// Without this config, GSAP will tear down and rebuild the massive pin-spacer on every scroll direction change,
+// causing violent scrollbar jumps and glitchy section skipping!
+if (typeof window !== "undefined") {
+  ScrollTrigger.config({ ignoreMobileResize: true });
+}
+
 export default function Testimonials() {
   const sectionRef = useRef<HTMLElement>(null);
+  const pinWrapperRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const spacerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useGSAP(() => {
@@ -22,40 +30,26 @@ export default function Testimonials() {
     const cards = cardsRef.current.filter(Boolean) as HTMLDivElement[];
     const totalCards = cards.length;
     
-    // Initial State: First card visible, rest hidden below viewport
-    gsap.set(cards, {
-      y: (i) => (i === 0 ? 0 : window.innerHeight + 200),
-      scale: 1,
-      opacity: (i) => (i === 0 ? 1 : 0),
-      zIndex: (i) => i
-    });
-
-    const pinDuration = (containerRef.current?.offsetHeight || 400) * 1.0;
-    gsap.set(spacerRef.current, { height: pinDuration });
-
     const tl = gsap.timeline({
       scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top 15%", // Pin when container reaches near top of screen
-        // Reduced pin duration significantly to eliminate the huge empty gap below the section
-        end: () => `+=${pinDuration}`,
-        pin: true,
-        pinSpacing: false, // Use native DOM spacer instead of GSAP pinSpacing to fix mobile gaps
+        trigger: sectionRef.current,
+        start: "top top",
+        end: "bottom bottom",
         scrub: 1,
-        invalidateOnRefresh: true, // Recalculate on window resize
+        invalidateOnRefresh: true,
       }
     });
 
-    // First card entrance animation (happens as user scrolls down to the section, before pin)
+    // First card entrance animation (happens as user scrolls down to the section)
     const firstCard = cards[0];
     if (firstCard) {
       gsap.fromTo(firstCard.querySelector('.avatar-anim'),
         { scale: 0.8, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 1.2, ease: "power3.out", scrollTrigger: { trigger: containerRef.current, start: "top 70%" } }
+        { scale: 1, opacity: 1, duration: 1.2, ease: "power3.out", scrollTrigger: { trigger: sectionRef.current, start: "top 70%" } }
       );
       gsap.fromTo(firstCard.querySelectorAll('.stagger-elem'),
         { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, stagger: 0.15, ease: "power3.out", scrollTrigger: { trigger: containerRef.current, start: "top 70%" } }
+        { y: 0, opacity: 1, duration: 1, stagger: 0.15, ease: "power3.out", scrollTrigger: { trigger: sectionRef.current, start: "top 70%" } }
       );
     }
 
@@ -64,7 +58,11 @@ export default function Testimonials() {
       if (index === 0) return; // Base card already in place
 
       // Next card slides up seamlessly
-      tl.to(card, {
+      tl.fromTo(card, {
+        y: () => window.innerHeight * 1.5,
+        opacity: 0,
+        immediateRender: true, // Force off-screen state immediately on mount
+      }, {
         y: 0,
         opacity: 1,
         duration: 1.5,
@@ -89,7 +87,6 @@ export default function Testimonials() {
         tl.to(cards[j], {
           scale: 1 - ((index - j) * 0.05), // Scale down 5% per layer
           y: -((index - j) * 30), // Push upward slightly for physical stacking feel
-          opacity: 1 - ((index - j) * 0.4), // Fade out
           duration: 1.5,
           ease: "power4.out",
         }, (index - 1) * 1.5);
@@ -99,7 +96,8 @@ export default function Testimonials() {
   }, { scope: sectionRef });
 
   return (
-    <section ref={sectionRef} className="relative pt-24 pb-4 md:pb-12 bg-white dark:bg-[#050b14] overflow-hidden">
+    <section ref={sectionRef} className="relative bg-white dark:bg-[#050b14]" style={{ height: `${testimonials.length * 100}vh` }}>
+      <div className="sticky top-0 left-0 w-full h-screen overflow-hidden py-16 md:py-24 bg-white dark:bg-[#050b14] z-10 flex flex-col justify-center">
       {/* Background Planets/Stars logic (Hidden on Light Mode) */}
       <div className="absolute hidden dark:block right-[-10%] top-[10%] w-[120px] h-[120px] md:w-[320px] md:h-[320px] pointer-events-none z-0" style={{
         animation: "planetBounce 22s infinite",
@@ -157,6 +155,10 @@ export default function Testimonials() {
               key={testimonial.id}
               ref={(el) => { cardsRef.current[index] = el; }}
               className="col-start-1 row-start-1 w-full will-change-transform transform-style-3d"
+              style={{
+                opacity: index === 0 ? 1 : 0,
+                zIndex: index
+              }}
             >
               {/* Full Width Premium Card */}
               <div className="flex flex-col lg:flex-row gap-6 md:gap-8 lg:gap-12 bg-white dark:bg-primary-950 rounded-3xl lg:rounded-[2.5rem] p-5 sm:p-6 md:p-10 lg:p-12 border-2 border-primary-100 dark:border-primary-800 shadow-[0_20px_60px_rgba(45,65,100,0.08)] dark:shadow-[0_30px_80px_rgba(0,0,0,0.6)] overflow-hidden relative group">
@@ -195,9 +197,10 @@ export default function Testimonials() {
                 <div className="flex-shrink-0 flex flex-col items-center lg:items-start text-center lg:text-left lg:w-1/3 relative z-10">
                   <div className="avatar-anim relative w-20 h-20 sm:w-28 sm:h-28 lg:w-40 lg:h-40 mb-4 lg:mb-6 rounded-full overflow-hidden border-[3px] lg:border-[4px] border-white dark:border-primary-800 shadow-2xl transition-transform duration-700 group-hover:scale-105 ring-4 ring-primary-100 dark:ring-primary-900">
                     <Image
-                      src={`https://ui-avatars.com/api/?name=${encodeURIComponent(testimonial.name)}&background=random&color=fff&size=400`}
+                      src={`https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(testimonial.name)}&backgroundColor=0ea5e9,2563eb&textColor=ffffff`}
                       alt={testimonial.name}
                       fill
+                      sizes="(max-width: 640px) 80px, (max-width: 1024px) 112px, 160px"
                       className="object-cover"
                       loading="lazy"
                       unoptimized
@@ -248,8 +251,7 @@ export default function Testimonials() {
             </div>
           ))}
         </div>
-        {/* DYNAMIC SPACER: Replaces GSAP pinSpacing to perfectly eliminate overlap without leaving massive gaps */}
-        <div ref={spacerRef} className="w-full pointer-events-none" />
+      </div>
       </div>
     </section>
   );

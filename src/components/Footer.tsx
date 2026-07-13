@@ -39,7 +39,7 @@ function FooterAccordion({ title, children }: { title: string; children: React.R
     <div className="w-full border-b-2 border-primary-100 dark:border-primary-900 md:border-none py-4 md:py-0">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full items-center justify-between md:justify-start lg:w-full md:cursor-default md:pointer-events-none group md:mb-5"
+        className="flex py-2 w-full items-center justify-between md:justify-start lg:w-full md:cursor-default md:pointer-events-none group md:mb-5"
         aria-expanded={isOpen}
       >
         <h3 className="w-full text-left poppins-semibold text-xs uppercase tracking-widest text-primary-600 dark:text-primary-400">
@@ -139,7 +139,7 @@ export default function Footer() {
                   target={href !== "#" ? "_blank" : undefined}
                   rel={href !== "#" ? "noopener noreferrer" : undefined}
                   aria-label={label}
-                  className="w-9 h-9 rounded-full flex items-center justify-center border-2 border-primary-100 dark:border-primary-800 text-primary-400 dark:text-primary-500 hover:border-primary-400 dark:hover:border-primary-500 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900 transition-all duration-300"
+                  className="w-10 h-10 rounded-full flex items-center justify-center border-2 border-primary-100 dark:border-primary-800 text-primary-400 dark:text-primary-500 hover:border-primary-400 dark:hover:border-primary-500 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900 transition-all duration-300"
                 >
                   {icon}
                 </a>

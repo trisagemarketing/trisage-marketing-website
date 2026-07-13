@@ -22,15 +22,7 @@ export function ThemeToggle() {
 
   const toggleTheme = () => {
     const nextTheme = currentTheme === "dark" ? "light" : "dark";
-    
-    // Core GPU optimization: Native View Transitions API
-    if (typeof document !== "undefined" && (document as any).startViewTransition) {
-      (document as any).startViewTransition(() => {
-        setTheme(nextTheme);
-      });
-    } else {
-      setTheme(nextTheme);
-    }
+    setTheme(nextTheme);
   };
 
   return (

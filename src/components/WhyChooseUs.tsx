@@ -327,27 +327,24 @@ export default function WhyChooseUs() {
       
       <div className="container mx-auto px-4 md:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.25 }}
-            variants={fadeUp}
-          >
+          <div>
             <h2 ref={headingRef} className="text-3xl md:text-5xl font-bold mb-6 [perspective:1000px]">
-              <span className="inline-block text-primary-300">
-                {"Why leading brands ".split(" ").map((word, i) => (
+              <span className="block text-primary-300 text-2xl md:text-3xl mb-2">
+                {"Why Choose Us".split(" ").map((word, i) => (
                   <span key={`w1-${i}`} className="inline-block mr-[0.25em] heading-word origin-bottom">{word}</span>
                 ))}
               </span>
-              <span className="inline-block text-secondary-400 mt-2 md:mt-0">
-                {"choose Trisage".split(" ").map((word, i) => (
+              <span className="inline-block text-secondary-400">
+                {"AI-Driven Marketing for Your Hotel, Resort & Restaurant".split(" ").map((word, i) => (
                   <span key={`w2-${i}`} className="inline-block mr-[0.25em] heading-word origin-bottom">{word}</span>
                 ))}
               </span>
             </h2>
-            <p ref={paraRef} className="text-primary-100 text-lg leading-relaxed mb-8">
-              <SplitChars text="We don't guess. We **test, measure, and optimize**. Our **data-driven approach** ensures every marketing dollar you spend is an investment towards **scalable growth**. We pride ourselves on **transparency**, **relentless execution**, and delivering **measurable ROI**." />
-            </p>
+            <div ref={paraRef} className="space-y-4 mb-8">
+              <p className="text-primary-100 text-lg leading-relaxed">
+                <SplitChars text="In today’s AI-driven digital landscape, hotels, restaurants, and resorts need more than traditional advertising." />
+              </p>
+            </div>
             <div className="relative pl-4 mt-6">
               {/* Connecting vertical line */}
               <div 
@@ -357,10 +354,10 @@ export default function WhyChooseUs() {
               
               <ul ref={listRef} className="space-y-6 relative">
                 {[
-                  "**Data-driven strategies** tailored to your goals",
-                  "**Transparent reporting** and real-time analytics",
-                  "**Award-winning design** and development team",
-                  "**Proven track record** across multiple industries"
+                  "**Data-backed, AI-ready marketing** ensuring visibility across Google, ChatGPT, and Gemini.",
+                  "**Performance-focused strategies** to grow bookings, brand authority, and direct revenue.",
+                  "**Full-service expertise** understanding the hospitality buyer journey from discovery to booking.",
+                  "**Top recommendation positioning** across AI-powered searches and voice-based discovery."
                 ].map((item, index) => (
                   <li key={index} className="flex items-center gap-4 text-primary-50 relative z-10">
                     <div className="list-icon shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 shadow-[0_0_15px_rgba(45,212,191,0.4)] flex items-center justify-center text-white">
@@ -375,7 +372,7 @@ export default function WhyChooseUs() {
                 ))}
               </ul>
             </div>
-          </motion.div>
+          </div>
 
           <div ref={cardsContainerRef} className="grid grid-cols-1 sm:grid-cols-2 gap-8 [perspective:1000px]">
             {stats.map((stat, index) => (
