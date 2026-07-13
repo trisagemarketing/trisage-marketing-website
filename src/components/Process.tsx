@@ -77,20 +77,23 @@ export default function Process() {
             className="grid grid-cols-1 lg:grid-cols-5 gap-16 lg:gap-6 relative"
           >
             {processSteps.map((step, index) => (
-              <motion.div key={index} variants={fadeUp} className="relative group cursor-default">
+              <motion.div key={index} variants={fadeUp} className="relative group cursor-default flex flex-row lg:flex-col items-start lg:items-center">
                 
                 {/* Connecting Lines (Desktop: Horizontal) */}
+                {/* BUGFIX: w-[calc(100%+1.5rem)] perfectly spans the lg:gap-6 (1.5rem) to touch the next circle */}
                 {index !== processSteps.length - 1 && (
-                  <div className="hidden lg:block absolute top-[2.25rem] left-[50%] w-full h-[2px] bg-gradient-to-r from-gray-200 to-gray-200 dark:from-gray-800 dark:to-gray-800 group-hover:from-secondary-400 group-hover:to-gray-200 dark:group-hover:from-secondary-500 dark:group-hover:to-gray-800 transition-colors duration-700 z-0" />
+                  <div className="hidden lg:block absolute top-[2.25rem] left-[50%] w-[calc(100%+1.5rem)] h-[2px] bg-gradient-to-r from-gray-200 to-gray-200 dark:from-gray-800 dark:to-gray-800 group-hover:from-secondary-400 group-hover:to-gray-200 dark:group-hover:from-secondary-500 dark:group-hover:to-gray-800 transition-colors duration-700 z-0" />
                 )}
 
                 {/* Connecting Lines (Mobile/Tablet: Vertical) */}
+                {/* BUGFIX: left-[2.25rem] perfectly centers line under the left-aligned circle. 
+                    h-[calc(100%-0.5rem)] mathematically calculates the exact distance to the top of the next circle through the gap-16! */}
                 {index !== processSteps.length - 1 && (
-                  <div className="block lg:hidden absolute top-[4.5rem] left-[50%] -translate-x-1/2 w-[2px] h-[calc(100%+2rem)] bg-gradient-to-b from-gray-200 to-gray-200 dark:from-gray-800 dark:to-gray-800 group-hover:from-secondary-400 group-hover:to-gray-200 dark:group-hover:from-secondary-500 dark:group-hover:to-gray-800 transition-colors duration-700 z-0" />
+                  <div className="block lg:hidden absolute top-[4.5rem] left-[2.25rem] -translate-x-1/2 w-[2px] h-[calc(100%-0.5rem)] bg-gradient-to-b from-gray-200 to-gray-200 dark:from-gray-800 dark:to-gray-800 group-hover:from-secondary-400 group-hover:to-gray-200 dark:group-hover:from-secondary-500 dark:group-hover:to-gray-800 transition-colors duration-700 z-0" />
                 )}
 
-                {/* Number Circle container to handle layout easily */}
-                <div className="relative flex justify-center mb-6 lg:mb-8 z-10">
+                {/* Number Circle container */}
+                <div className="relative flex-shrink-0 flex justify-center mr-6 lg:mr-0 mb-0 lg:mb-8 z-10">
                   <div className="w-[4.5rem] h-[4.5rem] bg-white dark:bg-[#050b14] rounded-full flex items-center justify-center border-2 border-gray-100 dark:border-gray-800 group-hover:border-transparent group-hover:bg-gradient-to-br group-hover:from-primary-500 group-hover:to-secondary-500 shadow-sm group-hover:shadow-[0_0_20px_rgba(45,212,191,0.3)] transition-all duration-300 transform group-hover:-translate-y-1">
                     <span className="text-xl md:text-2xl font-black text-primary-300 dark:text-gray-500 group-hover:text-white transition-colors duration-300">
                       {step.num}
@@ -99,8 +102,8 @@ export default function Process() {
                 </div>
                 
                 {/* Content */}
-                <div className="text-center px-4 lg:px-2 pb-4 lg:pb-0">
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-secondary-500 dark:group-hover:text-secondary-400 transition-colors duration-300">
+                <div className="text-left lg:text-center pt-2 lg:pt-0">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 lg:mb-3 group-hover:text-secondary-500 dark:group-hover:text-secondary-400 transition-colors duration-300">
                     {step.title}
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base leading-relaxed">

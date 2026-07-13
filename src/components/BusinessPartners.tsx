@@ -41,18 +41,18 @@ export default function BusinessPartners() {
               }
             `}} />
 
-            <div className="animate-logo-marquee flex w-max items-center py-4 gap-12 md:gap-20">
+            <div className="animate-logo-marquee flex w-max items-center py-1 gap-12 md:gap-20">
               {/* Quadruple the array for seamless infinite looping across ultra-wide screens */}
               {[...partners, ...partners, ...partners, ...partners].map((partner, i) => (
                 <div 
                   key={`${partner.name}-${i}`} 
                   className="shrink-0 flex items-center justify-center"
                 >
-                  <div className="group flex items-center justify-center bg-transparent dark:bg-white dark:rounded-2xl hover:-translate-y-1 transition-all duration-300 p-4 md:p-5 cursor-default">
+                  <div className="group flex items-center justify-center bg-transparent dark:bg-white dark:rounded-2xl hover:-translate-y-1 transition-all duration-300 p-1 md:p-5 cursor-default">
                     <img
                       src={partner.src}
                       alt={`${partner.name} logo`}
-                      className={`${partner.className || "h-8 md:h-12"} w-auto object-contain grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500`}
+                      className={`${partner.className || "h-1 md:h-12"} w-auto object-contain grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500`}
                       loading="lazy"
                     />
                   </div>

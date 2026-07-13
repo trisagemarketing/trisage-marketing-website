@@ -11,93 +11,104 @@ import { Star } from "lucide-react";
 gsap.registerPlugin(ScrollTrigger);
 
 // MURPHY'S LAW CORE FIX: Mobile browsers (iOS Safari, Chrome Android) hide their URL bars on scroll down.
-// This changes window.innerHeight and fires a "resize" event.
-// Without this config, GSAP will tear down and rebuild the massive pin-spacer on every scroll direction change,
-// causing violent scrollbar jumps and glitchy section skipping!
 if (typeof window !== "undefined") {
   ScrollTrigger.config({ ignoreMobileResize: true });
 }
 
 export default function Testimonials() {
   const sectionRef = useRef<HTMLElement>(null);
-  const pinWrapperRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useGSAP(() => {
-    if (!containerRef.current || cardsRef.current.length === 0) return;
-
     const cards = cardsRef.current.filter(Boolean) as HTMLDivElement[];
-    const totalCards = cards.length;
+    if (cards.length === 0) return;
     
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 1,
-        invalidateOnRefresh: true,
-      }
+    // BUGFIX: Robust Initial States
+    // Forces upcoming cards completely off screen immediately.
+    // Fixed: Using window.innerHeight instead of "150svh" because GSAP string parsing for svh can fail on some mobile browsers, causing the cards to glitch and stack immediately on screen!
+    cards.forEach((card, index) => {
+      if (index === 0) return;
+      gsap.set(card, { y: typeof window !== "undefined" ? window.innerHeight * 1.5 : 1500, opacity: 0 });
     });
 
-    // First card entrance animation (happens as user scrolls down to the section)
-    const firstCard = cards[0];
-    if (firstCard) {
-      gsap.fromTo(firstCard.querySelector('.avatar-anim'),
-        { scale: 0.8, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 1.2, ease: "power3.out", scrollTrigger: { trigger: sectionRef.current, start: "top 70%" } }
-      );
-      gsap.fromTo(firstCard.querySelectorAll('.stagger-elem'),
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, stagger: 0.15, ease: "power3.out", scrollTrigger: { trigger: sectionRef.current, start: "top 70%" } }
-      );
-    }
+    let mm = gsap.matchMedia();
+    mm.add({
+      isDesktop: "(min-width: 768px)",
+      isMobile: "(max-width: 767px)"
+    }, (context) => {
+      let { isMobile } = context.conditions as { isMobile?: boolean };
 
-    // Layered Stacking Animation (Cinematic GSAP Deck)
-    cards.forEach((card, index) => {
-      if (index === 0) return; // Base card already in place
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: true, // BUGFIX: scrub: true (instead of 1) prevents iOS touch-scroll freeze
+          invalidateOnRefresh: true,
+        }
+      });
 
-      // Next card slides up seamlessly
-      tl.fromTo(card, {
-        y: () => window.innerHeight * 1.5,
-        opacity: 0,
-        immediateRender: true, // Force off-screen state immediately on mount
-      }, {
-        y: 0,
-        opacity: 1,
-        duration: 1.5,
-        ease: "power4.out", // Premium cinematic easing
-      }, (index - 1) * 1.5);
-
-      // Scrubbed subtle internal animations for Profile & Content
-      tl.fromTo(card.querySelector('.avatar-anim'),
-        { scale: 0.8, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 1, ease: "power3.out" },
-        (index - 1) * 1.5 + 0.3 // Trigger shortly after card starts moving
-      );
-
-      tl.fromTo(card.querySelectorAll('.stagger-elem'),
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power3.out" },
-        (index - 1) * 1.5 + 0.4
-      );
-
-      // Previous cards recede into the background creating deep stacking effect
-      for (let j = 0; j < index; j++) {
-        tl.to(cards[j], {
-          scale: 1 - ((index - j) * 0.05), // Scale down 5% per layer
-          y: -((index - j) * 30), // Push upward slightly for physical stacking feel
-          duration: 1.5,
-          ease: "power4.out",
-        }, (index - 1) * 1.5);
+      // First card entrance animation (happens as user scrolls down to the section)
+      const firstCard = cards[0];
+      if (firstCard) {
+        gsap.fromTo(firstCard.querySelector('.avatar-anim'),
+          { scale: 0.8, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 1.2, ease: "power3.out", scrollTrigger: { trigger: sectionRef.current, start: "top 70%" } }
+        );
+        gsap.fromTo(firstCard.querySelectorAll('.stagger-elem'),
+          { y: 20, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1, stagger: 0.15, ease: "power3.out", scrollTrigger: { trigger: sectionRef.current, start: "top 70%" } }
+        );
       }
+
+      // Layered Stacking Animation (Cinematic GSAP Deck)
+      cards.forEach((card, index) => {
+        if (index === 0) return; // Base card already in place
+
+        // Next card slides up seamlessly
+        tl.to(card, {
+          y: 0,
+          opacity: 1,
+          duration: 1.5,
+          ease: "power4.out", // Premium cinematic easing
+        }, (index - 1) * 1.5);
+
+        // Scrubbed subtle internal animations for Profile & Content
+        tl.fromTo(card.querySelector('.avatar-anim'),
+          { scale: 0.8, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 1, ease: "power3.out" },
+          (index - 1) * 1.5 + 0.3 // Trigger shortly after card starts moving
+        );
+
+        tl.fromTo(card.querySelectorAll('.stagger-elem'),
+          { y: 20, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power3.out" },
+          (index - 1) * 1.5 + 0.4
+        );
+
+        // Previous cards recede into the background creating deep stacking effect
+        for (let j = 0; j < index; j++) {
+          tl.to(cards[j], {
+            scale: 1 - ((index - j) * (isMobile ? 0.03 : 0.05)), // Softer scale on mobile
+            y: -((index - j) * (isMobile ? 12 : 40)), // BUGFIX: Drastically reduced upward push on mobile so it doesn't overlap header text!
+            duration: 1.5,
+            ease: "power4.out",
+          }, (index - 1) * 1.5);
+        }
+      });
     });
 
   }, { scope: sectionRef });
 
+  // BUGFIX: Reset refs on each render to prevent React StrictMode array duplication bugs
+  cardsRef.current = [];
+
   return (
-    <section ref={sectionRef} className="relative bg-white dark:bg-[#050b14]" style={{ height: `${testimonials.length * 100}vh` }}>
-      <div className="sticky top-0 left-0 w-full h-screen overflow-hidden py-16 md:py-24 bg-white dark:bg-[#050b14] z-10 flex flex-col justify-center">
+    // BUGFIX: svh instead of vh prevents layout thrashing when URL bar disappears on mobile
+    <section ref={sectionRef} className="relative bg-white dark:bg-[#050b14]" style={{ height: `${testimonials.length * 100}svh` }}>
+      {/* BUGFIX: Changed to justify-start pt-20 on mobile to guarantee the header is never pushed off-screen by tall cards */}
+      <div className="sticky top-0 left-0 w-full h-[100svh] overflow-hidden pt-24 pb-8 sm:py-16 md:py-24 bg-white dark:bg-[#050b14] z-10 flex flex-col justify-start sm:justify-center">
       {/* Background Planets/Stars logic (Hidden on Light Mode) */}
       <div className="absolute hidden dark:block right-[-10%] top-[10%] w-[120px] h-[120px] md:w-[320px] md:h-[320px] pointer-events-none z-0" style={{
         animation: "planetBounce 22s infinite",
@@ -133,35 +144,38 @@ export default function Testimonials() {
         </div>
       </div>
 
-      <div className="container relative z-10 mx-auto px-4 md:px-8 max-w-[1200px]">
-        <div className="text-center max-w-4xl mx-auto mb-10 md:mb-16 lg:mb-20">
-          <h2 className="text-[8vw] sm:text-4xl md:text-6xl font-black mb-4 md:mb-6 uppercase tracking-tight flex flex-wrap justify-center gap-2">
+      <div className="container relative z-10 mx-auto px-4 md:px-8 max-w-[1200px] flex flex-col h-full">
+        {/* BUGFIX: relative z-20 pointer-events-none ensures the text physically floats ABOVE the cards as they slide up under it */}
+        <div className="text-center max-w-4xl mx-auto mb-2 sm:mb-10 md:mb-16 lg:mb-20 relative z-20 pointer-events-none flex-shrink-0">
+          <h2 className="text-[8vw] sm:text-4xl md:text-6xl font-black mb-2 sm:mb-4 md:mb-6 uppercase tracking-tight flex flex-wrap justify-center gap-2">
             <span className="text-primary-950 dark:text-white">Client Success </span>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-secondary-500 dark:from-primary-400 dark:to-secondary-400">Stories</span>
           </h2>
-          <p className="font-sans font-medium text-lg sm:text-xl lg:text-3xl leading-snug lg:leading-[1.3] uppercase tracking-tight text-balance text-primary-700 dark:text-primary-200">
+          <p className="font-sans font-medium text-sm sm:text-lg lg:text-3xl leading-snug lg:leading-[1.3] uppercase tracking-tight text-balance text-primary-700 dark:text-primary-200">
             Don't just take our word for it. Here's what our <strong className="font-black">partners</strong> have to say about working with <strong className="font-black text-primary-950 dark:text-white">Trisage</strong>.
           </p>
         </div>
 
-        {/* Stacked Cards Container - CSS Grid implicitly sets dynamic height based on tallest card */}
+        {/* Stacked Cards Container - Removed my-auto to prevent clipping the bottom of the card on small screens. Using explicit margin top. */}
         <div 
           ref={containerRef}
-          className="relative grid grid-cols-1 w-full mx-auto" 
+          className="relative grid grid-cols-1 w-full mx-auto mt-6 md:mt-10" 
           style={{ gridTemplateRows: "1fr", gridTemplateColumns: "1fr" }}
         >
           {testimonials.map((testimonial, index) => (
             <div
               key={testimonial.id}
-              ref={(el) => { cardsRef.current[index] = el; }}
-              className="col-start-1 row-start-1 w-full will-change-transform transform-style-3d"
+              ref={(el) => { if (el) cardsRef.current[index] = el; }}
+              // BUGFIX: origin-top forces scaling from the top edge, fixing the uneven stack gaps caused by variable card heights
+              className="col-start-1 row-start-1 w-full will-change-transform transform-style-3d origin-top"
               style={{
                 opacity: index === 0 ? 1 : 0,
                 zIndex: index
               }}
             >
               {/* Full Width Premium Card */}
-              <div className="flex flex-col lg:flex-row gap-6 md:gap-8 lg:gap-12 bg-white dark:bg-primary-950 rounded-3xl lg:rounded-[2.5rem] p-5 sm:p-6 md:p-10 lg:p-12 border-2 border-primary-100 dark:border-primary-800 shadow-[0_20px_60px_rgba(45,65,100,0.08)] dark:shadow-[0_30px_80px_rgba(0,0,0,0.6)] overflow-hidden relative group">
+              {/* MURPHY'S LAW FIX: Removed internal scroll entirely. Allowed card to naturally size. */}
+              <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 md:gap-8 lg:gap-12 bg-white dark:bg-primary-950 rounded-[1.5rem] lg:rounded-[2.5rem] p-4 sm:p-6 md:p-10 lg:p-12 border-2 border-primary-100 dark:border-primary-800 shadow-[0_20px_60px_rgba(45,65,100,0.08)] dark:shadow-[0_30px_80px_rgba(0,0,0,0.6)] relative group w-full overflow-hidden">
 
                 {/* ── IDEA 1: Dual Mesh Orbs ── */}
                 {/* Primary orb — top-left, drifts slowly */}
@@ -195,19 +209,20 @@ export default function Testimonials() {
 
                 {/* Left Side: Avatar & Identity */}
                 <div className="flex-shrink-0 flex flex-col items-center lg:items-start text-center lg:text-left lg:w-1/3 relative z-10">
-                  <div className="avatar-anim relative w-20 h-20 sm:w-28 sm:h-28 lg:w-40 lg:h-40 mb-4 lg:mb-6 rounded-full overflow-hidden border-[3px] lg:border-[4px] border-white dark:border-primary-800 shadow-2xl transition-transform duration-700 group-hover:scale-105 ring-4 ring-primary-100 dark:ring-primary-900">
+                  {/* BUGFIX: Reduced avatar size on mobile to save vertical space */}
+                  <div className="avatar-anim relative w-16 h-16 sm:w-28 sm:h-28 lg:w-40 lg:h-40 mb-3 sm:mb-4 lg:mb-6 rounded-full overflow-hidden border-[3px] lg:border-[4px] border-white dark:border-primary-800 shadow-2xl transition-transform duration-700 group-hover:scale-105 ring-4 ring-primary-100 dark:ring-primary-900">
                     <Image
                       src={`https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(testimonial.name)}&backgroundColor=0ea5e9,2563eb&textColor=ffffff`}
                       alt={testimonial.name}
                       fill
-                      sizes="(max-width: 640px) 80px, (max-width: 1024px) 112px, 160px"
+                      sizes="(max-width: 640px) 64px, (max-width: 1024px) 112px, 160px"
                       className="object-cover"
                       loading="lazy"
                       unoptimized
                     />
                   </div>
-                  <h3 className="stagger-elem text-xl sm:text-2xl lg:text-3xl font-black uppercase tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-primary-950 via-primary-800 to-primary-600 dark:from-white dark:via-primary-100 dark:to-primary-400 drop-shadow-sm">{testimonial.name}</h3>
-                  <p className="stagger-elem font-bold uppercase tracking-widest text-[10px] sm:text-xs lg:text-sm mt-1 sm:mt-2 text-transparent bg-clip-text bg-gradient-to-r from-secondary-600 to-primary-500 dark:from-secondary-400 dark:to-primary-300">{testimonial.company}</p>
+                  <h3 className="stagger-elem text-lg sm:text-2xl lg:text-3xl font-black uppercase tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-primary-950 via-primary-800 to-primary-600 dark:from-white dark:via-primary-100 dark:to-primary-400 drop-shadow-sm">{testimonial.name}</h3>
+                  <p className="stagger-elem font-bold uppercase tracking-widest text-[9px] sm:text-xs lg:text-sm mt-1 sm:mt-2 text-transparent bg-clip-text bg-gradient-to-r from-secondary-600 to-primary-500 dark:from-secondary-400 dark:to-primary-300">{testimonial.company}</p>
                 </div>
 
                 {/* Right Side: Rating & Quote */}
@@ -215,19 +230,20 @@ export default function Testimonials() {
 
                   
                   {/* Rating Badge */}
-                  <div className="stagger-elem flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-primary-50 to-white dark:from-primary-900/80 dark:to-primary-950 border border-primary-200 dark:border-primary-800 rounded-full px-3 py-1 sm:px-4 sm:py-1.5 w-max mb-4 lg:mb-8 shadow-[0_8px_20px_rgba(6,182,212,0.08)] dark:shadow-[0_8px_20px_rgba(0,0,0,0.5)] backdrop-blur-sm">
+                  <div className="stagger-elem flex items-center gap-1.5 sm:gap-3 bg-gradient-to-r from-primary-50 to-white dark:from-primary-900/80 dark:to-primary-950 border border-primary-200 dark:border-primary-800 rounded-full px-2.5 py-0.5 sm:px-4 sm:py-1.5 w-max mb-3 sm:mb-4 lg:mb-8 shadow-[0_8px_20px_rgba(6,182,212,0.08)] dark:shadow-[0_8px_20px_rgba(0,0,0,0.5)] backdrop-blur-sm mx-auto lg:mx-0">
                     <div className="flex gap-1 text-yellow-500 dark:text-yellow-400 drop-shadow-[0_0_8px_rgba(234,179,8,0.5)]">
                       {[...Array(5)].map((_, i) => (
-                        <Star key={i} size={16} className="sm:w-[18px] sm:h-[18px]" fill="currentColor" />
+                        <Star key={i} size={14} className="sm:w-[18px] sm:h-[18px]" fill="currentColor" />
                       ))}
                     </div>
-                    <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary-950 to-primary-700 dark:from-white dark:to-primary-300 text-[10px] sm:text-sm tracking-widest uppercase border-l border-primary-200 dark:border-primary-700 pl-2 sm:pl-3">
+                    <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary-950 to-primary-700 dark:from-white dark:to-primary-300 text-[9px] sm:text-sm tracking-widest uppercase border-l border-primary-200 dark:border-primary-700 pl-2 sm:pl-3">
                       5.0 Rating
                     </span>
                   </div>
 
                   {/* MissionVision-style Two-Tone Quote */}
-                  <div className="stagger-elem font-sans text-lg sm:text-xl lg:text-[1.6rem] leading-snug lg:leading-[1.35] font-medium uppercase tracking-tight text-balance">
+                  {/* BUGFIX: Reduced text-lg to text-base/text-sm on mobile to ensure all text fits beautifully without scrolling */}
+                  <div className="stagger-elem font-sans text-sm sm:text-xl lg:text-[1.6rem] leading-snug lg:leading-[1.35] font-medium uppercase tracking-tight text-balance text-center lg:text-left">
                     {/* Part 1 — primary accent color */}
                     <span className="text-primary-600 dark:text-primary-400">
                       {testimonial.reviewPart1}{" "}

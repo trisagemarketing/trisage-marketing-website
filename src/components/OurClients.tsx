@@ -8,8 +8,6 @@ export default function OurClients() {
   return (
     <section className="relative pt-8 pb-16 md:pt-12 md:pb-24 bg-transparent overflow-hidden" id="our-clients">
       
-
-
       {/* Skyblue Cosmic Beams */}
       <div className="absolute hidden dark:block left-[-20%] top-[40%] w-[150%] h-[150px] pointer-events-none z-0 rotate-[-10deg]">
          {/* Main diffuse beam */}
@@ -36,7 +34,7 @@ export default function OurClients() {
 
       <div className="container relative z-10 mx-auto px-4 md:px-8">
         
-        <div className="text-center max-w-3xl mx-auto mb-6 md:mb-8">
+        <div className="text-center max-w-3xl mx-auto mb-8 md:mb-12">
           <motion.h2 
             initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={fadeUp}
             className="text-3xl md:text-5xl font-bold text-[#2A3F64] dark:text-white"
@@ -50,7 +48,7 @@ export default function OurClients() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.25 }}
           transition={{ duration: 0.6 }}
-          className="w-full bg-transparent md:my-4 rounded-4xl md:rounded-[3rem] py-4 md:py-6 flex items-center relative overflow-hidden"
+          className="w-full bg-transparent flex items-center relative overflow-hidden"
         >
           {/* Infinite Marquee Wrapper */}
           <motion.div

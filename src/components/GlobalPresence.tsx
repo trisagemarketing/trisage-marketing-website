@@ -14,6 +14,7 @@ export default function GlobalPresence() {
   const [hasError, setHasError] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [expandedProps, setExpandedProps] = useState<Record<string, boolean>>({});
+  const [activeCard, setActiveCard] = useState<string | null>(null);
 
   const toggleExpand = (id: string, e: React.MouseEvent) => {
     e.preventDefault();
@@ -56,7 +57,7 @@ export default function GlobalPresence() {
         <div className="w-[400px] h-[400px] bg-primary-200/60 dark:bg-primary-600/30 rounded-full mix-blend-multiply dark:mix-blend-screen" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 lg:px-24 mb-20 text-center md:text-left">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 lg:px-24 mb-10 md:mb-20 text-center md:text-left">
         <h4 className="flex items-center justify-center md:justify-start gap-4 text-secondary-600 dark:text-secondary-400 font-mono tracking-[0.2em] text-sm uppercase mb-6" aria-label="Section Title">
           <span className="w-8 h-px bg-secondary-600/50 dark:bg-secondary-400/50"></span>
           India Presence
@@ -78,95 +79,112 @@ export default function GlobalPresence() {
       <style>
         {`
           @keyframes card-marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
           }
           .animate-card-marquee {
-            animation: card-marquee 35s linear infinite;
+            animation: card-marquee 45s linear infinite;
+            will-change: transform;
+            /* Force GPU Hardware Acceleration to eliminate mobile jitter */
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            backface-visibility: hidden;
           }
-          .animate-card-marquee:hover {
+          .animate-card-marquee:hover, .animate-card-marquee.is-paused {
             animation-play-state: paused;
           }
         `}
       </style>
-      <div className="relative z-10 w-full pb-16 overflow-hidden">
-        {/* We quadruple the array to ensure the scroll is perfectly seamless and covers the entire 50% translation width smoothly */}
-        <div className="animate-card-marquee flex w-max">
-          {[...destinations, ...destinations, ...destinations, ...destinations].map((dest, i) => (
-            <div key={`${dest.id}-${i}`} className="shrink-0 w-[85vw] md:w-[420px] pr-8">
-              <div className="group relative w-full h-[580px] rounded-[2rem] overflow-hidden border border-white/40 dark:border-white/10 bg-white/40 dark:bg-black/40 backdrop-blur-2xl shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] transition-all duration-700 hover:shadow-[0_12px_48px_0_rgba(31,38,135,0.15)] dark:hover:shadow-[0_12px_48px_0_rgba(0,0,0,0.5)]">
-                
-                {/* Image Container with Parallax effect */}
-                <div className="absolute inset-0 m-3 rounded-[1.5rem] overflow-hidden bg-primary-100 dark:bg-[#0c162d]">
-                  <div 
-                    className="absolute inset-0 bg-cover bg-center transform scale-[1.03] group-hover:scale-110 transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-                    style={{ backgroundImage: `url(${dest.heroImage || '/assets/placeholder-dest.jpg'})` }}
-                  />
-                  {/* Adaptive Overlays for legibility */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary-950/90 via-primary-950/40 to-transparent dark:from-black/95 dark:via-black/50 dark:to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-700" />
-                </div>
+      {/* Reduced bottom padding on mobile to fix the massive empty gap */}
+      <div className="relative z-10 w-full pb-4 md:pb-16 overflow-hidden">
+        {/* MURPHY'S LAW FIX: Reduced quadrupled array to doubled array. 
+            Quadrupling created 20+ heavy DOM nodes which caused massive memory lag and jitter on mobile.
+            Doubling is perfectly sufficient for a seamless 50% translation width. */}
+        <div className={`animate-card-marquee flex w-max ${activeCard ? 'is-paused' : ''}`}>
+          {[...destinations, ...destinations].map((dest, i) => {
+            const uniqueId = `${dest.id}-${i}`;
+            const isActive = activeCard === uniqueId;
 
-                {/* Content Container */}
-                <div className="absolute inset-0 p-10 flex flex-col justify-end z-10 pointer-events-none">
+            return (
+              <div 
+                key={uniqueId} 
+                className="shrink-0 w-[92vw] sm:w-[340px] md:w-[420px] pr-4 md:pr-8 cursor-pointer"
+                onClick={() => setActiveCard(isActive ? null : uniqueId)}
+              >
+                <div className={`group relative w-full h-[420px] sm:h-[480px] md:h-[580px] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden border border-white/40 dark:border-white/10 bg-white/40 dark:bg-black/40 backdrop-blur-2xl shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] transition-all duration-700 hover:shadow-[0_12px_48px_0_rgba(31,38,135,0.15)] dark:hover:shadow-[0_12px_48px_0_rgba(0,0,0,0.5)] ${isActive ? 'ring-2 ring-secondary-400 dark:ring-secondary-500' : ''}`}>
                   
-                  {/* Header: Visible by default */}
-                  <div className="transform translate-y-6 group-hover:-translate-y-0 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-auto">
-                    <h4 className="text-secondary-300 dark:text-secondary-400 font-mono tracking-widest text-[10px] uppercase mb-3 flex items-center gap-2 drop-shadow-md">
-                      <span className="w-4 h-[1px] bg-secondary-300 dark:bg-secondary-400"></span>
-                      {dest.subtitle || 'Premium Hub'}
-                    </h4>
-                    <h3 className="text-4xl font-phudu font-bold text-white drop-shadow-lg tracking-wide">
-                      {dest.title}
-                    </h3>
+                  {/* Image Container with Parallax effect */}
+                  <div className="absolute inset-0 m-2 md:m-3 rounded-[1.25rem] md:rounded-[1.5rem] overflow-hidden bg-primary-100 dark:bg-[#0c162d]">
+                    <div 
+                      className={`absolute inset-0 bg-cover bg-center transform transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${isActive ? 'scale-110' : 'scale-[1.03] group-hover:scale-110'}`}
+                      style={{ backgroundImage: `url(${dest.heroImage || '/assets/placeholder-dest.jpg'})` }}
+                    />
+                    {/* Adaptive Overlays for legibility */}
+                    <div className={`absolute inset-0 bg-gradient-to-t from-primary-950/90 via-primary-950/40 to-transparent dark:from-black/95 dark:via-black/50 dark:to-transparent transition-opacity duration-700 ${isActive ? 'opacity-100' : 'opacity-80 group-hover:opacity-100'}`} />
                   </div>
 
-                  {/* Expanding Details: Reveals gracefully on hover */}
-                  <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] opacity-0 group-hover:opacity-100 mt-4 pointer-events-auto">
-                    <div className="overflow-hidden">
-                      
-                      {/* Properties List */}
-                      {dest.hospitalityHighlights && dest.hospitalityHighlights.length > 0 && (
-                        <div className="pt-2 pb-4">
-                          <p className="text-[10px] text-gray-300 uppercase font-mono tracking-widest mb-3">Key Properties</p>
-                          <ul className="space-y-1.5 transition-all duration-300">
-                            {dest.hospitalityHighlights
-                              .slice(0, expandedProps[`${dest.id}-${i}`] ? dest.hospitalityHighlights.length : 4)
-                              .map((highlight, idx) => (
-                              <li key={idx} className="text-[13px] text-white/95 font-rubik font-light flex items-start gap-2">
-                                <span className="text-secondary-400 mt-[4px] text-[10px]">♦</span>
-                                <span className={expandedProps[`${dest.id}-${i}`] ? "break-words" : "line-clamp-1"}>{highlight}</span>
-                              </li>
-                            ))}
-                            {dest.hospitalityHighlights.length > 4 && (
-                              <li>
-                                <button 
-                                  onClick={(e) => toggleExpand(`${dest.id}-${i}`, e)}
-                                  className="text-[11px] text-secondary-400 hover:text-secondary-300 font-rubik italic mt-1 bg-transparent border-none cursor-pointer focus:outline-none transition-colors"
-                                >
-                                  {expandedProps[`${dest.id}-${i}`] ? '- Show less' : `+ ${dest.hospitalityHighlights.length - 4} more properties`}
-                                </button>
-                              </li>
-                            )}
-                          </ul>
-                        </div>
-                      )}
+                  {/* Content Container */}
+                  <div className="absolute inset-0 p-6 md:p-10 flex flex-col justify-end z-10 pointer-events-none">
+                    
+                    {/* Header: Visible by default */}
+                    <div className={`transform transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-auto ${isActive ? '-translate-y-0' : 'translate-y-6 group-hover:-translate-y-0'}`}>
+                      <h4 className="text-secondary-300 dark:text-secondary-400 font-mono tracking-widest text-[9px] md:text-[10px] uppercase mb-2 md:mb-3 flex items-center gap-2 drop-shadow-md">
+                        <span className="w-4 h-[1px] bg-secondary-300 dark:bg-secondary-400"></span>
+                        {dest.subtitle || 'Premium Hub'}
+                      </h4>
+                      <h3 className="text-3xl md:text-4xl font-phudu font-bold text-white drop-shadow-lg tracking-wide">
+                        {dest.title}
+                      </h3>
+                    </div>
 
-                      {/* Stats */}
-                      <div className="grid grid-cols-2 gap-6 pt-4 border-t border-white/20 dark:border-white/10 mt-2">
-                        {(dest.statistics || []).slice(0, 2).map((stat, idx) => (
-                          <div key={`stat-${idx}`} className="flex flex-col">
-                            <span className="text-xl text-white font-phudu font-light mb-1">{stat.value || '-'}</span>
-                            <span className="text-[9px] uppercase font-mono tracking-[0.2em] text-gray-300 dark:text-gray-400">{stat.label || 'Metric'}</span>
+                    {/* Expanding Details: Reveals gracefully on click/hover */}
+                    <div className={`grid transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] mt-4 pointer-events-auto ${isActive ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] group-hover:grid-rows-[1fr] opacity-0 group-hover:opacity-100'}`}>
+                      <div className="overflow-hidden">
+                        
+                        {/* Properties List */}
+                        {dest.hospitalityHighlights && dest.hospitalityHighlights.length > 0 && (
+                          <div className="pt-2 pb-4">
+                            <p className="text-[10px] text-gray-300 uppercase font-mono tracking-widest mb-3">Key Properties</p>
+                            <ul className="space-y-1.5 transition-all duration-300">
+                              {dest.hospitalityHighlights
+                                .slice(0, expandedProps[uniqueId] ? dest.hospitalityHighlights.length : 4)
+                                .map((highlight, idx) => (
+                                <li key={idx} className="text-[13px] text-white/95 font-rubik font-light flex items-start gap-2">
+                                  <span className="text-secondary-400 mt-[4px] text-[10px]">♦</span>
+                                  <span className={expandedProps[uniqueId] ? "break-words" : "line-clamp-1"}>{highlight}</span>
+                                </li>
+                              ))}
+                              {dest.hospitalityHighlights.length > 4 && (
+                                <li>
+                                  <button 
+                                    onClick={(e) => toggleExpand(uniqueId, e)}
+                                    className="text-[11px] text-secondary-400 hover:text-secondary-300 font-rubik italic mt-1 bg-transparent border-none cursor-pointer focus:outline-none transition-colors"
+                                  >
+                                    {expandedProps[uniqueId] ? '- Show less' : `+ ${dest.hospitalityHighlights.length - 4} more properties`}
+                                  </button>
+                                </li>
+                              )}
+                            </ul>
                           </div>
-                        ))}
+                        )}
+
+                        {/* Stats */}
+                        <div className="grid grid-cols-2 gap-6 pt-4 border-t border-white/20 dark:border-white/10 mt-2">
+                          {(dest.statistics || []).slice(0, 2).map((stat, idx) => (
+                            <div key={`stat-${idx}`} className="flex flex-col">
+                              <span className="text-xl text-white font-phudu font-light mb-1">{stat.value || '-'}</span>
+                              <span className="text-[9px] uppercase font-mono tracking-[0.2em] text-gray-300 dark:text-gray-400">{stat.label || 'Metric'}</span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
-                  </div>
 
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
