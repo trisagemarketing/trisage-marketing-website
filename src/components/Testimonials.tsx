@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef } from "react";
+import React, { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -17,6 +17,7 @@ export default function Testimonials() {
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const [debug, setDebug] = useState({ progress: 0, start: 0, end: 0, h: 0 });
 
   useGSAP(() => {
     const cards = cardsRef.current.filter(Boolean) as HTMLDivElement[];
@@ -24,9 +25,10 @@ export default function Testimonials() {
     let mm = gsap.matchMedia();
     mm.add({
       isDesktop: "(min-width: 768px)",
-      isMobile: "(max-width: 767px)"
+      isMobile: "(max-width: 767px)",
+      isShort: "(max-height: 850px)"
     }, (context) => {
-      let { isMobile } = context.conditions as { isMobile?: boolean };
+      let { isMobile, isShort } = context.conditions as { isMobile?: boolean, isShort?: boolean };
 
       // Initialize background cards state INSIDE the context so it reverts properly on unmount
       cards.forEach((card, index) => {
@@ -41,6 +43,8 @@ export default function Testimonials() {
           end: "bottom bottom",
           scrub: true,
           invalidateOnRefresh: true,
+          onUpdate: (self) => setDebug(prev => ({ ...prev, progress: self.progress })),
+          onRefresh: (self) => setDebug({ progress: self.progress, start: self.start, end: self.end, h: window.innerHeight })
         }
       });
 
@@ -80,10 +84,13 @@ export default function Testimonials() {
         );
 
         // Previous cards recede into the background
+        const stackScale = isMobile ? 0.03 : (isShort ? 0.04 : 0.05);
+        const stackY = isMobile ? 12 : (isShort ? 16 : 40);
+
         for (let j = 0; j < index; j++) {
           tl.to(cards[j], {
-            scale: 1 - ((index - j) * (isMobile ? 0.03 : 0.05)),
-            y: -((index - j) * (isMobile ? 12 : 40)),
+            scale: 1 - ((index - j) * stackScale),
+            y: -((index - j) * stackY),
             duration: 1.5,
             ease: "power4.out",
           }, (index - 1) * 1.5);
@@ -95,10 +102,10 @@ export default function Testimonials() {
   }, { scope: sectionRef });
 
   return (
-    <section ref={sectionRef} className="relative bg-white dark:bg-[#050b14]" style={{ height: `${testimonials.length * 100}vh` }}>
+    <section ref={sectionRef} className="relative bg-white dark:bg-[#050b14]" style={{ height: `${testimonials.length * 100}svh` }}>
       
       {/* NATIVE STICKY OVER GSAP PIN: Guaranteed to never be cut off by global overflow-hidden wrappers */}
-      <div className="sticky top-0 left-0 w-full h-[100svh] overflow-hidden py-16 md:py-24 bg-white dark:bg-[#050b14] z-10 flex flex-col justify-center">
+      <div className="sticky top-0 left-0 w-full h-[100svh] overflow-hidden bg-white dark:bg-[#050b14] z-10 flex flex-col">
         
         {/* Background Planets/Stars logic (Hidden on Light Mode) */}
         <div className="absolute hidden dark:block right-[-10%] top-[10%] w-[120px] h-[120px] md:w-[320px] md:h-[320px] pointer-events-none z-0" style={{
@@ -135,23 +142,26 @@ export default function Testimonials() {
           </div>
         </div>
 
-        <div className="container relative z-10 mx-auto px-4 md:px-8 max-w-[1200px] flex flex-col h-full justify-center">
+        <div 
+          className="container relative z-10 mx-auto px-4 md:px-8 max-w-[1200px] flex flex-col justify-center h-full"
+          style={{ paddingTop: "max(90px, 12vh)", paddingBottom: "max(60px, 10vh)" }}
+        >
           
           {/* Header */}
-          <div className="text-center max-w-4xl mx-auto mb-2 sm:mb-10 md:mb-16 lg:mb-20 relative z-20 pointer-events-none flex-shrink-0">
-            <h2 className="text-[7vw] sm:text-4xl md:text-6xl font-black mb-1 sm:mb-4 md:mb-6 uppercase tracking-tight flex flex-wrap justify-center gap-1 sm:gap-2">
+          <div className="text-center max-w-4xl mx-auto mb-6 md:mb-12 lg:mb-16 [@media(max-height:850px)]:mb-4 relative z-20 pointer-events-none shrink-0">
+            <h2 className="text-[7vw] sm:text-4xl md:text-6xl [@media(max-height:850px)]:md:text-4xl font-black mb-1 sm:mb-4 md:mb-6 uppercase tracking-tight flex flex-wrap justify-center gap-1 sm:gap-2">
               <span className="text-primary-950 dark:text-white">Client Success </span>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-secondary-500 dark:from-primary-400 dark:to-secondary-400">Stories</span>
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-primary-600 to-secondary-500 dark:from-primary-400 dark:to-secondary-400">Stories</span>
             </h2>
-            <p className="font-sans font-medium text-xs sm:text-base lg:text-xl leading-tight lg:leading-[1.2] uppercase tracking-tight text-balance text-primary-700 dark:text-primary-200 hidden sm:block">
-              Don't just take our word for it. Here's what our <strong className="font-black">partners</strong> have to say about working with <strong className="font-black text-primary-950 dark:text-white">Trisage</strong>.
+            <p className="text-sm sm:text-xl md:text-2xl [@media(max-height:850px)]:md:text-lg font-medium tracking-wide text-primary-600/80 dark:text-primary-400/80 uppercase">
+              Don't just take our word for it. Here's what our <span className="text-primary-900 dark:text-white font-bold">partners</span> have to say about working with <span className="font-black text-primary-950 dark:text-white">Trisage.</span>
             </p>
           </div>
 
           {/* Stacked Cards Container */}
           <div 
             ref={containerRef}
-            className="relative grid grid-cols-1 w-full mx-auto mt-4 sm:mt-10" 
+            className="relative grid grid-cols-1 w-full mx-auto mt-4 sm:mt-10 [@media(max-height:850px)]:mt-2" 
             style={{ gridTemplateRows: "1fr", gridTemplateColumns: "1fr" }}
           >
             {testimonials.map((testimonial, index) => (
@@ -169,7 +179,7 @@ export default function Testimonials() {
                   zIndex: index
                 }}
               >
-                <div className="flex flex-col lg:flex-row gap-2 sm:gap-6 md:gap-8 lg:gap-12 bg-white dark:bg-primary-950 rounded-[1rem] lg:rounded-[2.5rem] p-3 sm:p-6 md:p-10 lg:p-12 border-2 border-primary-100 dark:border-primary-800 shadow-[0_20px_60px_rgba(45,65,100,0.08)] dark:shadow-[0_30px_80px_rgba(0,0,0,0.6)] relative group w-full overflow-hidden max-h-[65vh] sm:max-h-none justify-center">
+                <div className="flex flex-col lg:flex-row gap-2 sm:gap-6 md:gap-8 lg:gap-12 bg-white dark:bg-primary-950 rounded-[1rem] lg:rounded-[2.5rem] p-4 sm:p-6 md:p-10 lg:p-12 [@media(max-height:850px)]:p-6 border-2 border-primary-100 dark:border-primary-800 shadow-[0_20px_60px_rgba(45,65,100,0.08)] dark:shadow-[0_30px_80px_rgba(0,0,0,0.6)] relative group w-full overflow-hidden max-h-[65vh] sm:max-h-[650px] [@media(max-height:850px)]:max-h-[55vh] justify-center">
 
                   {/* ── IDEA 1: Dual Mesh Orbs ── */}
                   <div
