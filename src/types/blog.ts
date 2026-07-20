@@ -20,6 +20,7 @@ export interface Blog {
   meta_title: string | null;
   meta_description: string | null;
   canonical_url: string | null;
+  faqs: { question: string; answer: string }[] | null;
 
   author_id: string | null;
   author_name: string;

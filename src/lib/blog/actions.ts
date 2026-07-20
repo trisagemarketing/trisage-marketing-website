@@ -18,6 +18,7 @@ const SaveDraftSchema = z.object({
   coverImage: z.string().transform(v => v === "" ? null : v).pipe(z.string().url().nullable()).optional(),
   category: z.string().min(1),
   tags: z.array(z.string()).default([]),
+  faqs: z.array(z.object({ question: z.string(), answer: z.string() })).nullable().optional(),
   authorName: z.string().optional(),
   authorRole: z.string().optional(),
   authorAvatar: z.string().transform(v => v === "" ? null : v).pipe(z.string().url().nullable()).optional(),
@@ -70,6 +71,7 @@ export async function saveDraft(formData: z.infer<typeof SaveDraftSchema>) {
           author_role: validated.authorRole || null,
           author_avatar: validated.authorAvatar || null,
           category: validated.category,
+          faqs: validated.faqs || null,
         })
         .select('id')
         .single();
@@ -110,6 +112,7 @@ export async function saveDraft(formData: z.infer<typeof SaveDraftSchema>) {
           category: validated.category,
           cover_image: validated.coverImage || null,
           tags: validated.tags,
+          faqs: validated.faqs || null,
           author_name: validated.authorName || user.user_metadata?.full_name || user.email?.split('@')[0] || 'Unknown Author',
           author_role: validated.authorRole || null,
           author_avatar: validated.authorAvatar || null,
@@ -160,6 +163,7 @@ export async function publishBlog(formData: z.infer<typeof PublishSchema>) {
         cover_image: validated.coverImage || null,
         category: validated.category,
         tags: validated.tags,
+        faqs: validated.faqs || null,
         author_name: validated.authorName || user.user_metadata?.full_name || user.email?.split('@')[0] || 'Unknown Author',
         author_role: validated.authorRole || null,
         author_avatar: validated.authorAvatar || null,

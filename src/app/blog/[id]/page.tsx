@@ -8,6 +8,7 @@ import RichTextRenderer from "@/components/blog/RichTextRenderer";
 import ShareButton from "@/components/blog/ShareButton";
 import ArticleSchema from "@/components/Schema/ArticleSchema";
 import BreadcrumbSchema from "@/components/Schema/BreadcrumbSchema";
+import BlogFAQ from "@/components/BlogFAQ";
 
 // ==========================================
 // DYNAMIC METADATA + JSON-LD
@@ -159,6 +160,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
                   #{tag}
                 </span>
               ))}
+            </div>
+          )}
+          
+          {/* ── DYNAMIC FAQ SECTION ── */}
+          {post.faqs && post.faqs.length > 0 && (
+            <div className="mt-16">
+              <BlogFAQ faqs={post.faqs} />
             </div>
           )}
         </div>

@@ -40,6 +40,7 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
   const [authorName, setAuthorName] = useState((initialBlog as any)?.author_name || "");
   const [authorRole, setAuthorRole] = useState((initialBlog as any)?.author_role || "");
   const [authorAvatar, setAuthorAvatar] = useState((initialBlog as any)?.author_avatar || "");
+  const [faqs, setFaqs] = useState<{ question: string; answer: string }[]>((initialBlog as any)?.faqs || []);
 
   const [isPublishing, setIsPublishing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -79,6 +80,7 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
       coverImage,
       category,
       tags,
+      faqs,
       authorName,
       authorRole,
       authorAvatar,
@@ -103,6 +105,7 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
       coverImage,
       category,
       tags,
+      faqs,
       authorName,
       authorRole,
       authorAvatar,
@@ -126,7 +129,7 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
     let targetBlogId = blogId;
 
     if (!targetBlogId) {
-      const draftResult = await saveDraft({ blogId: undefined, title, content, coverImage, category, tags, authorName, authorRole, authorAvatar });
+      const draftResult = await saveDraft({ blogId: undefined, title, content, coverImage, category, tags, faqs, authorName, authorRole, authorAvatar });
       if (!draftResult.success || !draftResult.blogId) {
         toast.error("Failed to prepare article.", { description: draftResult.error });
         setIsPublishing(false);
@@ -137,7 +140,7 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
     }
 
     const finalSlug = slug || title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-    const result = await publishBlog({ blogId: targetBlogId, title, slug: finalSlug, content, coverImage, category, tags, authorName, authorRole, authorAvatar });
+    const result = await publishBlog({ blogId: targetBlogId, title, slug: finalSlug, content, coverImage, category, tags, faqs, authorName, authorRole, authorAvatar });
 
     setIsPublishing(false);
     if (result.error) {
@@ -404,6 +407,50 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
                 placeholder="Role / Title (e.g. SEO Strategist)"
                 className="w-full px-3 py-2.5 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all"
               />
+            </div>
+          </SidebarSection>
+
+          {/* ── FAQs ── */}
+          <SidebarSection icon={<FileText size={14} />} label="FAQs">
+            <div className="space-y-3 font-rubik">
+              {faqs.map((faq, index) => (
+                <div key={index} className="p-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl relative group">
+                  <button 
+                    onClick={() => setFaqs(faqs.filter((_, i) => i !== index))}
+                    className="absolute top-2 right-2 text-gray-400 hover:text-red-500 transition-colors"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                  <input
+                    type="text"
+                    value={faq.question}
+                    onChange={(e) => {
+                      const newFaqs = [...faqs];
+                      newFaqs[index].question = e.target.value;
+                      setFaqs(newFaqs);
+                    }}
+                    placeholder="Question..."
+                    className="w-full bg-transparent border-none outline-none text-sm font-semibold text-gray-900 dark:text-white mb-2 pr-6"
+                  />
+                  <textarea
+                    value={faq.answer}
+                    onChange={(e) => {
+                      const newFaqs = [...faqs];
+                      newFaqs[index].answer = e.target.value;
+                      setFaqs(newFaqs);
+                    }}
+                    placeholder="Answer..."
+                    rows={2}
+                    className="w-full bg-transparent border-none outline-none text-xs text-gray-500 dark:text-gray-400 resize-none"
+                  />
+                </div>
+              ))}
+              <button
+                onClick={() => setFaqs([...faqs, { question: "", answer: "" }])}
+                className="w-full py-2.5 flex items-center justify-center gap-1.5 border border-dashed border-gray-300 dark:border-gray-700 rounded-xl text-sm font-medium text-gray-500 hover:text-primary-600 hover:border-primary-300 dark:hover:text-primary-400 dark:hover:border-primary-700 transition-colors"
+              >
+                <Plus size={14} /> Add FAQ
+              </button>
             </div>
           </SidebarSection>
 
