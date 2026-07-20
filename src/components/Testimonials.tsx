@@ -10,18 +10,18 @@ import { Star } from "lucide-react";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
-  ScrollTrigger.config({ ignoreMobileResize: true });
+  ScrollTrigger.config({ ignoreMobileResize: true }); // Fixes mobile address bar jitter
 }
 
 export default function Testimonials() {
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const cardsRef = useRef<HTMLElement[]>([]);
+  
+  // Debug state to visualize timeline and bounds
   const [debug, setDebug] = useState({ progress: 0, start: 0, end: 0, h: 0 });
 
   useGSAP(() => {
-    const cards = cardsRef.current.filter(Boolean) as HTMLDivElement[];
-    if (cards.length === 0) return;
     let mm = gsap.matchMedia();
     mm.add({
       isDesktop: "(min-width: 768px)",
@@ -31,8 +31,8 @@ export default function Testimonials() {
       let { isMobile, isShort } = context.conditions as { isMobile?: boolean, isShort?: boolean };
 
       // Initialize background cards state INSIDE the context so it reverts properly on unmount
-      cards.forEach((card, index) => {
-        if (index === 0) return;
+      cardsRef.current.forEach((card, index) => {
+        if (index === 0 || !card) return;
         gsap.set(card, { y: typeof window !== "undefined" ? window.innerHeight * 1.2 : 1200, opacity: 0 });
       });
 
@@ -48,7 +48,7 @@ export default function Testimonials() {
         }
       });
 
-      const firstCard = cards[0];
+      const firstCard = cardsRef.current[0];
       if (firstCard) {
         gsap.fromTo(firstCard.querySelector('.avatar-anim'),
           { scale: 0.8, opacity: 0 },
@@ -61,8 +61,8 @@ export default function Testimonials() {
       }
 
       // Layered Stacking Animation
-      cards.forEach((card, index) => {
-        if (index === 0) return; 
+      cardsRef.current.forEach((card, index) => {
+        if (index === 0 || !card) return; 
 
         tl.to(card, {
           y: 0,
@@ -83,14 +83,16 @@ export default function Testimonials() {
           (index - 1) * 1.5 + 0.4
         );
 
-        // Previous cards recede into the background
+        // Previous cards recede into the background with MissionVision-style depth fading
         const stackScale = isMobile ? 0.03 : (isShort ? 0.04 : 0.05);
         const stackY = isMobile ? 12 : (isShort ? 16 : 40);
 
         for (let j = 0; j < index; j++) {
-          tl.to(cards[j], {
+          tl.to(cardsRef.current[j], {
             scale: 1 - ((index - j) * stackScale),
             y: -((index - j) * stackY),
+            opacity: 1 - ((index - j) * (isMobile ? 0.15 : 0.3)), // Add depth dimming
+            filter: isMobile ? "none" : `blur(${(index - j) * 2}px)`, // Add depth blur on desktop
             duration: 1.5,
             ease: "power4.out",
           }, (index - 1) * 1.5);
@@ -102,7 +104,7 @@ export default function Testimonials() {
   }, { scope: sectionRef });
 
   return (
-    <section ref={sectionRef} className="relative bg-white dark:bg-[#050b14]" style={{ height: `${testimonials.length * 100}svh` }}>
+    <section ref={sectionRef} className="relative bg-white dark:bg-[#050b14] max-md:-mb-[22vh]" style={{ height: `${testimonials.length * 100}svh` }}>
       
       {/* NATIVE STICKY OVER GSAP PIN: Guaranteed to never be cut off by global overflow-hidden wrappers */}
       <div className="sticky top-0 left-0 w-full h-[100svh] overflow-hidden bg-white dark:bg-[#050b14] z-10 flex flex-col">
@@ -143,8 +145,7 @@ export default function Testimonials() {
         </div>
 
         <div 
-          className="container relative z-10 mx-auto px-4 md:px-8 max-w-[1200px] flex flex-col justify-center h-full"
-          style={{ paddingTop: "max(90px, 12vh)", paddingBottom: "max(60px, 10vh)" }}
+          className="container relative z-10 mx-auto px-4 md:px-8 max-w-[1200px] flex flex-col justify-start md:justify-center h-full pt-[90px] pb-[20px] md:pt-[100px] md:pb-[60px] lg:pt-[12vh] lg:pb-[10vh]"
         >
           
           {/* Header */}
