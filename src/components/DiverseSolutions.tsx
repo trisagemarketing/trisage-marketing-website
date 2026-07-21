@@ -9,7 +9,7 @@ import "swiper/css";
 
 const solutions = [
   {
-    title: "Home Stay Marketing",
+    title: "HomeStay Marketing",
     description: "Rank locally on Google & drive direct bookings",
     // Cozy homestay bedroom image
     image: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1783942566/Home_stay_svbqch.png",
