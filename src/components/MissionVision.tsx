@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -137,35 +137,71 @@ export default function MissionVision() {
                     muted
                     loop
                     playsInline
-                    preload="none"
+                    preload="auto"
+                    onEnded={(e) => {
+                      e.currentTarget.currentTime = 0;
+                      e.currentTarget.play().catch(() => {});
+                    }}
                     className="absolute inset-0 md:block w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   >
-                    <source src="https://res.cloudinary.com/dgoclgj0u/video/upload/v1782477285/Akshaya_Tritiya_Comfort_Inn_qlap7z.mp4" type="video/mp4" />
+                    <source src="https://res.cloudinary.com/dgoclgj0u/video/upload/v1784631192/videoplayback_hcv2ew.mp4" type="video/mp4" />
                   </video>
                 </div>
 
                 {/* Top Right */}
                 <div className="col-start-3 row-start-1 relative rounded-xl md:rounded-3xl overflow-hidden shadow-2xl group">
                   <div className="absolute inset-0 bg-linear-to-tr from-primary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                  <Image src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1782808259/Hornbill-post.jpg_qdfm4n.jpg" alt="Mission 1" fill sizes="(max-width: 768px) 33vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <ImageSlideshow 
+                    images={[
+                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632536/Avyanya_july_post_19_ijd2w9.png",
+                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632536/Gopidham_post_2_fsllmu.png",
+                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1782808259/Hornbill-post.jpg_qdfm4n.jpg"
+                    ]} 
+                    alt="Mission 1" 
+                    delay={3000} 
+                  />
                 </div>
                 
                 {/* Center */}
                 <div className="col-start-2 row-start-2 relative rounded-xl md:rounded-3xl overflow-hidden shadow-2xl group">
                   <div className="absolute inset-0 bg-linear-to-tr from-primary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                  <Image src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1782475041/WhatsApp_Image_2026-06-26_at_5.22.31_PM_1_ht8793.jpg" alt="Mission 2" fill sizes="(max-width: 768px) 33vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <ImageSlideshow 
+                    images={[
+                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632536/Anant_Dhara_New_post_1_fbse3m.png",
+                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632536/Hornbill_post_july_2_odppie.png",
+                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1782475041/WhatsApp_Image_2026-06-26_at_5.22.31_PM_1_ht8793.jpg"
+                    ]} 
+                    alt="Mission 2" 
+                    delay={4000} 
+                  />
                 </div>
 
                 {/* Bottom Left */}
                 <div className="col-start-1 row-start-3 relative rounded-xl md:rounded-3xl overflow-hidden shadow-2xl group">
                   <div className="absolute inset-0 bg-linear-to-tr from-primary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                  <Image src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1782475040/WhatsApp_Image_2026-06-26_at_5.22.31_PM_2_s6srlm.jpg" alt="Mission 3" fill sizes="(max-width: 768px) 33vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <ImageSlideshow 
+                    images={[
+                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632536/Gopidham_July_post_2_nsdpn4.png",
+                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632536/Hornbill_post_july_4_clrccv.png",
+                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1782475040/WhatsApp_Image_2026-06-26_at_5.22.31_PM_2_s6srlm.jpg"
+                    ]} 
+                    alt="Mission 3" 
+                    delay={3500} 
+                  />
                 </div>
 
                 {/* Bottom Right */}
                 <div className="col-start-3 row-start-3 relative rounded-xl md:rounded-3xl overflow-hidden shadow-2xl group">
                   <div className="absolute inset-0 bg-linear-to-tr from-primary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                  <Image src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1782808641/Taste-_-Tales.jpg_1_ovhtss.jpg" alt="Mission 4" fill sizes="(max-width: 768px) 33vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <ImageSlideshow 
+                    images={[
+                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632537/IBFW_post_1_Option_q1gv8c.png",
+                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1782808641/Taste-_-Tales.jpg_1_ovhtss.jpg",
+                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632536/Avyanya_july_post_19_ijd2w9.png"
+                    ]} 
+                    alt="Mission 4" 
+                    delay={4500} 
+                  />
                 </div>
                 
               </div>
@@ -204,35 +240,67 @@ export default function MissionVision() {
                     muted
                     loop
                     playsInline
-                    preload="none"
+                    preload="auto"
+                    onEnded={(e) => {
+                      e.currentTarget.currentTime = 0;
+                      e.currentTarget.play().catch(() => {});
+                    }}
                     className="absolute inset-0 md:block w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   >
-                    <source src="https://res.cloudinary.com/dgoclgj0u/video/upload/v1782477449/Reel_1_Taste_Tales_v2_wp7aat.mp4" type="video/mp4" />
+                    <source src="https://res.cloudinary.com/dgoclgj0u/video/upload/v1784631303/Reel_1_Taste_And_Tales_v5_kxchsp.mp4" type="video/mp4" />
                   </video>
                 </div>
 
                 {/* Top Right — col 3, row 1 */}
                 <div className="col-start-3 row-start-1 relative rounded-xl md:rounded-3xl overflow-hidden shadow-2xl group">
                   <div className="absolute inset-0 bg-linear-to-tr from-secondary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                  <Image src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1782475040/WhatsApp_Image_2026-06-26_at_5.22.31_PM_7_tnh25f.jpg" alt="Vision 1" fill sizes="(max-width: 768px) 33vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <ImageSlideshow 
+                    images={[
+                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632537/Hornbill_post_july_7_yrt1bh.png",
+                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632537/IBFW_post_5_ximcx7.png"
+                    ]} 
+                    alt="Vision 1" 
+                    delay={3200} 
+                  />
                 </div>
 
                 {/* Center — col 2, row 2 */}
                 <div className="col-start-2 row-start-2 relative rounded-xl md:rounded-3xl overflow-hidden shadow-2xl group">
                   <div className="absolute inset-0 bg-linear-to-tr from-secondary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                  <Image src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1782475040/WhatsApp_Image_2026-06-26_at_5.22.31_PM_6_rabmdp.jpg" alt="Vision 2" fill sizes="(max-width: 768px) 33vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <ImageSlideshow 
+                    images={[
+                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632538/Satnam_post_new_1_sajtnf.png",
+                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632538/TreeHouse_Velis_post_2_vvcar0.png"
+                    ]} 
+                    alt="Vision 2" 
+                    delay={4200} 
+                  />
                 </div>
 
                 {/* Bottom Left — col 1, row 3 */}
                 <div className="col-start-1 row-start-3 relative rounded-xl md:rounded-3xl overflow-hidden shadow-2xl group">
                   <div className="absolute inset-0 bg-linear-to-tr from-secondary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                  <Image src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1782475040/WhatsApp_Image_2026-06-26_at_5.22.31_PM_3_vyfqfg.jpg" alt="Vision 3" fill sizes="(max-width: 768px) 33vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <ImageSlideshow 
+                    images={[
+                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632538/Satnam_post_new_2_la0wb4.png",
+                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632537/IBFW_post_2_txdh94.png"
+                    ]} 
+                    alt="Vision 3" 
+                    delay={3700} 
+                  />
                 </div>
 
                 {/* Bottom Right — col 3, row 3 */}
                 <div className="col-start-3 row-start-3 relative rounded-xl md:rounded-3xl overflow-hidden shadow-2xl group">
                   <div className="absolute inset-0 bg-linear-to-tr from-secondary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                  <Image src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1782475040/WhatsApp_Image_2026-06-26_at_5.22.31_PM_4_dm8j8b.jpg" alt="Vision 4" fill sizes="(max-width: 768px) 33vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <ImageSlideshow 
+                    images={[
+                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632538/TreeHouse_Velis_post_7_nbn3kr.png",
+                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632537/Hornbill_post_july_7_yrt1bh.png"
+                    ]} 
+                    alt="Vision 4" 
+                    delay={4700} 
+                  />
                 </div>
 
               </div>
@@ -256,5 +324,34 @@ export default function MissionVision() {
         </div>
       </div>
     </section>
+  );
+}
+
+function ImageSlideshow({ images, alt, delay = 3000 }: { images: string[]; alt: string; delay?: number }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (images.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, delay);
+    return () => clearInterval(interval);
+  }, [images.length, delay]);
+
+  return (
+    <>
+      {images.map((imgSrc, index) => (
+        <Image 
+          key={index}
+          src={imgSrc} 
+          alt={`${alt} ${index + 1}`} 
+          fill 
+          sizes="(max-width: 768px) 33vw, 25vw" 
+          className={`object-cover object-top transition-all duration-1000 ease-in-out group-hover:scale-110 ${
+            index === currentIndex ? "opacity-100 z-0" : "opacity-0 -z-10"
+          }`} 
+        />
+      ))}
+    </>
   );
 }
