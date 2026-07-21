@@ -38,7 +38,7 @@ const caseStudies = [
     imageColor: "from-purple-500/20 to-pink-500/20",
     themeColor: "text-purple-600 dark:text-purple-400",
     themeHighlight: "text-purple-400",
-    imageUrl: "/avyanta.webp"
+    imageUrl: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784640276/Copy_of_ARP09027-HDR_copy_ywmhfy.webp"
   }
 ];
 

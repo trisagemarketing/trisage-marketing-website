@@ -18,13 +18,15 @@ const solutions = [
     title: "Airbnb Marketing",
     description: "Attract more guests & reduce commission costs",
     // Unique Airbnb style A-frame cabin
-    image: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1783942095/AirBnb_v049qo.png",
+    // image: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1783942095/AirBnb_v049qo.png",
+    image: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1783942133/Villa_k9r6xf.png",
   },
   {
     title: "Villas Marketing",
     description: "Promote luxury stays & attract high-value travelers",
     // Luxury modern villa with pool
-    image: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1783942133/Villa_k9r6xf.png",
+    // image: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1783942133/Villa_k9r6xf.png",
+     image: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1783942095/AirBnb_v049qo.png",
   },
   {
     title: "Glamping Marketing",
@@ -42,7 +44,7 @@ const solutions = [
     title: "Restaurant Marketing",
     description: "Fill tables consistently and enhance your dining brand",
     // Premium restaurant interior
-    image: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1783942124/Restaurant_olk1we.png",
+    image: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784638496/DSC04311-2_flfsha.webp",
   },
   {
     title: "Hotel Marketing",
@@ -54,7 +56,7 @@ const solutions = [
     title: "Resort Marketing",
     description: "Increase occupancy & build premium brand value",
     // Premium resort view
-    image: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1783942106/Resort_efcohk.png",
+    image: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784639023/DJI_20250715173926_0041_D_dberep.webp",
   }
 ];
 

@@ -62,7 +62,7 @@ export default function CaseStudiesHero() {
               style={{ borderRadius: "40% 60% 70% 30% / 40% 50% 60% 50%" }}
             >
               <Image 
-                src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=1200" 
+                src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1784640057/Copy_of_ARP09102-HDR_copy_l30r9v.webp" 
                 alt="Luxury Resort Case Study" 
                 fill
                 className="object-cover"
