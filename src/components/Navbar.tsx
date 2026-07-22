@@ -118,11 +118,13 @@ export default function Navbar() {
 
           {/* Right Actions & Mobile Toggle */}
           <div className="flex-1 flex justify-end items-center gap-5 md:gap-6 relative z-50">
-            <ThemeToggle />
+            <div className="hidden md:block">
+              <ThemeToggle />
+            </div>
             
             <Link
               href="/contact"
-              className="hidden md:inline-flex shrink-0 whitespace-nowrap items-center justify-center px-6 py-2.5 text-sm font-medium text-white bg-gray-900 hover:bg-black dark:bg-white dark:text-black dark:hover:bg-gray-200 rounded-full transition-all hover:scale-105 shadow-md"
+              className="inline-flex shrink-0 whitespace-nowrap items-center justify-center px-3.5 py-2 text-xs sm:text-sm font-semibold text-white bg-gray-900 hover:bg-black dark:bg-white dark:text-black dark:hover:bg-gray-200 rounded-full transition-all hover:scale-105 shadow-md"
             >
               Book Consultation
             </Link>

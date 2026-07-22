@@ -84,7 +84,7 @@ export default function CaseStudies() {
                 className="w-full lg:w-1/2 drop-shadow-2xl dark:drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
               >
                 <div 
-                  className={`relative w-full aspect-[4/3] bg-gradient-to-br ${study.imageColor} flex items-center justify-center group`}
+                  className={`relative w-full aspect-4/3 bg-linear-to-br ${study.imageColor} flex items-center justify-center group`}
                   style={{ clipPath: clipMask }}
                 >
                   {/* High-end luxury hotel stock image with sharp Tilt crop */}
@@ -160,7 +160,7 @@ export default function CaseStudies() {
 
                 {/* Closing Copy Blockquote */}
                 <div className="relative pt-4">
-                  <div className={`absolute left-0 top-4 bottom-0 w-1 rounded-full bg-gradient-to-b ${study.imageColor.replace('/20', '/100')}`} />
+                  <div className={`absolute left-0 top-4 bottom-0 w-1 rounded-full bg-linear-to-b ${study.imageColor.replace('/20', '/100')}`} />
                   <p className="pl-5 text-base md:text-lg font-medium text-gray-800 dark:text-gray-300 italic">
                     &quot;{study.closingCopy}&quot;
                   </p>

@@ -52,9 +52,9 @@ export default function GlobalPresence() {
   return (
     <section className="relative w-full pt-24 pb-0 bg-transparent overflow-hidden">
       {/* Background Ambience (Adaptive) - Positioned behind the Title */}
-      <div className="absolute top-10 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[400px] pointer-events-none -z-10 opacity-40 dark:opacity-20 blur-[80px] flex items-center justify-between px-10">
+      <div className="absolute top-10 left-1/2 -translate-x-1/2 w-full max-w-5xl h-100 pointer-events-none -z-10 opacity-40 dark:opacity-20 blur-[80px] flex items-center justify-between px-10">
         <div className="w-75 h-75 bg-secondary-300/60 dark:bg-secondary-500/40 rounded-full mix-blend-multiply dark:mix-blend-screen" />
-        <div className="w-[400px] h-[400px] bg-primary-200/60 dark:bg-primary-600/30 rounded-full mix-blend-multiply dark:mix-blend-screen" />
+        <div className="w-100 h-100 bg-primary-200/60 dark:bg-primary-600/30 rounded-full mix-blend-multiply dark:mix-blend-screen" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 lg:px-24 mb-10 md:mb-20 text-center md:text-left">
@@ -108,28 +108,29 @@ export default function GlobalPresence() {
             return (
               <div 
                 key={uniqueId} 
-                className="shrink-0 w-[92vw] sm:w-[340px] md:w-[420px] pr-4 md:pr-8 cursor-pointer"
+                className="shrink-0 w-[92vw] sm:w-85 md:w-105 pr-4 md:pr-8 cursor-pointer"
                 onClick={() => setActiveCard(isActive ? null : uniqueId)}
               >
-                <div className={`group relative w-full h-[420px] sm:h-[480px] md:h-[580px] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden border border-white/40 dark:border-white/10 bg-white/40 dark:bg-black/40 backdrop-blur-2xl shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] transition-all duration-700 hover:shadow-[0_12px_48px_0_rgba(31,38,135,0.15)] dark:hover:shadow-[0_12px_48px_0_rgba(0,0,0,0.5)] ${isActive ? 'ring-2 ring-inset ring-secondary-400 dark:ring-secondary-500' : ''}`}>
+                
+                <div className={`group relative w-full h-105 sm:h-120 md:h-145 rounded-3xl md:rounded-4xl overflow-hidden border border-white/40 dark:border-white/10 bg-white/40 dark:bg-black/40 backdrop-blur-2xl shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] transition-all duration-700 hover:shadow-[0_12px_48px_0_rgba(31,38,135,0.15)] dark:hover:shadow-[0_12px_48px_0_rgba(0,0,0,0.5)] ${isActive ? 'ring-2 ring-inset ring-secondary-400 dark:ring-secondary-500' : ''}`}>
                   
                   {/* Image Container with Parallax effect */}
-                  <div className="absolute inset-0 m-2 md:m-3 rounded-[1.25rem] md:rounded-[1.5rem] overflow-hidden bg-primary-100 dark:bg-[#0c162d]">
+                  <div className="absolute inset-0 m-2 md:m-3 rounded-[1.25rem] md:rounded-3xl overflow-hidden bg-primary-100 dark:bg-[#0c162d]">
                     <div 
-                      className={`absolute inset-0 bg-cover bg-center transform transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${isActive ? 'scale-110' : 'scale-[1.03] group-hover:scale-110'}`}
+                      className={`absolute inset-0 bg-cover bg-center transform transition-transform duration-1200 ease-[cubic-bezier(0.16,1,0.3,1)] ${isActive ? 'scale-110' : 'scale-[1.03] group-hover:scale-110'}`}
                       style={{ backgroundImage: `url(${dest.heroImage || '/assets/placeholder-dest.jpg'})` }}
                     />
                     {/* Adaptive Overlays for legibility */}
-                    <div className={`absolute inset-0 bg-gradient-to-t from-primary-950/90 via-primary-950/40 to-transparent dark:from-black/95 dark:via-black/50 dark:to-transparent transition-opacity duration-700 ${isActive ? 'opacity-100' : 'opacity-80 group-hover:opacity-100'}`} />
+                    <div className={`absolute inset-0 bg-linear-to-t from-primary-950/90 via-primary-950/40 to-transparent dark:from-black/95 dark:via-black/50 dark:to-transparent transition-opacity duration-700 ${isActive ? 'opacity-100' : 'opacity-80 group-hover:opacity-100'}`} />
                   </div>
 
                   {/* Content Container */}
                   <div className="absolute inset-0 p-6 md:p-10 flex flex-col justify-end z-10 pointer-events-none">
                     
                     {/* Header: Visible by default */}
-                    <div className={`transform transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-auto ${isActive ? '-translate-y-0' : 'translate-y-6 group-hover:-translate-y-0'}`}>
+                    <div className={`transform transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-auto ${isActive ? 'translate-y-0' : 'translate-y-6 group-hover:translate-y-0'}`}>
                       <h4 className="text-secondary-300 dark:text-secondary-400 font-mono tracking-widest text-[9px] md:text-[10px] uppercase mb-2 md:mb-3 flex items-center gap-2 drop-shadow-md">
-                        <span className="w-4 h-[1px] bg-secondary-300 dark:bg-secondary-400"></span>
+                        <span className="w-4 h-px bg-secondary-300 dark:bg-secondary-400"></span>
                         {dest.subtitle || 'Premium Hub'}
                       </h4>
                       <h3 className="text-3xl md:text-4xl font-phudu font-bold text-white drop-shadow-lg tracking-wide">
@@ -150,8 +151,8 @@ export default function GlobalPresence() {
                                 .slice(0, expandedProps[uniqueId] ? dest.hospitalityHighlights.length : 4)
                                 .map((highlight, idx) => (
                                 <li key={idx} className="text-[13px] text-white/95 font-rubik font-light flex items-start gap-2">
-                                  <span className="text-secondary-400 mt-[4px] text-[10px]">♦</span>
-                                  <span className={expandedProps[uniqueId] ? "break-words" : "line-clamp-1"}>{highlight}</span>
+                                  <span className="text-secondary-400 mt-1 text-[10px]">♦</span>
+                                  <span className={expandedProps[uniqueId] ? "wrap-break-word" : "line-clamp-1"}>{highlight}</span>
                                 </li>
                               ))}
                               {dest.hospitalityHighlights.length > 4 && (

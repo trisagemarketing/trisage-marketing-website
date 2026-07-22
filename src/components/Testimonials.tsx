@@ -26,33 +26,32 @@ export default function Testimonials() {
   useGSAP(() => {
     let mm = gsap.matchMedia();
 
-    // ── 1. MOBILE & TABLET GSAP SCROLLTRIGGER ANIMATION ──
+    // ── 1. MOBILE & TABLET GSAP SCROLLTRIGGER ANIMATION (60fps GPU Composite) ──
     mm.add("(max-width: 767px)", () => {
-      mobileCardsRef.current.forEach((card, idx) => {
+      mobileCardsRef.current.forEach((card) => {
         if (!card) return;
 
-        // Set initial hidden state with 3D perspective
+        // Set initial hidden state with hardware GPU acceleration
         gsap.set(card, {
-          y: 90,
+          y: 60,
           opacity: 0,
-          scale: 0.92,
-          rotateX: 15,
-          transformPerspective: 1000,
-          transformOrigin: "center top",
+          scale: 0.95,
+          force3D: true,
         });
 
-        // Scrubbed entrance animation bound to scroll position
+        // Buttery-smooth GPU accelerated entrance animation
         gsap.to(card, {
           y: 0,
           opacity: 1,
           scale: 1,
-          rotateX: 0,
-          ease: "power2.out",
+          duration: 0.65,
+          ease: "power3.out",
+          force3D: true,
           scrollTrigger: {
             trigger: card,
-            start: "top 92%",
-            end: "top 60%",
-            scrub: 0.8, // Ultra-smooth inertia scrub
+            start: "top 88%",
+            toggleActions: "play reverse play reverse",
+            fastScrollEnd: true,
             invalidateOnRefresh: true,
           }
         });

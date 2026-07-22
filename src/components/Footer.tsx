@@ -70,11 +70,11 @@ export default function Footer() {
 
       {/* ── Mesh Orbs — same pattern as all sections ── */}
       <div
-        className="absolute -top-1/4 -left-[8%] w-[45%] h-[70%] rounded-full pointer-events-none animate-[pulse_10s_ease-in-out_infinite] will-change-opacity transform-gpu"
+        className="absolute -top-1/4 left-[-8%] w-[45%] h-[70%] rounded-full pointer-events-none animate-[pulse_10s_ease-in-out_infinite] will-change-opacity transform-gpu"
         style={{ background: "radial-gradient(circle, rgba(37,99,235,0.06) 0%, transparent 70%)" }}
       />
       <div
-        className="absolute -bottom-1/4 -right-[5%] w-[40%] h-[60%] rounded-full pointer-events-none animate-[pulse_13s_ease-in-out_infinite_reverse] will-change-opacity transform-gpu"
+        className="absolute -bottom-1/4 right-[-5%] w-[40%] h-[60%] rounded-full pointer-events-none animate-[pulse_13s_ease-in-out_infinite_reverse] will-change-opacity transform-gpu"
         style={{ background: "radial-gradient(circle, rgba(6,182,212,0.06) 0%, transparent 70%)" }}
       />
 
@@ -91,7 +91,7 @@ export default function Footer() {
           {[...Array(4)].map((_, j) => (
             <span
               key={j}
-              className="text-[35vw] md:text-[45vw] font-black leading-[0.75] tracking-tighter text-primary-950/[0.03] dark:text-white/[0.03] pr-16 md:pr-32"
+              className="text-[35vw] md:text-[45vw] font-black leading-[0.75] tracking-tighter text-primary-950/3 dark:text-white/3 pr-16 md:pr-32"
               style={{ fontFamily: "'Poppins', sans-serif" }}
             >
               TRISAGE
@@ -164,7 +164,7 @@ export default function Footer() {
                         href={href}
                         className="font-sans font-medium uppercase tracking-tight text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200 flex items-center gap-1.5 group"
                       >
-                        <span className="w-0 group-hover:w-2 h-[2px] bg-primary-500 transition-all duration-300 rounded-full" />
+                        <span className="w-0 group-hover:w-2 h-0.5 bg-primary-500 transition-all duration-300 rounded-full" />
                         {label}
                       </Link>
                     </li>
@@ -184,7 +184,7 @@ export default function Footer() {
                       href={`/services/${service.slug}`}
                       className="font-sans font-medium uppercase tracking-tight text-gray-600 dark:text-gray-400 hover:text-secondary-600 dark:hover:text-secondary-400 transition-colors duration-200 flex items-center gap-1.5 group"
                     >
-                      <span className="w-0 group-hover:w-2 h-[2px] bg-secondary-500 transition-all duration-300 rounded-full" />
+                      <span className="w-0 group-hover:w-2 h-0.5 bg-secondary-500 transition-all duration-300 rounded-full" />
                       {service.title}
                     </Link>
                   </li>
@@ -197,7 +197,7 @@ export default function Footer() {
           <FooterAccordion title="Contact Us">
             <ul className="flex flex-col gap-4 text-sm">
               <li className="flex items-start gap-3">
-                <div className="w-7 h-7 rounded-full bg-primary-50 dark:bg-primary-900 border-2 border-primary-100 dark:border-primary-800 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="w-7 h-7 rounded-full bg-primary-50 dark:bg-primary-900 border-2 border-primary-100 dark:border-primary-800 flex items-center justify-center shrink-0 mt-0.5">
                   <Mail size={13} className="text-primary-600 dark:text-primary-400" />
                 </div>
                 <div>
@@ -208,18 +208,23 @@ export default function Footer() {
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <div className="w-7 h-7 rounded-full bg-secondary-50 dark:bg-secondary-900/30 border-2 border-secondary-100 dark:border-secondary-800/50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="w-7 h-7 rounded-full bg-secondary-50 dark:bg-secondary-900/30 border-2 border-secondary-100 dark:border-secondary-800/50 flex items-center justify-center shrink-0 mt-0.5">
                   <Phone size={13} className="text-secondary-600 dark:text-secondary-400" />
                 </div>
                 <div>
                   <span className="block font-black text-[10px] uppercase tracking-widest text-secondary-600 dark:text-secondary-400 mb-0.5">Phone</span>
-                  <a href="tel:+919217900934" className="font-medium text-gray-700 dark:text-gray-300 hover:text-secondary-600 dark:hover:text-secondary-400 transition-colors">
-                    +91 92179 00934
-                  </a>
+                  <div className="flex flex-col gap-1">
+                    <a href="tel:+919217900934" className="font-medium text-gray-700 dark:text-gray-300 hover:text-secondary-600 dark:hover:text-secondary-400 transition-colors">
+                      +91 92179 00934
+                    </a>
+                    <a href="tel:+919217900946" className="font-medium text-gray-700 dark:text-gray-300 hover:text-secondary-600 dark:hover:text-secondary-400 transition-colors">
+                      +91 92179 00946
+                    </a>
+                  </div>
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <div className="w-7 h-7 rounded-full bg-primary-50 dark:bg-primary-900 border-2 border-primary-100 dark:border-primary-800 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="w-7 h-7 rounded-full bg-primary-50 dark:bg-primary-900 border-2 border-primary-100 dark:border-primary-800 flex items-center justify-center shrink-0 mt-0.5">
                   <MapPin size={13} className="text-primary-600 dark:text-primary-400" />
                 </div>
                 <div>
