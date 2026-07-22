@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Gift } from "lucide-react";
 import { cn } from "@/lib/utils";
 import MobileMenu from "./MobileMenu";
 import { ThemeToggle } from "./ThemeToggle";
@@ -80,7 +80,7 @@ export default function Navbar() {
               priority
               fetchPriority="high"
               loading="eager"
-              className="h-10 md:h-12 lg:h-14 w-auto transition-all mix-blend-multiply dark:mix-blend-screen dark:invert dark:hue-rotate-180"
+              className="h-8 sm:h-10 md:h-12 lg:h-14 w-auto shrink-0 transition-all mix-blend-multiply dark:mix-blend-screen dark:invert dark:hue-rotate-180"
             />
           </Link>
           </div>
@@ -117,14 +117,25 @@ export default function Navbar() {
           </nav>
 
           {/* Right Actions & Mobile Toggle */}
-          <div className="flex-1 flex justify-end items-center gap-5 md:gap-6 relative z-50">
+          <div className="flex-1 flex justify-end items-center gap-2 sm:gap-4 md:gap-6 relative z-50">
             <div className="hidden md:block">
               <ThemeToggle />
             </div>
             
+            {/* Cool Mobile & Tablet Button: Get Free Audit (Global CSS Colors + Bouncing Gift Box) */}
+            <button
+              onClick={() => window.dispatchEvent(new Event("openLeadModal"))}
+              className="inline-flex lg:hidden shrink-0 items-center justify-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 text-[11px] sm:text-xs font-extrabold text-white bg-gradient-to-r from-primary-600 via-primary-700 to-secondary-600 dark:from-primary-500 dark:to-secondary-400 rounded-full shadow-md shadow-primary-600/25 active:scale-95 transition-all border border-white/20 cursor-pointer whitespace-nowrap"
+              aria-label="Get Free Audit"
+            >
+              <Gift size={14} className="text-secondary-300 dark:text-secondary-200 animate-bounce shrink-0" />
+              <span>Get Free Audit</span>
+            </button>
+
+            {/* Desktop Button: Book Consultation */}
             <Link
               href="/contact"
-              className="inline-flex shrink-0 whitespace-nowrap items-center justify-center px-3.5 py-2 text-xs sm:text-sm font-semibold text-white bg-gray-900 hover:bg-black dark:bg-white dark:text-black dark:hover:bg-gray-200 rounded-full transition-all hover:scale-105 shadow-md"
+              className="hidden lg:inline-flex shrink-0 whitespace-nowrap items-center justify-center px-6 py-2.5 text-sm font-medium text-white bg-gray-900 hover:bg-black dark:bg-white dark:text-black dark:hover:bg-gray-200 rounded-full transition-all hover:scale-105 shadow-md"
             >
               Book Consultation
             </Link>

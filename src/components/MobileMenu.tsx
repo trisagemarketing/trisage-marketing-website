@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion, Variants } from "framer-motion";
+import { Gift } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface MobileMenuProps {
@@ -83,16 +84,29 @@ export default function MobileMenu({ navLinks, pathname, onClose }: MobileMenuPr
       {/* Bottom CTA Section */}
       <motion.div 
         variants={itemVariants}
-        className="mt-auto pt-8 flex flex-col items-center gap-4 w-full relative text-center"
+        className="mt-auto pt-8 flex flex-col items-center gap-3.5 w-full relative text-center"
       >
-        {/* Centered Elegant Separator Line */}
+        {/* Centered Separator Line */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-[1px] bg-gray-200 dark:bg-gray-800" />
         
-        <p className="text-sm text-gray-500 dark:text-gray-400 mb-2 mt-2">Ready to scale your brand?</p>
+        <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 font-medium">Ready to scale your direct bookings?</p>
+        
+        {/* High-Converting Get Free Audit Button with Bouncing Gift Icon */}
+        <button
+          onClick={() => {
+            onClose();
+            window.dispatchEvent(new Event("openLeadModal"));
+          }}
+          className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 text-base font-bold text-white bg-gradient-to-r from-primary-600 via-primary-700 to-secondary-600 dark:from-primary-500 dark:to-secondary-400 rounded-full transition-all hover:scale-[1.02] active:scale-95 shadow-xl shadow-primary-600/20 cursor-pointer"
+        >
+          <Gift size={18} className="text-secondary-300 dark:text-secondary-200 animate-bounce" />
+          <span>Get Free Audit</span>
+        </button>
+
         <Link
           href="/contact"
           onClick={onClose}
-          className="w-full inline-flex items-center justify-center px-6 py-4 text-lg font-medium text-white bg-gray-900 hover:bg-black dark:bg-primary-600 dark:hover:bg-primary-500 rounded-full transition-all hover:scale-[1.02] active:scale-95 shadow-xl"
+          className="w-full inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition-all"
         >
           Book Consultation
         </Link>

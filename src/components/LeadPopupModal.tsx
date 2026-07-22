@@ -158,7 +158,7 @@ export default function LeadPopupModal() {
                       Scale Your Direct <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-500">Revenue</span>
                     </h2>
                     <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1">
-                      Leave your details below to get a custom hospitality growth roadmap & OTA yield audit.
+                      Share your business goals, and our digital marketing experts will create a customized growth strategy tailored to your brand.
                     </p>
                   </div>
 
