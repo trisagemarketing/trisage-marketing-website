@@ -9,7 +9,7 @@ const caseStudies = [
   {
     id: "villasita",
     headline: "Proof of Impact: The Villasita Resort",
-    challengeSolution: "Trisage implemented a targeted social media revival strategy, OTA optimisation, GMB enhancement, and premium content positioning to strengthen Villasita Resort’s digital presence, increase room night bookings, and improve local search visibility.",
+    challengeSolution: "Trisage implemented a targeted social media revival strategy, OTA optimization, GMB enhancement, and premium content positioning to strengthen Villasita Resort’s digital presence, increase room night bookings, and improve local search visibility.",
     results: [
       { metric: "+94%", label: "Growth in Room Bookings", highlight: true },
       { metric: "+95%", label: "Increase in Room Nights", highlight: true },
@@ -26,7 +26,7 @@ const caseStudies = [
   {
     id: "avyanta",
     headline: "Proof of Impact: Avyanta Hotels",
-    challengeSolution: "Trisage implemented a luxury-focused digital branding, social media growth strategy, premium storytelling content, and visibility-driven hospitality marketing approach to strengthen Avyanta Hotels’ online presence and audience engagement.",
+    challengeSolution: "Trisage implemented luxury-focused digital branding, a social media growth strategy, premium storytelling content, and a visibility-driven hospitality marketing approach to strengthen Avyanta Hotels’ online presence and audience engagement.",
     results: [
       { metric: "+180%", label: "Growth in Social Media Reach", highlight: true },
       { metric: "+140%", label: "Increase in Audience Engagement", highlight: true },

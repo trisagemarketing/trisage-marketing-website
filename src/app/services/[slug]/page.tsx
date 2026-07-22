@@ -1,10 +1,11 @@
 import { notFound } from "next/navigation";
 import { services } from "@/data/services";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, ChevronDown, ChevronRight, FileText } from "lucide-react";
+import { ArrowRight, CheckCircle2, ChevronDown, FileText } from "lucide-react";
 import ServiceSchema from "@/components/Schema/ServiceSchema";
 import BreadcrumbSchema from "@/components/Schema/BreadcrumbSchema";
 import FaqSchema from "@/components/Schema/FaqSchema";
+import { getAllPublishedPosts } from "@/lib/blog/data";
 
 // For static site generation
 export function generateStaticParams() {
@@ -22,6 +23,14 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
   }
 
   const Icon = service.icon;
+
+  // Dynamically fetch published blog posts for Hub-and-Spoke SEO
+  const allPosts = await getAllPublishedPosts();
+  
+  // Filter for matching posts or grab the latest 2 published posts
+  const dynamicRelatedPosts = allPosts && allPosts.length > 0 
+    ? allPosts.filter((p: any) => p && p.slug && p.title).slice(0, 2)
+    : [];
 
   const breadcrumbs = [
     { name: "Home", item: "/" },
@@ -57,7 +66,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
               {service.longDescription}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/clients" className="w-full sm:w-auto inline-flex justify-center items-center px-8 py-4 text-base font-semibold text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-full transition-all shadow-lg hover:shadow-primary-600/25 dark:hover:shadow-primary-500/25 hover:-translate-y-1">
+              <Link href="/contact" className="w-full sm:w-auto inline-flex justify-center items-center px-8 py-4 text-base font-semibold text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-full transition-all shadow-lg hover:shadow-primary-600/25 dark:hover:shadow-primary-500/25 hover:-translate-y-1">
                 Book a Consultation
               </Link>
               <Link href="/methodology" className="w-full sm:w-auto inline-flex justify-center items-center px-8 py-4 text-base font-semibold text-gray-900 dark:text-white bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-full transition-all hover:-translate-y-1">
@@ -112,43 +121,68 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
         </div>
       </section>
 
-      {/* Hub and Spoke: Related Articles */}
-      {service.relatedArticles && service.relatedArticles.length > 0 && (
-        <section aria-labelledby="related-insights-heading" className="py-20 bg-white dark:bg-[#050b14]">
-          <div className="container mx-auto px-4 md:px-8">
-            <div className="max-w-4xl mx-auto">
-              <div className="flex items-center gap-3 mb-8">
+      {/* Dynamic Related Insights Section */}
+      <section aria-labelledby="related-insights-heading" className="py-20 bg-white dark:bg-[#050b14]">
+        <div className="container mx-auto px-4 md:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex items-center justify-between gap-4 mb-8 flex-wrap">
+              <div className="flex items-center gap-3">
                 <FileText className="text-primary-600 dark:text-primary-400" size={28} aria-hidden="true" />
                 <h2 id="related-insights-heading" className="text-3xl font-bold text-gray-900 dark:text-white">Related Insights</h2>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {service.relatedArticles.map((article: any, idx: number) => (
+              <Link href="/blog" className="text-sm font-semibold text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1">
+                View All Insights <ArrowRight size={14} />
+              </Link>
+            </div>
+
+            {dynamicRelatedPosts.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                {dynamicRelatedPosts.map((post: any) => (
                   <Link 
-                    key={idx} 
-                    href={`/blog/${article.slug}`}
-                    className="group p-6 bg-gray-50 dark:bg-[#0a1220] rounded-2xl border border-gray-100 dark:border-gray-800 hover:shadow-lg transition-all hover:-translate-y-1"
+                    key={post.id || post.slug} 
+                    href={`/blog/${post.slug || post.id}`}
+                    className="group p-6 md:p-8 bg-gray-50 dark:bg-[#0a1220] rounded-3xl border border-gray-100 dark:border-gray-800 hover:shadow-xl transition-all hover:-translate-y-1 flex flex-col justify-between"
                   >
-                    <h3 className="font-semibold text-lg text-gray-900 dark:text-white mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                      {article.title}
-                    </h3>
-                    <div className="flex items-center gap-2 text-primary-600 dark:text-primary-400 text-sm font-medium">
+                    <div>
+                      {post.category && (
+                        <span className="text-xs font-bold uppercase tracking-wider text-primary-600 dark:text-primary-400 mb-2 block">
+                          {post.category}
+                        </span>
+                      )}
+                      <h3 className="font-semibold text-lg md:text-xl text-gray-900 dark:text-white mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors line-clamp-2">
+                        {post.title}
+                      </h3>
+                      {post.excerpt && (
+                        <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 line-clamp-2 mb-6">
+                          {post.excerpt}
+                        </p>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2 text-primary-600 dark:text-primary-400 text-sm font-semibold pt-2">
                       Read Article <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" aria-hidden="true" />
                     </div>
                   </Link>
                 ))}
               </div>
-            </div>
+            ) : (
+              <div className="p-8 md:p-12 bg-gray-50 dark:bg-[#0a1220] rounded-3xl border border-gray-100 dark:border-gray-800 text-center">
+                <p className="text-gray-600 dark:text-gray-400 mb-4 text-base md:text-lg">Explore our latest perspectives on hospitality growth and digital strategy.</p>
+                <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-bold text-primary-600 dark:text-primary-400 hover:underline">
+                  Browse All Articles <ArrowRight size={14} />
+                </Link>
+              </div>
+            )}
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       {/* FAQ Section */}
       {service.faqs && service.faqs.length > 0 && (
         <section aria-labelledby="faq-heading" className="py-20 bg-gray-50 dark:bg-[#0a1220] border-t border-gray-100 dark:border-gray-800">
           <div className="container mx-auto px-4 md:px-8">
-            <div className="max-w-3xl mx-auto">
+            <div className="max-w-6xl mx-auto">
               <h2 id="faq-heading" className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-12">Frequently Asked Questions</h2>
-              <div className="space-y-6">
+              <div className="space-y-6 max-w-4xl mx-auto">
                 {service.faqs.map((faq: any, idx: number) => (
                   <details key={idx} className="group bg-white dark:bg-[#050b14] rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 [&_summary::-webkit-details-marker]:hidden">
                     <summary className="flex cursor-pointer items-center justify-between gap-4 p-6 font-semibold text-gray-900 dark:text-white text-lg">
@@ -171,7 +205,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
       {/* CTA Section */}
       <section className="py-24 bg-white dark:bg-[#050b14]">
         <div className="container mx-auto px-4 md:px-8">
-          <div className="max-w-4xl mx-auto text-center bg-primary-600 dark:bg-primary-900/40 rounded-[2.5rem] p-10 md:p-16 relative overflow-hidden border border-primary-500 dark:border-primary-800 shadow-2xl">
+          <div className="max-w-6xl mx-auto text-center bg-primary-600 dark:bg-primary-900/40 rounded-[2.5rem] p-10 md:p-16 relative overflow-hidden border border-primary-500 dark:border-primary-800 shadow-2xl">
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-white/10 to-transparent pointer-events-none"></div>
             
             <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 relative z-10">
@@ -180,7 +214,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
             <p className="text-primary-100 dark:text-primary-200 text-lg md:text-xl mb-10 max-w-2xl mx-auto relative z-10 leading-relaxed">
               Let's build a customized strategy that drives highly qualified traffic and predictable revenue.
             </p>
-            <Link href="/clients" className="inline-flex justify-center items-center px-8 py-4 text-lg font-semibold text-white bg-secondary-600 hover:bg-secondary-700 dark:bg-secondary-500 dark:hover:bg-secondary-600 rounded-full transition-all hover:scale-105 shadow-xl hover:shadow-secondary-600/25 relative z-10">
+            <Link href="/contact" className="inline-flex justify-center items-center px-8 py-4 text-lg font-semibold text-white bg-secondary-600 hover:bg-secondary-700 dark:bg-secondary-500 dark:hover:bg-secondary-600 rounded-full transition-all hover:scale-105 shadow-xl hover:shadow-secondary-600/25 relative z-10">
               Get Your Custom Strategy
             </Link>
           </div>

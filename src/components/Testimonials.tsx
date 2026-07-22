@@ -104,7 +104,7 @@ export default function Testimonials() {
   }, { scope: sectionRef });
 
   return (
-    <section ref={sectionRef} className="relative bg-white dark:bg-[#050b14] max-md:-mb-[22vh]" style={{ height: `${testimonials.length * 100}svh` }}>
+    <section ref={sectionRef} className="relative bg-white dark:bg-[#050b14]" style={{ height: `${testimonials.length * 100}svh` }}>
       
       {/* NATIVE STICKY OVER GSAP PIN: Guaranteed to never be cut off by global overflow-hidden wrappers */}
       <div className="sticky top-0 left-0 w-full h-[100svh] overflow-hidden bg-white dark:bg-[#050b14] z-10 flex flex-col">

@@ -45,7 +45,7 @@ export const DESTINATIONS: Record<string, DestinationStory> = {
     heroImage: '/assets/destinations/haridwar.jpg',
     shortStory: 'Our largest portfolio hub. We manage a diverse range of premium hotels and resorts right at the spiritual heart of the Ganges.',
     hospitalityHighlights: [
-      'Villasita (Resort)',
+      'Villasita',
       'Shri Bhagwan Gopidham',
       'Hotel Satnaam',
       'Hotel Khush Ganga Heritage',
@@ -102,13 +102,13 @@ export const DESTINATIONS: Record<string, DestinationStory> = {
     title: 'Sonipat',
     subtitle: 'Urban Escapes',
     heroImage: 'https://res.cloudinary.com/dgoclgj0u/image/upload/v1783591685/ChatGPT_Image_Jul_9_2026_03_37_39_PM_utsjfz.png',
-    shortStory: 'Strategically located near the NCR, offering premium hotel experiences for transit, business, and quick urban getaways.',
+    shortStory: 'Strategically located near the NCR, TreeHouse Velis offers premium hotel stays, dining, and banquets for business & leisure travelers.',
     hospitalityHighlights: [
-      'Tree House (Hotel)'
+      'TreeHouse Velis'
     ],
     statistics: [
       { label: 'Properties', value: '1' },
-      { label: 'Category', value: 'Transit & Business' },
+      { label: 'Category', value: 'Business & Leisure' },
       { label: 'Location', value: 'Haryana (NCR)' }
     ],
     ctaLabel: 'View Sonipat Properties',

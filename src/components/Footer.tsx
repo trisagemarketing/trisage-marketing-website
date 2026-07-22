@@ -36,16 +36,16 @@ function FooterAccordion({ title, children }: { title: string; children: React.R
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="w-full border-b-2 border-primary-100 dark:border-primary-900 md:border-none py-4 md:py-0">
+    <div className="w-full border-b border-primary-100 dark:border-primary-900/60 md:border-none">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex py-2 w-full items-center justify-between md:justify-start lg:w-full md:cursor-default md:pointer-events-none group md:mb-5"
+        className="flex py-4 w-full items-center justify-between md:justify-start lg:w-full md:cursor-default md:pointer-events-none group md:py-0 md:mb-5"
         aria-expanded={isOpen}
       >
         <h3 className="w-full text-left poppins-semibold text-xs uppercase tracking-widest text-primary-600 dark:text-primary-400">
           {title}
         </h3>
-        <span className="md:hidden text-primary-400 dark:text-primary-600 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+        <span className="md:hidden text-primary-400 dark:text-primary-600 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors shrink-0 ml-2">
           {isOpen ? <Minus size={15} /> : <Plus size={15} />}
         </span>
       </button>
@@ -53,7 +53,7 @@ function FooterAccordion({ title, children }: { title: string; children: React.R
       <div
         className={cn(
           "grid transition-all duration-300 ease-in-out md:grid-rows-[1fr] md:opacity-100",
-          isOpen ? "grid-rows-[1fr] opacity-100 mt-3 md:mt-0" : "grid-rows-[0fr] opacity-0 mt-0"
+          isOpen ? "grid-rows-[1fr] opacity-100 pb-4 md:pb-0" : "grid-rows-[0fr] opacity-0 pb-0"
         )}
       >
         <div className="overflow-hidden">{children}</div>
@@ -148,29 +148,31 @@ export default function Footer() {
           </div>
 
           {/* Column 2: Company */}
-          <FooterAccordion title="Company">
-            <nav aria-label="Company Navigation">
-              <ul className="flex flex-col gap-2.5 text-sm lg:pr-4">
-                {[
-                  { href: "/about", label: "About Us" },
-                  { href: "/services", label: "Our Services" },
-                  { href: "/methodology", label: "Methodology" },
-                  { href: "/blog", label: "Blog" },
-                  { href: "/contact", label: "Contact" },
-                ].map(({ href, label }) => (
-                  <li key={href}>
-                    <Link
-                      href={href}
-                      className="font-sans font-medium uppercase tracking-tight text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200 flex items-center gap-1.5 group"
-                    >
-                      <span className="w-0 group-hover:w-2 h-[2px] bg-primary-500 transition-all duration-300 rounded-full" />
-                      {label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </FooterAccordion>
+          <div className="border-t border-primary-100 dark:border-primary-900/60 md:border-none mt-4 md:mt-0">
+            <FooterAccordion title="Company">
+              <nav aria-label="Company Navigation">
+                <ul className="flex flex-col gap-2.5 text-sm lg:pr-4">
+                  {[
+                    { href: "/about", label: "About Us" },
+                    { href: "/services", label: "Our Services" },
+                    { href: "/methodology", label: "Methodology" },
+                    { href: "/blog", label: "Blog" },
+                    { href: "/contact", label: "Contact" },
+                  ].map(({ href, label }) => (
+                    <li key={href}>
+                      <Link
+                        href={href}
+                        className="font-sans font-medium uppercase tracking-tight text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200 flex items-center gap-1.5 group"
+                      >
+                        <span className="w-0 group-hover:w-2 h-[2px] bg-primary-500 transition-all duration-300 rounded-full" />
+                        {label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            </FooterAccordion>
+          </div>
 
           {/* Column 3: Services */}
           <FooterAccordion title="Services">
@@ -212,7 +214,7 @@ export default function Footer() {
                 <div>
                   <span className="block font-black text-[10px] uppercase tracking-widest text-secondary-600 dark:text-secondary-400 mb-0.5">Phone</span>
                   <a href="tel:+919217900934" className="font-medium text-gray-700 dark:text-gray-300 hover:text-secondary-600 dark:hover:text-secondary-400 transition-colors">
-                    +91 92179 00946
+                    +91 92179 00934
                   </a>
                 </div>
               </li>

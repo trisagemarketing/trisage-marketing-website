@@ -83,7 +83,7 @@ export default function GlobalPresence() {
             100% { transform: translate3d(-50%, 0, 0); }
           }
           .animate-card-marquee {
-            animation: card-marquee 45s linear infinite;
+            animation: card-marquee 20s linear infinite;
             will-change: transform;
             /* Force GPU Hardware Acceleration to eliminate mobile jitter */
             -webkit-transform: translateZ(0);
@@ -95,8 +95,8 @@ export default function GlobalPresence() {
           }
         `}
       </style>
-      {/* Reduced bottom padding on mobile to fix the massive empty gap */}
-      <div className="relative z-10 w-full pb-4 md:pb-16 overflow-hidden">
+      {/* Reduced bottom padding on mobile to fix the massive empty gap; added top padding so top ring/border is never clipped */}
+      <div className="relative z-10 w-full pt-3 md:pt-4 pb-4 md:pb-16 overflow-hidden">
         {/* MURPHY'S LAW FIX: Reduced quadrupled array to doubled array. 
             Quadrupling created 20+ heavy DOM nodes which caused massive memory lag and jitter on mobile.
             Doubling is perfectly sufficient for a seamless 50% translation width. */}
@@ -111,7 +111,7 @@ export default function GlobalPresence() {
                 className="shrink-0 w-[92vw] sm:w-[340px] md:w-[420px] pr-4 md:pr-8 cursor-pointer"
                 onClick={() => setActiveCard(isActive ? null : uniqueId)}
               >
-                <div className={`group relative w-full h-[420px] sm:h-[480px] md:h-[580px] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden border border-white/40 dark:border-white/10 bg-white/40 dark:bg-black/40 backdrop-blur-2xl shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] transition-all duration-700 hover:shadow-[0_12px_48px_0_rgba(31,38,135,0.15)] dark:hover:shadow-[0_12px_48px_0_rgba(0,0,0,0.5)] ${isActive ? 'ring-2 ring-secondary-400 dark:ring-secondary-500' : ''}`}>
+                <div className={`group relative w-full h-[420px] sm:h-[480px] md:h-[580px] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden border border-white/40 dark:border-white/10 bg-white/40 dark:bg-black/40 backdrop-blur-2xl shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] transition-all duration-700 hover:shadow-[0_12px_48px_0_rgba(31,38,135,0.15)] dark:hover:shadow-[0_12px_48px_0_rgba(0,0,0,0.5)] ${isActive ? 'ring-2 ring-inset ring-secondary-400 dark:ring-secondary-500' : ''}`}>
                   
                   {/* Image Container with Parallax effect */}
                   <div className="absolute inset-0 m-2 md:m-3 rounded-[1.25rem] md:rounded-[1.5rem] overflow-hidden bg-primary-100 dark:bg-[#0c162d]">

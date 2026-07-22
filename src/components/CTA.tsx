@@ -3,36 +3,108 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { fadeUp, fadeLeft, springUp } from "@/lib/animations";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Sparkles, TrendingUp } from "lucide-react";
 
 export default function CTA() {
   return (
-    <section id="cta-section" className="relative py-12 md:py-16 overflow-hidden bg-primary-600 dark:bg-primary-900 ">
-      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2000&auto=format&fit=crop')] opacity-10 bg-cover bg-center mix-blend-overlay dark:mix-blend-lighten" />
-      <div className="absolute inset-0 bg-gradient-to-r from-primary-700/80 to-primary-500/80 dark:from-primary-950/80 dark:to-primary-800/80" />
+    <section id="cta-section" className="relative py-16 sm:py-20 md:py-28 overflow-hidden bg-[#050b14] text-white">
       
+      {/* ── 1. Luxury Background Image Layer ── */}
+      <div 
+        className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=2000&auto=format&fit=crop')] opacity-15 bg-cover bg-center mix-blend-luminosity pointer-events-none" 
+        aria-hidden="true"
+      />
+
+      {/* ── 2. Rich Dark Gradient Base Overlay ── */}
+      <div 
+        className="absolute inset-0 bg-gradient-to-br from-[#061224]/95 via-[#081b36]/90 to-[#030712]/98 pointer-events-none" 
+        aria-hidden="true"
+      />
+
+      {/* ── 3. Creative Glowing Mesh Radial Orbs ── */}
+      <motion.div
+        animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -top-24 -left-24 w-96 h-96 rounded-full pointer-events-none blur-3xl"
+        style={{ background: "radial-gradient(circle, rgba(6,182,212,0.4) 0%, rgba(37,99,235,0.1) 70%, transparent 100%)" }}
+      />
+      <motion.div
+        animate={{ scale: [1.2, 1, 1.2], opacity: [0.35, 0.55, 0.35] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -bottom-24 -right-24 w-[30rem] h-[30rem] rounded-full pointer-events-none blur-3xl"
+        style={{ background: "radial-gradient(circle, rgba(99,102,241,0.4) 0%, rgba(168,85,247,0.15) 70%, transparent 100%)" }}
+      />
+      <div 
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[20rem] rounded-full pointer-events-none blur-3xl opacity-20"
+        style={{ background: "radial-gradient(circle, rgba(37,99,235,0.3) 0%, transparent 70%)" }}
+      />
+
+      {/* ── 4. Subtle Geometric Grid Pattern Overlay ── */}
+      <div 
+        className="absolute inset-0 bg-[radial-gradient(#ffffff15_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none opacity-60" 
+        aria-hidden="true"
+      />
+
+      {/* ── 5. Floating Decorative Creative Sparkles ── */}
+      <motion.div 
+        animate={{ y: [-6, 6, -6], rotate: [0, 10, 0] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-12 right-[12%] hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs text-cyan-300 shadow-lg pointer-events-none"
+      >
+        <Sparkles size={14} className="text-cyan-400" />
+        <span className="font-semibold tracking-wide">Accelerate Bookings</span>
+      </motion.div>
+
+      <motion.div 
+        animate={{ y: [6, -6, 6], rotate: [0, -8, 0] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-12 left-[10%] hidden md:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs text-emerald-300 shadow-lg pointer-events-none"
+      >
+        <TrendingUp size={14} className="text-emerald-400" />
+        <span className="font-semibold tracking-wide">Data-Driven Yield</span>
+      </motion.div>
+
+      {/* ── 6. Main Content Container ── */}
       <div className="container mx-auto px-4 md:px-8 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-4xl mx-auto text-center px-2 sm:px-0">
+          
+          {/* Glassmorphic Pill Tag */}
+          <motion.div
+            initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={fadeUp}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 dark:bg-white/5 border border-white/20 backdrop-blur-md text-xs sm:text-sm font-bold uppercase tracking-widest text-cyan-300 mb-6 shadow-xl"
+          >
+            <Sparkles size={14} className="text-cyan-400" />
+            <span>Ready for Hospitality Growth?</span>
+          </motion.div>
+
           <motion.h2 
             initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={fadeLeft}
-            className="text-4xl md:text-6xl font-bold text-white mb-8 leading-tight"
+            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 md:mb-8 leading-[1.15] tracking-tight text-balance"
           >
-            Ready to scale your business to new heights?
+            Ready to scale your business to <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-blue-200 to-indigo-300">new heights?</span>
           </motion.h2>
+
           <motion.p 
             initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={fadeUp}
-            className="text-xl text-primary-100 dark:text-primary-200 mb-10 max-w-2xl mx-auto"
+            className="text-base sm:text-lg md:text-xl text-blue-100/90 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed font-medium"
           >
-            Join the ambitious brands that trust Trisage Marketing to drive their digital growth. Let&apos;s build something exceptional together.
+            Join the ambitious hospitality brands that trust Trisage Marketing to drive direct bookings and scalable revenue growth.
           </motion.p>
+
           <motion.div 
             initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={springUp}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <Link href="/contact" className="inline-flex justify-center items-center px-8 py-4 text-base font-bold text-primary-900 dark:text-primary-900 bg-white dark:bg-gray-50 hover:bg-gray-50 dark:hover:bg-white rounded-full transition-all shadow-xl hover:-translate-y-1 w-full sm:w-auto">
+            <Link 
+              href="/contact" 
+              className="inline-flex justify-center items-center px-8 py-4 text-base font-bold text-gray-950 bg-white hover:bg-cyan-50 rounded-full transition-all shadow-[0_0_25px_rgba(255,255,255,0.3)] hover:shadow-[0_0_35px_rgba(6,182,212,0.5)] hover:-translate-y-1 w-full sm:w-auto"
+            >
               Book Your Free Consultation
             </Link>
-            <Link href="/services" className="inline-flex justify-center items-center gap-2 px-8 py-4 text-base font-semibold text-white border border-primary-400 dark:border-primary-600 hover:bg-primary-700/50 dark:hover:bg-primary-800/50 rounded-full transition-all w-full sm:w-auto">
+            <Link 
+              href="/services" 
+              className="inline-flex justify-center items-center gap-2 px-8 py-4 text-base font-semibold text-white bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/25 hover:border-white/40 rounded-full transition-all w-full sm:w-auto"
+            >
               Explore Services <ArrowRight size={18} />
             </Link>
           </motion.div>

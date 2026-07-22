@@ -6,14 +6,14 @@ export const services = [
     slug: "brand-strategy",
     title: "Brand Strategy & Identity",
     subheading: "Build a Brand Guests Remember",
-    description: "We define your market positioning through audience research, competitive analysis, guest behaviour insights, and data-led objectives. From visual identity to brand messaging, we create a clear and consistent brand foundation across every touchpoint.",
+    description: "We define your market positioning through audience research, competitive analysis, guest behavior insights, and data-led objectives. From visual identity to brand messaging, we create a clear and consistent brand foundation across every touchpoint.",
     longDescription: "A brand is the emotional connection between your business and your guests. We help ambitious hotels, resorts, and restaurants discover their unique voice, design stunning visual identities, and position themselves strategically in crowded markets. We create brands that are not just seen, but remembered, trusted, and booked.",
     icon: Fingerprint,
     features: [
       "Brand positioning",
       "Visual identity system",
       "Moodboard design",
-      "Typography and colour palette",
+      "Typography and color palette",
       "Messaging framework",
       "Campaign concept direction"
     ],
@@ -45,14 +45,14 @@ export const services = [
     slug: "revenue-management",
     title: "Revenue Management",
     subheading: "Revenue Strategies That Increase Profitability",
-    description: "We help hospitality brands optimise revenue through strategic pricing, OTA management, yield management, distribution optimisation, competitor analysis, and revenue-focused campaign planning.",
+    description: "We help hospitality brands optimize revenue through strategic pricing, OTA management, yield management, distribution optimization, competitor analysis, and revenue-focused campaign planning.",
     longDescription: "Stop leaving money on the table. Our revenue management experts analyze market trends, competitor pricing, and historical data to implement dynamic pricing strategies. We optimize your distribution channels to ensure you sell the right room, to the right guest, at the exact right time and price.",
     icon: Headset,
     features: [
       "OTA management",
       "Dynamic pricing support",
       "Yield management",
-      "Distribution optimisation",
+      "Distribution optimization",
       "Competitor analysis",
       "TRevPAR-focused strategy",
       "Revenue growth planning"
@@ -83,40 +83,40 @@ export const services = [
   {
     id: 3,
     slug: "website-design-seo",
-    title: "Website Design & SEO",
-    subheading: "Hotel Websites Designed to Convert",
-    description: "Your website is your owned booking channel. We design seamless, mobile-first websites with strong user experience, premium visual presentation, local SEO, technical optimisation, and booking-focused layouts that keep users on your owned platforms.",
-    longDescription: "Your website is your most profitable digital storefront. We design and develop lightning-fast, beautifully interactive websites optimized for conversions. Combined with our technical SEO expertise, we ensure your property ranks highly on Google and seamlessly guides visitors straight to the booking engine.",
+    title: "Website Design, SEO & GEO AI",
+    subheading: "Hotel Websites & AI-Ready Search Optimization",
+    description: "Your website is your owned booking channel. We design seamless, mobile-first websites with strong user experience, Generative Engine Optimization (GEO), AI-ready structured data, local & technical SEO, and conversion-focused layouts that drive direct bookings.",
+    longDescription: "Your website is your most profitable digital storefront. We design and develop lightning-fast, beautifully interactive websites optimized for conversions. Combined with our technical SEO and Generative Engine Optimization (GEO) expertise, we ensure your property ranks highly on Google and gets recommended across AI search engines like ChatGPT, Gemini, and Perplexity.",
     icon: PenTool,
     features: [
       "Hotel website design",
-      "Landing page creation",
       "Mobile-first architecture",
       "Booking engine integration",
-      "Technical SEO",
-      "Local SEO",
-      "Keyword optimisation",
+      "Generative Engine Optimization (GEO)",
+      "AI Search positioning (ChatGPT & Gemini)",
+      "Technical & Local SEO",
+      "AI-ready Schema & structured data",
       "Conversion-focused page structure"
     ],
     benefits: [
       "Deliver a seamless, premium experience to your guests",
-      "Reduce reliance on third-party booking platforms",
-      "Increase conversion rates with data-backed UX",
-      "Attract high-intent, organic search traffic"
+      "Gain top recommendation positioning across AI-powered searches",
+      "Increase direct conversion rates with data-backed UX",
+      "Attract high-intent search traffic from Google & AI engines"
     ],
     faqs: [
           {
-                "question": "Why is a custom hotel website better than a template?",
-                "answer": "Custom hotel websites are engineered for conversion optimization, fast load speeds, and technical SEO, directly funneling users into your booking engine without friction."
+                "question": "What is GEO (Generative Engine Optimization) for hotels?",
+                "answer": "GEO optimizes your hotel's website content, entity authority, and schema markup so AI engines (such as ChatGPT, Gemini, and Perplexity) recommend your property when users search for luxury stays and travel options."
           },
           {
-                "question": "How long does hotel SEO take to show results?",
-                "answer": "Technical SEO for hotels typically begins showing measurable increases in organic traffic within 3 to 6 months, depending on market competition and initial domain authority."
+                "question": "Why is a custom hotel website better than a template?",
+                "answer": "Custom hotel websites are engineered for conversion optimization, fast load speeds, technical SEO, and AI search readiness, directly funneling users into your booking engine without friction."
           }
     ],
     relatedArticles: [
           {
-                "title": "Technical SEO Checklist for Hotels",
+                "title": "Technical SEO & GEO Checklist for Hotels",
                 "slug": "hotel-seo-checklist"
           }
     ]
@@ -167,7 +167,7 @@ export const services = [
     slug: "seo-gmb",
     title: "GEO & GMB",
     subheading: "Control the First Trust Touchpoint",
-    description: "Before guests visit your website, they often discover you on Google. We optimise your Google Business Profile to improve local visibility, strengthen trust, manage reviews, upload high-quality assets, and drive users toward direct booking links.",
+    description: "Before guests visit your website, they often discover you on Google. We optimize your Google Business Profile to improve local visibility, strengthen trust, manage reviews, upload high-quality assets, and drive users toward direct booking links.",
     longDescription: "Local visibility is everything in hospitality. We hyper-optimize your Google Business Profile (GMB) and execute targeted local SEO strategies to ensure you own the 'near me' searches. From review management to authoritative local citations, we put your property on the map.",
     icon: Users,
     features: [

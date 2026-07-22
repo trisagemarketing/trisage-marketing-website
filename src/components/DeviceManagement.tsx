@@ -101,21 +101,21 @@ export default function DeviceManagement() {
             whileInView="visible"
             viewport={{ once: false, margin: "-50px" }}
             variants={fadeUp}
-            className="relative w-full h-[400px] sm:h-[500px] lg:h-[600px] flex items-center justify-center mt-8 lg:mt-0"
+            className="relative w-full flex items-center justify-center my-2 sm:my-4 lg:my-0"
           >
             {/* Soft Gray Organic Blob Background */}
             <div className="absolute inset-0 z-0 pointer-events-none opacity-50 dark:opacity-20 flex items-center justify-center">
-              <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" className="w-full h-full scale-125 md:scale-150 text-gray-100 dark:text-gray-800" fill="currentColor">
+              <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" className="w-full h-full scale-100 sm:scale-125 md:scale-150 text-gray-100 dark:text-gray-800" fill="currentColor">
                 <path d="M410.5,302.5Q372,355,311,385.5Q250,416,183.5,389.5Q117,363,89,306.5Q61,250,91,194.5Q121,139,185.5,108.5Q250,78,321,98.5Q392,119,420.5,184.5Q449,250,410.5,302.5Z" />
               </svg>
             </div>
 
             {/* The User's Socrates Vector Image */}
-            <div className="relative z-10 w-full h-full min-h-[400px] flex items-center justify-center pointer-events-none lg:-translate-x-4">
+            <div className="relative z-10 w-full max-w-[320px] sm:max-w-[450px] lg:max-w-full flex items-center justify-center pointer-events-none lg:-translate-x-4">
               <Image 
                 src={SocratesImg}
                 alt="Philosophy of Marketing"
-                className="object-contain w-full h-auto drop-shadow-2xl dark:drop-shadow-[0_20px_40px_rgba(255,255,255,0.05)] scale-105 sm:scale-110 lg:scale-125 origin-center transition-transform duration-500"
+                className="object-contain w-full h-auto drop-shadow-2xl dark:drop-shadow-[0_20px_40px_rgba(255,255,255,0.05)] origin-center transition-transform duration-500"
                 placeholder="blur"
                 decoding="async"
                 loading="lazy"

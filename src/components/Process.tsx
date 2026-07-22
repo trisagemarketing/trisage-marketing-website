@@ -22,7 +22,7 @@ const processSteps = [
   {
     num: "04",
     title: "Optimization",
-    description: "Continuous A/B testing, data analysis, and refinement to maximize ROI and lower CAC.",
+    description: "Continuous A/B testing, data analysis, and refinement to maximize ROI and lower cost per booking.",
   },
   {
     num: "05",
@@ -95,7 +95,7 @@ export default function Process() {
                 {/* Number Circle container */}
                 <div className="relative flex-shrink-0 flex justify-center mr-6 lg:mr-0 mb-0 lg:mb-8 z-10">
                   <div className="w-[4.5rem] h-[4.5rem] bg-white dark:bg-[#050b14] rounded-full flex items-center justify-center border-2 border-gray-100 dark:border-gray-800 group-hover:border-transparent group-hover:bg-gradient-to-br group-hover:from-primary-500 group-hover:to-secondary-500 shadow-sm group-hover:shadow-[0_0_20px_rgba(45,212,191,0.3)] transition-all duration-300 transform group-hover:-translate-y-1">
-                    <span className="text-xl md:text-2xl font-black text-primary-300 dark:text-gray-500 group-hover:text-white transition-colors duration-300">
+                    <span className="text-xl md:text-2xl font-black text-primary-600 dark:text-gray-400 group-hover:text-white transition-colors duration-300">
                       {step.num}
                     </span>
                   </div>

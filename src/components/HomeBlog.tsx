@@ -39,7 +39,7 @@ export default function HomeBlog({ recentPosts = [] }: HomeBlogProps) {
 
   return (
     <section
-      className="relative py-16 md:py-24 bg-white dark:bg-[#050b14] overflow-hidden normal-case!"
+      className="relative pt-20 pb-16 sm:pt-24 sm:pb-20 md:py-28 bg-white dark:bg-[#050b14] overflow-hidden normal-case!"
       id="insights"
     >
       {/* ── Mesh Orbs — same pattern as Testimonials & FAQ ── */}
@@ -70,23 +70,23 @@ export default function HomeBlog({ recentPosts = [] }: HomeBlogProps) {
       <div className="container relative z-10 mx-auto px-4 md:px-8 max-w-300">
 
         {/* ── Section Header — exact same pattern as Testimonials ── */}
-        <div className="text-center max-w-4xl mx-auto mb-12 md:mb-16">
+        <div className="text-center max-w-4xl mx-auto mb-12 md:mb-16 pt-4 sm:pt-6">
           <motion.h2
             initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={fadeUp}
-            className="text-[8vw] sm:text-4xl md:text-6xl font-black mb-4 md:mb-6 tracking-tight flex flex-wrap justify-center gap-2"
+            className="text-3xl sm:text-4xl md:text-6xl font-black mb-4 md:mb-6 tracking-tight text-center leading-[1.2]"
           >
-            <span className="text-primary-950 dark:text-white">Latest</span>
-            <span className="text-transparent bg-clip-text bg-linear-to-r from-primary-600 to-secondary-500 dark:from-primary-400 dark:to-secondary-400">
-              Insights
+            <span className="inline-block whitespace-nowrap mr-2 sm:mr-3">
+              <span className="text-primary-950 dark:text-white">Latest </span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-secondary-500 dark:from-primary-400 dark:to-secondary-400">Insights</span>
             </span>
-            <span className="text-primary-950 dark:text-white">&</span>
-            <span className="text-transparent bg-clip-text bg-linear-to-r from-secondary-500 to-primary-600 dark:from-secondary-400 dark:to-primary-400">
-              Strategies
+            <span className="inline-block whitespace-nowrap">
+              <span className="text-primary-950 dark:text-white">&amp; </span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary-500 to-primary-600 dark:from-secondary-400 dark:to-primary-400">Strategies</span>
             </span>
           </motion.h2>
           <motion.p
             initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={fadeUp}
-            className="font-sans font-medium text-lg sm:text-xl lg:text-2xl leading-snug capitalize tracking-tight text-balance text-primary-700 dark:text-primary-300"
+            className="font-sans font-medium text-base sm:text-xl lg:text-2xl leading-relaxed capitalize tracking-tight text-balance text-primary-700 dark:text-primary-300 max-w-2xl mx-auto"
           >
             Industry-leading perspectives on{" "}
             <strong className="font-black text-primary-600 dark:text-primary-400">digital marketing</strong>,{" "}
@@ -154,7 +154,7 @@ export default function HomeBlog({ recentPosts = [] }: HomeBlogProps) {
 
                   {/* Footer meta */}
                   <div className="flex items-center justify-between pt-4 border-t-2 border-primary-100 dark:border-primary-800 mt-auto">
-                    <div className="flex items-center gap-1.5 text-[11px] font-boldcapitalize tracking-widest text-secondary-600 dark:text-secondary-400">
+                    <div className="flex items-center gap-1.5 text-[11px] font-bold capitalize tracking-widest text-secondary-600 dark:text-secondary-400">
                       <Calendar size={13} />
                       {post.date}
                     </div>
