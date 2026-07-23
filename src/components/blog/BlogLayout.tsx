@@ -39,7 +39,7 @@ export default function BlogLayout({
     : filteredBlogs;
 
   return (
-    <>
+    <div className="w-full max-w-full overflow-x-hidden">
       <style dangerouslySetInnerHTML={{ __html: `
         @keyframes marquee {
           0% { transform: translateX(0%); }
@@ -58,9 +58,9 @@ export default function BlogLayout({
       `}} />
 
       {/* Hero Section with Infinite Marquee */}
-      <section className="relative pt-28 pb-12 sm:pt-36 sm:pb-16 md:pt-40 md:pb-20 overflow-hidden">
+      <section className="relative pt-28 pb-12 sm:pt-36 sm:pb-16 md:pt-40 md:pb-20 overflow-hidden w-full">
         {/* Infinite Marquee Background */}
-        <div className="absolute top-1/2 -translate-y-1/2 left-0 w-[200vw] flex overflow-hidden pointer-events-none select-none z-0">
+        <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 w-full overflow-hidden pointer-events-none select-none z-0">
           <div className="animate-marquee flex whitespace-nowrap text-[50px] sm:text-[80px] md:text-[120px] lg:text-[160px] font-bold text-stroke opacity-70">
             <span>INSIGHTS • STRATEGY • MARKETING • GROWTH • PERFORMANCE • INSIGHTS • STRATEGY • MARKETING •&nbsp;</span>
           </div>
@@ -282,6 +282,6 @@ export default function BlogLayout({
           </AnimatePresence>
         </section>
       )}
-    </>
+    </div>
   );
 }
