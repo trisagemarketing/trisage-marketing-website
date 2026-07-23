@@ -5,13 +5,12 @@ import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
+import TextAlign from '@tiptap/extension-text-align';
+import TaskList from '@tiptap/extension-task-list';
+import TaskItem from '@tiptap/extension-task-item';
+import Underline from '@tiptap/extension-underline';
 import { useEffect, useState } from 'react';
 import { EditorToolbar } from './EditorToolbar';
-
-
-// Placeholder custom extension for a Marketing Block to prove scalability
-// In a real app, this would be imported from a separate file:
-// import { CtaBannerExtension } from './extensions/CtaBanner';
 
 interface EditorProps {
   initialContent?: any;
@@ -22,8 +21,8 @@ interface EditorProps {
 
 const extensions = [
   StarterKit.configure({
-    heading: { levels: [2, 3, 4] }, // H1 is reserved for the blog title
-    codeBlock: false, // We'd use a dedicated syntax highlighting block later
+    heading: { levels: [2, 3, 4] },
+    codeBlock: false,
   }),
   Image.configure({
     inline: true,
@@ -34,8 +33,16 @@ const extensions = [
     autolink: true,
   }),
   Placeholder.configure({
-    placeholder: 'Press / for commands, or start typing your masterpiece...',
+    placeholder: 'Start writing your article...',
   }),
+  TextAlign.configure({
+    types: ['heading', 'paragraph'],
+  }),
+  TaskList,
+  TaskItem.configure({
+    nested: true,
+  }),
+  Underline,
 ];
 
 export default function BlogEditor({ 
@@ -54,11 +61,10 @@ export default function BlogEditor({
     editable,
     editorProps: {
       attributes: {
-        class: 'prose sm:prose-lg dark:prose-invert prose-primary mx-auto focus:outline-none min-h-[500px]',
+        class: 'prose sm:prose-lg dark:prose-invert prose-primary mx-auto focus:outline-none min-h-[500px] py-4',
       },
     },
     onUpdate: ({ editor }) => {
-      // Extract the JSON AST from Tiptap and pass it up
       const jsonContent = editor.getJSON();
       onChange(jsonContent);
     },
@@ -72,7 +78,7 @@ export default function BlogEditor({
       setIsSaving(true);
       await onAutoSave(editor.getJSON());
       setIsSaving(false);
-    }, 3000); // Autosave 3 seconds after the user stops typing
+    }, 3000);
 
     return () => clearTimeout(handler);
   }, [editor?.state.doc, onAutoSave, editor]);
@@ -88,11 +94,11 @@ export default function BlogEditor({
       
       {/* Save Status Indicator */}
       {onAutoSave && (
-        <div className="absolute top-4 right-4 z-10 flex items-center gap-2 text-xs font-medium text-gray-400">
+        <div className="absolute top-4 right-4 z-10 flex items-center gap-2 text-xs font-medium text-gray-400 pointer-events-none">
           {isSaving ? (
-            <><span className="animate-pulse w-2 h-2 rounded-full bg-yellow-500" /> Saving...</>
+            <><span className="animate-pulse w-2 h-2 rounded-full bg-amber-500" /> Saving...</>
           ) : (
-            <><span className="w-2 h-2 rounded-full bg-green-500" /> Saved to drafts</>
+            <><span className="w-2 h-2 rounded-full bg-emerald-500" /> Saved to drafts</>
           )}
         </div>
       )}

@@ -275,4 +275,32 @@ body {
   width: 100% !important;
   min-width: 0 !important;
 }
+
+/* ── Tiptap Rich Editor Task List & Alignment Styling ── */
+.prose ul[data-type="taskList"] {
+  list-style: none !important;
+  padding-left: 0 !important;
+}
+
+.prose ul[data-type="taskList"] li {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.6rem !important;
+  margin-top: 0.35rem !important;
+  margin-bottom: 0.35rem !important;
+}
+
+.prose ul[data-type="taskList"] li label {
+  user-select: none;
+  display: flex;
+  align-items: center;
+}
+
+.prose ul[data-type="taskList"] li input[type="checkbox"] {
+  width: 1.15rem !important;
+  height: 1.15rem !important;
+  accent-color: #2D4164 !important;
+  cursor: pointer !important;
+  margin: 0 !important;
+}
  
