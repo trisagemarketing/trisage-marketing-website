@@ -58,8 +58,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
       <ArticleSchema article={post} />
       <BreadcrumbSchema items={breadcrumbs} />
 
-      <main className="min-h-screen bg-white dark:bg-[#050b14] ">
-        <article>
+      <main className="min-h-screen bg-white dark:bg-[#050b14] w-full max-w-full overflow-x-hidden">
+        <article className="w-full max-w-full overflow-x-hidden">
 
         {/* ── Hero / Header ── */}
         <header className="relative pt-28 pb-10 md:pt-36 md:pb-14 overflow-hidden">

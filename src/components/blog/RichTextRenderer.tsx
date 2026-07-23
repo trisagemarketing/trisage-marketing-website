@@ -277,7 +277,7 @@ export default function RichTextRenderer({ content }: { content: any }) {
   // Handle BlockNote Array of Blocks
   if (Array.isArray(content)) {
     return (
-      <article className="w-full max-w-none font-rubik">
+      <article className="w-full max-w-full overflow-x-hidden break-words font-rubik">
         {renderBlockNoteBlocks(content)}
       </article>
     );
@@ -286,7 +286,7 @@ export default function RichTextRenderer({ content }: { content: any }) {
   // Handle Tiptap AST object with .content
   if (content.content && Array.isArray(content.content)) {
     return (
-      <article className="w-full max-w-none font-rubik">
+      <article className="w-full max-w-full overflow-x-hidden break-words font-rubik">
         {renderNodes(content.content)}
       </article>
     );
@@ -295,7 +295,7 @@ export default function RichTextRenderer({ content }: { content: any }) {
   // Handle String content (HTML or Plain Text)
   if (typeof content === 'string') {
     return (
-      <article className="w-full max-w-none font-rubik prose sm:prose-lg dark:prose-invert" dangerouslySetInnerHTML={{ __html: content }} />
+      <article className="w-full max-w-full overflow-x-hidden break-words font-rubik prose sm:prose-lg dark:prose-invert" dangerouslySetInnerHTML={{ __html: content }} />
     );
   }
 
