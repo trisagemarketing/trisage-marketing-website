@@ -2,9 +2,8 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { TrendingUp, Globe, CalendarCheck, Users, MonitorSmartphone, Star, MessageCircle } from "lucide-react";
+import { TrendingUp, Globe, CalendarCheck, Users, MonitorSmartphone, Star } from "lucide-react";
 import { fadeUp, fadeRight, staggerContainer } from "@/lib/animations";
-import SocratesImg from "../../public/socrates-handrawn-vector-illustration.png";
 
 const outcomes = [
   {
@@ -113,10 +112,11 @@ export default function DeviceManagement() {
             {/* The User's Socrates Vector Image */}
             <div className="relative z-10 w-full max-w-[320px] sm:max-w-[450px] lg:max-w-full flex items-center justify-center pointer-events-none lg:-translate-x-4">
               <Image 
-                src={SocratesImg}
+                src="/socrates-handrawn-vector-illustration.png"
                 alt="Philosophy of Marketing"
+                width={800}
+                height={800}
                 className="object-contain w-full h-auto drop-shadow-2xl dark:drop-shadow-[0_20px_40px_rgba(255,255,255,0.05)] origin-center transition-transform duration-500"
-                placeholder="blur"
                 decoding="async"
                 loading="lazy"
               />
