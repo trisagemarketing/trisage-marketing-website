@@ -258,3 +258,25 @@ export async function deleteCategory(id: string) {
     return { error: error.message };
   }
 }
+
+export async function deleteBlog(id: string) {
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('Unauthorized');
+
+    // Delete related draft and revision records first if exists
+    await supabase.from('blog_drafts').delete().eq('blog_id', id);
+    await supabase.from('blog_revisions').delete().eq('blog_id', id);
+
+    const { error } = await supabase.from('blogs').delete().eq('id', id);
+    if (error) throw error;
+
+    revalidatePath('/admin/blog');
+    revalidatePath('/blog');
+    return { success: true };
+  } catch (error: any) {
+    console.error('[CMS Logs] Failed to delete blog post:', error);
+    return { error: error.message || 'Failed to delete blog post.' };
+  }
+}
