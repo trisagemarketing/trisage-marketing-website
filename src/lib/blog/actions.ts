@@ -9,7 +9,11 @@ import { BlogStatus } from '@/types/blog';
 // SCHEMAS FOR VALIDATION
 // =======================
 
-const EditorJSONSchema = z.record(z.string(), z.any()); // Could be much stricter in prod, validating ProseMirror Node structure.
+const EditorJSONSchema = z.union([
+  z.record(z.string(), z.any()),
+  z.array(z.any()),
+  z.string()
+]);
 
 const SaveDraftSchema = z.object({
   blogId: z.string().uuid().optional(),

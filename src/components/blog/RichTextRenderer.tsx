@@ -15,16 +15,13 @@ import { useState } from 'react';
 function getSafeUrl(url: string | undefined | null): string {
   if (!url) return '#';
   try {
-    const parsed = new URL(url, 'https://dummy.com'); // Base required for relative paths
+    const parsed = new URL(url, 'https://dummy.com');
     const allowedProtocols = ['http:', 'https:', 'mailto:', 'tel:'];
     if (allowedProtocols.includes(parsed.protocol)) {
       return url;
     }
-    // If it's a relative path it will parse with dummy.com and have https: protocol, so it passes.
-    // If it's javascript:, protocol is javascript:, so it falls through to '#'
     return '#';
   } catch (e) {
-    // If parsing fails completely, fallback to safe string
     return url.startsWith('/') || url.startsWith('#') ? url : '#';
   }
 }
@@ -54,7 +51,119 @@ class BlockErrorBoundary extends React.Component<{ children: React.ReactNode }, 
 }
 
 // =======================
-// CODE BLOCK WITH COPY
+// BLOCKNOTE AST RENDERER
+// =======================
+function renderBlockNoteInline(contentArr: any[] | undefined): React.ReactNode {
+  if (!contentArr || !Array.isArray(contentArr)) return null;
+  return contentArr.map((item: any, idx: number) => {
+    if (item.type === 'text') {
+      let el: React.ReactNode = item.text;
+      if (item.styles) {
+        if (item.styles.bold) el = <strong key={idx} className="font-extrabold text-gray-900 dark:text-white">{el}</strong>;
+        if (item.styles.italic) el = <em key={idx}>{el}</em>;
+        if (item.styles.underline) el = <u key={idx}>{el}</u>;
+        if (item.styles.strikethrough) el = <s key={idx}>{el}</s>;
+        if (item.styles.code) el = (
+          <code key={idx} className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded-md text-sm font-mono text-rose-600 dark:text-rose-400">
+            {el}
+          </code>
+        );
+      }
+      if (item.href) {
+        el = (
+          <Link key={idx} href={getSafeUrl(item.href)} target="_blank" className="text-primary-600 dark:text-primary-400 underline underline-offset-4 font-semibold">
+            {el}
+          </Link>
+        );
+      }
+      return <React.Fragment key={idx}>{el}</React.Fragment>;
+    }
+    return null;
+  });
+}
+
+function renderBlockNoteBlocks(blocks: any[]): React.ReactNode {
+  if (!Array.isArray(blocks)) return null;
+  return blocks.map((block: any, idx: number) => {
+    const inlineContent = renderBlockNoteInline(block.content);
+
+    if (block.type === 'heading') {
+      const level = block.props?.level || 2;
+      if (level === 1 || level === 2) {
+        return (
+          <h2 key={block.id || idx} className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white mt-10 mb-4 leading-snug tracking-tight">
+            {inlineContent}
+          </h2>
+        );
+      }
+      if (level === 3) {
+        return (
+          <h3 key={block.id || idx} className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-3 leading-snug tracking-tight">
+            {inlineContent}
+          </h3>
+        );
+      }
+      return (
+        <h4 key={block.id || idx} className="text-lg sm:text-xl font-bold text-gray-800 dark:text-gray-200 mt-6 mb-2.5">
+          {inlineContent}
+        </h4>
+      );
+    }
+
+    if (block.type === 'bulletListItem') {
+      return (
+        <div key={block.id || idx} className="flex items-start gap-3 text-base sm:text-lg text-gray-700 dark:text-gray-300 my-1.5 pl-2 sm:pl-4">
+          <span className="mt-2.5 w-2 h-2 rounded-full bg-primary-500 shrink-0" />
+          <div className="flex-1">{inlineContent}</div>
+        </div>
+      );
+    }
+
+    if (block.type === 'numberedListItem') {
+      return (
+        <div key={block.id || idx} className="flex items-start gap-3 text-base sm:text-lg text-gray-700 dark:text-gray-300 my-1.5 pl-2 sm:pl-4">
+          <span className="font-bold text-primary-600 dark:text-primary-400 shrink-0 min-w-[20px]">{idx + 1}.</span>
+          <div className="flex-1">{inlineContent}</div>
+        </div>
+      );
+    }
+
+    if (block.type === 'checkListItem') {
+      const isChecked = block.props?.checked || false;
+      return (
+        <div key={block.id || idx} className="flex items-center gap-3 text-base sm:text-lg text-gray-700 dark:text-gray-300 my-1.5">
+          <input type="checkbox" checked={isChecked} readOnly className="w-5 h-5 rounded border-gray-300 text-primary-600 accent-primary-600 shrink-0" />
+          <span className={isChecked ? "line-through opacity-70" : ""}>{inlineContent}</span>
+        </div>
+      );
+    }
+
+    if (block.type === 'image') {
+      const url = block.props?.url;
+      if (!url) return null;
+      return (
+        <figure key={block.id || idx} className="my-8 w-full">
+          <div className="relative w-full aspect-[16/9] overflow-hidden rounded-2xl shadow-lg border border-gray-100 dark:border-white/5">
+            <Image src={getSafeUrl(url)} alt={block.props?.caption || "Blog image"} fill className="object-cover" sizes="(max-width: 768px) 100vw, 768px" />
+          </div>
+          {block.props?.caption && (
+            <figcaption className="text-center text-xs text-gray-400 dark:text-gray-500 mt-2.5 italic">{block.props.caption}</figcaption>
+          )}
+        </figure>
+      );
+    }
+
+    // Default Paragraph
+    return (
+      <p key={block.id || idx} className="text-base sm:text-lg leading-[1.8] text-gray-700 dark:text-gray-300 mb-6 font-normal">
+        {inlineContent}
+      </p>
+    );
+  });
+}
+
+// =======================
+// TIPTAP AST FALLBACK RENDERER
 // =======================
 const CodeBlock = ({ node }: { node: any }) => {
   const [copied, setCopied] = useState(false);
@@ -70,7 +179,6 @@ const CodeBlock = ({ node }: { node: any }) => {
 
   return (
     <div className="relative my-8 rounded-2xl overflow-hidden shadow-2xl border border-gray-800/60 group">
-      {/* Title bar */}
       <div className="flex items-center justify-between px-4 py-2.5 bg-[#1a1a2e] border-b border-gray-800">
         <div className="flex items-center gap-1.5">
           <span className="w-3 h-3 rounded-full bg-red-500/80" />
@@ -101,9 +209,6 @@ const CodeBlock = ({ node }: { node: any }) => {
   );
 };
 
-// =======================
-// INLINE TEXT RENDERER
-// =======================
 function renderInlineNodes(nodes: any[] | undefined): React.ReactNode {
   if (!nodes) return null;
   return nodes.map((node, idx) => {
@@ -120,7 +225,7 @@ function renderInlineNodes(nodes: any[] | undefined): React.ReactNode {
             </code>
           );
           if (mark.type === 'link') el = (
-            <Link key={idx} href={getSafeUrl(mark.attrs.href)} target={mark.attrs.target || '_blank'} className="text-primary-600 dark:text-primary-400 underline underline-offset-4 decoration-primary-300 dark:decoration-primary-700 hover:decoration-primary-500 transition-colors">
+            <Link key={idx} href={getSafeUrl(mark.attrs.href)} target={mark.attrs.target || '_blank'} className="text-primary-600 dark:text-primary-400 underline underline-offset-4">
               {el}
             </Link>
           );
@@ -133,149 +238,27 @@ function renderInlineNodes(nodes: any[] | undefined): React.ReactNode {
   });
 }
 
-// =======================
-// NODE REGISTRY
-// =======================
-const BlockRegistry: Record<string, React.FC<{ node: any }>> = {
-
-  paragraph: ({ node }) => {
-    if (!node.content || node.content.length === 0) {
-      return <div className="mb-4" />;
-    }
-    return (
-      <p className="text-[1.125rem] leading-[1.85] text-gray-700 dark:text-gray-300 mb-7 font-normal tracking-[0.01em]">
-        {renderInlineNodes(node.content)}
-      </p>
-    );
-  },
-
-  heading: ({ node }) => {
-    const level = node.attrs?.level || 2;
-    const text = node.content?.map((n: any) => n.text || '').join('') || '';
-    const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-    const content = renderInlineNodes(node.content);
-
-    if (level === 1) return (
-      <h1 id={id} className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mt-14 mb-6 leading-tight tracking-tight">
-        {content}
-      </h1>
-    );
-    if (level === 2) return (
-      <h2 id={id} className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mt-14 mb-5 leading-snug tracking-tight relative pl-4 before:content-[''] before:absolute before:left-0 before:top-1 before:bottom-1 before:w-1 before:rounded-full before:bg-primary-500">
-        {content}
-      </h2>
-    );
-    if (level === 3) return (
-      <h3 id={id} className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mt-10 mb-4 leading-snug">
-        {content}
-      </h3>
-    );
-    return (
-      <h4 id={id} className="text-lg font-semibold text-gray-900 dark:text-white mt-8 mb-3">
-        {content}
-      </h4>
-    );
-  },
-
-  bulletList: ({ node }) => (
-    <ul className="mb-8 mt-2 space-y-3 pl-0 list-none">
-      {node.content?.map((item: any, idx: number) => (
-        <BlockErrorBoundary key={idx}>
-          <li className="flex gap-3 text-[1.125rem] text-gray-700 dark:text-gray-300 leading-[1.8]">
-            <span className="mt-[0.45rem] w-2 h-2 rounded-full bg-primary-500 flex-shrink-0" />
-            <span>{renderNodes(item.content)}</span>
-          </li>
-        </BlockErrorBoundary>
-      ))}
-    </ul>
-  ),
-
-  orderedList: ({ node }) => (
-    <ol className="mb-8 mt-2 space-y-3 pl-0 list-none counter-reset-list">
-      {node.content?.map((item: any, idx: number) => (
-        <BlockErrorBoundary key={idx}>
-          <li className="flex gap-3 text-[1.125rem] text-gray-700 dark:text-gray-300 leading-[1.8]">
-            <span className="flex-shrink-0 w-7 h-7 rounded-full bg-primary-50 dark:bg-primary-500/10 text-primary-600 dark:text-primary-400 text-sm font-bold flex items-center justify-center mt-0.5">
-              {idx + 1}
-            </span>
-            <span>{renderNodes(item.content)}</span>
-          </li>
-        </BlockErrorBoundary>
-      ))}
-    </ol>
-  ),
-
-  // listItem is now handled inline in bulletList/orderedList above
-  listItem: ({ node }) => (
-    <span>{renderNodes(node.content)}</span>
-  ),
-
-  blockquote: ({ node }) => (
-    <blockquote className="relative my-10 pl-6 pr-6 py-6 border-l-4 border-primary-500 bg-gradient-to-r from-primary-50/60 to-transparent dark:from-primary-500/5 dark:to-transparent rounded-r-2xl">
-      <span className="absolute top-3 left-5 text-6xl text-primary-200 dark:text-primary-900 font-serif leading-none select-none">"</span>
-      <div className="text-xl italic text-gray-700 dark:text-gray-300 leading-relaxed relative z-10">
-        {renderNodes(node.content)}
-      </div>
-    </blockquote>
-  ),
-
-  horizontalRule: () => (
-    <div className="my-12 flex items-center gap-4">
-      <div className="h-px flex-1 bg-gray-200 dark:bg-gray-800" />
-      <div className="flex gap-1.5">
-        <span className="w-1.5 h-1.5 rounded-full bg-gray-300 dark:bg-gray-700" />
-        <span className="w-1.5 h-1.5 rounded-full bg-gray-300 dark:bg-gray-700" />
-        <span className="w-1.5 h-1.5 rounded-full bg-gray-300 dark:bg-gray-700" />
-      </div>
-      <div className="h-px flex-1 bg-gray-200 dark:bg-gray-800" />
-    </div>
-  ),
-
-  image: ({ node }) => (
-    <figure className="my-10 w-full">
-      <div className="relative w-full aspect-[16/9] overflow-hidden rounded-2xl shadow-lg">
-        <Image
-          src={getSafeUrl(node.attrs.src)}
-          alt={node.attrs.alt || 'Blog image'}
-          fill
-          className="object-cover"
-          sizes="(max-width: 768px) 100vw, 768px"
-        />
-      </div>
-      {node.attrs.title && (
-        <figcaption className="text-center text-sm text-gray-400 dark:text-gray-500 mt-3 italic">
-          {node.attrs.title}
-        </figcaption>
-      )}
-    </figure>
-  ),
-
-  codeBlock: CodeBlock,
-};
-
-// =======================
-// RECURSIVE RENDERER
-// =======================
 function renderNodes(nodes: any[] | undefined): React.ReactNode {
   if (!nodes || !Array.isArray(nodes)) return null;
-
   return nodes.map((node, idx) => {
-    // Handle inline text inside listItems
     if (node.type === 'text') {
       return renderInlineNodes([node]);
     }
-
-    const Component = BlockRegistry[node.type];
-    if (!Component) {
-      console.warn(`[RichTextRenderer] Unknown node type: ${node.type}`);
-      return null;
+    if (node.type === 'paragraph') {
+      return (
+        <p key={idx} className="text-base sm:text-lg leading-[1.8] text-gray-700 dark:text-gray-300 mb-6 font-normal">
+          {renderInlineNodes(node.content)}
+        </p>
+      );
     }
-
-    return (
-      <BlockErrorBoundary key={idx}>
-        <Component node={node} />
-      </BlockErrorBoundary>
-    );
+    if (node.type === 'heading') {
+      const level = node.attrs?.level || 2;
+      const content = renderInlineNodes(node.content);
+      if (level === 1 || level === 2) return <h2 key={idx} className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white mt-10 mb-4 leading-snug tracking-tight">{content}</h2>;
+      if (level === 3) return <h3 key={idx} className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-3 leading-snug tracking-tight">{content}</h3>;
+      return <h4 key={idx} className="text-lg sm:text-xl font-bold text-gray-800 dark:text-gray-200 mt-6 mb-2.5">{content}</h4>;
+    }
+    return null;
   });
 }
 
@@ -283,7 +266,7 @@ function renderNodes(nodes: any[] | undefined): React.ReactNode {
 // MAIN EXPORT
 // =======================
 export default function RichTextRenderer({ content }: { content: any }) {
-  if (!content || !content.content) {
+  if (!content) {
     return (
       <div className="text-gray-400 italic text-center py-16">
         No content available yet.
@@ -291,9 +274,30 @@ export default function RichTextRenderer({ content }: { content: any }) {
     );
   }
 
-  return (
-    <article className="w-full max-w-none">
-      {renderNodes(content.content)}
-    </article>
-  );
+  // Handle BlockNote Array of Blocks
+  if (Array.isArray(content)) {
+    return (
+      <article className="w-full max-w-none font-rubik">
+        {renderBlockNoteBlocks(content)}
+      </article>
+    );
+  }
+
+  // Handle Tiptap AST object with .content
+  if (content.content && Array.isArray(content.content)) {
+    return (
+      <article className="w-full max-w-none font-rubik">
+        {renderNodes(content.content)}
+      </article>
+    );
+  }
+
+  // Handle String content (HTML or Plain Text)
+  if (typeof content === 'string') {
+    return (
+      <article className="w-full max-w-none font-rubik prose sm:prose-lg dark:prose-invert" dangerouslySetInnerHTML={{ __html: content }} />
+    );
+  }
+
+  return null;
 }

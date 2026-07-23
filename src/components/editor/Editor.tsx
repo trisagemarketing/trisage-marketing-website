@@ -1,16 +1,10 @@
 "use client";
 
-import { useEditor, EditorContent } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import Image from '@tiptap/extension-image';
-import Link from '@tiptap/extension-link';
-import Placeholder from '@tiptap/extension-placeholder';
-import TextAlign from '@tiptap/extension-text-align';
-import TaskList from '@tiptap/extension-task-list';
-import TaskItem from '@tiptap/extension-task-item';
-import Underline from '@tiptap/extension-underline';
-import { useEffect, useState } from 'react';
-import { EditorToolbar } from './EditorToolbar';
+import { useCreateBlockNote } from "@blocknote/react";
+import { BlockNoteView } from "@blocknote/mantine";
+import "@blocknote/mantine/style.css";
+import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 
 interface EditorProps {
   initialContent?: any;
@@ -19,55 +13,20 @@ interface EditorProps {
   editable?: boolean;
 }
 
-const extensions = [
-  StarterKit.configure({
-    heading: { levels: [2, 3, 4] },
-    codeBlock: false,
-  }),
-  Image.configure({
-    inline: true,
-    allowBase64: true,
-  }),
-  Link.configure({
-    openOnClick: false,
-    autolink: true,
-  }),
-  Placeholder.configure({
-    placeholder: 'Start writing your article...',
-  }),
-  TextAlign.configure({
-    types: ['heading', 'paragraph'],
-  }),
-  TaskList,
-  TaskItem.configure({
-    nested: true,
-  }),
-  Underline,
-];
-
 export default function BlogEditor({ 
-  initialContent = '', 
+  initialContent = "", 
   onChange, 
   onAutoSave,
   editable = true 
 }: EditorProps) {
-  
+  const { resolvedTheme } = useTheme();
   const [isSaving, setIsSaving] = useState(false);
 
-  const editor = useEditor({
-    immediatelyRender: false,
-    extensions,
-    content: initialContent,
-    editable,
-    editorProps: {
-      attributes: {
-        class: 'prose sm:prose-lg dark:prose-invert prose-primary mx-auto focus:outline-none min-h-[500px] py-4',
-      },
-    },
-    onUpdate: ({ editor }) => {
-      const jsonContent = editor.getJSON();
-      onChange(jsonContent);
-    },
+  // Initialize BlockNote editor instance
+  const editor = useCreateBlockNote({
+    initialContent: Array.isArray(initialContent) && initialContent.length > 0 
+      ? initialContent 
+      : undefined,
   });
 
   // Debounced Autosave Effect
@@ -76,25 +35,18 @@ export default function BlogEditor({
 
     const handler = setTimeout(async () => {
       setIsSaving(true);
-      await onAutoSave(editor.getJSON());
+      await onAutoSave(editor.document);
       setIsSaving(false);
     }, 3000);
 
     return () => clearTimeout(handler);
-  }, [editor?.state.doc, onAutoSave, editor]);
-
-  if (!editor) {
-    return <div className="h-125 w-full animate-pulse bg-gray-50 dark:bg-gray-800/50 rounded-2xl" />;
-  }
+  }, [editor.document, onAutoSave, editor]);
 
   return (
-    <div className="relative border border-gray-200 dark:border-gray-800 rounded-2xl overflow-hidden bg-white dark:bg-[#0a1220] shadow-sm">
-      {/* Editor Toolbar */}
-      <EditorToolbar editor={editor} />
-      
+    <div className="relative border border-gray-200 dark:border-gray-800 rounded-2xl overflow-hidden bg-white dark:bg-[#0a1220] shadow-sm min-h-[500px] py-4">
       {/* Save Status Indicator */}
       {onAutoSave && (
-        <div className="absolute top-4 right-4 z-10 flex items-center gap-2 text-xs font-medium text-gray-400 pointer-events-none">
+        <div className="absolute top-4 right-4 z-20 flex items-center gap-2 text-xs font-semibold text-gray-400 pointer-events-none bg-white/80 dark:bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-gray-200 dark:border-white/10 shadow-sm">
           {isSaving ? (
             <><span className="animate-pulse w-2 h-2 rounded-full bg-amber-500" /> Saving...</>
           ) : (
@@ -103,9 +55,16 @@ export default function BlogEditor({
         </div>
       )}
 
-      {/* Editor Content Area */}
-      <div className="p-4 sm:p-8 md:p-12 font-rubik">
-        <EditorContent editor={editor} />
+      {/* BlockNote Notion-Style View */}
+      <div className="p-2 sm:p-6 font-rubik text-gray-900 dark:text-white">
+        <BlockNoteView 
+          editor={editor} 
+          theme={resolvedTheme === "dark" ? "dark" : "light"}
+          editable={editable}
+          onChange={() => {
+            onChange(editor.document);
+          }}
+        />
       </div>
     </div>
   );

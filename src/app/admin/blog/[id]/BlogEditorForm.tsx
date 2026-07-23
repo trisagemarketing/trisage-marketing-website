@@ -2,8 +2,13 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import BlogEditor from "@/components/editor/Editor";
+import dynamic from "next/dynamic";
 import { saveDraft, publishBlog, addCategory, deleteCategory, getCategories } from "@/lib/blog/actions";
+
+const BlogEditor = dynamic(() => import("@/components/editor/Editor"), {
+  ssr: false,
+  loading: () => <div className="h-[500px] w-full animate-pulse bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-200 dark:border-gray-800" />
+});
 import { toast } from "sonner";
 import {
   ArrowLeft, Globe, Settings2, X, Check, Loader2,
