@@ -14,26 +14,26 @@ export default async function LeadsPage() {
   // This page simply provides the UI shell for the Master CRM list.
 
   return (
-    <div className="p-4 sm:p-6 md:p-12 w-full max-w-full">
-      <div className="mb-10">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3 tracking-tight">
+    <div className="p-3 sm:p-6 md:p-10 w-full max-w-7xl mx-auto">
+      <div className="mb-6 sm:mb-10">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-2 tracking-tight">
           Master Lead Database
         </h1>
-        <p className="text-gray-600 dark:text-gray-400 text-lg">
+        <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed">
           View and manage the complete history of every lead acquired.
         </p>
       </div>
 
-      <div className="md:bg-white/60 md:dark:bg-[#0a1220]/60 md:backdrop-blur-xl md:rounded-[2rem] md:border border-gray-200/50 md:dark:border-white/5 md:shadow-2xl overflow-hidden">
-        <div className="p-2 sm:p-4 md:p-10 border-b border-gray-200/50 dark:border-white/5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4 md:mb-0">
+      <div className="bg-white/60 dark:bg-[#0a1220]/60 backdrop-blur-xl rounded-2xl sm:rounded-[2rem] border border-gray-200/50 dark:border-white/5 shadow-xl overflow-hidden">
+        <div className="p-4 sm:p-6 md:p-8 border-b border-gray-200/50 dark:border-white/5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight mb-1">All Inquiries</h2>
-            <p className="text-gray-500 dark:text-gray-400 text-sm">Showing all contact form submissions and booked meetings.</p>
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white tracking-tight mb-1">All Inquiries</h2>
+            <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm">Showing all contact form submissions and booked meetings.</p>
           </div>
         </div>
         
-        <div className="p-4 md:p-6 lg:p-8 bg-gray-50/30 dark:bg-black/10">
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div className="p-3 sm:p-6 lg:p-8 bg-gray-50/30 dark:bg-black/10">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
             <MessagesTableBody />
           </div>
         </div>

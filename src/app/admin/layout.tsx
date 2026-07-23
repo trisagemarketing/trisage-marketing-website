@@ -36,12 +36,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   const handleLogout = async () => {
-    toast.success(
-      <div className="flex flex-col">
-        <span className="sm:hidden">Signed out</span>
-        <span className="hidden sm:inline">Successfully signed out. Redirecting...</span>
-      </div>
-    );
+    toast.success("Successfully signed out. Redirecting...");
     await supabase.auth.signOut();
     setTimeout(() => {
       router.push("/admin/login");

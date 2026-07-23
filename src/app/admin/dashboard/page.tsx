@@ -161,38 +161,38 @@ export default async function AdminDashboard() {
   ];
 
   return (
-    <div className="p-4 sm:p-6 md:p-8 lg:p-10 w-full mx-auto">
-      <div className="mb-10">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3 tracking-tight">
+    <div className="p-3 sm:p-6 md:p-8 lg:p-10 w-full max-w-7xl mx-auto">
+      <div className="mb-6 sm:mb-10">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-2 tracking-tight">
           Welcome back
         </h1>
-        <p className="text-gray-600 dark:text-gray-400 text-lg">
-          You are authenticated securely as <span className="font-semibold text-gray-900 dark:text-white">{user.email || "Admin"}</span>
+        <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed">
+          You are authenticated securely as <span className="font-semibold text-gray-900 dark:text-white break-all sm:break-normal">{user.email || "Admin"}</span>
         </p>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8 sm:mb-12">
         {stats.map((stat, index) => {
           const Icon = iconMap[stat.icon_name] || Mail;
           // Bulletproof check to prevent crashes if DB returns null or numbers
           const safeChange = String(stat.change || "");
           const isPositive = safeChange.startsWith("+");
           return (
-            <div key={index} className="relative group bg-white/60 dark:bg-[#0a1220]/60 backdrop-blur-xl p-6 rounded-3xl border border-gray-200/50 dark:border-white/5 hover:border-primary-500/30 dark:hover:border-primary-500/30 transition-all duration-300 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)] hover:-translate-y-1">
+            <div key={index} className="relative group bg-white/60 dark:bg-[#0a1220]/60 backdrop-blur-xl p-5 sm:p-6 rounded-2xl sm:rounded-3xl border border-gray-200/50 dark:border-white/5 hover:border-primary-500/30 dark:hover:border-primary-500/30 transition-all duration-300 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)] hover:-translate-y-1">
               {/* Subtle top gradient line on hover */}
               <div className="absolute top-0 left-6 right-6 h-px bg-linear-to-r from-transparent via-primary-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               
-              <div className="flex items-center justify-between mb-6">
-                <div className="p-3.5 bg-linear-to-br from-primary-500/10 to-secondary-500/10 dark:from-primary-500/20 dark:to-secondary-500/20 rounded-2xl shadow-inner">
-                  <Icon className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+              <div className="flex items-center justify-between mb-4 sm:mb-6">
+                <div className="p-3 bg-linear-to-br from-primary-500/10 to-secondary-500/10 dark:from-primary-500/20 dark:to-secondary-500/20 rounded-2xl shadow-inner">
+                  <Icon className="w-5 sm:w-6 h-5 sm:h-6 text-primary-600 dark:text-primary-400" />
                 </div>
                 <div className={`px-2.5 py-1 rounded-full text-xs font-bold ${isPositive ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400" : "bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400"}`}>
                   {safeChange}
                 </div>
               </div>
-              <h3 className="text-gray-500 dark:text-gray-400 text-sm font-semibold mb-1 tracking-wider">{stat.name}</h3>
-              <p className="text-[clamp(1.5rem,5vw,1.875rem)] font-bold text-gray-900 dark:text-white tracking-tight">
+              <h3 className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm font-semibold mb-1 tracking-wider">{stat.name}</h3>
+              <p className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
                 {(() => {
                   const val = stat.value;
                   if (typeof val === 'string' && val.includes('%')) return val;
@@ -207,16 +207,16 @@ export default async function AdminDashboard() {
       </div>
 
       {/* Contact Messages Data Table */}
-      <div className="md:bg-white/60 md:dark:bg-[#0a1220]/60 md:backdrop-blur-xl md:rounded-4xl md:border border-gray-200/50 md:dark:border-white/5 md:shadow-2xl overflow-hidden">
-        <div className="p-2 sm:p-4 md:p-10 border-b border-gray-200/50 dark:border-white/5 flex justify-between items-center mb-4 md:mb-0">
+      <div className="bg-white/60 dark:bg-[#0a1220]/60 backdrop-blur-xl rounded-2xl sm:rounded-[2rem] border border-gray-200/50 dark:border-white/5 shadow-xl overflow-hidden">
+        <div className="p-4 sm:p-6 md:p-8 border-b border-gray-200/50 dark:border-white/5 flex justify-between items-center">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight mb-1">Recent Inquiries</h2>
-            <p className="text-gray-500 dark:text-gray-400 text-sm">Review and manage contact form submissions.</p>
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white tracking-tight mb-1">Recent Inquiries</h2>
+            <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm">Review and manage contact form submissions.</p>
           </div>
         </div>
         
-        <div className="p-4 md:p-6 lg:p-8 bg-gray-50/30 dark:bg-black/10">
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div className="p-3 sm:p-6 lg:p-8 bg-gray-50/30 dark:bg-black/10">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
             <MessagesTableBody limit={5} />
           </div>
         </div>

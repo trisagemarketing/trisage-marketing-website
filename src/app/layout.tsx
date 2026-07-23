@@ -1,4 +1,3 @@
-
 import type { Metadata } from "next";
 import "./globals.css";
 import LenisProvider from "@/components/LenisProvider";
@@ -92,18 +91,14 @@ export default function RootLayout({
               position="top-center" 
               theme="system" 
               closeButton
+              richColors
+              offset={20}
               toastOptions={{
-                unstyled: true,
-                classNames: {
-                  toast: "pointer-events-auto relative flex items-center gap-3.5 w-full sm:w-max max-w-[calc(100vw-32px)] sm:min-w-[320px] px-4 sm:px-5 py-3.5 rounded-2xl border mb-3 mx-auto transition-all duration-300 shadow-2xl",
-                  content: "order-2 flex-1 min-w-0 flex flex-col justify-center",
-                  title: "text-[13px] sm:text-[15px] font-medium leading-relaxed tracking-wide text-left line-clamp-2",
-                  error: "bg-white dark:bg-[#0a1220] border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 shadow-red-500/10",
-                  success: "bg-white dark:bg-[#0a1220] border-emerald-200 dark:border-emerald-900/50 text-emerald-600 dark:text-emerald-400 shadow-emerald-500/10",
-                  icon: "order-1 w-5 h-5 flex items-center justify-center shrink-0 drop-shadow-sm",
-                  closeButton: "order-3 ml-2 shrink-0 w-7 h-7 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white opacity-100 transition-colors border-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current [&_svg]:w-3.5 [&_svg]:h-3.5 [&_svg]:stroke-[2.5px]"
+                className: "font-sans shadow-2xl rounded-2xl border text-xs sm:text-sm font-semibold",
+                style: {
+                  zIndex: 999999,
                 }
-              }} 
+              }}
             />
             <GlobalClickSpark />
             <AnalyticsTracker />
