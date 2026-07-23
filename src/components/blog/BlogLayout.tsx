@@ -7,13 +7,24 @@ import { ArrowRight, Clock } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Blog } from "@/types/blog";
 
-export default function BlogLayout({ initialBlogs }: { initialBlogs: Blog[] }) {
+export default function BlogLayout({ 
+  initialBlogs, 
+  dbCategories = [] 
+}: { 
+  initialBlogs: Blog[]; 
+  dbCategories?: string[]; 
+}) {
   const [activeCategory, setActiveCategory] = useState<string>("All");
 
   const categories = useMemo(() => {
-    const cats = new Set(initialBlogs.map(b => b.category).filter(Boolean));
-    return ["All", ...Array.from(cats)] as string[];
-  }, [initialBlogs]);
+    const articleCats = initialBlogs.map(b => b.category).filter(Boolean);
+    const combined = new Set([...dbCategories, ...articleCats]);
+    const list = Array.from(combined);
+    if (list.length === 0) {
+      return ["All", "Performance Marketing", "SEO Strategy", "Growth Playbooks", "Case Studies"];
+    }
+    return ["All", ...list];
+  }, [initialBlogs, dbCategories]);
 
   const filteredBlogs = useMemo(() => {
     if (activeCategory === "All") return initialBlogs;
@@ -22,14 +33,6 @@ export default function BlogLayout({ initialBlogs }: { initialBlogs: Blog[] }) {
 
   const featuredPost = filteredBlogs.find(post => post.is_featured) || filteredBlogs[0];
   const regularPosts = featuredPost ? filteredBlogs.filter(post => post.id !== featuredPost.id) : filteredBlogs;
-
-  if (initialBlogs.length === 0) {
-    return (
-      <section className="container mx-auto px-4 md:px-8 py-12 md:py-24 text-center">
-        <p className="text-xl text-gray-500">No published articles yet. Check back soon!</p>
-      </section>
-    );
-  }
 
   return (
     <>
@@ -55,11 +58,14 @@ export default function BlogLayout({ initialBlogs }: { initialBlogs: Blog[] }) {
         {/* Infinite Marquee Background */}
         <div className="absolute top-1/2 -translate-y-1/2 left-0 w-[200vw] flex overflow-hidden pointer-events-none select-none z-0">
           <div className="animate-marquee flex whitespace-nowrap text-[50px] sm:text-[80px] md:text-[120px] lg:text-[160px] font-bold text-stroke opacity-70">
-            <span>INSIGHTS • STRATEGY • MARKETING • INSIGHTS • STRATEGY • MARKETING • INSIGHTS • STRATEGY • MARKETING •&nbsp;</span>
+            <span>INSIGHTS • STRATEGY • MARKETING • GROWTH • PERFORMANCE • INSIGHTS • STRATEGY • MARKETING •&nbsp;</span>
           </div>
         </div>
 
         <div className="container relative z-10 mx-auto px-4 md:px-8 text-center max-w-3xl">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-50 dark:bg-primary-500/10 border border-primary-200/50 dark:border-primary-500/20 text-xs font-bold text-primary-600 dark:text-primary-400 mb-6 uppercase tracking-wider shadow-xs">
+            ✨ Knowledge Hub & Insights
+          </div>
           <h1 className="text-3xl sm:text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6 tracking-tighter">
             Insights &amp; <span className="text-transparent bg-clip-text bg-linear-to-r from-primary-600 to-secondary-500">Strategy</span>
           </h1>
@@ -76,7 +82,7 @@ export default function BlogLayout({ initialBlogs }: { initialBlogs: Blog[] }) {
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
-              className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 border whitespace-nowrap shrink-0 ${
+              className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 border whitespace-nowrap shrink-0 cursor-pointer ${
                 activeCategory === category 
                   ? "bg-gray-900 text-white border-gray-900 dark:bg-white dark:text-black dark:border-white shadow-md scale-105" 
                   : "bg-transparent text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-800 hover:border-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
@@ -87,6 +93,41 @@ export default function BlogLayout({ initialBlogs }: { initialBlogs: Blog[] }) {
           ))}
         </div>
       </section>
+
+      {/* Empty State when no published articles match */}
+      {filteredBlogs.length === 0 && (
+        <section className="container mx-auto px-4 md:px-8 pb-20 sm:pb-28 z-10 relative max-w-2xl text-center">
+          <div className="relative group bg-white/80 dark:bg-[#0a1220]/80 backdrop-blur-2xl border border-gray-200/60 dark:border-white/10 rounded-3xl p-8 sm:p-12 shadow-xl">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-linear-to-br from-primary-500/10 to-secondary-500/10 dark:from-primary-500/20 dark:to-secondary-500/20 border border-primary-200/50 dark:border-primary-500/30 flex items-center justify-center mx-auto mb-6 shadow-inner">
+              <span className="text-3xl sm:text-4xl">🚀</span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3">
+              New Articles Coming Soon
+            </h2>
+            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-8 leading-relaxed max-w-lg mx-auto">
+              Our team of growth strategists is currently preparing deep-dive performance marketing playbooks and case studies. Get a free website audit while we finalize our next publication!
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <button
+                onClick={() => {
+                  if (typeof window !== 'undefined') {
+                    window.dispatchEvent(new CustomEvent('openLeadModal'));
+                  }
+                }}
+                className="w-full sm:w-auto px-6 py-3 rounded-xl text-white text-sm font-bold bg-linear-to-r from-primary-600 to-secondary-600 hover:from-primary-500 hover:to-secondary-500 shadow-lg shadow-primary-500/20 transition-all cursor-pointer"
+              >
+                Get Free Audit
+              </button>
+              <Link
+                href="/contact"
+                className="w-full sm:w-auto px-6 py-3 rounded-xl text-gray-800 dark:text-gray-200 text-sm font-bold bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 border border-gray-200 dark:border-white/10 transition-all text-center"
+              >
+                Book Consultation
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Featured Post */}
       {featuredPost && (

@@ -28,7 +28,20 @@ export const getAllPublishedPosts = cache(async () => {
     .from('blogs')
     .select('*')
     .eq('status', 'published')
-    .order('published_at', { ascending: false, nullsFirst: false }); // Fallback to created_at logic if needed by the consumer
+    .order('published_at', { ascending: false, nullsFirst: false });
 
   return posts || [];
+});
+
+/**
+ * Cached fetcher for all active blog categories from Supabase.
+ */
+export const getAllCategories = cache(async () => {
+  const supabase = createPublicClient();
+  const { data: categories } = await supabase
+    .from('blog_categories')
+    .select('name')
+    .order('name', { ascending: true });
+
+  return categories?.map(c => c.name) || [];
 });
