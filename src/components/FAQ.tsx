@@ -7,7 +7,7 @@ import { Plus, Minus } from "lucide-react";
 import { fadeUp } from "@/lib/animations";
 
 export default function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
     <section className="relative py-16 md:py-24 bg-white dark:bg-[#050b14] overflow-hidden">

@@ -235,7 +235,7 @@ export default function HomeServices() {
   return (
     <section 
       ref={containerRef} 
-      className="relative pt-4 pb-12 md:pb-16 lg:pt-8 bg-primary-50 dark:bg-primary-950 overflow-x-hidden overflow-y-visible transition-colors duration-700"
+      className="relative pt-4 pb-12 md:pb-16 lg:pt-8 bg-primary-50 dark:bg-primary-950 overflow-hidden transition-colors duration-700"
     >
       <div className="container relative z-10 mx-auto px-4 md:px-8 w-full">
         <div className="md:hidden">

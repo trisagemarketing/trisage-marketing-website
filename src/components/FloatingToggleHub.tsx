@@ -5,13 +5,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "next-themes";
 import { 
   PhoneCall, 
-  MessageCircle, 
   Sun, 
   Moon, 
   ArrowUp, 
   X, 
   Sparkles 
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export default function FloatingToggleHub() {
   const [isOpen, setIsOpen] = useState(false);
@@ -72,13 +72,13 @@ export default function FloatingToggleHub() {
                     setIsOpen(false);
                     window.dispatchEvent(new Event("openLeadModal"));
                   }}
-                  className="flex items-center gap-2 px-3 py-2 rounded-full bg-white/90 dark:bg-gray-900/90 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-200 shadow-xl backdrop-blur-md text-xs font-semibold group cursor-pointer"
+                  className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-full bg-white/85 dark:bg-[#07111e]/90 border border-white/60 dark:border-white/15 text-gray-800 dark:text-gray-100 shadow-[0_10px_25px_-5px_rgba(0,0,0,0.2)] dark:shadow-[0_15px_35px_-5px_rgba(0,0,0,0.6)] backdrop-blur-xl text-xs font-semibold group cursor-pointer"
                   aria-label="Open Get in Touch lead form"
                 >
-                  <span className="hidden sm:inline font-bold uppercase tracking-wider text-[10px] text-gray-500 dark:text-gray-400 group-hover:text-cyan-500 transition-colors">
+                  <span className="hidden sm:inline font-extrabold uppercase tracking-wider text-[10px] text-gray-600 dark:text-gray-300 group-hover:text-secondary-500 transition-colors">
                     Get In Touch
                   </span>
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white flex items-center justify-center shadow-md animate-pulse">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-secondary-500 via-teal-400 to-primary-600 text-white flex items-center justify-center shadow-md animate-pulse">
                     <Sparkles size={15} />
                   </div>
                 </motion.button>
@@ -88,26 +88,26 @@ export default function FloatingToggleHub() {
                   whileHover={{ scale: 1.08, x: -2 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={scrollToTop}
-                  className="flex items-center gap-2 px-3 py-2 rounded-full bg-white/90 dark:bg-gray-900/90 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-200 shadow-xl backdrop-blur-md text-xs font-semibold group cursor-pointer"
+                  className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-full bg-white/85 dark:bg-[#07111e]/90 border border-white/60 dark:border-white/15 text-gray-800 dark:text-gray-100 shadow-[0_10px_25px_-5px_rgba(0,0,0,0.2)] dark:shadow-[0_15px_35px_-5px_rgba(0,0,0,0.6)] backdrop-blur-xl text-xs font-semibold group cursor-pointer"
                   aria-label="Scroll back to top"
                 >
-                  <span className="hidden sm:inline font-bold uppercase tracking-wider text-[10px] text-gray-500 dark:text-gray-400 group-hover:text-primary-600 transition-colors">
+                  <span className="hidden sm:inline font-extrabold uppercase tracking-wider text-[10px] text-gray-600 dark:text-gray-300 group-hover:text-primary-600 transition-colors">
                     Back to Top
                   </span>
-                  <div className="w-8 h-8 rounded-full bg-slate-800 dark:bg-slate-700 text-white flex items-center justify-center shadow-md">
+                  <div className="w-8 h-8 rounded-full bg-primary-600 dark:bg-primary-700 text-white flex items-center justify-center shadow-md">
                     <ArrowUp size={15} />
                   </div>
                 </motion.button>
 
-                {/* Action 2: Toggle Theme (Dark / Light) */}
+                {/* Action 3: Toggle Theme (Dark / Light) */}
                 <motion.button
                   whileHover={{ scale: 1.08, x: -2 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={toggleTheme}
-                  className="flex items-center gap-2 px-3 py-2 rounded-full bg-white/90 dark:bg-gray-900/90 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-200 shadow-xl backdrop-blur-md text-xs font-semibold group cursor-pointer"
+                  className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-full bg-white/85 dark:bg-[#07111e]/90 border border-white/60 dark:border-white/15 text-gray-800 dark:text-gray-100 shadow-[0_10px_25px_-5px_rgba(0,0,0,0.2)] dark:shadow-[0_15px_35px_-5px_rgba(0,0,0,0.6)] backdrop-blur-xl text-xs font-semibold group cursor-pointer"
                   aria-label="Toggle dark mode"
                 >
-                  <span className="hidden sm:inline font-bold uppercase tracking-wider text-[10px] text-gray-500 dark:text-gray-400 group-hover:text-amber-500 transition-colors">
+                  <span className="hidden sm:inline font-extrabold uppercase tracking-wider text-[10px] text-gray-600 dark:text-gray-300 group-hover:text-amber-500 transition-colors">
                     {currentTheme === "dark" ? "Light Mode" : "Dark Mode"}
                   </span>
                   <div className="w-8 h-8 rounded-full bg-amber-500 dark:bg-indigo-600 text-white flex items-center justify-center shadow-md">
@@ -115,15 +115,15 @@ export default function FloatingToggleHub() {
                   </div>
                 </motion.button>
 
-                {/* Action 3: Quick Direct Phone Call (+91 92179 00946) */}
+                {/* Action 4: Quick Direct Phone Call (+91 92179 00946) */}
                 <motion.a
                   whileHover={{ scale: 1.08, x: -2 }}
                   whileTap={{ scale: 0.95 }}
                   href="tel:+919217900946"
-                  className="flex items-center gap-2 px-3 py-2 rounded-full bg-white/90 dark:bg-gray-900/90 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-200 shadow-xl backdrop-blur-md text-xs font-semibold group"
+                  className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-full bg-white/85 dark:bg-[#07111e]/90 border border-white/60 dark:border-white/15 text-gray-800 dark:text-gray-100 shadow-[0_10px_25px_-5px_rgba(0,0,0,0.2)] dark:shadow-[0_15px_35px_-5px_rgba(0,0,0,0.6)] backdrop-blur-xl text-xs font-semibold group"
                   aria-label="Call +91 92179 00946"
                 >
-                  <span className="hidden sm:inline font-bold uppercase tracking-wider text-[10px] text-gray-500 dark:text-gray-400 group-hover:text-blue-500 transition-colors">
+                  <span className="hidden sm:inline font-extrabold uppercase tracking-wider text-[10px] text-gray-600 dark:text-gray-300 group-hover:text-blue-500 transition-colors">
                     Call Direct
                   </span>
                   <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-md">
@@ -131,17 +131,17 @@ export default function FloatingToggleHub() {
                   </div>
                 </motion.a>
 
-                {/* Action 4: Official Modern WhatsApp Direct Connect (+91 92179 00946) */}
+                {/* Action 5: Official Modern WhatsApp Direct Connect (+91 92179 00946) */}
                 <motion.a
                   whileHover={{ scale: 1.08, x: -2 }}
                   whileTap={{ scale: 0.95 }}
                   href="https://wa.me/919217900946?text=Hello%20Trisage%20Marketing!%20I%20would%20like%20to%20inquire%20about%20your%20hospitality%20digital%20marketing%20services."
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-3 py-2 rounded-full bg-white/90 dark:bg-gray-900/90 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-200 shadow-xl backdrop-blur-md text-xs font-semibold group"
+                  className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-full bg-white/85 dark:bg-[#07111e]/90 border border-white/60 dark:border-white/15 text-gray-800 dark:text-gray-100 shadow-[0_10px_25px_-5px_rgba(0,0,0,0.2)] dark:shadow-[0_15px_35px_-5px_rgba(0,0,0,0.6)] backdrop-blur-xl text-xs font-semibold group"
                   aria-label="Chat on WhatsApp"
                 >
-                  <span className="hidden sm:inline font-bold uppercase tracking-wider text-[10px] text-gray-500 dark:text-gray-400 group-hover:text-emerald-500 transition-colors">
+                  <span className="hidden sm:inline font-extrabold uppercase tracking-wider text-[10px] text-gray-600 dark:text-gray-300 group-hover:text-emerald-500 transition-colors">
                     WhatsApp Chat
                   </span>
                   <div className="w-8 h-8 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-white flex items-center justify-center shadow-[0_0_15px_rgba(37,211,102,0.4)]">
@@ -154,29 +154,35 @@ export default function FloatingToggleHub() {
             )}
           </AnimatePresence>
 
-          {/* ── MAIN MASTER FLOATING TOGGLE BUTTON (FAB) ── */}
+          {/* ── MAIN MASTER FLOATING TOGGLE BUTTON (3D Apple Liquid Glass Sphere FAB) ── */}
           <div className="relative">
             {/* Ambient Pulse Ring when closed */}
             {!isOpen && (
-              <span className="absolute inset-0 rounded-full bg-cyan-500/40 animate-ping pointer-events-none" />
+              <span className="absolute inset-0 rounded-full bg-secondary-400/40 animate-ping pointer-events-none" />
             )}
 
             <motion.button
               whileHover={{ scale: 1.08 }}
               whileTap={{ scale: 0.92 }}
               onClick={() => setIsOpen(!isOpen)}
-              className={`w-13 h-13 sm:w-14 sm:h-14 rounded-full flex items-center justify-center text-white shadow-[0_0_25px_rgba(6,182,212,0.4)] dark:shadow-[0_0_30px_rgba(37,99,235,0.5)] transition-all duration-300 cursor-pointer ${
-                isOpen 
-                  ? "bg-gray-900 dark:bg-white text-white dark:text-gray-950 border border-gray-700 dark:border-gray-300" 
-                  : "bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 border border-white/30"
-              }`}
+              className={cn(
+                "w-13 h-13 sm:w-14 sm:h-14 rounded-full flex items-center justify-center text-white transition-all duration-300 cursor-pointer overflow-hidden relative transform-gpu",
+                isOpen
+                  ? "bg-gray-900 dark:bg-white text-white dark:text-gray-950 border border-gray-700 dark:border-gray-300 shadow-xl"
+                  : "apple-liquid-glass-btn"
+              )}
               aria-label={isOpen ? "Close quick actions menu" : "Open quick actions menu"}
             >
+              {/* Top Glass Specular Rim Line */}
+              {!isOpen && (
+                <div className="absolute inset-x-3 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-white to-transparent pointer-events-none rounded-full opacity-90" />
+              )}
+
               <motion.div
                 animate={{ rotate: isOpen ? 90 : 0 }}
                 transition={{ duration: 0.3 }}
               >
-                {isOpen ? <X size={24} /> : <Sparkles size={24} className="text-white" />}
+                {isOpen ? <X size={24} /> : <Sparkles size={24} className="text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" />}
               </motion.div>
             </motion.button>
           </div>

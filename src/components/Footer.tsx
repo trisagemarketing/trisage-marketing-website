@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { services } from "@/data/services";
 import { motion } from "framer-motion";
 import { Plus, Minus, Mail, Phone, MapPin } from "lucide-react";
@@ -64,6 +65,14 @@ function FooterAccordion({ title, children }: { title: string; children: React.R
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const pathname = usePathname();
+
+  const handleSamePageScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (pathname === href) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
 
   return (
     <footer className="relative bg-white dark:bg-[#050b14] pt-16 pb-0 border-t-2 border-primary-100 dark:border-primary-900 overflow-hidden">
@@ -78,19 +87,16 @@ export default function Footer() {
         style={{ background: "radial-gradient(circle, rgba(6,182,212,0.06) 0%, transparent 70%)" }}
       />
 
-
-
-
       {/* ── Scrolling Marquee Background ── */}
-      <div className="hidden md:flex absolute inset-0 items-center pointer-events-none select-none overflow-hidden">
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden pointer-events-none opacity-40 select-none z-0">
         <motion.div
-          animate={{ x: ["-50%", "0%"] }}
+          animate={{ x: [0, "-50%"] }}
           transition={{ repeat: Infinity, duration: 40, ease: "linear" }}
-          className="flex whitespace-nowrap"
+          className="flex w-max whitespace-nowrap"
         >
-          {[...Array(4)].map((_, j) => (
+          {[...Array(4)].map((_, i) => (
             <span
-              key={j}
+              key={i}
               className="text-[35vw] md:text-[45vw] font-black leading-[0.75] tracking-tighter text-primary-950/3 dark:text-white/3 pr-16 md:pr-32"
               style={{ fontFamily: "'Poppins', sans-serif" }}
             >
@@ -107,7 +113,11 @@ export default function Footer() {
 
           {/* Column 1: Brand */}
           <div className="flex flex-col gap-5 mb-8 md:mb-0 border-b-2 border-primary-100 dark:border-primary-900 pb-6 md:border-none md:pb-0">
-            <Link href="/" className="inline-block">
+            <Link 
+              href="/" 
+              className="inline-block"
+              onClick={(e) => handleSamePageScroll(e, "/")}
+            >
               <Image
                 src="/logo.svg"
                 alt="Trisage Marketing"
@@ -162,6 +172,7 @@ export default function Footer() {
                     <li key={href}>
                       <Link
                         href={href}
+                        onClick={(e) => handleSamePageScroll(e, href)}
                         className="font-sans font-medium uppercase tracking-tight text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200 flex items-center gap-1.5 group"
                       >
                         <span className="w-0 group-hover:w-2 h-0.5 bg-primary-500 transition-all duration-300 rounded-full" />
@@ -178,17 +189,21 @@ export default function Footer() {
           <FooterAccordion title="Services">
             <nav aria-label="Services Navigation">
               <ul className="flex flex-col gap-2.5 text-sm">
-                {services.slice(0, 5).map((service) => (
-                  <li key={service.id}>
-                    <Link
-                      href={`/services/${service.slug}`}
-                      className="font-sans font-medium uppercase tracking-tight text-gray-600 dark:text-gray-400 hover:text-secondary-600 dark:hover:text-secondary-400 transition-colors duration-200 flex items-center gap-1.5 group"
-                    >
-                      <span className="w-0 group-hover:w-2 h-0.5 bg-secondary-500 transition-all duration-300 rounded-full" />
-                      {service.title}
-                    </Link>
-                  </li>
-                ))}
+                {services.slice(0, 5).map((service) => {
+                  const serviceHref = `/services/${service.slug}`;
+                  return (
+                    <li key={service.id}>
+                      <Link
+                        href={serviceHref}
+                        onClick={(e) => handleSamePageScroll(e, serviceHref)}
+                        className="font-sans font-medium uppercase tracking-tight text-gray-600 dark:text-gray-400 hover:text-secondary-600 dark:hover:text-secondary-400 transition-colors duration-200 flex items-center gap-1.5 group"
+                      >
+                        <span className="w-0 group-hover:w-2 h-0.5 bg-secondary-500 transition-all duration-300 rounded-full" />
+                        {service.title}
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             </nav>
           </FooterAccordion>
@@ -261,6 +276,7 @@ export default function Footer() {
           <div className="flex flex-wrap justify-center items-center gap-6 order-1 md:order-2">
             <Link
               href="/privacy"
+              onClick={(e) => handleSamePageScroll(e, "/privacy")}
               className="font-sans font-black text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
             >
               Privacy Policy
@@ -268,6 +284,7 @@ export default function Footer() {
             <span className="w-1 h-1 rounded-full bg-primary-300 dark:bg-primary-800" />
             <Link
               href="/terms-and-conditions"
+              onClick={(e) => handleSamePageScroll(e, "/terms-and-conditions")}
               className="font-sans font-black text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600 hover:text-secondary-600 dark:hover:text-secondary-400 transition-colors"
             >
               Terms of Service

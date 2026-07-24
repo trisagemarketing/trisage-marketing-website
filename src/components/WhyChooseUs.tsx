@@ -378,16 +378,16 @@ export default function WhyChooseUs() {
             {stats.map((stat, index) => (
               <div
                 key={stat.id}
-                className={`stat-card p-8 rounded-2xl border shadow-[0_15px_40px_rgba(0,0,0,0.4)] will-change-transform transform-gpu ${stat.bgClass} ${
+                className={`stat-card p-8 rounded-3xl apple-glass-tile transition-all duration-300 will-change-transform transform-gpu ${
                   index === 2 ? "sm:col-span-2 text-center" : ""
                 }`}
               >
                 {/* Number + suffix split so suffix can pop independently */}
-                <div className="text-5xl md:text-7xl font-bold text-white mb-2 tabular-nums flex items-end gap-1 justify-start" style={index === 2 ? { justifyContent: 'center' } : {}}>
+                <div className="text-5xl md:text-7xl font-black text-white mb-3 tabular-nums flex items-end gap-1 justify-start tracking-tight" style={index === 2 ? { justifyContent: 'center' } : {}}>
                   <AnimatedCounter value={stat.value} suffix="" animate={animatedCards[index]} />
-                  <span className="stat-suffix inline-block text-secondary-300" style={{ lineHeight: 1.1 }}>{stat.suffix}</span>
+                  <span className="stat-suffix inline-block text-teal-400 font-medium" style={{ lineHeight: 1.1 }}>{stat.suffix}</span>
                 </div>
-                <p className="text-primary-200 font-medium uppercase tracking-widest text-sm">{stat.label}</p>
+                <p className="text-gray-300 font-bold uppercase tracking-widest text-xs sm:text-sm">{stat.label}</p>
               </div>
             ))}
           </div>
