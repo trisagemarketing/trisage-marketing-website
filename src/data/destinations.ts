@@ -64,7 +64,7 @@ export const DESTINATIONS: Record<string, DestinationStory> = {
     countryId: 'ind',
     title: 'Dehradun',
     subtitle: 'Valley Retreats',
-    heroImage: 'https://res.cloudinary.com/dgoclgj0u/image/upload/v1783592018/ChatGPT_Image_Jul_9_2026_03_43_25_PM_zzqozx.png',
+    heroImage: 'https://ik.imagekit.io/rrcdbevrb/ChatGPT%20Image%20Jul%209,%202026,%2003_43_25%20PM.png',
     shortStory: 'Nestled in the Doon Valley, our Dehradun properties offer the perfect blend of natural serenity and premium hospitality.',
     hospitalityHighlights: [
       'Megha Resort',
@@ -101,7 +101,7 @@ export const DESTINATIONS: Record<string, DestinationStory> = {
     countryId: 'ind',
     title: 'Sonipat',
     subtitle: 'Urban Escapes',
-    heroImage: 'https://res.cloudinary.com/dgoclgj0u/image/upload/v1783591685/ChatGPT_Image_Jul_9_2026_03_37_39_PM_utsjfz.png',
+    heroImage: 'https://ik.imagekit.io/rrcdbevrb/ChatGPT%20Image%20Jul%209,%202026,%2003_37_39%20PM.png',
     shortStory: 'Strategically located near the NCR, TreeHouse Velis offers premium hotel stays, dining, and banquets for business & leisure travelers.',
     hospitalityHighlights: [
       'TreeHouse Velis'

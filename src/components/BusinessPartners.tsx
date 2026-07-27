@@ -1,14 +1,14 @@
 "use client";
 
 const partners = [
-  { name: "Expedia", src: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1783585648/expedia_rgybv5.jpg", className: "h-10 md:h-8 scale-110" },
-  { name: "Booking.com", src: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1783585564/booking_hymgyk.jpg", className: "h-12 md:h-16" },
-  { name: "MakeMyTrip", src: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1783585407/mmt_uwsr4z.webp", className: "h-12 md:h-16 scale-110" },
-  { name: "Yatra", src: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1783585294/yatra_bjvfrd.png", className: "h-7 md:h-10" },
-  { name: "EaseMyTrip", src: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1783585990/EaseMyTrip_Logo_vksxey.svg", className: "h-9 md:h-14" },
-  { name: "Agoda", src: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1783576314/agoda-logo_jrbl7t.avif", className: "h-8 md:h-12" },
+  { name: "Expedia", src: "https://ik.imagekit.io/rrcdbevrb/expedia.jpg", className: "h-10 md:h-8 scale-110" },
+  { name: "Booking.com", src: "https://ik.imagekit.io/rrcdbevrb/booking.jpg", className: "h-12 md:h-16" },
+  { name: "MakeMyTrip", src: "https://ik.imagekit.io/rrcdbevrb/mmt.png", className: "h-12 md:h-16 scale-110" },
+  { name: "Yatra", src: "https://ik.imagekit.io/rrcdbevrb/yatra.png", className: "h-7 md:h-10" },
+  { name: "EaseMyTrip", src: "https://ik.imagekit.io/rrcdbevrb/EaseMyTrip_Logo.svg", className: "h-9 md:h-14" },
+  { name: "Agoda", src: "https://ik.imagekit.io/rrcdbevrb/agooda_logo", className: "h-8 md:h-12" },
   { name: "Airbnb", src: "https://upload.wikimedia.org/wikipedia/commons/6/69/Airbnb_Logo_B%C3%A9lo.svg", className: "h-8 md:h-12" },
-  { name: "TripAdvisor", src: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1783585490/tripadviosr_xvtthl.jpg", className: "h-10 md:h-14" },
+  { name: "TripAdvisor", src: "https://ik.imagekit.io/rrcdbevrb/tripadvisor_wordmark", className: "h-10 md:h-14" },
 ];
 
 export default function BusinessPartners() {

@@ -10,49 +10,49 @@ const solutions = [
     title: "HomeStay Marketing",
     category: "HOMESTAY",
     description: "Rank locally on Google & drive direct bookings",
-    image: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1783942566/Home_stay_svbqch.png",
+    image: "https://ik.imagekit.io/rrcdbevrb/homestay_market",
   },
   {
     title: "Airbnb Marketing",
     category: "AIRBNB",
     description: "Attract more guests & reduce commission costs",
-    image: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1783942133/Villa_k9r6xf.png",
+    image: "https://ik.imagekit.io/rrcdbevrb/airbnb_img",
   },
   {
     title: "Villas Marketing",
     category: "VILLAS",
     description: "Promote luxury stays & attract high-value travelers",
-    image: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1783942095/AirBnb_v049qo.png",
+    image: "https://ik.imagekit.io/rrcdbevrb/vilias_market",
   },
   {
     title: "Glamping Marketing",
     category: "GLAMPING",
     description: "Elevate your outdoor luxury experience & capture unique stays",
-    image: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1783942096/Glamping_ytuzqc.png",
+    image: "https://ik.imagekit.io/rrcdbevrb/glamping_market",
   },
   {
     title: "Cafe Marketing",
     category: "CAFE",
     description: "Drive foot traffic and build local community engagement",
-    image: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1783942105/Cafe_zauqxf.png",
+    image: "https://ik.imagekit.io/rrcdbevrb/cafe_marketing",
   },
   {
     title: "Restaurant Marketing",
     category: "RESTAURANT",
     description: "Fill tables consistently and enhance your dining brand",
-    image: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784638496/DSC04311-2_flfsha.webp",
+    image: "https://ik.imagekit.io/rrcdbevrb/restro_makret",
   },
   {
     title: "Hotel Marketing",
     category: "HOTEL",
     description: "Maximize occupancy rates across all seasons",
-    image: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1783942105/Hotel_v34crc.png",
+    image: "https://ik.imagekit.io/rrcdbevrb/hotel_market",
   },
   {
     title: "Resort Marketing",
     category: "RESORT",
     description: "Increase occupancy & build premium brand value",
-    image: "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784639023/DJI_20250715173926_0041_D_dberep.webp",
+    image: "https://ik.imagekit.io/rrcdbevrb/resort_market",
   }
 ];
 

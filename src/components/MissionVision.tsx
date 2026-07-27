@@ -131,20 +131,17 @@ export default function MissionVision() {
                       background: "linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)",
                     }}
                   />
-                  <Image src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1782808259/Hornbill-post.jpg_qdfm4n.jpg" alt="Mission campaign preview" fill sizes="(max-width: 768px) 50vw" className="object-cover md:hidden" />
+                  <Image src="https://ik.imagekit.io/rrcdbevrb/Hornbill%20post%20july%204.png" alt="Mission campaign preview" fill sizes="(max-width: 768px) 50vw" className="object-cover md:hidden" />
                   <video
                     autoPlay
                     muted
                     loop
                     playsInline
                     preload="auto"
-                    onEnded={(e) => {
-                      e.currentTarget.currentTime = 0;
-                      e.currentTarget.play().catch(() => {});
-                    }}
-                    className="absolute inset-0 md:block w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    poster="https://ik.imagekit.io/rrcdbevrb/BTS%20Trisage.mp4/ik-thumbnail.jpg?updatedAt=1785130952172"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   >
-                    <source src="https://res.cloudinary.com/dgoclgj0u/video/upload/v1784631192/videoplayback_hcv2ew.mp4" type="video/mp4" />
+                    <source src="https://ik.imagekit.io/rrcdbevrb/BTS%20Trisage.mp4" type="video/mp4" />
                   </video>
                 </div>
 
@@ -153,9 +150,9 @@ export default function MissionVision() {
                   <div className="absolute inset-0 bg-linear-to-tr from-primary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   <ImageSlideshow 
                     images={[
-                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632536/Avyanya_july_post_19_ijd2w9.png",
-                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632536/Gopidham_post_2_fsllmu.png",
-                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1782808259/Hornbill-post.jpg_qdfm4n.jpg"
+                      "https://ik.imagekit.io/rrcdbevrb/Avyanya%20july%20post%2019.png",
+                      "https://ik.imagekit.io/rrcdbevrb/Gopidham%20post%202.png",
+                      "https://ik.imagekit.io/rrcdbevrb/Hornbill%20post%20july%202.png"
                     ]} 
                     alt="Mission 1" 
                     delay={3000} 
@@ -167,9 +164,9 @@ export default function MissionVision() {
                   <div className="absolute inset-0 bg-linear-to-tr from-primary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   <ImageSlideshow 
                     images={[
-                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632536/Anant_Dhara_New_post_1_fbse3m.png",
-                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632536/Hornbill_post_july_2_odppie.png",
-                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1782475041/WhatsApp_Image_2026-06-26_at_5.22.31_PM_1_ht8793.jpg"
+                      "https://ik.imagekit.io/rrcdbevrb/Anant%20Dhara%20New%20post%201.png",
+                      "https://ik.imagekit.io/rrcdbevrb/Hornbill%20post%20july%207.png",
+                      "https://ik.imagekit.io/rrcdbevrb/megha%20post%20new%203.png"
                     ]} 
                     alt="Mission 2" 
                     delay={4000} 
@@ -181,9 +178,9 @@ export default function MissionVision() {
                   <div className="absolute inset-0 bg-linear-to-tr from-primary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   <ImageSlideshow 
                     images={[
-                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632536/Gopidham_July_post_2_nsdpn4.png",
-                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632536/Hornbill_post_july_4_clrccv.png",
-                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1782475040/WhatsApp_Image_2026-06-26_at_5.22.31_PM_2_s6srlm.jpg"
+                      "https://ik.imagekit.io/rrcdbevrb/Gopidham%20July%20post%202.png",
+                      "https://ik.imagekit.io/rrcdbevrb/Hornbill%20post%20july%204.png",
+                      "https://ik.imagekit.io/rrcdbevrb/TreeHouse%20Velis%20post%209.png"
                     ]} 
                     alt="Mission 3" 
                     delay={3500} 
@@ -195,9 +192,9 @@ export default function MissionVision() {
                   <div className="absolute inset-0 bg-linear-to-tr from-primary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   <ImageSlideshow 
                     images={[
-                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632537/IBFW_post_1_Option_q1gv8c.png",
-                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1782808641/Taste-_-Tales.jpg_1_ovhtss.jpg",
-                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632536/Avyanya_july_post_19_ijd2w9.png"
+                      "https://ik.imagekit.io/rrcdbevrb/IBFW%20post%201%20Option.png",
+                      "https://ik.imagekit.io/rrcdbevrb/IBFW%20post%202.png",
+                      "https://ik.imagekit.io/rrcdbevrb/Avyanya%20july%20post%2019.png"
                     ]} 
                     alt="Mission 4" 
                     delay={4500} 
@@ -237,7 +234,7 @@ export default function MissionVision() {
                       background: "linear-gradient(135deg, #22d3ee 0%, #0ea5e9 100%)",
                     }}
                   />
-                  <Image src="https://res.cloudinary.com/dgoclgj0u/image/upload/v1782475040/WhatsApp_Image_2026-06-26_at_5.22.31_PM_7_tnh25f.jpg" alt="Vision campaign preview" fill sizes="(max-width: 768px) 50vw" className="object-cover md:hidden" />
+                  <Image src="https://ik.imagekit.io/rrcdbevrb/Satnam%20post%20new%201.png" alt="Vision campaign preview" fill sizes="(max-width: 768px) 50vw" className="object-cover md:hidden" />
                   <video
                     autoPlay
                     muted
@@ -250,7 +247,7 @@ export default function MissionVision() {
                     }}
                     className="absolute inset-0 md:block w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   >
-                    <source src="https://res.cloudinary.com/dgoclgj0u/video/upload/v1784631303/Reel_1_Taste_And_Tales_v5_kxchsp.mp4" type="video/mp4" />
+                    <source src="https://ik.imagekit.io/rrcdbevrb/Reel%201,%20Taste%20&%20Tales.mp4" type="video/mp4" />
                   </video>
                 </div>
 
@@ -259,8 +256,8 @@ export default function MissionVision() {
                   <div className="absolute inset-0 bg-linear-to-tr from-secondary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   <ImageSlideshow 
                     images={[
-                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632537/Hornbill_post_july_7_yrt1bh.png",
-                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632537/IBFW_post_5_ximcx7.png"
+                      "https://ik.imagekit.io/rrcdbevrb/Hornbill%20post%20july%207.png",
+                      "https://ik.imagekit.io/rrcdbevrb/IBFW%20post%205.png"
                     ]} 
                     alt="Vision 1" 
                     delay={3200} 
@@ -272,8 +269,8 @@ export default function MissionVision() {
                   <div className="absolute inset-0 bg-linear-to-tr from-secondary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   <ImageSlideshow 
                     images={[
-                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632538/Satnam_post_new_1_sajtnf.png",
-                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632538/TreeHouse_Velis_post_2_vvcar0.png"
+                      "https://ik.imagekit.io/rrcdbevrb/Satnam%20post%20new%201.png",
+                      "https://ik.imagekit.io/rrcdbevrb/TreeHouse%20Velis%20post%202.png"
                     ]} 
                     alt="Vision 2" 
                     delay={4200} 
@@ -285,8 +282,8 @@ export default function MissionVision() {
                   <div className="absolute inset-0 bg-linear-to-tr from-secondary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   <ImageSlideshow 
                     images={[
-                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632538/Satnam_post_new_2_la0wb4.png",
-                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632537/IBFW_post_2_txdh94.png"
+                      "https://ik.imagekit.io/rrcdbevrb/Satnam%20post%20new%202.png",
+                      "https://ik.imagekit.io/rrcdbevrb/IBFW%20post%202.png"
                     ]} 
                     alt="Vision 3" 
                     delay={3700} 
@@ -298,8 +295,8 @@ export default function MissionVision() {
                   <div className="absolute inset-0 bg-linear-to-tr from-secondary-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   <ImageSlideshow 
                     images={[
-                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632538/TreeHouse_Velis_post_7_nbn3kr.png",
-                      "https://res.cloudinary.com/dgoclgj0u/image/upload/v1784632537/Hornbill_post_july_7_yrt1bh.png"
+                      "https://ik.imagekit.io/rrcdbevrb/TreeHouse%20Velis%20post%207.png",
+                      "https://ik.imagekit.io/rrcdbevrb/Hornbill%20post%20july%207.png"
                     ]} 
                     alt="Vision 4" 
                     delay={4700} 
