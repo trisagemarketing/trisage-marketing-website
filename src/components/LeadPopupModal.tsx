@@ -20,42 +20,23 @@ export default function LeadPopupModal() {
   });
 
   useEffect(() => {
-    // 1. Custom Event Listener to trigger modal on demand from any button or Floating Hub
+    // 1. Custom Event Listener: On-demand CTA button clicks ALWAYS open modal unconditionally
     const handleOpenModal = () => setIsOpen(true);
     window.addEventListener("openLeadModal", handleOpenModal);
 
-    // 2. Guaranteed automatic trigger on scroll (80px)
-    let ticking = false;
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          if (window.scrollY > 80) {
-            setIsOpen(true);
-            window.removeEventListener("scroll", handleScroll);
-          }
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    // 3. Fallback timer: open after 2.5 seconds guaranteed
+    // 2. Optimized Deferred Timer: Appears smoothly after 8 seconds once page animations settle
     const timer = setTimeout(() => {
       setIsOpen(true);
-    }, 2500);
+    }, 8000);
 
     return () => {
       window.removeEventListener("openLeadModal", handleOpenModal);
-      window.removeEventListener("scroll", handleScroll);
       clearTimeout(timer);
     };
   }, []);
 
   const handleClose = () => {
     setIsOpen(false);
-    sessionStorage.setItem("trisage_lead_modal_dismissed", "true");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -90,24 +71,24 @@ export default function LeadPopupModal() {
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-y-auto transform-gpu">
           
-          {/* Backdrop Blur Overlay */}
+          {/* Backdrop Blur Overlay - GPU Accelerated */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={handleClose}
-            className="fixed inset-0 bg-gray-950/70 backdrop-blur-md"
+            className="fixed inset-0 bg-gray-950/65 backdrop-blur-sm transform-gpu"
           />
 
-          {/* Modal Card */}
+          {/* Modal Card - GPU Accelerated */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={{ opacity: 0, scale: 0.95, y: 15 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ type: "spring", stiffness: 350, damping: 28 }}
-            className="relative w-full max-w-lg bg-white dark:bg-[#081222] border border-gray-200 dark:border-cyan-500/30 rounded-3xl shadow-[0_25px_70px_rgba(0,0,0,0.4)] overflow-hidden z-10 my-auto"
+            exit={{ opacity: 0, scale: 0.95, y: 15 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="relative w-full max-w-lg bg-white dark:bg-[#081222] border border-gray-200 dark:border-cyan-500/30 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.35)] overflow-hidden z-10 my-auto transform-gpu will-change-transform"
           >
             {/* Top Glowing Mesh Orb Background */}
             <div 
