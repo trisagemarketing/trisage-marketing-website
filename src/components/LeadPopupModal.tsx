@@ -107,14 +107,14 @@ export default function LeadPopupModal() {
               <X size={18} />
             </button>
 
-            <div className="p-6 sm:p-8 relative z-10">
+            <div className="p-5 sm:p-7 relative z-10">
               
               {isSubmitted ? (
                 /* Success State */
                 <motion.div 
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="py-10 text-center flex flex-col items-center justify-center gap-3"
+                  className="py-8 text-center flex flex-col items-center justify-center gap-3"
                 >
                   <div className="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950/60 border-2 border-emerald-500 flex items-center justify-center text-emerald-500 mb-2 shadow-lg">
                     <CheckCircle2 size={36} />
@@ -130,8 +130,8 @@ export default function LeadPopupModal() {
                 /* Main Lead Form */
                 <>
                   {/* Header Badge & Title */}
-                  <div className="mb-6">
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-50 dark:bg-cyan-950/60 border border-cyan-200 dark:border-cyan-800 text-[11px] font-bold uppercase tracking-wider text-cyan-600 dark:text-cyan-400 mb-2">
+                  <div className="mb-4 sm:mb-5">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-50 dark:bg-cyan-950/60 border border-cyan-200 dark:border-cyan-800 text-[11px] font-bold uppercase tracking-wider text-cyan-600 dark:text-cyan-400 mb-1.5">
                       <Sparkles size={12} />
                       <span>Free Growth Consultation</span>
                     </div>
@@ -144,7 +144,7 @@ export default function LeadPopupModal() {
                   </div>
 
                   {/* Form */}
-                  <form onSubmit={handleSubmit} className="space-y-3.5">
+                  <form onSubmit={handleSubmit} className="space-y-3">
                     
                     {/* Full Name */}
                     <div>
@@ -240,7 +240,7 @@ export default function LeadPopupModal() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold text-sm tracking-wide shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all duration-300 flex items-center justify-center gap-2 mt-4 cursor-pointer disabled:opacity-50"
+                      className="w-full py-3 sm:py-3.5 px-6 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold text-sm tracking-wide shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all duration-300 flex items-center justify-center gap-2 mt-3 cursor-pointer disabled:opacity-50"
                     >
                       {isSubmitting ? (
                         <span>Sending Details...</span>
