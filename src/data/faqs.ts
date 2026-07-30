@@ -8,8 +8,8 @@ export const faqs = [
     answer: "While performance marketing can yield immediate results, organic strategies like SEO and content marketing typically take 3-6 months to show significant momentum. We provide transparent timelines during our initial discovery phase."
   },
   {
-    question: "Do you work with startups or established enterprises?",
-    answer: "We partner with ambitious companies across all stages. Whether you're a funded startup looking to scale rapidly or an established enterprise aiming to modernize your digital presence, our strategies are tailored to your specific goals."
+    question: "What is a hospitality marketing agency?",
+    answer: "A hospitality marketing agency helps <strong>hotels, resorts, restaurants, cafés, homestays, villas, hostels, event venues, and travel brands</strong> improve visibility, attract qualified guests, <strong>increase direct bookings, and grow revenue</strong> through targeted digital marketing."
   },
   {
     question: "How do you measure success?",

@@ -130,8 +130,8 @@ export default function FAQ() {
                   <div className="overflow-hidden">
                     <div className="px-5 pb-6 sm:px-7 sm:pb-7 border-t-2 border-primary-100 dark:border-primary-800 pt-4">
                         {/* Two-tone answer text — same MissionVision pattern */}
-                        <p className="font-sans font-medium text-base sm:text-lg leading-relaxed uppercase tracking-tight text-balance">
-                          <span className="text-secondary-600 dark:text-secondary-400">{faq.answer}</span>
+                        <p className="font-sans font-medium text-base sm:text-lg leading-relaxed uppercase tracking-tight text-balance [&_strong]:font-black [&_strong]:text-primary-800 dark:[&_strong]:text-white">
+                          <span className="text-secondary-600 dark:text-secondary-400" dangerouslySetInnerHTML={{ __html: faq.answer }} />
                         </p>
                     </div>
                   </div>

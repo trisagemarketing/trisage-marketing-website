@@ -166,7 +166,7 @@ Alongside the revenue growth, the resort recorded 13.89 million Meta views, more
                   key={idx}
                   className={`p-6 sm:p-7 rounded-2xl sm:rounded-3xl bg-linear-to-br ${kpi.color} bg-white dark:bg-gray-900 border border-gray-200/80 dark:border-gray-800 shadow-md hover:shadow-lg transition-transform duration-300 ease-out hover:scale-[1.02] flex flex-col justify-between contain-content`}
                 >
-                  <div className="text-3xl sm:text-4xl font-black text-gray-900 dark:text-white tracking-tight leading-none">
+                  <div className="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 dark:text-white tracking-tight leading-none">
                     {kpi.label}
                   </div>
                   <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-800/80">
@@ -177,7 +177,7 @@ Alongside the revenue growth, the resort recorded 13.89 million Meta views, more
             </div>
 
             {/* Bottom Tier: Search, Trust & Reputation Metrics (3 Cards) */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
               {[
                 { label: "2 Lakh+", isSplitRating: false, sub: "GOOGLE PROFILE VIEWS", color: "from-purple-500/15 via-purple-500/5 to-transparent border-purple-500/30" },
                 { label: "25,000+", isSplitRating: false, sub: "GOOGLE PROFILE INTERACTIONS", color: "from-emerald-500/15 via-emerald-500/5 to-transparent border-emerald-500/30" },
@@ -188,23 +188,23 @@ Alongside the revenue growth, the resort recorded 13.89 million Meta views, more
                   className={`p-6 sm:p-7 rounded-2xl sm:rounded-3xl bg-linear-to-br ${kpi.color} bg-white dark:bg-gray-900 border border-gray-200/80 dark:border-gray-800 shadow-md hover:shadow-lg transition-transform duration-300 ease-out hover:scale-[1.02] flex flex-col justify-between contain-content`}
                 >
                   {kpi.isSplitRating ? (
-                    <div className="flex items-center gap-4 sm:gap-6">
+                    <div className="flex items-center gap-2 sm:gap-4 lg:gap-6">
                       <div className="flex flex-col">
-                        <div className="flex items-center gap-1.5 text-3xl sm:text-4xl font-black text-gray-900 dark:text-white tracking-tight leading-none">
-                          4.8<Star className="fill-amber-400 text-amber-400" size={24} />
+                        <div className="flex items-center gap-1.5 text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 dark:text-white tracking-tight leading-none">
+                          4.8<Star className="w-5 h-5 sm:w-6 sm:h-6 fill-amber-400 text-amber-400" />
                         </div>
                         <span className="text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 mt-2">Google</span>
                       </div>
                       <div className="w-px h-12 bg-gray-300 dark:bg-gray-700"></div>
                       <div className="flex flex-col">
-                        <div className="flex items-center gap-1.5 text-3xl sm:text-4xl font-black text-gray-900 dark:text-white tracking-tight leading-none">
-                          4.9<Star className="fill-amber-400 text-amber-400" size={24} />
+                        <div className="flex items-center gap-1.5 text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 dark:text-white tracking-tight leading-none">
+                          4.9<Star className="w-5 h-5 sm:w-6 sm:h-6 fill-amber-400 text-amber-400" />
                         </div>
                         <span className="text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 mt-2">TripAdvisor</span>
                       </div>
                     </div>
                   ) : (
-                    <div className="text-3xl sm:text-4xl font-black text-gray-900 dark:text-white tracking-tight leading-none">
+                    <div className="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 dark:text-white tracking-tight leading-none">
                       {kpi.label}
                     </div>
                   )}
@@ -269,7 +269,7 @@ Alongside the revenue growth, the resort recorded 13.89 million Meta views, more
               <span className="text-xs font-black uppercase tracking-wider text-primary-600 dark:text-primary-400">CORE SERVICES</span>
               <div className="flex flex-wrap gap-1.5 pt-1">
                 {["Social Media Management", "Revenue Management", "Performance Marketing", "SEO & GEO"].map((service, i) => (
-                  <span key={i} className="px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 text-xs font-bold border border-gray-200 dark:border-gray-700">
+                  <span key={i} className="px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 text-xs font-bold border border-gray-200 dark:border-gray-700 leading-tight">
                     {service}
                   </span>
                 ))}
@@ -376,7 +376,7 @@ Alongside the revenue growth, the resort recorded 13.89 million Meta views, more
                       <pillar.icon size={26} />
                     </div>
                     <div>
-                      <span className={`inline-block px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider border ${pillar.badgeColor}`}>
+                      <span className={`inline-block px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider border ${pillar.badgeColor} leading-relaxed`}>
                         {pillar.subtitle}
                       </span>
                     </div>
@@ -451,9 +451,90 @@ Alongside the revenue growth, the resort recorded 13.89 million Meta views, more
             </p>
           </div>
 
-          {/* EXACT DOCX RESULTS TABLE */}
-          <div className="overflow-x-auto rounded-3xl border border-gray-200/80 dark:border-gray-800 shadow-2xl">
-            <table className="w-full text-left border-collapse min-w-175">
+          {/* EXACT DOCX RESULTS TABLE - HYBRID RESPONSIVE */}
+          <div className="rounded-3xl border sm:border border-transparent sm:border-gray-200/80 dark:sm:border-gray-800 sm:shadow-2xl sm:overflow-hidden bg-transparent sm:bg-white dark:sm:bg-[#050b14]">
+            {/* Mobile View: Cards */}
+            <div className="grid grid-cols-1 gap-4 sm:hidden">
+              {[
+                {
+                  area: "Online revenue",
+                  result: "Approx. ₹1 crore in 12 months",
+                  impact: (
+                    <span>
+                      Established OTAs and the booking engine as a meaningful, scalable revenue channel generating <strong className="font-extrabold text-teal-600 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/70 px-1.5 py-0.5 rounded border border-teal-200 dark:border-teal-800/80">Approx. ₹1 Crore</strong>.
+                    </span>
+                  )
+                },
+                {
+                  area: "Peak monthly revenue",
+                  result: "Up to approx. ₹15 lakh",
+                  impact: (
+                    <span>
+                      Scaled from an early monthly level of around <span className="font-bold text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">₹20,000 to ₹30,000</span> to peak months of <strong className="font-extrabold text-teal-600 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/70 px-1.5 py-0.5 rounded border border-teal-200 dark:border-teal-800/80">Up to ₹15 Lakh</strong> through active distribution, pricing and promotion management.
+                    </span>
+                  )
+                },
+                {
+                  area: "Paid media",
+                  result: "Up to 10x ROAS",
+                  impact: (
+                    <span>
+                      Meta and Google investment was optimised toward direct booking revenue delivering <strong className="font-extrabold text-secondary-600 dark:text-secondary-300 bg-secondary-50 dark:bg-secondary-950/70 px-1.5 py-0.5 rounded border border-secondary-200 dark:border-secondary-800/80">Up to 10x ROAS</strong>.
+                    </span>
+                  )
+                },
+                {
+                  area: "Social visibility",
+                  result: "13.89M Meta views",
+                  impact: (
+                    <span>
+                      Expanded brand discovery generating <strong className="font-extrabold text-blue-600 dark:text-blue-300 bg-blue-50 dark:bg-blue-950/70 px-1.5 py-0.5 rounded border border-blue-200 dark:border-blue-800/80">13,898,324 Meta Views</strong> across the reporting period.
+                    </span>
+                  )
+                },
+                {
+                  area: "Google visibility",
+                  result: "2 lakh+ profile views",
+                  impact: (
+                    <span>
+                      Improved local discovery driving <strong className="font-extrabold text-purple-600 dark:text-purple-300 bg-purple-50 dark:bg-purple-950/70 px-1.5 py-0.5 rounded border border-purple-200 dark:border-purple-800/80">2 Lakh+ Profile Views</strong> among travellers searching with stay intent.
+                    </span>
+                  )
+                },
+                {
+                  area: "Google actions",
+                  result: "25,000+ interactions",
+                  impact: (
+                    <span>
+                      Generated <strong className="font-extrabold text-emerald-600 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/70 px-1.5 py-0.5 rounded border border-emerald-200 dark:border-emerald-800/80">25,000+ Profile Interactions</strong> from the resort&apos;s optimised business profile.
+                    </span>
+                  )
+                },
+                {
+                  area: "Trust & reputation",
+                  result: "4.8★ Google / 4.9★ TA",
+                  impact: (
+                    <span>
+                      Strengthened booking confidence through actively managed and optimised profiles maintaining <strong className="font-extrabold text-amber-600 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/70 px-1.5 py-0.5 rounded border border-amber-200 dark:border-amber-800/80">4.8★ Google & 4.9★ TA Ratings</strong>.
+                    </span>
+                  )
+                }
+              ].map((row, idx) => (
+                <div key={idx} className="p-5 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-sm flex flex-col gap-3">
+                  <div className="flex items-start justify-between gap-2">
+                    <span className="text-xs font-extrabold uppercase tracking-widest text-gray-500 dark:text-gray-400">{row.area}</span>
+                    <span className="px-2.5 py-1 rounded-lg bg-teal-50 dark:bg-teal-950/30 text-teal-700 dark:text-teal-400 text-[10px] font-black border border-teal-200/50 dark:border-teal-800/50 text-right shrink-0 max-w-[140px] leading-tight">{row.result}</span>
+                  </div>
+                  <div className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed font-medium">
+                    {row.impact}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Tablet/Desktop View: Native Table */}
+            <div className="hidden sm:block overflow-x-auto">
+              <table className="w-full text-left border-collapse min-w-175">
               <thead>
                 <tr className="bg-gray-100/90 dark:bg-gray-900 text-xs uppercase font-extrabold tracking-wider text-gray-600 dark:text-gray-400 border-b border-gray-200 dark:border-gray-800">
                   <th className="p-4 sm:p-6 sticky left-0 bg-gray-100 dark:bg-gray-900 z-10 w-1/4">AREA</th>
@@ -540,7 +621,8 @@ Alongside the revenue growth, the resort recorded 13.89 million Meta views, more
                   </tr>
                 ))}
               </tbody>
-            </table>
+              </table>
+            </div>
           </div>
 
           {/* DOCX COMMERCIAL EFFICIENCY NOTE */}
@@ -591,11 +673,11 @@ Alongside the revenue growth, the resort recorded 13.89 million Meta views, more
                 key={idx} 
                 className="p-8 sm:p-10 rounded-3xl bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_16px_40px_rgba(0,0,0,0.5)] space-y-5 relative hover:-translate-y-2 transition-transform duration-500 ease-out group contain-content"
               >
-                <div className="absolute -top-8 -right-6 p-8 text-8xl md:text-9xl font-black text-white/4 pointer-events-none transition-all duration-700 group-hover:scale-110 group-hover:text-white/8 group-hover:-rotate-3">
+                <div aria-hidden="true" className="absolute -top-8 -right-6 p-8 text-7xl sm:text-8xl md:text-9xl font-black text-white/4 pointer-events-none transition-all duration-700 group-hover:scale-110 group-hover:text-white/8 group-hover:-rotate-3">
                   {pillar.number}
                 </div>
-                <span className="block text-4xl sm:text-5xl font-black bg-linear-to-br from-teal-400 to-secondary-500 bg-clip-text text-transparent drop-shadow-md relative z-10">{pillar.number}</span>
-                <h3 className="text-2xl sm:text-3xl font-black tracking-tight relative z-10 leading-snug pr-8">
+                <span className="block text-3xl sm:text-5xl font-black bg-linear-to-br from-teal-400 to-secondary-500 bg-clip-text text-transparent drop-shadow-md relative z-10">{pillar.number}</span>
+                <h3 className="text-xl sm:text-3xl font-black tracking-tight relative z-10 leading-snug pr-8">
                   <span className="text-primary-400">{pillar.title1}</span>
                   <span className="text-secondary-400">{pillar.title2}</span>
                 </h3>
@@ -677,10 +759,10 @@ Alongside the revenue growth, the resort recorded 13.89 million Meta views, more
                 </span>
                 <button
                   onClick={() => setSelectedProof(null)}
-                  className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800/80 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+                  className="w-11 h-11 rounded-full bg-gray-100 dark:bg-gray-800/80 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500 flex items-center justify-center transition-colors cursor-pointer"
                   aria-label="Close proof detail"
                 >
-                  <X size={16} />
+                  <X size={20} />
                 </button>
               </div>
 
