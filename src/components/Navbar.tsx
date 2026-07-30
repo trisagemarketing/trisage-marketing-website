@@ -106,10 +106,10 @@ export default function Navbar() {
           )}
 
           {/* Logo Section */}
-          <div className="flex-1 flex justify-start items-center pl-2 sm:pl-3">
+          <div className="flex-1 flex justify-start items-center pl-1 sm:pl-3 min-w-0">
             <Link 
               href="/" 
-              className="relative z-50 flex items-center group cursor-pointer"
+              className="relative z-50 flex items-center group cursor-pointer shrink-0"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
               {/* Subtle glass halo behind logo on hover */}
@@ -122,7 +122,7 @@ export default function Navbar() {
                 priority
                 fetchPriority="high"
                 loading="eager"
-                className="h-8 sm:h-9 md:h-10 lg:h-11 w-auto shrink-0 transition-transform duration-300 group-hover:scale-105 mix-blend-multiply dark:mix-blend-screen dark:invert dark:hue-rotate-180"
+                className="h-7 sm:h-8 md:h-10 lg:h-11 w-auto shrink-0 transition-transform duration-300 group-hover:scale-105 mix-blend-multiply dark:mix-blend-screen dark:invert dark:hue-rotate-180"
               />
             </Link>
           </div>
@@ -139,14 +139,8 @@ export default function Navbar() {
                   key={link.name}
                   href={link.href}
                   onMouseEnter={() => setHoveredIndex(index)}
-                  onClick={(e) => {
-                    if (pathname === link.href) {
-                      e.preventDefault();
-                      window.scrollTo({ top: 0, behavior: "smooth" });
-                    }
-                  }}
                   className={cn(
-                    "relative px-4 py-2 text-xs xl:text-sm font-semibold transition-colors duration-200 rounded-full z-10 select-none flex items-center justify-center cursor-pointer",
+                    "relative px-4 py-2 text-xs xl:text-sm font-semibold rounded-full transition-colors duration-200 z-10 flex items-center justify-center whitespace-nowrap",
                     isActive 
                       ? "text-white dark:text-white" 
                       : "text-gray-700 dark:text-gray-200 hover:text-gray-950 dark:hover:text-white"
@@ -182,7 +176,7 @@ export default function Navbar() {
           </nav>
 
           {/* Right Actions (Theme Toggle & Tactile CTA) */}
-          <div className="flex-1 flex justify-end items-center gap-2 sm:gap-3 pr-1 sm:pr-2 relative z-50">
+          <div className="flex-none flex items-center gap-1.5 sm:gap-3 pr-0.5 sm:pr-2 relative z-50">
             {/* Theme Toggle Container */}
             <div className="hidden md:block">
               <ThemeToggle />
@@ -191,10 +185,10 @@ export default function Navbar() {
             {/* Mobile & Tablet CTA Button: Get Free Audit */}
             <button
               onClick={() => window.dispatchEvent(new Event("openLeadModal"))}
-              className="inline-flex lg:hidden shrink-0 items-center justify-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 text-[11px] sm:text-xs font-extrabold text-white bg-gradient-to-r from-primary-600 via-primary-700 to-secondary-600 dark:from-primary-500 dark:to-secondary-400 rounded-full shadow-md shadow-primary-600/25 active:scale-95 transition-all border border-white/20 cursor-pointer whitespace-nowrap"
+              className="inline-flex lg:hidden shrink-0 items-center justify-center gap-1 sm:gap-1.5 px-2.5 py-1.5 sm:px-3.5 sm:py-2 text-[10px] sm:text-xs font-extrabold text-white bg-gradient-to-r from-primary-600 via-primary-700 to-secondary-600 dark:from-primary-500 dark:to-secondary-400 rounded-full shadow-md shadow-primary-600/25 active:scale-95 transition-all border border-white/20 cursor-pointer whitespace-nowrap"
               aria-label="Get Free Audit"
             >
-              <Gift size={14} className="text-secondary-300 dark:text-secondary-200 animate-bounce shrink-0" />
+              <Gift size={13} className="text-secondary-300 dark:text-secondary-200 animate-bounce shrink-0 hidden xs:inline-block" />
               <span>Get Free Audit</span>
             </button>
 
@@ -213,11 +207,12 @@ export default function Navbar() {
 
             {/* Mobile Navigation Toggle */}
             <button
-              className="lg:hidden w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 transition-colors bg-white/70 dark:bg-gray-800/70 backdrop-blur-md rounded-full border border-black/5 dark:border-white/10 shadow-xs cursor-pointer"
+              className="lg:hidden w-8 h-8 sm:w-10 sm:h-10 shrink-0 flex items-center justify-center text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 transition-colors bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-full border border-black/5 dark:border-white/10 shadow-xs cursor-pointer"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle menu"
+              aria-expanded={isMobileMenuOpen}
             >
-              {isMobileMenuOpen ? <X size={19} /> : <Menu size={19} />}
+              {isMobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
           </div>
         </div>

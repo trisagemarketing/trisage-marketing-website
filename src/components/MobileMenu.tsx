@@ -5,6 +5,8 @@ import { motion, Variants } from "framer-motion";
 import { Gift } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+import { ThemeToggle } from "./ThemeToggle";
+
 interface MobileMenuProps {
   navLinks: { name: string; href: string }[];
   pathname: string;
@@ -47,10 +49,16 @@ export default function MobileMenu({ navLinks, pathname, onClose }: MobileMenuPr
       initial="hidden"
       animate="show"
       exit="exit"
-      // Upgraded to premium glassmorphism, optimized for mobile GPUs
-      className="fixed inset-0 z-40 bg-white/95 dark:bg-[#050b14]/95 backdrop-blur-md pt-28 pb-8 px-4 md:px-8 lg:px-12 flex flex-col lg:hidden will-change-transform transform-gpu"
+      // Upgraded to full-viewport scroll container with ThemeToggle and glassmorphism
+      className="fixed inset-0 z-40 bg-white/98 dark:bg-[#050b14]/98 backdrop-blur-2xl pt-24 pb-8 px-5 sm:px-8 flex flex-col lg:hidden overflow-y-auto max-h-dvh will-change-transform transform-gpu"
     >
-      <nav className="flex flex-col gap-8 items-start justify-center flex-1">
+      {/* Top Header Controls bar inside Mobile Menu */}
+      <motion.div variants={itemVariants} className="flex justify-between items-center pb-4 mb-4 border-b border-gray-100 dark:border-gray-800">
+        <span className="text-xs uppercase tracking-widest font-extrabold text-gray-400 dark:text-gray-500">Navigation & Theme</span>
+        <ThemeToggle />
+      </motion.div>
+
+      <nav className="flex flex-col gap-6 sm:gap-7 items-start justify-center flex-1 my-auto py-4">
         {navLinks.map((link) => {
           const isActive = pathname === link.href;
           
@@ -59,20 +67,20 @@ export default function MobileMenu({ navLinks, pathname, onClose }: MobileMenuPr
               <Link
                 href={link.href}
                 onClick={onClose}
-                className="group flex items-center w-full"
+                className="group flex items-center justify-between w-full py-1"
               >
                 <span className={cn(
-                  "text-4xl md:text-5xl font-medium tracking-tight transition-all duration-300",
+                  "text-3xl sm:text-4xl font-bold tracking-tight transition-all duration-300",
                   isActive 
-                    ? "text-gray-900 dark:text-white translate-x-2" 
-                    : "text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white group-hover:translate-x-2"
+                    ? "text-primary-600 dark:text-secondary-400 translate-x-1" 
+                    : "text-gray-700 dark:text-gray-300 group-hover:text-gray-950 dark:group-hover:text-white group-hover:translate-x-1"
                 )}>
                   {link.name}
                 </span>
                 {isActive && (
                   <motion.div 
                     layoutId="mobile-active-indicator"
-                    className="ml-4 w-2 h-2 rounded-full bg-primary-600 dark:bg-primary-500"
+                    className="w-2.5 h-2.5 rounded-full bg-primary-600 dark:bg-secondary-400 shadow-[0_0_12px_rgba(45,212,191,0.6)]"
                   />
                 )}
               </Link>
@@ -84,12 +92,12 @@ export default function MobileMenu({ navLinks, pathname, onClose }: MobileMenuPr
       {/* Bottom CTA Section */}
       <motion.div 
         variants={itemVariants}
-        className="mt-auto pt-8 flex flex-col items-center gap-3.5 w-full relative text-center"
+        className="mt-auto pt-6 flex flex-col items-center gap-3 w-full relative text-center"
       >
         {/* Centered Separator Line */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-[1px] bg-gray-200 dark:bg-gray-800" />
         
-        <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 font-medium">Ready to scale your direct bookings?</p>
+        <p className="text-xs text-gray-500 dark:text-gray-400 font-semibold">Ready to scale your direct bookings?</p>
         
         {/* High-Converting Get Free Audit Button with Bouncing Gift Icon */}
         <button
@@ -97,7 +105,7 @@ export default function MobileMenu({ navLinks, pathname, onClose }: MobileMenuPr
             onClose();
             window.dispatchEvent(new Event("openLeadModal"));
           }}
-          className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 text-base font-bold text-white bg-gradient-to-r from-primary-600 via-primary-700 to-secondary-600 dark:from-primary-500 dark:to-secondary-400 rounded-full transition-all hover:scale-[1.02] active:scale-95 shadow-xl shadow-primary-600/20 cursor-pointer"
+          className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm sm:text-base font-extrabold text-white bg-gradient-to-r from-primary-600 via-primary-700 to-secondary-600 dark:from-primary-500 dark:to-secondary-400 rounded-full transition-all hover:scale-[1.02] active:scale-95 shadow-xl shadow-primary-600/20 cursor-pointer"
         >
           <Gift size={18} className="text-secondary-300 dark:text-secondary-200 animate-bounce" />
           <span>Get Free Audit</span>
@@ -106,7 +114,7 @@ export default function MobileMenu({ navLinks, pathname, onClose }: MobileMenuPr
         <Link
           href="/contact"
           onClick={onClose}
-          className="w-full inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition-all"
+          className="w-full inline-flex items-center justify-center px-6 py-3 text-sm font-bold text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-800/90 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition-all"
         >
           Book Consultation
         </Link>
