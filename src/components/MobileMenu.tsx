@@ -5,41 +5,46 @@ import { motion, Variants } from "framer-motion";
 import { Gift } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-import { ThemeToggle } from "./ThemeToggle";
-
 interface MobileMenuProps {
   navLinks: { name: string; href: string }[];
   pathname: string;
   onClose: () => void;
 }
 
-// Framer Motion Variants for staggering children
+// Hardware-accelerated Apple cubic-bezier curves for silky 60/120 FPS open & close
 const containerVariants: Variants = {
-  hidden: { opacity: 0, y: -20 },
+  hidden: { opacity: 0, scale: 0.98 },
   show: {
     opacity: 1,
-    y: 0,
+    scale: 1,
     transition: {
-      duration: 0.3,
-      staggerChildren: 0.05, // Cascades the links in one by one
-      delayChildren: 0.1,
+      duration: 0.2,
+      ease: [0.16, 1, 0.3, 1],
+      staggerChildren: 0.03,
+      delayChildren: 0.04,
     },
   },
   exit: {
     opacity: 0,
-    y: -20,
+    scale: 0.98,
     transition: {
-      duration: 0.2,
-      staggerChildren: 0.03,
-      staggerDirection: -1, // Animates them out in reverse
+      duration: 0.15,
+      ease: [0.16, 1, 0.3, 1],
     },
   },
 };
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, x: -20 },
-  show: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 300, damping: 24 } },
-  exit: { opacity: 0, x: -20 },
+  hidden: { opacity: 0, y: 10 },
+  show: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.22, ease: [0.16, 1, 0.3, 1] } 
+  },
+  exit: { 
+    opacity: 0, 
+    transition: { duration: 0.1, ease: "easeOut" } 
+  },
 };
 
 export default function MobileMenu({ navLinks, pathname, onClose }: MobileMenuProps) {
@@ -49,16 +54,11 @@ export default function MobileMenu({ navLinks, pathname, onClose }: MobileMenuPr
       initial="hidden"
       animate="show"
       exit="exit"
-      // Upgraded to full-viewport scroll container with ThemeToggle and glassmorphism
-      className="fixed inset-0 z-40 bg-white/98 dark:bg-[#050b14]/98 backdrop-blur-2xl pt-24 pb-8 px-5 sm:px-8 flex flex-col lg:hidden overflow-y-auto max-h-dvh will-change-transform transform-gpu"
+      // Senior Web Dev Polish: Hardware-composited fixed overlay with instant touch response
+      className="fixed inset-0 z-40 bg-white/98 dark:bg-[#050b14]/98 backdrop-blur-xl pt-20 pb-16 px-6 sm:px-10 flex flex-col lg:hidden overflow-y-auto max-h-dvh transform-gpu"
     >
-      {/* Top Header Controls bar inside Mobile Menu */}
-      <motion.div variants={itemVariants} className="flex justify-between items-center pb-4 mb-4 border-b border-gray-100 dark:border-gray-800">
-        <span className="text-xs uppercase tracking-widest font-extrabold text-gray-400 dark:text-gray-500">Navigation & Theme</span>
-        <ThemeToggle />
-      </motion.div>
-
-      <nav className="flex flex-col gap-6 sm:gap-7 items-start justify-center flex-1 my-auto py-4">
+      {/* ── Navigation Links Block (Proportional spacing & sizing) ── */}
+      <nav className="flex flex-col gap-4 sm:gap-5 items-start justify-start pt-2 pb-4 w-full">
         {navLinks.map((link) => {
           const isActive = pathname === link.href;
           
@@ -67,20 +67,20 @@ export default function MobileMenu({ navLinks, pathname, onClose }: MobileMenuPr
               <Link
                 href={link.href}
                 onClick={onClose}
-                className="group flex items-center justify-between w-full py-1"
+                className="group flex items-center justify-between w-full py-1.5"
               >
                 <span className={cn(
-                  "text-3xl sm:text-4xl font-bold tracking-tight transition-all duration-300",
+                  "text-3xl sm:text-4xl font-extrabold uppercase tracking-tight transition-all duration-300",
                   isActive 
-                    ? "text-primary-600 dark:text-secondary-400 translate-x-1" 
-                    : "text-gray-700 dark:text-gray-300 group-hover:text-gray-950 dark:group-hover:text-white group-hover:translate-x-1"
+                    ? "text-primary-600 dark:text-secondary-400 translate-x-1.5" 
+                    : "text-gray-800 dark:text-gray-200 group-hover:text-primary-600 dark:group-hover:text-white group-hover:translate-x-1.5"
                 )}>
                   {link.name}
                 </span>
                 {isActive && (
                   <motion.div 
                     layoutId="mobile-active-indicator"
-                    className="w-2.5 h-2.5 rounded-full bg-primary-600 dark:bg-secondary-400 shadow-[0_0_12px_rgba(45,212,191,0.6)]"
+                    className="w-2.5 h-2.5 rounded-full bg-primary-600 dark:bg-secondary-400 shadow-[0_0_12px_rgba(45,212,191,0.8)]"
                   />
                 )}
               </Link>
@@ -89,32 +89,35 @@ export default function MobileMenu({ navLinks, pathname, onClose }: MobileMenuPr
         })}
       </nav>
 
-      {/* Bottom CTA Section */}
+      {/* ── Bottom High-Converting Action Block (Proportional Top Margin) ── */}
       <motion.div 
         variants={itemVariants}
-        className="mt-auto pt-6 flex flex-col items-center gap-3 w-full relative text-center"
+        className="mt-6 sm:mt-8 pt-4 flex flex-col items-center gap-2.5 w-full relative text-center shrink-0"
       >
-        {/* Centered Separator Line */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-[1px] bg-gray-200 dark:bg-gray-800" />
+        {/* Subtle Separator Line */}
+        <div className="w-20 h-[1.5px] bg-gray-200 dark:bg-gray-800 mb-1" />
         
-        <p className="text-xs text-gray-500 dark:text-gray-400 font-semibold">Ready to scale your direct bookings?</p>
+        <p className="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wider">
+          Ready to scale your direct bookings?
+        </p>
         
-        {/* High-Converting Get Free Audit Button with Bouncing Gift Icon */}
+        {/* High-Converting Get Free Audit Button */}
         <button
           onClick={() => {
             onClose();
             window.dispatchEvent(new Event("openLeadModal"));
           }}
-          className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm sm:text-base font-extrabold text-white bg-gradient-to-r from-primary-600 via-primary-700 to-secondary-600 dark:from-primary-500 dark:to-secondary-400 rounded-full transition-all hover:scale-[1.02] active:scale-95 shadow-xl shadow-primary-600/20 cursor-pointer"
+          className="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 text-sm sm:text-base font-extrabold text-white bg-gradient-to-r from-primary-600 via-primary-700 to-secondary-600 dark:from-primary-500 dark:to-secondary-400 rounded-full transition-all active:scale-95 shadow-xl shadow-primary-600/25 cursor-pointer"
         >
-          <Gift size={18} className="text-secondary-300 dark:text-secondary-200 animate-bounce" />
+          <Gift size={16} className="text-secondary-300 dark:text-secondary-200 animate-bounce" />
           <span>Get Free Audit</span>
         </button>
 
+        {/* Book Consultation Button */}
         <Link
           href="/contact"
           onClick={onClose}
-          className="w-full inline-flex items-center justify-center px-6 py-3 text-sm font-bold text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-800/90 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition-all"
+          className="w-full inline-flex items-center justify-center px-5 py-3 text-xs sm:text-sm font-extrabold text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-800/90 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition-all border border-black/5 dark:border-white/10"
         >
           Book Consultation
         </Link>
