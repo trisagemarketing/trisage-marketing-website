@@ -10,6 +10,57 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
+function SmartVideo({ 
+  src, 
+  poster, 
+  className 
+}: { 
+  src: string; 
+  poster?: string; 
+  className?: string; 
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(video);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  return (
+    <video
+      ref={videoRef}
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="metadata"
+      poster={poster}
+      className={className}
+    >
+      <source src={src} type="video/mp4" />
+    </video>
+  );
+}
+
 export default function MissionVision() {
   const sectionRef = useRef<HTMLElement>(null);
   const missionRef = useRef<HTMLDivElement>(null);
@@ -132,17 +183,11 @@ export default function MissionVision() {
                     }}
                   />
                   <Image src="https://ik.imagekit.io/rrcdbevrb/Hornbill%20post%20july%204.png" alt="Mission campaign preview" fill sizes="(max-width: 768px) 50vw" className="object-cover md:hidden" />
-                  <video
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="auto"
+                  <SmartVideo
+                    src="https://ik.imagekit.io/rrcdbevrb/BTS%20Trisage.mp4"
                     poster="https://ik.imagekit.io/rrcdbevrb/BTS%20Trisage.mp4/ik-thumbnail.jpg?updatedAt=1785130952172"
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  >
-                    <source src="https://ik.imagekit.io/rrcdbevrb/BTS%20Trisage.mp4" type="video/mp4" />
-                  </video>
+                  />
                 </div>
 
                 {/* Top Right */}
@@ -235,20 +280,10 @@ export default function MissionVision() {
                     }}
                   />
                   <Image src="https://ik.imagekit.io/rrcdbevrb/Satnam%20post%20new%201.png" alt="Vision campaign preview" fill sizes="(max-width: 768px) 50vw" className="object-cover md:hidden" />
-                  <video
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="auto"
-                    onEnded={(e) => {
-                      e.currentTarget.currentTime = 0;
-                      e.currentTarget.play().catch(() => {});
-                    }}
+                  <SmartVideo
+                    src="https://ik.imagekit.io/rrcdbevrb/Reel%201,%20Taste%20&%20Tales.mp4"
                     className="absolute inset-0 md:block w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  >
-                    <source src="https://ik.imagekit.io/rrcdbevrb/Reel%201,%20Taste%20&%20Tales.mp4" type="video/mp4" />
-                  </video>
+                  />
                 </div>
 
                 {/* Top Right — col 3, row 1 */}

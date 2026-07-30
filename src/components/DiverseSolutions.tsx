@@ -58,17 +58,15 @@ const solutions = [
 
 /* Apple visionOS Liquid Glass Capsule Component */
 function AppleLiquidGlassTag({ title }: { title: string }) {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const tagRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!tagRef.current) return;
-    const rect = tagRef.current.getBoundingClientRect();
-    setMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
+    const x = e.nativeEvent.offsetX;
+    const y = e.nativeEvent.offsetY;
+    tagRef.current.style.setProperty("--mouse-x", `${x}px`);
+    tagRef.current.style.setProperty("--mouse-y", `${y}px`);
   };
 
   const firstWord = title.split(' ')[0].toUpperCase();
@@ -97,12 +95,12 @@ function AppleLiquidGlassTag({ title }: { title: string }) {
         <div className="w-[40%] h-[300%] bg-gradient-to-r from-transparent via-white/40 to-transparent -top-[100%] animate-[specular-sheen_7s_cubic-bezier(0.16,1,0.3,1)_infinite] pointer-events-none" />
       </div>
 
-      {/* Interactive Cursor Proximity Light Spot */}
+      {/* Interactive Cursor Proximity Light Spot (Driven by CSS Custom Properties - Zero React Re-renders) */}
       {isHovered && (
         <div 
           className="absolute -inset-px pointer-events-none transition-opacity duration-300 rounded-full"
           style={{
-            background: `radial-gradient(90px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255, 255, 255, 0.45), transparent 80%)`,
+            background: `radial-gradient(90px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.45), transparent 80%)`,
           }}
         />
       )}

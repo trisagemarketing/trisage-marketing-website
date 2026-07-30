@@ -1,23 +1,24 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   Hotel, MapPin, Wine, ChefHat, Globe,
   Compass, Palmtree, Plane, Sparkles, MountainSnow,
 } from "lucide-react";
 
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
+
 /**
  * PERFORMANCE ARCHITECTURE:
- * ─ Removed `contain: strict`  (breaks fixed stacking context)
- * ─ Removed ALL boxShadow on animated elements (causes repaint on scale)
- * ─ Removed `willChange` on individual elements (VRAM overflow on low-end)
- * ─ Single `willChange: transform` on the ROOT container only
- * ─ Blob blur reduced: 80px → 50px (cheaper rasterization)
- * ─ Blobs reduced: 4 → 3 per mode
- * ─ Icons reduced: 12 → 8 (SVG render cost)
- * ─ Dots reduced: 15 → 8 per mode
- * ─ Bokeh reduced: 6 → 3 (each had blur(24px) + CSS animation)
- * ─ All animations: opacity + transform only (compositor-safe properties)
+ * ─ Synchronized with GSAP Ticker & Lenis Smooth Scroll Engine
+ * ─ Consolidated 3D layer tree to eliminate GPU VRAM layer explosion
+ * ─ Removed inline CSS shader blur convolution passes inside infinite pan animations
+ * ─ Removed redundant long-lived `will-change` properties
  */
 
 // 8 icons max — enough atmosphere, minimal SVG overhead
@@ -44,92 +45,44 @@ const DARK_DOTS = [
   { x:"88%", y:"88%", s:2, d:"1.4s", t:"8s"  },
 ];
 
-const LIGHT_DOTS = [
-  { x:"8%",  y:"9%",  s:4, d:"0s",   t:"7s",  amber:true  },
-  { x:"38%", y:"6%",  s:5, d:"0.5s", t:"9s",  amber:false },
-  { x:"72%", y:"4%",  s:4, d:"1.1s", t:"6s",  amber:true  },
-  { x:"93%", y:"28%", s:3, d:"2.0s", t:"8s",  amber:false },
-  { x:"10%", y:"55%", s:4, d:"0.8s", t:"7s",  amber:true  },
-  { x:"80%", y:"62%", s:3, d:"1.6s", t:"9s",  amber:false },
-  { x:"48%", y:"80%", s:5, d:"3.2s", t:"6s",  amber:true  },
-  { x:"22%", y:"90%", s:3, d:"1.3s", t:"8s",  amber:false },
-];
-
-const Cloud = ({ top, delay, dur, scale, opacity, zIndex = 0 }: any) => (
-  <div className="absolute left-[-20vw]" style={{ 
-    top, 
-    opacity, 
-    zIndex,
-    animation: `cloudDrift ${dur} linear infinite ${delay}` 
-  }}>
-    <div style={{ transform: `scale(${scale})` }} className="relative">
-      <div className="relative w-[250px] h-[80px] bg-white rounded-full">
-        <div className="absolute top-[-40px] left-[30px] w-[100px] h-[100px] bg-white rounded-full" />
-        <div className="absolute top-[-60px] right-[40px] w-[130px] h-[130px] bg-white rounded-full" />
-      </div>
-    </div>
-  </div>
-);
-
-const Astronaut = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 120 120" className={className}>
-    <g className="animate-[planetBounce_4s_infinite]">
-      <path d="M 28 75 Q 32 95 38 75" fill="#ef4444" className="animate-pulse" />
-      <path d="M 31 75 Q 32 85 35 75" fill="#fcd34d" />
-      <rect x="22" y="35" width="22" height="40" rx="5" fill="#64748b" />
-      <rect x="35" y="42" width="30" height="30" rx="10" fill="#f8fafc" />
-      <circle cx="50" cy="30" r="20" fill="#f8fafc" />
-      <rect x="38" y="20" width="26" height="16" rx="8" fill="#0f172a" />
-      <path d="M 42 25 Q 50 20 60 25" stroke="#38bdf8" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 40 50 Q 20 60 25 70" stroke="#cbd5e1" strokeWidth="8" strokeLinecap="round" fill="none" />
-      <path d="M 60 50 Q 80 40 85 38" stroke="#cbd5e1" strokeWidth="8" strokeLinecap="round" fill="none" />
-      <path d="M 42 70 L 38 90" stroke="#cbd5e1" strokeWidth="10" strokeLinecap="round" />
-      <path d="M 58 70 L 62 88" stroke="#cbd5e1" strokeWidth="10" strokeLinecap="round" />
-      <rect x="75" y="32" width="35" height="3" rx="1" fill="#94a3b8" />
-      <path d="M 82 32 C 82 18, 103 18, 103 32 Z" fill="#cbd5e1" />
-      <circle cx="92.5" cy="20" r="2" fill="#64748b" />
-      <rect x="78" y="26" width="6" height="6" fill="#f8fafc" rx="1" />
-      <path d="M 80 24 Q 78 20 82 16" stroke="#fff" strokeWidth="1" fill="none" className="animate-pulse" />
-    </g>
-  </svg>
-);
-
 export default function HomeBackground() {
   const [mounted, setMounted] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
   const p1Ref = useRef<HTMLDivElement>(null);
   const p2Ref = useRef<HTMLDivElement>(null);
   const p3Ref = useRef<HTMLDivElement>(null);
-  const pLightRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => { 
     setMounted(true); 
-    
-    // High-performance rAF scroll parallax loop (Zero React re-renders)
-    let ticking = false;
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const sy = window.scrollY;
-          // Apply extreme parallax offsets to uncover deep space
-          if (p1Ref.current) p1Ref.current.style.transform = `translate3d(0, ${sy * -0.15}px, 0)`;
-          if (p2Ref.current) p2Ref.current.style.transform = `translate3d(0, ${sy * -0.3}px, 0)`;
-          if (p3Ref.current) p3Ref.current.style.transform = `translate3d(0, ${sy * -0.5}px, 0)`;
-          if (pLightRef.current) pLightRef.current.style.transform = `translate3d(0, ${sy * -0.2}px, 0)`;
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Synchronized GSAP Ticker Parallax Updates (Zero competing scroll listeners or extra rAF loops)
+  useGSAP(() => {
+    if (!mounted) return;
+
+    const setY1 = gsap.quickSetter(p1Ref.current, "y", "px");
+    const setY2 = gsap.quickSetter(p2Ref.current, "y", "px");
+    const setY3 = gsap.quickSetter(p3Ref.current, "y", "px");
+
+    ScrollTrigger.create({
+      trigger: document.body,
+      start: "top top",
+      end: "bottom bottom",
+      onUpdate: () => {
+        const sy = window.scrollY;
+        setY1(sy * -0.15);
+        setY2(sy * -0.3);
+        setY3(sy * -0.5);
+      }
+    });
+  }, { scope: rootRef, dependencies: [mounted] });
 
   if (!mounted) return null;
 
   return (
     <div
+      ref={rootRef}
       className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden"
-      style={{ willChange: "transform" }}
       aria-hidden="true"
     >
       {/* ══════════════════════════════════
@@ -275,22 +228,22 @@ export default function HomeBackground() {
                   <div className="absolute top-0 left-0 h-full w-[200%] animate-[planetPan_25s_linear_infinite]">
                     {/* Copy 1 */}
                     <div className="absolute w-[50%] h-full left-0">
-                      <div className="absolute w-full h-[15%] bg-amber-900/30 top-[35%] filter blur-[2px]">
-                         <div className="absolute w-[20%] h-full bg-amber-950/60 rounded-full left-[20%] blur-[1px]" />
-                         <div className="absolute w-[10%] h-full bg-amber-950/50 rounded-full left-[70%] blur-[1px]" />
+                      <div className="absolute w-full h-[15%] bg-gradient-to-b from-transparent via-amber-900/30 to-transparent top-[35%]">
+                         <div className="absolute w-[20%] h-full bg-gradient-to-r from-transparent via-amber-950/60 to-transparent rounded-full left-[20%]" />
+                         <div className="absolute w-[10%] h-full bg-gradient-to-r from-transparent via-amber-950/50 to-transparent rounded-full left-[70%]" />
                       </div>
-                      <div className="absolute w-full h-[10%] bg-amber-100/20 top-[60%] filter blur-[1px]">
-                         <div className="absolute w-[15%] h-full bg-amber-50/50 rounded-full left-[40%] blur-[1px]" />
+                      <div className="absolute w-full h-[10%] bg-gradient-to-b from-transparent via-amber-100/20 to-transparent top-[60%]">
+                         <div className="absolute w-[15%] h-full bg-gradient-to-r from-transparent via-amber-50/50 to-transparent rounded-full left-[40%]" />
                       </div>
                     </div>
                     {/* Copy 2 */}
                     <div className="absolute w-[50%] h-full left-[50%]">
-                      <div className="absolute w-full h-[15%] bg-amber-900/30 top-[35%] filter blur-[2px]">
-                         <div className="absolute w-[20%] h-full bg-amber-950/60 rounded-full left-[20%] blur-[1px]" />
-                         <div className="absolute w-[10%] h-full bg-amber-950/50 rounded-full left-[70%] blur-[1px]" />
+                      <div className="absolute w-full h-[15%] bg-gradient-to-b from-transparent via-amber-900/30 to-transparent top-[35%]">
+                         <div className="absolute w-[20%] h-full bg-gradient-to-r from-transparent via-amber-950/60 to-transparent rounded-full left-[20%]" />
+                         <div className="absolute w-[10%] h-full bg-gradient-to-r from-transparent via-amber-950/50 to-transparent rounded-full left-[70%]" />
                       </div>
-                      <div className="absolute w-full h-[10%] bg-amber-100/20 top-[60%] filter blur-[1px]">
-                         <div className="absolute w-[15%] h-full bg-amber-50/50 rounded-full left-[40%] blur-[1px]" />
+                      <div className="absolute w-full h-[10%] bg-gradient-to-b from-transparent via-amber-100/20 to-transparent top-[60%]">
+                         <div className="absolute w-[15%] h-full bg-gradient-to-r from-transparent via-amber-50/50 to-transparent rounded-full left-[40%]" />
                       </div>
                     </div>
                   </div>
@@ -310,22 +263,20 @@ export default function HomeBackground() {
         </div>
 
         {/* ── PARALLAX LAYER 3 (Fast drift) ── */}
-        <div ref={p3Ref} className="absolute inset-0 pointer-events-none will-change-transform hidden md:block">
+        <div ref={p3Ref} className="absolute inset-0 pointer-events-none hidden md:block">
           {/* Icy Moon System */}
           <div className="absolute left-[8%] top-[85%] w-[45px] h-[45px] md:w-[110px] md:h-[110px]" style={{
             animation: "planetBounce 14s infinite",
-            animationDelay: "-11s",
-            transformStyle: "preserve-3d"
+            animationDelay: "-11s"
           }}>
             <div className="absolute top-1/2 left-1/2 w-[260%] h-[260%] pointer-events-none" style={{
-              transform: "translate(-50%, -50%) rotateZ(10deg) rotateX(65deg)",
-              transformStyle: "preserve-3d"
+              transform: "translate(-50%, -50%) rotateZ(10deg) rotateX(65deg)"
             }}>
               <div className="absolute inset-0 border-[1px] border-dashed border-cyan-500/30 rounded-full" />
-              <div className="absolute inset-0 animate-[planetSpin_10s_linear_infinite]" style={{ transformStyle: "preserve-3d" }}>
-                <div className="absolute top-0 left-1/2 w-0 h-0" style={{ transformStyle: "preserve-3d" }}>
-                  <div className="absolute inset-0 animate-[planetSpinReverse_10s_linear_infinite]" style={{ transformStyle: "preserve-3d" }}>
-                    <div className="absolute inset-0" style={{ transform: "rotateX(-65deg)", transformStyle: "preserve-3d" }}>
+              <div className="absolute inset-0 animate-[planetSpin_10s_linear_infinite]">
+                <div className="absolute top-0 left-1/2 w-0 h-0">
+                  <div className="absolute inset-0 animate-[planetSpinReverse_10s_linear_infinite]">
+                    <div className="absolute inset-0" style={{ transform: "rotateX(-65deg)" }}>
                       <div className="absolute w-2 h-2 md:w-5 md:h-5 -translate-x-1/2 -translate-y-1/2 rounded-full" style={{
                         background: "radial-gradient(circle at 30% 30%, #cffafe 0%, #06b6d4 40%, #164e63 100%)",
                         boxShadow: "0 0 8px 1px rgba(6,182,212,0.2), inset -1.5px -1.5px 4px rgba(0,0,0,0.6)"
@@ -341,8 +292,8 @@ export default function HomeBackground() {
               boxShadow: "0 0 20px 5px rgba(186, 230, 253, 0.1), inset -10px -10px 20px rgba(0, 0, 0, 0.5)",
             }}>
               <div className="absolute inset-0 w-full h-full animate-[planetSpin_35s_linear_infinite] rounded-full overflow-hidden">
-                <div className="absolute rounded-full bg-cyan-900/20" style={{ left: "40%", top: "30%", width: "15%", height: "15%", filter: "blur(1px)" }} />
-                <div className="absolute rounded-full bg-cyan-900/15" style={{ left: "20%", top: "60%", width: "25%", height: "20%", filter: "blur(1.5px)" }} />
+                <div className="absolute rounded-full bg-gradient-to-r from-transparent via-cyan-900/30 to-transparent" style={{ left: "40%", top: "30%", width: "15%", height: "15%" }} />
+                <div className="absolute rounded-full bg-gradient-to-r from-transparent via-cyan-900/25 to-transparent" style={{ left: "20%", top: "60%", width: "25%", height: "20%" }} />
               </div>
             </div>
           </div>

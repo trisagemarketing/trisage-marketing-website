@@ -22,7 +22,6 @@ const navLinks = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navbarRef = useRef<HTMLDivElement>(null);
@@ -37,14 +36,13 @@ export default function Navbar() {
     }
   });
 
-  // Handle interactive mouse position for liquid glass sheen
+  // Handle interactive mouse position for liquid glass sheen (Zero React Re-renders)
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!navbarRef.current) return;
-    const rect = navbarRef.current.getBoundingClientRect();
-    setMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
+    const x = e.nativeEvent.offsetX;
+    const y = e.nativeEvent.offsetY;
+    navbarRef.current.style.setProperty("--mouse-x", `${x}px`);
+    navbarRef.current.style.setProperty("--mouse-y", `${y}px`);
   };
 
   // Close mobile menu on route change
@@ -97,12 +95,12 @@ export default function Navbar() {
           {/* Bottom Glass Internal Reflection Rim */}
           <div className="absolute inset-x-12 bottom-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/20 to-transparent pointer-events-none rounded-full" />
 
-          {/* Dynamic Interactive Mouse Liquid Sheen Spot */}
+          {/* Dynamic Interactive Mouse Liquid Sheen Spot (CSS Custom Property Driven) */}
           {isHovered && (
             <div 
               className="absolute -inset-px pointer-events-none transition-opacity duration-300 rounded-full"
               style={{
-                background: `radial-gradient(140px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255, 255, 255, 0.35), transparent 80%)`,
+                background: `radial-gradient(140px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.35), transparent 80%)`,
               }}
             />
           )}

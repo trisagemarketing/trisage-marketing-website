@@ -76,50 +76,43 @@ const SplitChars = ({ text }: { text: string }) => {
   );
 };
 
-function AnimatedCounter({ value, suffix, animate }: { value: number; suffix: string; animate: boolean }) {
-  const [count, setCount] = useState(0);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
+  const countRef = useRef<HTMLSpanElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    // Murphy's Law guard: clear any running timer before starting a new one
-    if (timerRef.current) clearInterval(timerRef.current);
+  useGSAP(() => {
+    if (!countRef.current || !containerRef.current) return;
 
-    if (!animate) return;
-
-    // Respect prefers-reduced-motion — snap to final value instantly
     const prefersReduced =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    if (prefersReduced) {
-      const id = setTimeout(() => setCount(value), 0);
-      return () => clearTimeout(id);
-    }
+    const counterObj = { val: 0 };
 
-    let start = 0;
-    const duration = 1800;
-    const fps = 60;
-    const totalFrames = (duration / 1000) * fps;
-    const increment = value / totalFrames;
-
-    timerRef.current = setInterval(() => {
-      start += increment;
-      if (start >= value) {
-        setCount(value);
-        if (timerRef.current) clearInterval(timerRef.current);
-      } else {
-        setCount(Math.floor(start));
+    gsap.to(counterObj, {
+      val: value,
+      duration: prefersReduced ? 0 : 1.8,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top 88%",
+        toggleActions: "play none none reset",
+        onLeaveBack: () => {
+          counterObj.val = 0;
+          if (countRef.current) countRef.current.textContent = "0";
+        }
+      },
+      onUpdate: () => {
+        if (countRef.current) {
+          countRef.current.textContent = Math.floor(counterObj.val).toString();
+        }
       }
-    }, 1000 / fps);
-
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [animate, value]);
+    });
+  }, { scope: containerRef, dependencies: [value] });
 
   return (
-    <div className="text-5xl md:text-7xl font-bold text-white mb-2 tabular-nums">
-      {animate ? count : 0}{suffix}
+    <div ref={containerRef} className="text-5xl md:text-7xl font-bold text-white mb-2 tabular-nums">
+      <span ref={countRef}>0</span><span className="stat-suffix">{suffix}</span>
     </div>
   );
 }
@@ -132,9 +125,6 @@ export default function WhyChooseUs() {
   const lineRef           = useRef<HTMLDivElement>(null);
   const cardsContainerRef = useRef<HTMLDivElement>(null);
 
-  // Tracks whether each stat card is "in view" so AnimatedCounter knows when to fire
-  const [animatedCards, setAnimatedCards] = useState<boolean[]>([false, false, false]);
-
   useGSAP(() => {
     if (!headingRef.current) return;
     
@@ -145,7 +135,6 @@ export default function WhyChooseUs() {
         y: 50,
         opacity: 0,
         rotateX: -60,
-        willChange: "transform, opacity",
       },
       {
         y: 0,
@@ -172,7 +161,6 @@ export default function WhyChooseUs() {
         y: -150,
         opacity: 0,
         scale: 1.2,
-        willChange: "transform, opacity",
       },
       {
         y: 0,
@@ -239,7 +227,6 @@ export default function WhyChooseUs() {
         opacity: 0,
         scale: 0.85,
         rotateX: -20,
-        willChange: "transform, opacity",
       },
       {
         y: 0,
@@ -256,8 +243,6 @@ export default function WhyChooseUs() {
           trigger: cardsContainerRef.current,
           start: "top 88%",
           toggleActions: "play none none reset", // re-bounces every time section enters
-          onEnter: () => setAnimatedCards([true, true, true]),   // fire counters
-          onLeaveBack: () => setAnimatedCards([false, false, false]), // reset counters on scroll back
         },
       }
     );
@@ -384,7 +369,7 @@ export default function WhyChooseUs() {
               >
                 {/* Number + suffix split so suffix can pop independently */}
                 <div className="text-5xl md:text-7xl font-black text-white mb-3 tabular-nums flex items-end gap-1 justify-start tracking-tight" style={index === 2 ? { justifyContent: 'center' } : {}}>
-                  <AnimatedCounter value={stat.value} suffix="" animate={animatedCards[index]} />
+                  <AnimatedCounter value={stat.value} suffix="" />
                   <span className="stat-suffix inline-block text-teal-400 font-medium" style={{ lineHeight: 1.1 }}>{stat.suffix}</span>
                 </div>
                 <p className="text-gray-300 font-bold uppercase tracking-widest text-xs sm:text-sm">{stat.label}</p>

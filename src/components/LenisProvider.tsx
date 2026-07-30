@@ -2,6 +2,12 @@
 
 import { useEffect } from "react";
 import Lenis from "lenis";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export default function LenisProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -19,17 +25,20 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
       touchMultiplier: 2,
     });
 
-    let rafId = 0;
+    // 1. Synchronize Lenis scroll updates directly into GSAP ScrollTrigger
+    lenis.on("scroll", ScrollTrigger.update);
 
-    function raf(time: number) {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
-    }
+    // 2. Drive Lenis through GSAP's master ticker to guarantee 100% frame synchronization
+    const updateLenisWithGsap = (time: number) => {
+      lenis.raf(time * 1000);
+    };
 
-    rafId = requestAnimationFrame(raf);
+    gsap.ticker.add(updateLenisWithGsap);
+    gsap.ticker.lagSmoothing(0); // Prevents lag spikes from causing scroll jumps
 
     return () => {
-      cancelAnimationFrame(rafId);
+      gsap.ticker.remove(updateLenisWithGsap);
+      lenis.off("scroll", ScrollTrigger.update);
       lenis.destroy();
     };
   }, []);

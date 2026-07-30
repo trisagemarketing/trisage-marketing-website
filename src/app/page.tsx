@@ -46,7 +46,8 @@ export default async function Home() {
         <WhyChooseUs />
         <Process />
         <GlobalPresence />
-        <Testimonials />
+        {/* Testimonials section hidden for all devices */}
+        {/* <Testimonials /> */}
         <HomeBlog recentPosts={recentPosts || []} />
         <FAQ />
         <CTA />

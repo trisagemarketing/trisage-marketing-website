@@ -38,7 +38,6 @@ export default function Hero() {
         opacity: 0 
       });
       // DIGITAL and MARKETING: Whole word center-to-origin bounce setup
-      // Starts clumped horizontally in the center
       gsap.set(bottomWordsRef.current[0], { 
         x: isMobile ? "35vw" : "38vw",
         opacity: 0 
@@ -76,39 +75,29 @@ export default function Hero() {
         force3D: true,
       }, "<0.15"); // Slight stagger between the two words
 
-      // Part 3 & 4: Scroll Parallax & Velocity Distortion
+      // Part 3 & 4: Single Consolidated Scroll Timeline
       if (isDesktop) {
-        const scrollTl = gsap.timeline({
+        const skewTo = gsap.quickTo(textWrapperRef.current, "skewX", { duration: 0.4, ease: "power3.out" });
+
+        gsap.timeline({
           scrollTrigger: {
             trigger: containerRef.current,
             start: "top top",
             end: "bottom top",
             scrub: 1, // Smooth interpolation
+            onUpdate: (self) => {
+              const velocity = self.getVelocity();
+              let skew = velocity / 500;
+              skew = Math.max(-3, Math.min(3, skew)); // Clamp between -3 and 3
+              skewTo(skew);
+            }
           }
-        });
-
-        scrollTl.to(textWrapperRef.current, {
+        }).to(textWrapperRef.current, {
           y: -100,
           scale: 0.94,
           skewY: -2,
           ease: "none",
           force3D: true,
-        });
-
-        // Velocity-based Elastic Distortion
-        const skewTo = gsap.quickTo(textWrapperRef.current, "skewX", { duration: 0.4, ease: "power3.out" });
-        
-        ScrollTrigger.create({
-          trigger: containerRef.current,
-          start: "top top",
-          end: "bottom top",
-          onUpdate: (self) => {
-            const velocity = self.getVelocity();
-            // Map velocity to subtle skew: target max ~3deg at high speed
-            let skew = velocity / 500;
-            skew = Math.max(-3, Math.min(3, skew)); // Clamp between -3 and 3
-            skewTo(skew);
-          }
         });
       }
     });
@@ -133,7 +122,8 @@ export default function Hero() {
         {/* Container-constrained layout for massive typography to align with Navbar on 4K */}
         <div className="container mx-auto px-4 md:px-8 flex flex-col justify-center">
           
-          <div ref={textWrapperRef} className="w-full flex flex-col will-change-transform opacity-0">
+          {/* Outer Wrapper: Dedicated Single Owner for Scroll Parallax (y, scale, skewY) */}
+          <div ref={textWrapperRef} className="w-full flex flex-col transform-gpu opacity-0">
             {/* Top Giant Text - TRISAGE */}
             <h1 
               className="w-full flex justify-between items-center font-medium text-primary-500 dark:text-primary-300 uppercase cursor-default tracking-tighter"
@@ -148,7 +138,7 @@ export default function Hero() {
                   <span 
                     ref={el => { lettersRef.current[i] = el; }}
                     aria-hidden="true" 
-                    className="inline-block will-change-transform transform-gpu opacity-0"
+                    className="inline-block transform-gpu opacity-0"
                   >
                     {letter}
                   </span>
@@ -160,7 +150,7 @@ export default function Hero() {
             <div className="flex flex-row w-full justify-between items-end mt-2 md:mt-4 lg:mt-6">
               <h2 
                 ref={el => { bottomWordsRef.current[0] = el; }}
-                className="font-bold text-secondary-600 dark:text-secondary-400 uppercase flex will-change-transform transform-gpu opacity-0"
+                className="font-bold text-secondary-600 dark:text-secondary-400 uppercase flex transform-gpu opacity-0"
                 style={{ 
                   fontSize: 'clamp(1.5rem, 5vw, 4rem)', 
                   lineHeight: '1', 
@@ -172,7 +162,7 @@ export default function Hero() {
               
               <h2 
                 ref={el => { bottomWordsRef.current[1] = el; }}
-                className="font-bold text-secondary-600 dark:text-secondary-400 uppercase text-right flex mt-0 will-change-transform transform-gpu opacity-0"
+                className="font-bold text-secondary-600 dark:text-secondary-400 uppercase text-right flex mt-0 transform-gpu opacity-0"
                 style={{ 
                   fontSize: 'clamp(1.5rem, 5vw, 4rem)', 
                   lineHeight: '1', 
