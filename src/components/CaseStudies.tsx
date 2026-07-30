@@ -1,8 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { fadeUp, staggerContainer } from "@/lib/animations";
-import { Sparkles } from "lucide-react";
+import { Sparkles, ArrowRight } from "lucide-react";
 import Image from "next/image";
 
 const caseStudies = [
@@ -11,11 +12,12 @@ const caseStudies = [
     headline: "Proof of Impact: The Villasita Resort",
     challengeSolution: "Trisage implemented a targeted social media revival strategy, OTA optimization, GMB enhancement, and premium content positioning to strengthen Villasita Resort’s digital presence, increase room night bookings, and improve local search visibility.",
     results: [
-      { metric: "+94%", label: "Growth in Room Bookings", highlight: true },
-      { metric: "+95%", label: "Increase in Room Nights", highlight: true },
-      { metric: "₹8.46L", label: "Revenue Generated Online", highlight: true },
-      { metric: "21,877+", label: "Google Business Profile Views" },
-      { metric: "2,381+", label: "Customer Actions Generated" },
+      { metric: "Approx. ₹1 Cr+", label: "ONLINE REVENUE IN 12 MONTHS", highlight: true },
+      { metric: "Up to ₹15L", label: "PEAK MONTHLY ONLINE REVENUE", highlight: true },
+      { metric: "Up to 10x", label: "Return on Ad Spend (ROAS)", highlight: true },
+      { metric: "13.89 Million", label: "Social Campaign Impressions" },
+      { metric: "2 Lakh+", label: "GOOGLE PROFILE VIEWS" },
+      { metric: "25,000+", label: "GOOGLE PROFILE INTERACTIONS" },
     ],
     closingCopy: "The campaign delivered massive improvement in online visibility, guest engagement, and direct customer interest.",
     imageColor: "from-blue-500/20 to-cyan-500/20",
@@ -78,10 +80,10 @@ export default function CaseStudies() {
               className={`flex flex-col lg:flex-row gap-10 lg:gap-16 items-center ${isEven ? "" : "lg:flex-row-reverse"}`}
             >
               
-              {/* Image/Visual Column */}
+              {/* Image/Visual Column with Full-Width Button Below */}
               <motion.div 
                 variants={fadeUp}
-                className="w-full lg:w-1/2 drop-shadow-2xl dark:drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+                className="w-full lg:w-1/2 drop-shadow-2xl dark:drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col gap-5"
               >
                 <div 
                   className={`relative w-full aspect-4/3 bg-linear-to-br ${study.imageColor} flex items-center justify-center group`}
@@ -122,6 +124,15 @@ export default function CaseStudies() {
                     </motion.div>
                   </div>
                 </div>
+
+                {/* Prominent Full-Width "Read Full Case Study" Button directly under Left Image */}
+                <Link
+                  href={study.id === "villasita" ? "/case-studies/villasita-resort-haridwar" : "/case-studies"}
+                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-linear-to-r from-primary-600 via-primary-700 to-secondary-600 dark:from-primary-500 dark:to-secondary-400 text-white text-sm sm:text-base font-extrabold shadow-xl shadow-primary-600/20 hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] active:scale-95 cursor-pointer text-center"
+                >
+                  <span>Read Full Case Study</span>
+                  <ArrowRight size={18} />
+                </Link>
               </motion.div>
 
               {/* Content Column */}
@@ -160,10 +171,12 @@ export default function CaseStudies() {
 
                 {/* Closing Copy Blockquote */}
                 <div className="relative pt-4">
-                  <div className={`absolute left-0 top-4 bottom-0 w-1 rounded-full bg-linear-to-b ${study.imageColor.replace('/20', '/100')}`} />
-                  <p className="pl-5 text-base md:text-lg font-medium text-gray-800 dark:text-gray-300 italic">
-                    &quot;{study.closingCopy}&quot;
-                  </p>
+                  <div className="relative pl-5">
+                    <div className={`absolute left-0 top-0 bottom-0 w-1 rounded-full bg-linear-to-b ${study.imageColor.replace('/20', '/100')}`} />
+                    <p className="text-base md:text-lg font-medium text-gray-800 dark:text-gray-300 italic">
+                      &quot;{study.closingCopy}&quot;
+                    </p>
+                  </div>
                 </div>
               </motion.div>
 
