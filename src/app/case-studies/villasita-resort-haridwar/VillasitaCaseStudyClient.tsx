@@ -16,6 +16,7 @@ import {
   Share2, 
   Gift,
   Zap,
+  Star
 } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -178,17 +179,35 @@ Alongside the revenue growth, the resort recorded 13.89 million Meta views, more
             {/* Bottom Tier: Search, Trust & Reputation Metrics (3 Cards) */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
               {[
-                { label: "2 Lakh+", sub: "GOOGLE PROFILE VIEWS", color: "from-purple-500/15 via-purple-500/5 to-transparent border-purple-500/30" },
-                { label: "25,000+", sub: "GOOGLE PROFILE INTERACTIONS", color: "from-emerald-500/15 via-emerald-500/5 to-transparent border-emerald-500/30" },
-                { label: "4.8 / 4.9 STAR", sub: "GOOGLE & TRIPADVISOR", note: "Supported by actively optimised Google Business and TripAdvisor profiles", color: "from-amber-500/15 via-amber-500/5 to-transparent border-amber-500/30" },
+                { label: "2 Lakh+", isSplitRating: false, sub: "GOOGLE PROFILE VIEWS", color: "from-purple-500/15 via-purple-500/5 to-transparent border-purple-500/30" },
+                { label: "25,000+", isSplitRating: false, sub: "GOOGLE PROFILE INTERACTIONS", color: "from-emerald-500/15 via-emerald-500/5 to-transparent border-emerald-500/30" },
+                { label: "4.8 / 4.9 STAR", isSplitRating: true, sub: "GOOGLE & TRIPADVISOR", note: "Supported by actively optimised Google Business and TripAdvisor profiles", color: "from-amber-500/15 via-amber-500/5 to-transparent border-amber-500/30" },
               ].map((kpi, idx) => (
                 <div 
                   key={idx}
                   className={`p-6 sm:p-7 rounded-2xl sm:rounded-3xl bg-linear-to-br ${kpi.color} bg-white dark:bg-gray-900 border border-gray-200/80 dark:border-gray-800 shadow-md hover:shadow-lg transition-transform duration-300 ease-out hover:scale-[1.02] flex flex-col justify-between contain-content`}
                 >
-                  <div className="text-3xl sm:text-4xl font-black text-gray-900 dark:text-white tracking-tight leading-none">
-                    {kpi.label}
-                  </div>
+                  {kpi.isSplitRating ? (
+                    <div className="flex items-center gap-4 sm:gap-6">
+                      <div className="flex flex-col">
+                        <div className="flex items-center gap-1.5 text-3xl sm:text-4xl font-black text-gray-900 dark:text-white tracking-tight leading-none">
+                          4.8<Star className="fill-amber-400 text-amber-400" size={24} />
+                        </div>
+                        <span className="text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 mt-2">Google</span>
+                      </div>
+                      <div className="w-px h-12 bg-gray-300 dark:bg-gray-700"></div>
+                      <div className="flex flex-col">
+                        <div className="flex items-center gap-1.5 text-3xl sm:text-4xl font-black text-gray-900 dark:text-white tracking-tight leading-none">
+                          4.9<Star className="fill-amber-400 text-amber-400" size={24} />
+                        </div>
+                        <span className="text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 mt-2">TripAdvisor</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-3xl sm:text-4xl font-black text-gray-900 dark:text-white tracking-tight leading-none">
+                      {kpi.label}
+                    </div>
+                  )}
                   <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-800/80">
                     <div className="text-xs font-extrabold text-gray-700 dark:text-gray-300 uppercase tracking-wider leading-relaxed">{kpi.sub}</div>
                     {kpi.note && <div className="text-[11px] text-gray-500 dark:text-gray-400 mt-1 leading-snug font-medium">{kpi.note}</div>}
