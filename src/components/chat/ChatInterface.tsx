@@ -27,21 +27,26 @@ export default function ChatInterface({
   onReset
 }: ChatInterfaceProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll to bottom when new messages arrive or typing state changes
+  // Professional MNC-grade auto-scroll: 
+  // We use a slight delay to allow Framer Motion animations to mount in the DOM before calculating the height.
+  const scrollToBottom = () => {
+    setTimeout(() => {
+      if (messagesEndRef.current) {
+        messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+      }
+    }, 50); // 50ms is the sweet spot for React DOM commit + Framer initialization
+  };
+
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTo({
-        top: scrollRef.current.scrollHeight,
-        behavior: "smooth"
-      });
-    }
+    scrollToBottom();
   }, [state.messages, state.isTyping]);
 
   return (
     <div className="flex flex-col h-full bg-white dark:bg-gray-900 sm:rounded-2xl overflow-hidden shadow-2xl sm:border border-gray-200 dark:border-gray-800">
       {/* Header */}
-      <div className="shrink-0 flex items-center justify-between px-4 py-3 bg-gradient-to-r from-primary-600 to-primary-800 dark:from-primary-700 dark:to-primary-900 text-white shadow-md z-10 relative">
+      <div className="shrink-0 flex items-center justify-between px-4 py-3 bg-linear-to-r from-primary-600 to-primary-800 dark:from-primary-700 dark:to-primary-900 text-white shadow-md z-10 relative">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-white border border-gray-100 p-1 flex items-center justify-center relative shadow-md">
             <Image 
@@ -100,7 +105,7 @@ export default function ChatInterface({
           {/* Typing Indicator */}
           {state.isTyping && (
             <div className="flex w-full mt-4 space-x-3 max-w-xs mr-auto items-end">
-              <div className="flex-shrink-0 mt-1 mb-1">
+              <div className="shrink-0 mt-1 mb-1">
                 <div className="w-6 h-6 rounded-full bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow-sm flex items-center justify-center p-1 overflow-hidden">
                   <Image src={BOT_AVATAR} alt="Bot Typing" width={16} height={16} className="object-contain opacity-50" />
                 </div>
@@ -112,6 +117,9 @@ export default function ChatInterface({
               </div>
             </div>
           )}
+          
+          {/* Invisible anchor for flawless auto-scrolling */}
+          <div ref={messagesEndRef} className="h-1" />
         </div>
       </div>
 
