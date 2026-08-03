@@ -31,7 +31,8 @@ export default function ChatWidget() {
   };
 
   return (
-    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[999] flex flex-col items-end">
+    <>
+      {/* 1. Modal Container - Decoupled from the bottom-right button to prevent keyboard pushing on Android/iOS */}
       <AnimatePresence>
         {state.isOpen && (
           <motion.div
@@ -39,7 +40,7 @@ export default function ChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95, transition: { duration: 0.2 } }}
             transition={{ type: "spring", stiffness: 350, damping: 25 }}
-            className="fixed inset-0 w-full h-[100dvh] sm:relative sm:inset-auto sm:w-[380px] sm:h-[550px] sm:max-h-[calc(100vh-140px)] sm:mb-4 origin-bottom-right z-[1000]"
+            className="fixed inset-0 z-[1000] w-full h-[100dvh] sm:inset-auto sm:bottom-24 sm:right-6 sm:w-[380px] sm:h-[550px] sm:max-h-[calc(100vh-140px)] origin-bottom-right flex flex-col overscroll-none"
           >
             <ChatInterface 
               state={state}
@@ -54,7 +55,9 @@ export default function ChatWidget() {
         )}
       </AnimatePresence>
 
-      <motion.button
+      {/* 2. Floating Toggle Button */}
+      <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[999] flex flex-col items-end">
+        <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={toggleOpen}
@@ -90,6 +93,7 @@ export default function ChatWidget() {
           <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 border-2 border-white dark:border-gray-900 rounded-full animate-pulse"></span>
         )}
       </motion.button>
-    </div>
+      </div>
+    </>
   );
 }
