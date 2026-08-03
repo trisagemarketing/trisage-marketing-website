@@ -10,6 +10,7 @@ export const leadSubmissionSchema = z.object({
   source: z.string().default("chatbot"),
   page_url: z.string().url().max(500, "URL is too long.").optional().or(z.literal("")),
   user_agent: z.string().optional(),
+  honeypot: z.string().max(0).optional(),
 }).refine(data => data.email || data.phone, {
   message: "Either email or phone must be provided.",
   path: ["email"] // Attach error to email if both are missing
