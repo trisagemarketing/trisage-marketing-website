@@ -5,7 +5,7 @@ import { LeadService } from "@/lib/services/leadService";
 // Simple in-memory rate limiter (Note: Resets on serverless cold boots, but effective for basic spam bursts)
 const rateLimitMap = new Map<string, { count: number; timestamp: number }>();
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
-const MAX_REQUESTS_PER_WINDOW = 5;
+const MAX_REQUESTS_PER_WINDOW = 30; // Increased to 30 to allow for thorough client testing without blocking
 
 export async function POST(request: Request) {
   try {
