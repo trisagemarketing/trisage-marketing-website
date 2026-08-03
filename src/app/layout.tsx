@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import LenisProvider from "@/components/LenisProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -103,6 +104,18 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(globalJsonLd) }}
         />
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-HHGVZ3JZGV"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){window.dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-HHGVZ3JZGV');
+          `}
+        </Script>
       </head>
       <body suppressHydrationWarning className="font-sans antialiased bg-white dark:bg-[#050b14]">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
