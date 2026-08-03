@@ -58,7 +58,7 @@ export default function ChatWidget() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={toggleOpen}
-        className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-tr from-primary-600 to-primary-800 text-white shadow-xl shadow-primary-600/30 flex items-center justify-center hover:shadow-2xl hover:shadow-primary-600/40 transition-shadow focus:outline-none focus-visible:ring-4 focus-visible:ring-primary-500/50"
+        className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-primary-600 to-primary-800 text-white shadow-xl shadow-primary-600/30 flex items-center justify-center hover:shadow-2xl hover:shadow-primary-600/40 transition-shadow focus:outline-none focus-visible:ring-4 focus-visible:ring-primary-500/50"
         aria-label={state.isOpen ? "Close chat window" : "Open chat window"}
       >
         <AnimatePresence mode="wait">
@@ -70,7 +70,7 @@ export default function ChatWidget() {
               exit={{ rotate: 90, opacity: 0 }}
               transition={{ duration: 0.15 }}
             >
-              <X size={26} strokeWidth={2.5} />
+              <X size={24} strokeWidth={2.5} />
             </motion.div>
           ) : (
             <motion.div
@@ -80,7 +80,7 @@ export default function ChatWidget() {
               exit={{ rotate: -90, opacity: 0 }}
               transition={{ duration: 0.15 }}
             >
-              <MessageCircle size={28} strokeWidth={2} className="fill-white/10" />
+              <MessageCircle size={24} strokeWidth={2} className="fill-white/10" />
             </motion.div>
           )}
         </AnimatePresence>
