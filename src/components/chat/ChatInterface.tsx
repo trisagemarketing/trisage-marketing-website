@@ -84,6 +84,8 @@ export default function ChatInterface({
       {/* Message Feed Area */}
       <div 
         ref={scrollRef}
+        role="log"
+        aria-live="polite"
         className="flex-1 overflow-y-auto p-4 bg-gray-50 dark:bg-gray-900/50 relative"
       >
         <div className="flex flex-col space-y-2 pb-2">
