@@ -39,7 +39,7 @@ export default function ChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95, transition: { duration: 0.2 } }}
             transition={{ type: "spring", stiffness: 350, damping: 25 }}
-            className="fixed inset-0 w-full h-full sm:relative sm:inset-auto sm:w-[380px] sm:h-[550px] sm:max-h-[calc(100vh-140px)] sm:mb-4 origin-bottom-right z-[1000]"
+            className="fixed inset-0 w-full h-[100dvh] sm:relative sm:inset-auto sm:w-[380px] sm:h-[550px] sm:max-h-[calc(100vh-140px)] sm:mb-4 origin-bottom-right z-[1000]"
           >
             <ChatInterface 
               state={state}
