@@ -41,7 +41,7 @@ export default function ChatInterface({
   return (
     <div className="flex flex-col h-full bg-white dark:bg-gray-900 sm:rounded-2xl overflow-hidden shadow-2xl sm:border border-gray-200 dark:border-gray-800">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-primary-600 to-primary-800 dark:from-primary-700 dark:to-primary-900 text-white shadow-md z-10 relative">
+      <div className="shrink-0 flex items-center justify-between px-4 py-3 bg-gradient-to-r from-primary-600 to-primary-800 dark:from-primary-700 dark:to-primary-900 text-white shadow-md z-10 relative">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-white border border-gray-100 p-1 flex items-center justify-center relative shadow-md">
             <Image 
@@ -116,7 +116,7 @@ export default function ChatInterface({
       </div>
 
       {/* Input Footer Area */}
-      <div className="p-4 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 shadow-[0_-4px_10px_rgba(0,0,0,0.02)] dark:shadow-[0_-4px_10px_rgba(0,0,0,0.2)]">
+      <div className="shrink-0 p-4 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 shadow-[0_-4px_10px_rgba(0,0,0,0.02)] dark:shadow-[0_-4px_10px_rgba(0,0,0,0.2)] relative z-10">
         {state.step === CHAT_STEPS.SUCCESS ? (
           <div className="text-center py-2 text-sm text-gray-500 dark:text-gray-400">
             Conversation completed.
