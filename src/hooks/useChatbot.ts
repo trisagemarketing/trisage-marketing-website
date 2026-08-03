@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { ChatbotState, ChatMessage, ChatStep } from "@/types/chatbot";
 import { CHAT_STEPS, CHATBOT_MESSAGES, SERVICES_LIST } from "@/lib/constants/chatbot";
 
@@ -23,6 +23,9 @@ const INITIAL_STATE: ChatbotState = {
 export function useChatbot() {
   const [state, setState] = useState<ChatbotState>(INITIAL_STATE);
   const [isInitialized, setIsInitialized] = useState(false);
+  
+  // Murphy's Law: Synchronous lock to prevent rapid-fire double-click glitches
+  const isProcessingRef = useRef(false);
 
   // Restore from sessionStorage on mount
   useEffect(() => {
@@ -97,15 +100,22 @@ export function useChatbot() {
     setTyping(true);
     setTimeout(() => {
       setTyping(false);
+      isProcessingRef.current = false; // Release lock when bot finishes typing
       setState(prev => ({ ...prev, step: nextStep }));
       addBotMessage(botText, options);
     }, 1000 + Math.random() * 500); // Realistic 1-1.5s typing delay
   }, [addBotMessage, setTyping]);
 
   const handleInputSubmit = useCallback((value: string) => {
+    // Murphy's Law: Block execution if currently processing, bot is typing, or already submitting
+    if (isProcessingRef.current || state.isTyping || state.step >= CHAT_STEPS.SUBMITTING) {
+      return;
+    }
+
     const trimmed = value.trim();
     if (!trimmed) return;
 
+    isProcessingRef.current = true; // Engage synchronous lock immediately
     addUserMessage(trimmed);
 
     // Flow control
@@ -118,6 +128,7 @@ export function useChatbot() {
     } else if (state.step === CHAT_STEPS.NAME) {
       if (trimmed.length < 2) {
         setError("Please enter a valid name.");
+        isProcessingRef.current = false; // Release lock on error
         return;
       }
       setState(prev => ({ ...prev, leadData: { ...prev.leadData, name: trimmed } }));
@@ -126,6 +137,7 @@ export function useChatbot() {
     } else if (state.step === CHAT_STEPS.EMAIL) {
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
         setError("Please enter a valid email address.");
+        isProcessingRef.current = false; // Release lock on error
         return;
       }
       setState(prev => ({ ...prev, leadData: { ...prev.leadData, email: trimmed } }));
@@ -137,6 +149,7 @@ export function useChatbot() {
       // Require at least one contact method
       if (trimmed.length < 8) {
         setError("Please enter a valid phone number.");
+        isProcessingRef.current = false; // Release lock on error
         return;
       }
       
@@ -160,8 +173,9 @@ export function useChatbot() {
 
   const handleOptionSelect = useCallback((option: string) => {
     // Treat clicking an option exactly the same as typing it
+    if (isProcessingRef.current || state.isTyping) return; // Murphy's Law strict block
     handleInputSubmit(option);
-  }, [handleInputSubmit]);
+  }, [handleInputSubmit, state.isTyping]);
 
   const submitLead = useCallback(async (finalLeadData = state.leadData) => {
     setState(prev => ({ ...prev, step: CHAT_STEPS.SUBMITTING, isTyping: true, error: null }));
@@ -186,11 +200,13 @@ export function useChatbot() {
         step: CHAT_STEPS.SUCCESS,
         isTyping: false
       }));
+      isProcessingRef.current = false; // Release lock on success
       addBotMessage(CHATBOT_MESSAGES.SUCCESS);
       sessionStorage.removeItem(SESSION_STORAGE_KEY);
       
     } catch (error) {
       console.error("Submission error:", error);
+      isProcessingRef.current = false; // Release lock on error
       setState(prev => ({ 
         ...prev, 
         step: CHAT_STEPS.MESSAGE, // Go back to the last step so they can try again
