@@ -109,7 +109,8 @@ export default function ChatWidget() {
               onClose={toggleOpen}
               onReset={resetSession}
             />
-          </motion.div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
 
