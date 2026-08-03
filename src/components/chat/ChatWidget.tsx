@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MessageCircle, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
@@ -20,7 +20,31 @@ const ChatInterface = dynamic(() => import("./ChatInterface"), {
 export default function ChatWidget() {
   const pathname = usePathname();
   const [inputValue, setInputValue] = useState("");
+  const [viewportHeight, setViewportHeight] = useState('100dvh');
   const { state, toggleOpen, handleInputSubmit, handleOptionSelect, resetSession } = useChatbot();
+
+  // Bulletproof mobile keyboard fix using Visual Viewport API
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.visualViewport) return;
+    
+    const handleResize = () => {
+      // Only apply this exact pixel height on mobile screens (under 640px)
+      if (window.innerWidth < 640) {
+        setViewportHeight(`${window.visualViewport!.height}px`);
+      } else {
+        setViewportHeight('auto'); // Let desktop use its defined Tailwind classes
+      }
+    };
+
+    window.visualViewport.addEventListener('resize', handleResize);
+    window.visualViewport.addEventListener('scroll', handleResize); // Sometimes keyboard triggers scroll
+    handleResize(); // Initial measurement
+
+    return () => {
+      window.visualViewport?.removeEventListener('resize', handleResize);
+      window.visualViewport?.removeEventListener('scroll', handleResize);
+    };
+  }, [state.isOpen]); // Re-run when opened
 
   // Hide entirely on Admin routes to prevent overlapping with Admin Mobile Nav
   if (pathname?.startsWith("/admin")) return null;
@@ -40,7 +64,8 @@ export default function ChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95, transition: { duration: 0.2 } }}
             transition={{ type: "spring", stiffness: 350, damping: 25 }}
-            className="fixed inset-0 z-[1000] w-full h-[100dvh] sm:inset-auto sm:bottom-24 sm:right-6 sm:w-[380px] sm:h-[550px] sm:max-h-[calc(100vh-140px)] origin-bottom-right flex flex-col overscroll-none"
+            style={{ height: viewportHeight !== 'auto' ? viewportHeight : undefined }}
+            className="fixed top-0 left-0 z-[1000] w-full sm:inset-auto sm:bottom-24 sm:right-6 sm:w-[380px] sm:h-[550px] sm:max-h-[calc(100vh-140px)] origin-bottom-right flex flex-col overscroll-none"
           >
             <ChatInterface 
               state={state}
