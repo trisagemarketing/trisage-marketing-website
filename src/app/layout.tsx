@@ -7,6 +7,7 @@ import GlobalClickSpark from "@/components/GlobalClickSpark";
 import LayoutWrapper from "@/components/LayoutWrapper";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
 import { Toaster } from "sonner";
+import ChatWidget from "@/components/chat/ChatWidget";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://trisagemarketing.com'),
@@ -138,6 +139,7 @@ export default function RootLayout({
             <LayoutWrapper>
               {children}
             </LayoutWrapper>
+            <ChatWidget />
           </LenisProvider>
         </ThemeProvider>
       </body>

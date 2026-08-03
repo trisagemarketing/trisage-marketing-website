@@ -1,0 +1,18 @@
+import { z } from "zod";
+
+// Shared Zod schema for validating a Lead submission
+export const leadSubmissionSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters.").max(100, "Name is too long."),
+  email: z.string().email("Please provide a valid email address.").max(150, "Email is too long.").optional().or(z.literal("")),
+  phone: z.string().min(10, "Please provide a valid phone number.").max(20, "Phone number is too long.").optional().or(z.literal("")),
+  service: z.string().min(1, "Please select a service.").max(100, "Service name is too long."),
+  message: z.string().max(1000, "Message is too long. Max 1000 characters.").optional(),
+  source: z.string().default("chatbot"),
+  page_url: z.string().url().max(500, "URL is too long.").optional().or(z.literal("")),
+  user_agent: z.string().optional(),
+}).refine(data => data.email || data.phone, {
+  message: "Either email or phone must be provided.",
+  path: ["email"] // Attach error to email if both are missing
+});
+
+export type LeadSubmission = z.infer<typeof leadSubmissionSchema>;
