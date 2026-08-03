@@ -144,7 +144,8 @@ export default function ChatInterface({
               state.step === CHAT_STEPS.PHONE ? "tel" : 
               "text"
             }
-            disabled={state.isTyping || state.step === CHAT_STEPS.SERVICE}
+            disabled={state.step === CHAT_STEPS.SERVICE}
+            isLocked={state.isTyping || state.step === CHAT_STEPS.SUBMITTING}
             isLoading={state.step === CHAT_STEPS.SUBMITTING}
             error={state.error}
           />
