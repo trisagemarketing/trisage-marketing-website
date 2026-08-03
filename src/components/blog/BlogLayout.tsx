@@ -81,12 +81,12 @@ export default function BlogLayout({
 
       {/* Category Filter Pills */}
       <section className="container mx-auto px-4 md:px-8 pb-8 sm:pb-12 z-10 relative">
-        <div className="flex items-center justify-start sm:justify-center gap-2 md:gap-3 overflow-x-auto no-scrollbar py-2 px-1 -mx-4 sm:mx-0 px-4 sm:px-0">
+        <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3 py-2">
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
-              className={`px-4 sm:px-6 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-300 cursor-pointer ${
+              className={`px-4 sm:px-6 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm font-bold truncate transition-all duration-300 cursor-pointer w-[calc(50%-0.25rem)] sm:w-auto text-center ${
                 activeCategory === category
                   ? "bg-primary-600 dark:bg-primary-500 text-white shadow-lg shadow-primary-500/25 scale-105"
                   : "bg-white/80 dark:bg-[#0a1220]/80 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border border-gray-200/80 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700"
