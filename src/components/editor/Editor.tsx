@@ -194,12 +194,18 @@ export default function BlogEditor({
         <Button 
           onClick={() => {
             const previousUrl = editor.getAttributes("link").href;
-            const url = window.prompt("Enter URL:", previousUrl);
+            let url = window.prompt("Enter URL:", previousUrl);
             if (url === null) return;
-            if (url === "") {
+            if (url.trim() === "") {
               editor.chain().focus().extendMarkRange("link").unsetLink().run();
               return;
             }
+            
+            // Auto-format the URL to prevent Tiptap from rejecting it and saving as null
+            if (!/^https?:\/\//i.test(url) && !url.startsWith('/') && !url.startsWith('mailto:') && !url.startsWith('tel:')) {
+              url = `https://${url}`;
+            }
+            
             editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
           }} 
           isActive={editor.isActive("link")} 
