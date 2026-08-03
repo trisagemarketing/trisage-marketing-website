@@ -152,8 +152,9 @@ export function useChatbot() {
       const existingMessage = state.leadData.message || "";
       const finalMessage = trimmed.toLowerCase() !== 'skip' ? `${existingMessage}\n\nAdditional Note: ${trimmed}` : existingMessage;
       
-      setState(prev => ({ ...prev, leadData: { ...prev.leadData, message: finalMessage } }));
-      submitLead();
+      const newLeadData = { ...state.leadData, message: finalMessage };
+      setState(prev => ({ ...prev, leadData: newLeadData }));
+      submitLead(newLeadData);
     }
   }, [state, addUserMessage, advanceToNextStep, setError]);
 
@@ -162,7 +163,7 @@ export function useChatbot() {
     handleInputSubmit(option);
   }, [handleInputSubmit]);
 
-  const submitLead = useCallback(async () => {
+  const submitLead = useCallback(async (finalLeadData = state.leadData) => {
     setState(prev => ({ ...prev, step: CHAT_STEPS.SUBMITTING, isTyping: true, error: null }));
     
     try {
@@ -170,7 +171,7 @@ export function useChatbot() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ...state.leadData,
+          ...finalLeadData,
           page_url: window.location.href, // Grab the current URL automatically
         })
       });
