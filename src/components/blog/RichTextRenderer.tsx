@@ -224,11 +224,15 @@ function renderInlineNodes(nodes: any[] | undefined): React.ReactNode {
               {el}
             </code>
           );
-          if (mark.type === 'link') el = (
-            <Link key={idx} href={getSafeUrl(mark.attrs.href)} target={mark.attrs.target || '_blank'} className="text-primary-600 dark:text-primary-400 underline underline-offset-4">
-              {el}
-            </Link>
-          );
+          if (mark.type === 'link') {
+            const href = mark.attrs?.href;
+            const target = mark.attrs?.target || '_blank';
+            el = (
+              <Link key={idx} href={getSafeUrl(href)} target={target} className="text-primary-600 dark:text-primary-400 underline underline-offset-4">
+                {el}
+              </Link>
+            );
+          }
         });
       }
       return <React.Fragment key={idx}>{el}</React.Fragment>;
