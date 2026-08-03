@@ -23,6 +23,28 @@ export default function ChatWidget() {
   const [viewportHeight, setViewportHeight] = useState('100dvh');
   const { state, toggleOpen, handleInputSubmit, handleOptionSelect, resetSession } = useChatbot();
 
+  // Prevent background scrolling and rubber-banding when chat is open on mobile
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    if (state.isOpen && window.innerWidth < 640) {
+      // Lock the body to completely prevent background scrolling/swiping
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    };
+  }, [state.isOpen]);
+
   // Bulletproof mobile keyboard fix using Visual Viewport API
   useEffect(() => {
     if (typeof window === 'undefined' || !window.visualViewport) return;
@@ -59,7 +81,18 @@ export default function ChatWidget() {
       {/* 1. Modal Container - Decoupled from the bottom-right button to prevent keyboard pushing on Android/iOS */}
       <AnimatePresence>
         {state.isOpen && (
-          <motion.div
+          <>
+            {/* Dark Backdrop to prevent background interactions on mobile */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-[999] bg-black/40 backdrop-blur-sm sm:hidden"
+              onClick={toggleOpen}
+            />
+
+            <motion.div
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95, transition: { duration: 0.2 } }}
