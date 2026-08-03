@@ -36,13 +36,23 @@ export default function Navbar() {
     }
   });
 
-  // Handle interactive mouse position for liquid glass sheen (Zero React Re-renders)
+  // Handle interactive mouse position for liquid glass sheen (Zero React Re-renders, optimized with rAF)
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!navbarRef.current) return;
-    const x = e.nativeEvent.offsetX;
-    const y = e.nativeEvent.offsetY;
-    navbarRef.current.style.setProperty("--mouse-x", `${x}px`);
-    navbarRef.current.style.setProperty("--mouse-y", `${y}px`);
+    
+    // Murphy's Law: Never use offsetX/Y on a parent container with children, 
+    // because hovering children will return coordinates relative to the child, causing extreme jumping.
+    // Always use clientX/Y relative to the parent's bounding box.
+    const rect = navbarRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    requestAnimationFrame(() => {
+      if (navbarRef.current) {
+        navbarRef.current.style.setProperty("--mouse-x", `${x}px`);
+        navbarRef.current.style.setProperty("--mouse-y", `${y}px`);
+      }
+    });
   };
 
   // Close mobile menu on route change
@@ -79,10 +89,7 @@ export default function Navbar() {
           ref={navbarRef}
           onMouseMove={handleMouseMove}
           onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => {
-            setIsHovered(false);
-            setHoveredIndex(null);
-          }}
+          onMouseLeave={() => setIsHovered(false)}
           className={cn(
             "relative w-full rounded-full p-2 sm:p-2.5 flex items-center justify-between gap-2 sm:gap-4 transition-all duration-500 transform-gpu overflow-hidden",
             "liquid-glass-capsule",
@@ -128,7 +135,10 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Navigation — Glassmorphism Linkbar Capsule */}
-          <nav className="hidden lg:flex flex-none items-center gap-1 relative p-1.5 rounded-full bg-black/[0.04] dark:bg-white/[0.06] border border-black/5 dark:border-white/10 shadow-inner">
+          <nav 
+            onMouseLeave={() => setHoveredIndex(null)}
+            className="hidden lg:flex flex-none items-center gap-1 relative p-1.5 rounded-full bg-black/[0.04] dark:bg-white/[0.06] border border-black/5 dark:border-white/10 shadow-inner"
+          >
             {navLinks.map((link, index) => {
               const isActive = link.href === "/" 
                 ? pathname === "/" 
