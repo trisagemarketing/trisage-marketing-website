@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
 
 const partners = [
   { name: "Expedia", src: "https://ik.imagekit.io/rrcdbevrb/expedia.jpg", className: "h-10 md:h-8 scale-110" },

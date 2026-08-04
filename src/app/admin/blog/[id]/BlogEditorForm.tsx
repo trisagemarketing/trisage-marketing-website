@@ -16,7 +16,7 @@ import {
   Plus, Trash2, UserCircle2, Save,
 } from "lucide-react";
 import Link from "next/link";
-import { Blog } from "@/types/blog";
+import { Blog, TiptapJSONContent } from "@/types/blog";
 import NativeUploader from "@/components/blog/NativeUploader";
 
 interface Props {
@@ -36,16 +36,16 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
   const [title, setTitle] = useState(initialBlog?.title || "");
   const [category, setCategory] = useState(initialBlog?.category || "Uncategorized");
   const [slug, setSlug] = useState(initialBlog?.slug || "");
-  const [excerpt, setExcerpt] = useState((initialBlog as any)?.excerpt || "");
-  const [tags, setTags] = useState<string[]>((initialBlog as any)?.tags || []);
+  const [excerpt, setExcerpt] = useState(initialBlog?.excerpt || "");
+  const [tags, setTags] = useState<string[]>(initialBlog?.tags || []);
   const [tagInput, setTagInput] = useState("");
-  const [content, setContent] = useState<any>(initialBlog?.content || '');
+  const [content, setContent] = useState<TiptapJSONContent | string>(initialBlog?.content || '');
   const [coverImage, setCoverImage] = useState(initialBlog?.cover_image || "");
   const [categories, setCategories] = useState<Category[]>([]);
-  const [authorName, setAuthorName] = useState((initialBlog as any)?.author_name || "");
-  const [authorRole, setAuthorRole] = useState((initialBlog as any)?.author_role || "");
-  const [authorAvatar, setAuthorAvatar] = useState((initialBlog as any)?.author_avatar || "");
-  const [faqs, setFaqs] = useState<{ question: string; answer: string }[]>((initialBlog as any)?.faqs || []);
+  const [authorName, setAuthorName] = useState(initialBlog?.author_name || "");
+  const [authorRole, setAuthorRole] = useState(initialBlog?.author_role || "");
+  const [authorAvatar, setAuthorAvatar] = useState(initialBlog?.author_avatar || "");
+  const [faqs, setFaqs] = useState<{ question: string; answer: string }[]>(initialBlog?.faqs || []);
 
   const [isPublishing, setIsPublishing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -70,11 +70,12 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
   // Auto-generate slug from title
   useEffect(() => {
     if (!slug && title) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSlug(title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""));
     }
-  }, [title]);
+  }, [title, slug]);
 
-  const handleAutoSave = async (latestContent: any) => {
+  const handleAutoSave = async (latestContent: TiptapJSONContent) => {
     if (!title) return;
     setContent(latestContent);
     setIsSaving(true);

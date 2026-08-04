@@ -14,7 +14,7 @@ export default function ContactPage() {
       <div className="pt-32 pb-16 bg-gradient-to-b from-primary-50/50 dark:from-gray-900 to-white dark:to-gray-950 ">
         <div className="container mx-auto px-4 md:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">Let's Talk Growth</h1>
+            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">Let&apos;s Talk Growth</h1>
             <p className="text-xl text-gray-700 dark:text-gray-300">
               Ready to take your digital presence to the next level? Reach out to our team of experts.
             </p>

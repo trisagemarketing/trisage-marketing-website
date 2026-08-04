@@ -1,6 +1,16 @@
 import { createClient } from "@/lib/supabase/server";
 import { Mail } from "lucide-react";
-import { markMeetingBooked, deleteContactMessage } from "@/app/actions/contact";
+export interface ContactMessage {
+  id: string;
+  full_name: string | null;
+  company: string | null;
+  email: string | null;
+  phone: string | null;
+  service: string | string[] | null;
+  message: string | null;
+  created_at: string | null;
+  meeting_booked: boolean;
+}
 
 import MessageActions from "./MessageActions";
 
@@ -33,7 +43,7 @@ export default async function MessagesTableBody({ limit }: { limit?: number }) {
 
   return (
     <>
-      {messages.map((msg: any) => {
+      {messages.map((msg: ContactMessage) => {
         // Murphy's Law: Never trust database data structure
         const safeName = msg.full_name ?? "Unknown";
         const safeCompany = msg.company ?? "Not provided";
@@ -51,13 +61,13 @@ export default async function MessagesTableBody({ limit }: { limit?: number }) {
         const safeMessage = msg.message ?? "";
         
         let safeDateShort = "Unknown";
-        let safeDateFull = "Unknown";
         let safeTimeShort = "";
         try {
           if (msg.created_at) {
             const d = new Date(msg.created_at);
             safeDateShort = d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
-            safeDateFull = d.toLocaleString(undefined, { 
+            // Full date can be added here if needed in tooltip
+            d.toLocaleString(undefined, { 
               year: 'numeric', 
               month: 'long', 
               day: 'numeric', 
@@ -100,11 +110,15 @@ export default async function MessagesTableBody({ limit }: { limit?: number }) {
 
             {/* Service Tags */}
             <div className="flex flex-wrap gap-1.5 my-3">
-              {serviceArray.map((srv: string, idx: number) => (
-                <span key={idx} className="inline-flex px-2 py-0.5 rounded-md text-[9px] sm:text-[10px] font-bold tracking-wider uppercase bg-gray-100 text-gray-700 dark:bg-white/10 dark:text-gray-300 border border-gray-200/80 dark:border-white/10">
-                  {srv.trim()}
-                </span>
-              ))}
+              {serviceArray.map((srv: string, idx: number) => {
+                const safeSrv = typeof srv === 'string' ? srv.trim() : String(srv || '');
+                if (!safeSrv) return null;
+                return (
+                  <span key={idx} className="inline-flex px-2 py-0.5 rounded-md text-[9px] sm:text-[10px] font-bold tracking-wider uppercase bg-gray-100 text-gray-700 dark:bg-white/10 dark:text-gray-300 border border-gray-200/80 dark:border-white/10">
+                    {safeSrv}
+                  </span>
+                );
+              })}
             </div>
 
             {/* Contact Details */}

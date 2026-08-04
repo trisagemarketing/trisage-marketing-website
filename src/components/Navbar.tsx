@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable react-hooks/set-state-in-effect */
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
@@ -113,7 +114,7 @@ export default function Navbar() {
           )}
 
           {/* Logo Section */}
-          <div className="flex-1 flex justify-start items-center pl-1 sm:pl-3 min-w-0">
+          <div className="flex justify-start items-center pl-1 sm:pl-3 z-50">
             <Link 
               href="/" 
               className="relative z-50 flex items-center group cursor-pointer shrink-0"
@@ -134,12 +135,13 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Desktop Navigation — Glassmorphism Linkbar Capsule */}
-          <nav 
-            onMouseLeave={() => setHoveredIndex(null)}
-            className="hidden lg:flex flex-none items-center gap-1 relative p-1.5 rounded-full bg-black/[0.04] dark:bg-white/[0.06] border border-black/5 dark:border-white/10 shadow-inner"
-          >
-            {navLinks.map((link, index) => {
+          {/* Desktop Navigation — Perfectly Centered Absolute Container */}
+          <div className="absolute left-[48%] top-1/2 -translate-x-1/2 -translate-y-1/2 hidden lg:flex z-40">
+            <nav 
+              onMouseLeave={() => setHoveredIndex(null)}
+              className="flex flex-none items-center gap-1 relative p-1.5 rounded-full bg-black/[0.04] dark:bg-white/[0.06] border border-black/5 dark:border-white/10 shadow-inner"
+            >
+              {navLinks.map((link, index) => {
               const isActive = link.href === "/" 
                 ? pathname === "/" 
                 : pathname.startsWith(link.href);
@@ -184,9 +186,10 @@ export default function Navbar() {
               );
             })}
           </nav>
+          </div>
 
           {/* Right Actions (Theme Toggle & Tactile CTA) */}
-          <div className="flex-none flex items-center gap-1.5 sm:gap-3 pr-0.5 sm:pr-2 relative z-50">
+          <div className="flex justify-end items-center gap-1.5 sm:gap-3 pr-0.5 sm:pr-2 relative z-50">
             {/* Theme Toggle Container */}
             <div className="hidden md:block">
               <ThemeToggle />

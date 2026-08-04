@@ -20,7 +20,7 @@ const ChatInterface = dynamic(() => import("./ChatInterface"), {
 export default function ChatWidget() {
   const pathname = usePathname();
   const [inputValue, setInputValue] = useState("");
-  const [viewportHeight, setViewportHeight] = useState('100dvh');
+  const [vvStyle, setVvStyle] = useState<React.CSSProperties>({});
   const { state, toggleOpen, handleInputSubmit, handleOptionSelect, resetSession } = useChatbot();
 
   // Prevent background scrolling and rubber-banding when chat is open on mobile
@@ -28,21 +28,25 @@ export default function ChatWidget() {
     if (typeof window === 'undefined') return;
     
     if (state.isOpen && window.innerWidth < 640) {
+      const scrollY = window.scrollY;
+      
       // Lock the body to completely prevent background scrolling/swiping
-      document.body.style.overflow = 'hidden';
       document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
       document.body.style.width = '100%';
-    } else {
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
-    }
+      document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
 
-    return () => {
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
-    };
+      return () => {
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        document.body.style.overflow = '';
+        document.body.style.touchAction = '';
+        // Restore scroll position precisely
+        window.scrollTo(0, scrollY);
+      };
+    }
   }, [state.isOpen]);
 
   // Bulletproof mobile keyboard fix using Visual Viewport API
@@ -50,23 +54,30 @@ export default function ChatWidget() {
     if (typeof window === 'undefined' || !window.visualViewport) return;
     
     const handleResize = () => {
-      // Only apply this exact pixel height on mobile screens (under 640px)
-      if (window.innerWidth < 640) {
-        setViewportHeight(`${window.visualViewport!.height}px`);
+      // Only apply this dynamic offset on mobile screens
+      if (window.innerWidth < 640 && window.visualViewport) {
+        setVvStyle({
+          height: `${window.visualViewport.height}px`,
+          top: `${window.visualViewport.offsetTop}px`,
+          left: `${window.visualViewport.offsetLeft}px`,
+          width: `${window.visualViewport.width}px`,
+        });
       } else {
-        setViewportHeight('auto'); // Let desktop use its defined Tailwind classes
+        setVvStyle({}); // Let desktop use its defined Tailwind classes
       }
     };
 
+    // The scroll event is critical on iOS because the keyboard forces a scroll
+    // without triggering a resize if the visual viewport shrinks natively.
     window.visualViewport.addEventListener('resize', handleResize);
-    window.visualViewport.addEventListener('scroll', handleResize); // Sometimes keyboard triggers scroll
+    window.visualViewport.addEventListener('scroll', handleResize);
     handleResize(); // Initial measurement
 
     return () => {
       window.visualViewport?.removeEventListener('resize', handleResize);
       window.visualViewport?.removeEventListener('scroll', handleResize);
     };
-  }, [state.isOpen]); // Re-run when opened
+  }, [state.isOpen]);
 
   // Hide entirely on Admin routes to prevent overlapping with Admin Mobile Nav
   if (pathname?.startsWith("/admin")) return null;
@@ -97,8 +108,8 @@ export default function ChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95, transition: { duration: 0.2 } }}
             transition={{ type: "spring", stiffness: 350, damping: 25 }}
-            style={{ height: viewportHeight !== 'auto' ? viewportHeight : undefined }}
-            className="fixed top-0 left-0 z-[1000] w-full sm:inset-auto sm:bottom-24 sm:right-6 sm:w-[380px] sm:h-[550px] sm:max-h-[calc(100vh-140px)] origin-bottom-right flex flex-col overscroll-none"
+            style={Object.keys(vvStyle).length > 0 ? vvStyle : {}}
+            className="fixed top-0 left-0 z-[1000] w-full h-[100dvh] sm:h-[550px] sm:max-h-[calc(100vh-140px)] sm:inset-auto sm:bottom-24 sm:right-6 sm:w-[380px] origin-bottom-right flex flex-col overscroll-none shadow-2xl"
           >
             <ChatInterface 
               state={state}

@@ -27,7 +27,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">1. Acceptance of Terms</h2>
             <p>
-              By accessing and using the services provided by Trisage Marketing Pvt Ltd ("we," "us," or "our"), you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, you must not use our website or services.
+              By accessing and using the services provided by Trisage Marketing Pvt Ltd (&quot;we,&quot; &quot;us,&quot; or &quot;our&quot;), you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, you must not use our website or services.
             </p>
           </section>
 

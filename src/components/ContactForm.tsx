@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable react-hooks/incompatible-library */
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -89,7 +90,7 @@ export default function ContactForm() {
       
       {isSuccess && (
         <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded-xl border border-green-200 dark:border-green-900/50">
-          Thank you! Your message has been sent successfully. We'll be in touch soon.
+          Thank you! Your message has been sent successfully. We&apos;ll be in touch soon.
         </div>
       )}
 

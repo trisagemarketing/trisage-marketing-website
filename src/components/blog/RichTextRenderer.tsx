@@ -1,19 +1,30 @@
 "use client";
 
-import React, { ErrorInfo } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { Copy, Check } from 'lucide-react';
-import { toast } from 'sonner';
-import { useState } from 'react';
+import { TiptapJSONContent } from '@/types/blog';
 
 // =======================
 // SECURITY: XSS ATTRIBUTE BOUNDARY
 // =======================
 function getSafeUrl(url: string | undefined | null): string {
-  if (!url) return '#';
+  if (url === 'null' || url === 'undefined') {
+    console.warn("[RichTextRenderer Debug] Received literal string 'null' or 'undefined' as URL");
+    return '#';
+  }
+  
+  if (!url) {
+    console.warn("[RichTextRenderer Debug] Received null/undefined URL");
+    return '#';
+  }
+  
+  // Auto-prefix domains if user forgot https://
+  if (!url.startsWith('http') && !url.startsWith('/') && !url.startsWith('#') && !url.startsWith('mailto:') && !url.startsWith('tel:')) {
+    console.log("[RichTextRenderer Debug] Auto-prefixing URL:", url);
+    url = 'https://' + url;
+  }
+
   try {
     const parsed = new URL(url, 'https://dummy.com');
     const allowedProtocols = ['http:', 'https:', 'mailto:', 'tel:'];
@@ -21,41 +32,18 @@ function getSafeUrl(url: string | undefined | null): string {
       return url;
     }
     return '#';
-  } catch (e) {
+  } catch {
     return url.startsWith('/') || url.startsWith('#') ? url : '#';
   }
 }
 
-// =======================
-// ERROR BOUNDARY
-// =======================
-class BlockErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
-  constructor(props: any) {
-    super(props);
-    this.state = { hasError: false };
-  }
-  static getDerivedStateFromError() { return { hasError: true }; }
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error("Block rendering failed:", error, errorInfo);
-  }
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div className="p-4 rounded-xl border border-red-200 bg-red-50 text-red-600 my-4 text-sm font-medium">
-          ⚠️ A content block failed to render.
-        </div>
-      );
-    }
-    return this.props.children;
-  }
-}
 
 // =======================
 // BLOCKNOTE AST RENDERER
 // =======================
-function renderBlockNoteInline(contentArr: any[] | undefined): React.ReactNode {
+function renderBlockNoteInline(contentArr: TiptapJSONContent[] | undefined): React.ReactNode {
   if (!contentArr || !Array.isArray(contentArr)) return null;
-  return contentArr.map((item: any, idx: number) => {
+  return contentArr.map((item: TiptapJSONContent, idx: number) => {
     if (item.type === 'text') {
       let el: React.ReactNode = item.text;
       if (item.styles) {
@@ -82,9 +70,9 @@ function renderBlockNoteInline(contentArr: any[] | undefined): React.ReactNode {
   });
 }
 
-function renderBlockNoteBlocks(blocks: any[]): React.ReactNode {
+function renderBlockNoteBlocks(blocks: TiptapJSONContent[]): React.ReactNode {
   if (!Array.isArray(blocks)) return null;
-  return blocks.map((block: any, idx: number) => {
+  return blocks.map((block: TiptapJSONContent, idx: number) => {
     const inlineContent = renderBlockNoteInline(block.content);
 
     if (block.type === 'heading') {
@@ -165,57 +153,14 @@ function renderBlockNoteBlocks(blocks: any[]): React.ReactNode {
 // =======================
 // TIPTAP AST FALLBACK RENDERER
 // =======================
-const CodeBlock = ({ node }: { node: any }) => {
-  const [copied, setCopied] = useState(false);
-  const codeText = node.content?.[0]?.text || '';
-  const language = node.attrs?.language || 'typescript';
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(codeText);
-    setCopied(true);
-    toast.success("Copied!");
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  return (
-    <div className="relative my-8 rounded-2xl overflow-hidden shadow-2xl border border-gray-800/60 group">
-      <div className="flex items-center justify-between px-4 py-2.5 bg-[#1a1a2e] border-b border-gray-800">
-        <div className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded-full bg-red-500/80" />
-          <span className="w-3 h-3 rounded-full bg-yellow-500/80" />
-          <span className="w-3 h-3 rounded-full bg-green-500/80" />
-        </div>
-        <span className="text-xs text-gray-500 font-mono">{language}</span>
-        <button
-          onClick={handleCopy}
-          className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-white px-2.5 py-1 rounded-md hover:bg-white/10 transition-all"
-        >
-          {copied ? <Check size={12} className="text-green-400" /> : <Copy size={12} />}
-          {copied ? 'Copied!' : 'Copy'}
-        </button>
-      </div>
-      <div className="overflow-x-auto bg-[#0d1117]">
-        <SyntaxHighlighter
-          language={language}
-          style={vscDarkPlus}
-          customStyle={{ margin: 0, padding: '1.5rem', background: 'transparent', fontSize: '0.875rem', lineHeight: '1.7' }}
-          showLineNumbers={codeText.split('\n').length > 3}
-          lineNumberStyle={{ color: '#4a5568', fontSize: '0.75rem' }}
-        >
-          {codeText}
-        </SyntaxHighlighter>
-      </div>
-    </div>
-  );
-};
-
-function renderInlineNodes(nodes: any[] | undefined): React.ReactNode {
+function renderInlineNodes(nodes: TiptapJSONContent[] | undefined): React.ReactNode {
   if (!nodes) return null;
   return nodes.map((node, idx) => {
     if (node.type === 'text') {
       let el: React.ReactNode = node.text;
       if (node.marks) {
-        node.marks.forEach((mark: any) => {
+        node.marks.forEach((mark: { type: string; attrs?: Record<string, unknown> }) => {
           if (mark.type === 'bold') el = <strong key={idx} className="font-semibold text-gray-900 dark:text-white">{el}</strong>;
           if (mark.type === 'italic') el = <em key={idx}>{el}</em>;
           if (mark.type === 'strike') el = <s key={idx}>{el}</s>;
@@ -226,12 +171,14 @@ function renderInlineNodes(nodes: any[] | undefined): React.ReactNode {
           );
           if (mark.type === 'link') {
             const href = mark.attrs?.href;
-            const target = mark.attrs?.target || '_blank';
-            el = (
-              <Link key={idx} href={getSafeUrl(href)} target={target} className="text-primary-600 dark:text-primary-400 underline underline-offset-4">
-                {el}
-              </Link>
-            );
+            if (href && href !== 'null' && href !== 'undefined') {
+              const target = mark.attrs?.target || '_blank';
+              el = (
+                <Link key={idx} href={getSafeUrl(String(href))} target={String(target)} className="text-primary-600 dark:text-primary-400 underline underline-offset-4">
+                  {el}
+                </Link>
+              );
+            }
           }
         });
       }
@@ -242,7 +189,7 @@ function renderInlineNodes(nodes: any[] | undefined): React.ReactNode {
   });
 }
 
-function renderNodes(nodes: any[] | undefined): React.ReactNode {
+function renderNodes(nodes: TiptapJSONContent[] | undefined): React.ReactNode {
   if (!nodes || !Array.isArray(nodes)) return null;
   return nodes.map((node, idx) => {
     if (node.type === 'text') {
@@ -269,7 +216,7 @@ function renderNodes(nodes: any[] | undefined): React.ReactNode {
 // =======================
 // MAIN EXPORT
 // =======================
-export default function RichTextRenderer({ content }: { content: any }) {
+export default function RichTextRenderer({ content }: { content: TiptapJSONContent | TiptapJSONContent[] | string }) {
   if (!content) {
     return (
       <div className="text-gray-400 italic text-center py-16">
@@ -288,7 +235,7 @@ export default function RichTextRenderer({ content }: { content: any }) {
   }
 
   // Handle Tiptap AST object with .content
-  if (content.content && Array.isArray(content.content)) {
+  if (typeof content !== 'string' && content.content && Array.isArray(content.content)) {
     return (
       <article className="w-full max-w-full overflow-x-hidden break-words font-rubik">
         {renderNodes(content.content)}

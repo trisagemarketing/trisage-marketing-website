@@ -23,7 +23,8 @@ const caseStudies = [
     imageColor: "from-blue-500/20 to-cyan-500/20",
     themeColor: "text-blue-600 dark:text-blue-400",
     themeHighlight: "text-blue-400",
-    imageUrl: "/AYU08772.webp"
+    imageUrl: "/AYU08772.webp",
+    link: "/case-studies/villasita-resort-haridwar"
   },
   {
     id: "avyanta",
@@ -40,7 +41,8 @@ const caseStudies = [
     imageColor: "from-purple-500/20 to-pink-500/20",
     themeColor: "text-purple-600 dark:text-purple-400",
     themeHighlight: "text-purple-400",
-    imageUrl: "https://ik.imagekit.io/rrcdbevrb/image"
+    imageUrl: "https://ik.imagekit.io/rrcdbevrb/image",
+    link: null
   }
 ];
 
@@ -126,13 +128,22 @@ export default function CaseStudies() {
                 </div>
 
                 {/* Prominent Full-Width "Read Full Case Study" Button directly under Left Image */}
-                <Link
-                  href={study.id === "villasita" ? "/case-studies/villasita-resort-haridwar" : "/case-studies"}
-                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-linear-to-r from-primary-600 via-primary-700 to-secondary-600 dark:from-primary-500 dark:to-secondary-400 text-white text-sm sm:text-base font-extrabold shadow-xl shadow-primary-600/20 hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] active:scale-95 cursor-pointer text-center"
-                >
-                  <span>Read Full Case Study</span>
-                  <ArrowRight size={18} />
-                </Link>
+                {study.link ? (
+                  <Link
+                    href={study.link}
+                    className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-linear-to-r from-primary-600 via-primary-700 to-secondary-600 dark:from-primary-500 dark:to-secondary-400 text-white text-sm sm:text-base font-extrabold shadow-xl shadow-primary-600/20 hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] active:scale-95 cursor-pointer text-center"
+                  >
+                    <span>Read Full Case Study</span>
+                    <ArrowRight size={18} />
+                  </Link>
+                ) : (
+                  <div
+                    className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-gray-200 dark:bg-gray-800/50 text-gray-500 dark:text-gray-400 text-sm sm:text-base font-extrabold cursor-not-allowed text-center border border-gray-300 dark:border-gray-700/50 opacity-80"
+                  >
+                    <span>Case Study Coming Soon</span>
+                    <Sparkles size={16} className="opacity-60" />
+                  </div>
+                )}
               </motion.div>
 
               {/* Content Column */}
@@ -145,7 +156,7 @@ export default function CaseStudies() {
                     {study.headline}
                   </h2>
                   <p className="text-base md:text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                    <strong className="text-gray-900 dark:text-gray-200">Challenge & Solution: </strong> 
+                    <strong className="text-gray-900 dark:text-gray-200">Our Approach: </strong> 
                     {study.challengeSolution}
                   </p>
                 </div>

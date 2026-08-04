@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from "framer-motion";
@@ -42,26 +43,26 @@ export default function CustomCursor() {
   // ── Derived Continuous Transforms ──
   // By mathematically combining the smooth values instead of using if/else logic,
   // we guarantee buttery smooth interpolation on every single frame.
-  const dotScale = useTransform([smoothHover, smoothClick], ([hover, click]: any) => {
+  const dotScale = useTransform([smoothHover, smoothClick], ([hover, click]: number[]) => {
     const base = 1;
     const hoverEffect = hover * -1;      // Dot shrinks to 0 on hover
     const clickEffect = click * -0.25;   // Dot shrinks slightly on click
     return Math.max(0, base + hoverEffect + clickEffect);
   });
 
-  const ringScale = useTransform([smoothHover, smoothClick], ([hover, click]: any) => {
+  const ringScale = useTransform([smoothHover, smoothClick], ([hover, click]: number[]) => {
     const base = 1;
     const hoverEffect = hover * 0.6;     // Ring expands to 1.6 on hover
     const clickEffect = click * -0.25;   // Ring shrinks on click
     return Math.max(0, base + hoverEffect + clickEffect);
   });
 
-  const ringOpacity = useTransform([smoothClick], ([click]: any) => {
+  const ringOpacity = useTransform([smoothClick], ([click]: number[]) => {
     // Only visible during a click event for the click effect
     return click * 0.8; 
   });
 
-  const dotOpacity = useTransform([smoothClick], ([click]: any) => {
+  const dotOpacity = useTransform([smoothClick], ([click]: number[]) => {
     // Only visible during a click event
     return click;
   });

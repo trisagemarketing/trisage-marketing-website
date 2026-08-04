@@ -77,7 +77,7 @@ export default function DeleteBlogButton({ id, title }: DeleteBlogButtonProps) {
                   Delete Blog Post?
                 </h3>
                 <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
-                  Are you sure you want to permanently delete <strong className="text-gray-800 dark:text-gray-200">"{title}"</strong>? This action cannot be undone.
+                  Are you sure you want to permanently delete <strong className="text-gray-800 dark:text-gray-200">&quot;{title}&quot;</strong>? This action cannot be undone.
                 </p>
               </div>
             </div>

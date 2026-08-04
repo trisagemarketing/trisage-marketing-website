@@ -68,10 +68,10 @@ export async function POST(request: Request) {
     // 5. Return success
     return NextResponse.json({ success: true }, { status: 200 });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("[Chatbot API] Error processing submission:", error);
     return NextResponse.json(
-      { error: "Internal server error", details: error.message || String(error) },
+      { error: "Internal server error", details: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     );
   }

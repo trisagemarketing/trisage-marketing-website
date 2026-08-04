@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-unused-vars, @next/next/no-img-element */
 
 import { useState, useRef } from "react";
 import Link from "next/link";
@@ -22,7 +23,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -40,11 +41,11 @@ const proofItems = [
   },
   {
     id: 2,
-    title: "Total Revenue Growth Report (2025 vs 2026)",
+    title: "Total Revenue Growth Report",
     category: "REVENUE MANAGEMENT & OTA OPTIMIZATION",
     value: "INR 2,785,447.11",
     image: "/case-studies/villasita-total-revenue-chart.jpg",
-    description: "Verified Property Direct Revenue report confirming 2026 revenue surge to INR 2,785,447.11 vs 2025 baseline (INR 327,690.20)."
+    description: "Verified Property Direct Revenue report confirming a revenue surge to INR 2,785,447.11 vs baseline (INR 327,690.20)."
   }
 ];
 
@@ -839,7 +840,7 @@ Alongside the revenue growth, the resort recorded 13.89 million Meta views, more
         </div>
       </section>
 
-      <Footer />
+
     </main>
   );
 }

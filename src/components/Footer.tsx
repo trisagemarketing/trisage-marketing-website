@@ -189,7 +189,7 @@ export default function Footer() {
           <FooterAccordion title="Services">
             <nav aria-label="Services Navigation">
               <ul className="flex flex-col gap-2.5 text-sm">
-                {services.slice(0, 5).map((service) => {
+                {services.map((service) => {
                   const serviceHref = `/services/${service.slug}`;
                   return (
                     <li key={service.id}>

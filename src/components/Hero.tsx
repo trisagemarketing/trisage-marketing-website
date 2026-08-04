@@ -17,13 +17,13 @@ export default function Hero() {
 
   useGSAP(() => {
     // Media Query context for safe mobile degradation
-    let mm = gsap.matchMedia();
+    const mm = gsap.matchMedia();
 
     mm.add({
       isDesktop: "(min-width: 768px)",
       isMobile: "(max-width: 767px)"
     }, (context) => {
-      const { isMobile, isDesktop } = context.conditions as any;
+      const { isMobile, isDesktop } = context.conditions as Record<string, boolean>;
       
       // Fallback state protection: ensure wrapper is visible 
       gsap.set(textWrapperRef.current, { opacity: 1 });
@@ -134,7 +134,7 @@ export default function Hero() {
               aria-label="TRISAGE"
             >
               {['T', 'R', 'I', 'S', 'A', 'G', 'E'].map((letter, i) => (
-                <div key={i} className={`overflow-hidden inline-block pb-8 -mb-8 pt-8 -mt-8 ${i !== 0 && i !== 6 ? 'px-4 -mx-4' : ''}`}>
+                <div key={i} className="overflow-hidden inline-block px-16 -mx-16 pt-24 -mt-24 pb-24 -mb-24">
                   <span 
                     ref={el => { lettersRef.current[i] = el; }}
                     aria-hidden="true" 

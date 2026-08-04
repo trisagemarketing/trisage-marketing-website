@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { motion } from "framer-motion";
 import { Quote } from "lucide-react"; // Using lucide-react Quote icon as a fallback if custom SVG isn't desired, but custom SVG is better for exact match.
@@ -40,7 +41,7 @@ export default function DirectorsVision() {
             
             {/* Title */}
             <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-16 text-center">
-              Director's Vision
+              Director&apos;s Vision
             </h2>
 
             <div className="w-full relative px-0 sm:px-4 md:px-12 mt-4 md:mt-0">

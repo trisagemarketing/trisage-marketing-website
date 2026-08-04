@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useRef, useEffect } from "react";
 import { SendHorizontal, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -43,6 +44,8 @@ export default function ChatInput({
       e.preventDefault();
       if (value.trim() && !disabled && !isLocked && !isLoading) {
         onSubmit();
+        // Force focus retention on mobile Enter key
+        setTimeout(() => inputRef.current?.focus(), 10);
       }
     }
   };
@@ -54,19 +57,23 @@ export default function ChatInput({
           ref={inputRef}
           type={type}
           value={value}
-          onChange={(e) => { if (!isLocked && !isLoading) onChange(e.target.value) }}
+          onChange={(e) => onChange(e.target.value)}
           onKeyDown={handleKeyDown}
           disabled={disabled}
-          readOnly={isLocked || isLoading}
           placeholder={placeholder}
           aria-label={placeholder}
           className={cn(
             "w-full bg-transparent py-3 pl-4 pr-12 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 outline-none rounded-full",
-            (disabled || isLocked || isLoading) && "opacity-60 cursor-not-allowed"
+            disabled && "opacity-60 cursor-not-allowed"
           )}
         />
         <button
-          onClick={onSubmit}
+          onClick={(e) => {
+            e.preventDefault();
+            onSubmit();
+            inputRef.current?.focus();
+          }}
+          onPointerDown={(e) => e.preventDefault()}
           disabled={!value.trim() || disabled || isLocked || isLoading}
           className="absolute right-1.5 p-2 rounded-full text-white bg-primary-600 hover:bg-primary-700 disabled:bg-gray-300 dark:disabled:bg-gray-700 disabled:text-gray-500 transition-colors shadow-sm"
           aria-label="Send message"

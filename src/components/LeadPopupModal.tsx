@@ -41,8 +41,20 @@ export default function LeadPopupModal() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.fullName || !formData.email || !formData.phone) {
-      toast.error("Please fill in your name, email, and phone number.");
+    if (!formData.fullName.trim() || formData.fullName.trim().length < 2) {
+      toast.error("Please enter a valid full name.");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
+    const phoneDigits = formData.phone.replace(/\D/g, "");
+    if (phoneDigits.length < 10 || phoneDigits.length > 15) {
+      toast.error("Please enter a valid phone number (10 to 15 digits).");
       return;
     }
 

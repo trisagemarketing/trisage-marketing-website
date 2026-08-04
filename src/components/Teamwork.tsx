@@ -60,7 +60,7 @@ export default function Teamwork() {
               Minds Behind the <span className="text-primary-600 dark:text-primary-400">Magic</span>
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400">
-              Great marketing isn't built in silos. It's the result of passionate creatives, analytical strategists, and visionary technologists working together towards a single goal: your growth.
+              Great marketing isn&apos;t built in silos. It&apos;s the result of passionate creatives, analytical strategists, and visionary technologists working together towards a single goal: your growth.
             </p>
           </div>
           <div className="hidden md:flex items-center gap-2 text-primary-600 dark:text-primary-400 font-medium">

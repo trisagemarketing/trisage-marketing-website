@@ -5,12 +5,29 @@ import { z } from "zod";
 // =======================
 export type BlogStatus = 'draft' | 'published';
 
+export interface TiptapJSONContent {
+  type?: string;
+  attrs?: Record<string, unknown>;
+  content?: TiptapJSONContent[];
+  marks?: {
+    type: string;
+    attrs?: Record<string, unknown>;
+    [key: string]: unknown;
+  }[];
+  text?: string;
+  styles?: { bold?: boolean; italic?: boolean; underline?: boolean; strikethrough?: boolean; code?: boolean; };
+  href?: string;
+  id?: string;
+  props?: Record<string, any>;
+  [key: string]: unknown;
+}
+
 export interface Blog {
   id: string;
   slug: string;
   title: string;
   excerpt: string | null;
-  content: any; // ProseMirror JSON tree
+  content: TiptapJSONContent; // ProseMirror JSON tree
   cover_image: string | null;
   category: string;
   tags: string[];
@@ -35,7 +52,7 @@ export interface Blog {
 
 export interface BlogDraft {
   blog_id: string;
-  draft_content: any;
+  draft_content: TiptapJSONContent;
   draft_title: string | null;
   last_autosaved_at: string;
   autosaved_by: string | null;
@@ -44,7 +61,7 @@ export interface BlogDraft {
 export interface BlogRevision {
   id: string;
   blog_id: string;
-  content_snapshot: any;
+  content_snapshot: TiptapJSONContent;
   published_by: string | null;
   created_at: string;
 }

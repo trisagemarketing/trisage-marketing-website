@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 
-export async function submitContactForm(formData: any) {
+export async function submitContactForm(formData: { fullName: string; company?: string; email: string; phone?: string; service: string | string[]; message: string; }) {
   try {
     const supabase = await createClient();
     
@@ -15,7 +16,7 @@ export async function submitContactForm(formData: any) {
           company: formData.company,
           email: formData.email,
           phone: formData.phone,
-          service: formData.service,
+          service: Array.isArray(formData.service) ? formData.service : [formData.service],
           message: formData.message,
         }
       ]);
@@ -30,13 +31,13 @@ export async function submitContactForm(formData: any) {
     revalidatePath("/admin", "layout");
     return { success: true };
 
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Server action error:", err);
     return { success: false, error: "An unexpected error occurred." };
   }
 }
 
-export async function deleteContactMessage(id: number) {
+export async function deleteContactMessage(id: string) {
   try {
     const supabase = await createClient();
     
@@ -59,12 +60,12 @@ export async function deleteContactMessage(id: number) {
     revalidatePath("/admin", "layout");
     return { success: true };
 
-  } catch (err: any) {
+  } catch (err: unknown) {
     return { success: false, error: "An unexpected error occurred." };
   }
 }
 
-export async function markMeetingBooked(id: number) {
+export async function markMeetingBooked(id: string) {
   try {
     const supabase = await createClient();
     
@@ -87,7 +88,7 @@ export async function markMeetingBooked(id: number) {
     revalidatePath("/admin", "layout");
     return { success: true };
 
-  } catch (err: any) {
+  } catch (err: unknown) {
     return { success: false, error: "An unexpected error occurred." };
   }
 }

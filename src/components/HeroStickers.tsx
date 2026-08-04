@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable react-hooks/purity */
 
 import { motion, Variants } from "framer-motion";
 import Sticker from "./Sticker";

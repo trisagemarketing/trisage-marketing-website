@@ -15,12 +15,43 @@ import {
   ImageIcon, Quote, Code, Undo, Redo, RotateCcw
 } from "lucide-react";
 
+import { TiptapJSONContent } from "@/types/blog";
+
 interface EditorProps {
-  initialContent?: any;
-  onChange: (content: any) => void;
-  onAutoSave?: (content: any) => Promise<void>;
+  initialContent?: TiptapJSONContent | string;
+  onChange: (content: TiptapJSONContent) => void;
+  onAutoSave?: (content: TiptapJSONContent) => Promise<void>;
   editable?: boolean;
 }
+
+const EditorButton = ({ 
+  onClick, 
+  isActive = false, 
+  children, 
+  title,
+  disabled = false
+}: { 
+  onClick: () => void; 
+  isActive?: boolean; 
+  children: React.ReactNode; 
+  title: string;
+  disabled?: boolean;
+}) => (
+  <button
+    type="button"
+    onClick={onClick}
+    onMouseDown={(e) => e.preventDefault()} // CRITICAL: Prevents the button from stealing focus from Tiptap and breaking text selection!
+    disabled={disabled}
+    title={title}
+    className={`p-2 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-1 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed ${
+      isActive
+        ? "bg-primary-600 text-white shadow-sm"
+        : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white"
+    }`}
+  >
+    {children}
+  </button>
+);
 
 export default function BlogEditor({ 
   initialContent = "", 
@@ -43,6 +74,8 @@ export default function BlogEditor({
       Link.configure({
         openOnClick: false,
         autolink: true,
+        // Override default strict validation so it allows relative paths like /contact
+        validate: href => !!href,
       }),
       Placeholder.configure({
         placeholder: "Start typing your article here...",
@@ -61,6 +94,7 @@ export default function BlogEditor({
     },
     onUpdate: ({ editor }) => {
       const jsonContent = editor.getJSON();
+      console.log("[Editor Debug] Content updated:", JSON.stringify(jsonContent).substring(0, 100) + "...");
       onChange(jsonContent);
     },
   });
@@ -71,7 +105,9 @@ export default function BlogEditor({
 
     const handler = setTimeout(async () => {
       setIsSaving(true);
-      await onAutoSave(editor.getJSON());
+      const jsonContent = editor.getJSON();
+      console.log("[Editor Debug] Autosaving content:", JSON.stringify(jsonContent).substring(0, 100) + "...");
+      await onAutoSave(jsonContent);
       setIsSaving(false);
     }, 3000);
 
@@ -82,33 +118,7 @@ export default function BlogEditor({
     return <div className="h-[500px] w-full animate-pulse bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-200 dark:border-gray-800" />;
   }
 
-  const Button = ({ 
-    onClick, 
-    isActive = false, 
-    children, 
-    title,
-    disabled = false
-  }: { 
-    onClick: () => void; 
-    isActive?: boolean; 
-    children: React.ReactNode; 
-    title: string;
-    disabled?: boolean;
-  }) => (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
-      title={title}
-      className={`p-2 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-1 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed ${
-        isActive
-          ? "bg-primary-600 text-white shadow-sm"
-          : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white"
-      }`}
-    >
-      {children}
-    </button>
-  );
+
 
   return (
     <div className="relative border border-gray-200 dark:border-gray-800 rounded-2xl overflow-hidden bg-white dark:bg-[#0a1220] shadow-sm">
@@ -117,87 +127,90 @@ export default function BlogEditor({
       <div className="sticky top-0 z-20 flex flex-wrap items-center gap-1 p-2 bg-gray-50/95 dark:bg-[#0d1728]/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 select-none">
         
         {/* Undo / Redo */}
-        <Button onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().undo()} title="Undo (Ctrl+Z)">
+        <EditorButton onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().undo()} title="Undo (Ctrl+Z)">
           <Undo size={16} />
-        </Button>
-        <Button onClick={() => editor.chain().focus().redo().run()} disabled={!editor.can().redo()} title="Redo (Ctrl+Y)">
+        </EditorButton>
+        <EditorButton onClick={() => editor.chain().focus().redo().run()} disabled={!editor.can().redo()} title="Redo (Ctrl+Y)">
           <Redo size={16} />
-        </Button>
+        </EditorButton>
 
         <div className="w-px h-5 bg-gray-300 dark:bg-gray-700 mx-1" />
 
         {/* Headings */}
-        <Button 
+        <EditorButton 
           onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} 
           isActive={editor.isActive("heading", { level: 2 })} 
           title="Heading 2 (H2)"
         >
           <Heading2 size={16} /> H2
-        </Button>
-        <Button 
+        </EditorButton>
+        <EditorButton 
           onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} 
           isActive={editor.isActive("heading", { level: 3 })} 
           title="Heading 3 (H3)"
         >
           <Heading3 size={16} /> H3
-        </Button>
-        <Button 
+        </EditorButton>
+        <EditorButton 
           onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()} 
           isActive={editor.isActive("heading", { level: 4 })} 
           title="Heading 4 (H4)"
         >
           <Heading4 size={16} /> H4
-        </Button>
+        </EditorButton>
 
         <div className="w-px h-5 bg-gray-300 dark:bg-gray-700 mx-1" />
 
         {/* Basic Text Formatting */}
-        <Button onClick={() => editor.chain().focus().toggleBold().run()} isActive={editor.isActive("bold")} title="Bold (Ctrl+B)">
+        <EditorButton onClick={() => editor.chain().focus().toggleBold().run()} isActive={editor.isActive("bold")} title="Bold (Ctrl+B)">
           <Bold size={16} />
-        </Button>
-        <Button onClick={() => editor.chain().focus().toggleItalic().run()} isActive={editor.isActive("italic")} title="Italic (Ctrl+I)">
+        </EditorButton>
+        <EditorButton onClick={() => editor.chain().focus().toggleItalic().run()} isActive={editor.isActive("italic")} title="Italic (Ctrl+I)">
           <Italic size={16} />
-        </Button>
-        <Button onClick={() => editor.chain().focus().toggleUnderline().run()} isActive={editor.isActive("underline")} title="Underline (Ctrl+U)">
+        </EditorButton>
+        <EditorButton onClick={() => editor.chain().focus().toggleUnderline().run()} isActive={editor.isActive("underline")} title="Underline (Ctrl+U)">
           <UnderlineIcon size={16} />
-        </Button>
-        <Button onClick={() => editor.chain().focus().toggleStrike().run()} isActive={editor.isActive("strike")} title="Strikethrough">
+        </EditorButton>
+        <EditorButton onClick={() => editor.chain().focus().toggleStrike().run()} isActive={editor.isActive("strike")} title="Strikethrough">
           <Strikethrough size={16} />
-        </Button>
+        </EditorButton>
 
         <div className="w-px h-5 bg-gray-300 dark:bg-gray-700 mx-1" />
 
         {/* Text Alignment */}
-        <Button onClick={() => editor.chain().focus().setTextAlign("left").run()} isActive={editor.isActive({ textAlign: "left" })} title="Align Left">
+        <EditorButton onClick={() => editor.chain().focus().setTextAlign("left").run()} isActive={editor.isActive({ textAlign: "left" })} title="Align Left">
           <AlignLeft size={16} />
-        </Button>
-        <Button onClick={() => editor.chain().focus().setTextAlign("center").run()} isActive={editor.isActive({ textAlign: "center" })} title="Align Center">
+        </EditorButton>
+        <EditorButton onClick={() => editor.chain().focus().setTextAlign("center").run()} isActive={editor.isActive({ textAlign: "center" })} title="Align Center">
           <AlignCenter size={16} />
-        </Button>
-        <Button onClick={() => editor.chain().focus().setTextAlign("right").run()} isActive={editor.isActive({ textAlign: "right" })} title="Align Right">
+        </EditorButton>
+        <EditorButton onClick={() => editor.chain().focus().setTextAlign("right").run()} isActive={editor.isActive({ textAlign: "right" })} title="Align Right">
           <AlignRight size={16} />
-        </Button>
+        </EditorButton>
 
         <div className="w-px h-5 bg-gray-300 dark:bg-gray-700 mx-1" />
 
         {/* Lists */}
-        <Button onClick={() => editor.chain().focus().toggleBulletList().run()} isActive={editor.isActive("bulletList")} title="Bullet List">
+        <EditorButton onClick={() => editor.chain().focus().toggleBulletList().run()} isActive={editor.isActive("bulletList")} title="Bullet List">
           <List size={16} />
-        </Button>
-        <Button onClick={() => editor.chain().focus().toggleOrderedList().run()} isActive={editor.isActive("orderedList")} title="Numbered List">
+        </EditorButton>
+        <EditorButton onClick={() => editor.chain().focus().toggleOrderedList().run()} isActive={editor.isActive("orderedList")} title="Numbered List">
           <ListOrdered size={16} />
-        </Button>
+        </EditorButton>
 
         <div className="w-px h-5 bg-gray-300 dark:bg-gray-700 mx-1" />
 
         {/* Link & Image & Quote */}
-        <Button 
+        <EditorButton 
           onClick={() => {
             const previousUrl = editor.getAttributes("link").href;
-            let url = window.prompt("Enter URL:", previousUrl);
+            let url = window.prompt("Enter URL:", previousUrl || "");
             if (url === null) return;
+            
             if (url.trim() === "") {
-              editor.chain().focus().extendMarkRange("link").unsetLink().run();
+              if (editor.isActive("link")) {
+                editor.chain().focus().extendMarkRange("link").unsetLink().run();
+              }
               return;
             }
             
@@ -206,15 +219,26 @@ export default function BlogEditor({
               url = `https://${url}`;
             }
             
-            editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
+            console.log("[Editor Debug] Attempting to set link:", url);
+            const chain = editor.chain().focus();
+            
+            if (editor.isActive("link")) {
+              chain.extendMarkRange("link");
+            } else if (editor.state.selection.empty) {
+              alert("Please highlight the text you want to link first!");
+              return;
+            }
+            
+            chain.setLink({ href: url }).run();
+            console.log("[Editor Debug] Link set successfully. Current attrs:", editor.getAttributes("link"));
           }} 
           isActive={editor.isActive("link")} 
           title="Insert Link"
         >
           <LinkIcon size={16} />
-        </Button>
+        </EditorButton>
 
-        <Button 
+        <EditorButton 
           onClick={() => {
             const url = window.prompt("Enter Image URL:");
             if (url) editor.chain().focus().setImage({ src: url }).run();
@@ -223,22 +247,22 @@ export default function BlogEditor({
           title="Insert Image URL"
         >
           <ImageIcon size={16} />
-        </Button>
+        </EditorButton>
 
-        <Button onClick={() => editor.chain().focus().toggleBlockquote().run()} isActive={editor.isActive("blockquote")} title="Quote Block">
+        <EditorButton onClick={() => editor.chain().focus().toggleBlockquote().run()} isActive={editor.isActive("blockquote")} title="Quote Block">
           <Quote size={16} />
-        </Button>
+        </EditorButton>
         
-        <Button onClick={() => editor.chain().focus().toggleCodeBlock().run()} isActive={editor.isActive("codeBlock")} title="Code Block">
+        <EditorButton onClick={() => editor.chain().focus().toggleCodeBlock().run()} isActive={editor.isActive("codeBlock")} title="Code Block">
           <Code size={16} />
-        </Button>
+        </EditorButton>
 
         <div className="w-px h-5 bg-gray-300 dark:bg-gray-700 mx-1" />
 
         {/* Reset Formatting */}
-        <Button onClick={() => editor.chain().focus().unsetAllMarks().clearNodes().run()} title="Clear Formatting">
+        <EditorButton onClick={() => editor.chain().focus().unsetAllMarks().clearNodes().run()} title="Clear Formatting">
           <RotateCcw size={16} />
-        </Button>
+        </EditorButton>
 
         {/* Save Status Badge */}
         {onAutoSave && (

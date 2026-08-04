@@ -3,7 +3,7 @@ import Script from "next/script";
 import "./globals.css";
 import LenisProvider from "@/components/LenisProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import GlobalClickSpark from "@/components/GlobalClickSpark";
+// import GlobalClickSpark from "@/components/GlobalClickSpark";
 import LayoutWrapper from "@/components/LayoutWrapper";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
 import { Toaster } from "sonner";
@@ -134,7 +134,7 @@ export default function RootLayout({
                 }
               }}
             />
-            <GlobalClickSpark />
+            {/* <GlobalClickSpark /> */}
             <AnalyticsTracker />
             <LayoutWrapper>
               {children}

@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import Image from "next/image";
 import React, { useRef, useState } from "react";
@@ -24,7 +25,7 @@ export default function Testimonials() {
   const [debug, setDebug] = useState({ progress: 0, start: 0, end: 0, h: 0 });
 
   useGSAP(() => {
-    let mm = gsap.matchMedia();
+    const mm = gsap.matchMedia();
 
     // ── 1. MOBILE & TABLET GSAP SCROLLTRIGGER ANIMATION (60fps GPU Composite) ──
     mm.add("(max-width: 767px)", () => {
@@ -63,7 +64,7 @@ export default function Testimonials() {
       isDesktop: "(min-width: 768px)",
       isShort: "(max-height: 850px)"
     }, (context) => {
-      let { isShort } = context.conditions as { isShort?: boolean };
+      const { isShort } = context.conditions as { isShort?: boolean };
 
       // Initialize background cards state INSIDE the context so it reverts properly on unmount
       cardsRef.current.forEach((card, index) => {
@@ -291,7 +292,7 @@ export default function Testimonials() {
                 <span className="text-transparent bg-clip-text bg-linear-to-r from-primary-600 to-secondary-500 dark:from-primary-400 dark:to-secondary-400">Stories</span>
               </h2>
               <p className="text-sm sm:text-xl md:text-2xl [@media(max-height:850px)]:md:text-lg font-medium tracking-wide text-primary-600/80 dark:text-primary-400/80 uppercase">
-                Don't just take our word for it. Here's what our <span className="text-primary-900 dark:text-white font-bold">partners</span> have to say about working with <span className="font-black text-primary-950 dark:text-white">Trisage.</span>
+                Don&apos;t just take our word for it. Here&apos;s what our <span className="text-primary-900 dark:text-white font-bold">partners</span> have to say about working with <span className="font-black text-primary-950 dark:text-white">Trisage.</span>
               </p>
             </div>
 

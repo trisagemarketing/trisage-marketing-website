@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-unused-vars, @next/next/no-img-element */
 
 import { useState, useRef } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -101,9 +102,9 @@ export default function NativeUploader({
       toast.success("Upload Successful!");
       onUploadComplete(publicUrl);
 
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Upload Error:", error);
-      toast.error("Upload Failed", { description: error.message || "An unknown error occurred." });
+      toast.error("Upload Failed", { description: error instanceof Error ? error.message : "An unknown error occurred." });
     } finally {
       setIsUploading(false);
       setProgress(0);

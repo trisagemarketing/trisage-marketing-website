@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { ChatbotState, ChatMessage, ChatStep } from "@/types/chatbot";
+import { ChatbotState, ChatStep } from "@/types/chatbot";
 import { CHAT_STEPS, CHATBOT_MESSAGES, SERVICES_LIST } from "@/lib/constants/chatbot";
 
 const SESSION_STORAGE_KEY = "trisage_chatbot_state";
@@ -35,6 +35,7 @@ export function useChatbot() {
         const parsed = JSON.parse(stored);
         // Only restore if it wasn't already successfully submitted
         if (parsed.step !== CHAT_STEPS.SUCCESS) {
+          // eslint-disable-next-line react-hooks/set-state-in-effect
           setState({ ...parsed, isOpen: false, isTyping: false }); // Always start closed
         }
       }
@@ -106,6 +107,45 @@ export function useChatbot() {
     }, 1000 + Math.random() * 500); // Realistic 1-1.5s typing delay
   }, [addBotMessage, setTyping]);
 
+  const submitLead = useCallback(async (finalLeadData = state.leadData) => {
+    setState(prev => ({ ...prev, step: CHAT_STEPS.SUBMITTING, isTyping: true, error: null }));
+    
+    try {
+      const response = await fetch('/api/chatbot', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...finalLeadData,
+          page_url: window.location.href, // Grab the current URL automatically
+        })
+      });
+
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.details || errData.error || "Failed to submit lead");
+      }
+
+      setState(prev => ({ 
+        ...prev, 
+        step: CHAT_STEPS.SUCCESS,
+        isTyping: false
+      }));
+      isProcessingRef.current = false; // Release lock on success
+      addBotMessage(CHATBOT_MESSAGES.SUCCESS);
+      sessionStorage.removeItem(SESSION_STORAGE_KEY);
+      
+    } catch (error) {
+      console.error("Submission error:", error);
+      isProcessingRef.current = false; // Release lock on error
+      setState(prev => ({ 
+        ...prev, 
+        step: CHAT_STEPS.MESSAGE, // Go back to the last step so they can try again
+        isTyping: false,
+        error: "Failed to send message. Please try again."
+      }));
+    }
+  }, [state.leadData, addBotMessage]);
+
   const handleInputSubmit = useCallback((value: string) => {
     // Murphy's Law: Block execution if currently processing, bot is typing, or already submitting
     if (isProcessingRef.current || state.isTyping || state.step >= CHAT_STEPS.SUBMITTING) {
@@ -169,52 +209,13 @@ export function useChatbot() {
       setState(prev => ({ ...prev, leadData: newLeadData }));
       submitLead(newLeadData);
     }
-  }, [state, addUserMessage, advanceToNextStep, setError]);
+  }, [state, addUserMessage, advanceToNextStep, setError, submitLead]);
 
   const handleOptionSelect = useCallback((option: string) => {
     // Treat clicking an option exactly the same as typing it
     if (isProcessingRef.current || state.isTyping) return; // Murphy's Law strict block
     handleInputSubmit(option);
   }, [handleInputSubmit, state.isTyping]);
-
-  const submitLead = useCallback(async (finalLeadData = state.leadData) => {
-    setState(prev => ({ ...prev, step: CHAT_STEPS.SUBMITTING, isTyping: true, error: null }));
-    
-    try {
-      const response = await fetch('/api/chatbot', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...finalLeadData,
-          page_url: window.location.href, // Grab the current URL automatically
-        })
-      });
-
-      if (!response.ok) {
-        const errData = await response.json().catch(() => ({}));
-        throw new Error(errData.details || errData.error || "Failed to submit lead");
-      }
-
-      setState(prev => ({ 
-        ...prev, 
-        step: CHAT_STEPS.SUCCESS,
-        isTyping: false
-      }));
-      isProcessingRef.current = false; // Release lock on success
-      addBotMessage(CHATBOT_MESSAGES.SUCCESS);
-      sessionStorage.removeItem(SESSION_STORAGE_KEY);
-      
-    } catch (error) {
-      console.error("Submission error:", error);
-      isProcessingRef.current = false; // Release lock on error
-      setState(prev => ({ 
-        ...prev, 
-        step: CHAT_STEPS.MESSAGE, // Go back to the last step so they can try again
-        isTyping: false,
-        error: "Failed to send message. Please try again."
-      }));
-    }
-  }, [state.leadData, addBotMessage]);
 
   const resetSession = useCallback(() => {
     sessionStorage.removeItem(SESSION_STORAGE_KEY);

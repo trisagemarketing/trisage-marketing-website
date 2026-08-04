@@ -29,7 +29,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
   
   // Filter for matching posts or grab the latest 2 published posts
   const dynamicRelatedPosts = allPosts && allPosts.length > 0 
-    ? allPosts.filter((p: any) => p && p.slug && p.title).slice(0, 2)
+    ? allPosts.filter((p: { slug?: string; title?: string } | null | undefined) => p && p.slug && p.title).slice(0, 2)
     : [];
 
   const breadcrumbs = [
@@ -84,7 +84,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
             
             {/* Features */}
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">What's Included</h2>
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">What&apos;s Included</h2>
               <ul className="space-y-6">
                 {service.features.map((feature, idx) => (
                   <li key={idx} className="flex items-start gap-4 bg-white dark:bg-[#050b14] p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 transition-all hover:shadow-md">
@@ -137,7 +137,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
 
             {dynamicRelatedPosts.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                {dynamicRelatedPosts.map((post: any) => (
+                {dynamicRelatedPosts.map((post: { id?: string; slug?: string; title?: string; summary?: string; excerpt?: string; published_at?: string; cover_image_url?: string; category?: string; }) => (
                   <Link 
                     key={post.id || post.slug} 
                     href={`/blog/${post.slug || post.id}`}
@@ -183,7 +183,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
             <div className="max-w-6xl mx-auto">
               <h2 id="faq-heading" className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-12">Frequently Asked Questions</h2>
               <div className="space-y-6 max-w-4xl mx-auto">
-                {service.faqs.map((faq: any, idx: number) => (
+                {service.faqs.map((faq: { question?: string; answer?: string; }, idx: number) => (
                   <details key={idx} className="group bg-white dark:bg-[#050b14] rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 [&_summary::-webkit-details-marker]:hidden">
                     <summary className="flex cursor-pointer items-center justify-between gap-4 p-6 font-semibold text-gray-900 dark:text-white text-lg">
                       {faq.question}
@@ -212,7 +212,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
               Ready to scale your {service.title}?
             </h2>
             <p className="text-primary-100 dark:text-primary-200 text-lg md:text-xl mb-10 max-w-2xl mx-auto relative z-10 leading-relaxed">
-              Let's build a customized strategy that drives highly qualified traffic and predictable revenue.
+              Let&apos;s build a customized strategy that drives highly qualified traffic and predictable revenue.
             </p>
             <Link href="/contact" className="inline-flex justify-center items-center px-8 py-4 text-lg font-semibold text-white bg-secondary-600 hover:bg-secondary-700 dark:bg-secondary-500 dark:hover:bg-secondary-600 rounded-full transition-all hover:scale-105 shadow-xl hover:shadow-secondary-600/25 relative z-10">
               Get Your Custom Strategy

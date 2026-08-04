@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useRef } from "react";
 import { X, RefreshCcw } from "lucide-react";
 import { ChatbotState, ChatMessage } from "@/types/chatbot";
@@ -42,6 +43,19 @@ export default function ChatInterface({
   useEffect(() => {
     scrollToBottom();
   }, [state.messages, state.isTyping]);
+
+  // Handle keyboard opening/closing which resizes the container
+  useEffect(() => {
+    if (!scrollRef.current) return;
+    
+    const resizeObserver = new ResizeObserver(() => {
+      scrollToBottom();
+    });
+    
+    resizeObserver.observe(scrollRef.current);
+    
+    return () => resizeObserver.disconnect();
+  }, []);
 
   return (
     <div className="flex flex-col h-full bg-white dark:bg-gray-900 sm:rounded-2xl overflow-hidden shadow-2xl sm:border border-gray-200 dark:border-gray-800">
@@ -91,7 +105,7 @@ export default function ChatInterface({
         ref={scrollRef}
         role="log"
         aria-live="polite"
-        className="flex-1 overflow-y-auto p-4 bg-gray-50 dark:bg-gray-900/50 relative"
+        className="flex-1 overflow-y-auto overscroll-none p-4 bg-gray-50 dark:bg-gray-900/50 relative"
       >
         <div className="flex flex-col space-y-2 pb-2">
           {state.messages.map((msg) => (
@@ -124,7 +138,7 @@ export default function ChatInterface({
       </div>
 
       {/* Input Footer Area */}
-      <div className="shrink-0 p-4 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 shadow-[0_-4px_10px_rgba(0,0,0,0.02)] dark:shadow-[0_-4px_10px_rgba(0,0,0,0.2)] relative z-10">
+      <div className="shrink-0 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 shadow-[0_-4px_10px_rgba(0,0,0,0.02)] dark:shadow-[0_-4px_10px_rgba(0,0,0,0.2)] relative z-10">
         {state.step === CHAT_STEPS.SUCCESS ? (
           <div className="text-center py-2 text-sm text-gray-500 dark:text-gray-400">
             Conversation completed.

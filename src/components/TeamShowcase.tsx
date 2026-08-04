@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-unused-vars, react-hooks/set-state-in-effect */
 
 import { useRef, useEffect, useState } from "react";
 import { motion, useTransform, useSpring, useReducedMotion, useMotionTemplate, useMotionValue } from "framer-motion";

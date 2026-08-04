@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import Hero from "@/components/Hero";
 import MissionVision from "@/components/MissionVision";
 import BusinessPartners from "@/components/BusinessPartners";

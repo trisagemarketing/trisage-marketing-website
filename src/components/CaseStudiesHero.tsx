@@ -59,10 +59,10 @@ export default function CaseStudiesHero() {
             {/* Organic curved crop luxury hotel image */}
             <div 
               className="relative w-full max-w-[500px] aspect-[4/3] overflow-hidden shadow-2xl dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] dark:brightness-90 bg-white/50 dark:bg-white/5 backdrop-blur-sm transform-gpu"
-              style={{ borderRadius: "40% 60% 70% 30% / 40% 50% 60% 50%" }}
+              style={{ borderRadius: "50%" }}
             >
               <Image 
-                src="https://ik.imagekit.io/rrcdbevrb/hero_case%20studies" 
+                src="https://ik.imagekit.io/rrcdbevrb/AYU08906.jpg" 
                 alt="Luxury Resort Case Study" 
                 fill
                 className="object-cover"

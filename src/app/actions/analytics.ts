@@ -16,8 +16,8 @@ export async function logRealVisitor(sessionId: string) {
     }
 
     return { success: true };
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Server error tracking visitor:", err);
-    return { success: false, error: err.message || "Unknown error" };
+    return { success: false, error: err instanceof Error ? err.message : "Unknown error" };
   }
 }

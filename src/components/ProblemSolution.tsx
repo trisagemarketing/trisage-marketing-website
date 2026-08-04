@@ -75,7 +75,7 @@ export default function ProblemSolution() {
         >
           <div className="border-l-4 border-primary-500 pl-6 md:pl-8">
             <p className="text-gray-900 dark:text-white font-medium italic text-xl md:text-2xl leading-relaxed">
-              "Unlike traditional agencies focused only on vanity metrics, Trisage creates marketing systems engineered for actual business performance and improved revenue."
+              &quot;Unlike traditional agencies focused only on vanity metrics, Trisage creates marketing systems engineered for actual business performance and improved revenue.&quot;
             </p>
           </div>
         </motion.div>

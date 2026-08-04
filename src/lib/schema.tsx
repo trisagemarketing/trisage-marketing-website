@@ -7,7 +7,7 @@ import React from 'react';
  * Usage:
  * <JsonLd schema={{ "@context": "https://schema.org", "@type": "Service", ... }} />
  */
-export function JsonLd({ schema }: { schema: Record<string, any> }) {
+export function JsonLd({ schema }: { schema: Record<string, unknown> }) {
   return (
     <script
       type="application/ld+json"

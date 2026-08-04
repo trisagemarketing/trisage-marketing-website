@@ -5,14 +5,16 @@ import { toast } from "sonner";
 import { markMeetingBooked, deleteContactMessage } from "@/app/actions/contact";
 import { AlertTriangle, Eye, X, Mail, Phone, Building, Briefcase, Calendar, CheckCircle2 } from "lucide-react";
 import { createPortal } from "react-dom";
+import { ContactMessage } from "./MessagesTableBody";
 
-export default function MessageActions({ msg }: { msg: any }) {
+export default function MessageActions({ msg }: { msg: ContactMessage }) {
   const [isPending, startTransition] = useTransition();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSlideOverOpen, setIsSlideOverOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 
@@ -131,11 +133,15 @@ export default function MessageActions({ msg }: { msg: any }) {
                   <div className="flex items-center gap-2 text-primary-600 dark:text-primary-400 font-medium flex-wrap">
                     <Briefcase className="w-4 h-4 shrink-0" />
                     <div className="flex flex-wrap gap-1.5">
-                      {serviceArray.map((srv, idx) => (
-                        <span key={idx} className="inline-flex px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide bg-primary-100/50 dark:bg-primary-500/10 text-primary-700 dark:text-primary-400 border border-primary-200/50 dark:border-primary-500/20">
-                          {srv.trim()}
-                        </span>
-                      ))}
+                      {serviceArray.map((srv: string, idx: number) => {
+                        const safeSrv = typeof srv === 'string' ? srv.trim() : String(srv || '');
+                        if (!safeSrv) return null;
+                        return (
+                          <span key={idx} className="inline-flex px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide bg-primary-100/50 dark:bg-primary-500/10 text-primary-700 dark:text-primary-400 border border-primary-200/50 dark:border-primary-500/20">
+                            {safeSrv}
+                          </span>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>

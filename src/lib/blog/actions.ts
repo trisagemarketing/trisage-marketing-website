@@ -3,7 +3,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
-import { BlogStatus } from '@/types/blog';
+
 
 // =======================
 // SCHEMAS FOR VALIDATION
@@ -126,9 +126,9 @@ export async function saveDraft(formData: z.infer<typeof SaveDraftSchema>) {
 
     console.log(`[CMS Logs] Autosaved draft for blog ${targetBlogId}`);
     return { success: true, blogId: targetBlogId };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(`[CMS Logs] Draft save failed:`, error);
-    return { error: error.message };
+    return { error: error instanceof Error ? error.message : "Unknown error" };
   }
 }
 
@@ -195,9 +195,9 @@ export async function publishBlog(formData: z.infer<typeof PublishSchema>) {
 
     console.log(`[CMS Logs] Successfully published and revalidated blog ${finalSlug}`);
     return { success: true };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(`[CMS Logs] Publish failed:`, error);
-    return { error: error.message };
+    return { error: error instanceof Error ? error.message : "Unknown error" };
   }
 }
 
@@ -214,7 +214,7 @@ export async function getCategories(): Promise<{ id: string; name: string }[]> {
       .order('name', { ascending: true });
     if (error) throw error;
     return data || [];
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('[CMS Logs] Failed to fetch categories:', error);
     return [];
   }
@@ -241,9 +241,9 @@ export async function addCategory(name: string) {
     }
     revalidatePath('/admin/blog');
     return { success: true, category: data };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('[CMS Logs] Failed to add category:', error);
-    return { error: error.message };
+    return { error: error instanceof Error ? error.message : "Unknown error" };
   }
 }
 
@@ -257,9 +257,9 @@ export async function deleteCategory(id: string) {
     if (error) throw error;
     revalidatePath('/admin/blog');
     return { success: true };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('[CMS Logs] Failed to delete category:', error);
-    return { error: error.message };
+    return { error: error instanceof Error ? error.message : "Unknown error" };
   }
 }
 
@@ -279,8 +279,8 @@ export async function deleteBlog(id: string) {
     revalidatePath('/admin/blog');
     revalidatePath('/blog');
     return { success: true };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('[CMS Logs] Failed to delete blog post:', error);
-    return { error: error.message || 'Failed to delete blog post.' };
+    return { error: error instanceof Error ? error.message : 'Failed to delete blog post.' };
   }
 }

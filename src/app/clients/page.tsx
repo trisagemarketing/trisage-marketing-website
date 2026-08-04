@@ -14,7 +14,7 @@ export default function ClientsPage() {
         <div className="container mx-auto px-4 md:px-8">
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">Our Clients</h1>
           <p className="text-xl text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
-            Discover the incredible brands and companies we've partnered with.
+            Discover the incredible brands and companies we&apos;ve partnered with.
           </p>
         </div>
       </div>
