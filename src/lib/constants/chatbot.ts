@@ -12,11 +12,14 @@ export const CHAT_STEPS = {
 } as const;
 
 export const SERVICES_LIST = [
-  "SEO & Geo-Targeting",
-  "Performance Marketing",
-  "Social Media Growth",
+  "Brand Strategy & Identity",
   "Revenue Management",
-  "Full Digital Ecosystem",
+  "Website Design, SEO & Geo AI",
+  "Performance Marketing",
+  "Geo & GMB",
+  "Content Creation & Copywriting",
+  "Influencer & PR Outreach",
+  "Social Media Management",
 ];
 
 export const BOT_AVATAR = "/logo.png"; // Standard Trisage Avatar
