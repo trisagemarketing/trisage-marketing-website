@@ -126,7 +126,7 @@ export default function Hero() {
           <div ref={textWrapperRef} className="w-full flex flex-col transform-gpu opacity-0">
             {/* Top Giant Text - TRISAGE */}
             <h1 
-              className="w-full flex justify-between items-center font-medium text-primary-500 dark:text-primary-300 uppercase cursor-default tracking-tighter"
+              className="font-hero w-full flex justify-between items-center font-medium text-primary-500 dark:text-primary-300 uppercase cursor-default tracking-tighter"
               style={{ 
                 fontSize: 'clamp(5rem, 27.5vw, 420px)',
                 lineHeight: '1',
@@ -150,7 +150,7 @@ export default function Hero() {
             <div className="flex flex-row w-full justify-between items-end mt-2 md:mt-4 lg:mt-6">
               <h2 
                 ref={el => { bottomWordsRef.current[0] = el; }}
-                className="font-bold text-secondary-600 dark:text-secondary-400 uppercase flex transform-gpu opacity-0"
+                className="font-hero font-bold text-secondary-600 dark:text-secondary-400 uppercase flex transform-gpu opacity-0"
                 style={{ 
                   fontSize: 'clamp(1.5rem, 5vw, 4rem)', 
                   lineHeight: '1', 
@@ -162,7 +162,7 @@ export default function Hero() {
               
               <h2 
                 ref={el => { bottomWordsRef.current[1] = el; }}
-                className="font-bold text-secondary-600 dark:text-secondary-400 uppercase text-right flex mt-0 transform-gpu opacity-0"
+                className="font-hero font-bold text-secondary-600 dark:text-secondary-400 uppercase text-right flex mt-0 transform-gpu opacity-0"
                 style={{ 
                   fontSize: 'clamp(1.5rem, 5vw, 4rem)', 
                   lineHeight: '1', 

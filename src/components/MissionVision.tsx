@@ -156,7 +156,7 @@ export default function MissionVision() {
               <div className="absolute inset-x-8 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-white dark:via-white/40 to-transparent pointer-events-none rounded-full" />
               {/* Text Content (Left) */}
               <div className="flex flex-col items-start justify-center h-full relative z-10">
-                <div className="font-sans font-medium text-lg sm:text-xl lg:text-[2rem] leading-snug lg:leading-[1.3] uppercase tracking-tight text-balance">
+                <div className="font-sans font-medium text-lg sm:text-xl lg:text-[2rem] leading-snug lg:leading-[1.3] tracking-tight text-balance">
                   <span className="inline-block text-primary-600 dark:text-primary-400 mb-2">
                     Our mission is to empower <strong className="font-black">hospitality brands</strong> with <strong className="font-black">innovative marketing</strong>, <strong className="font-black">branding</strong>, and <strong className="font-black">revenue-focused solutions</strong>.
                   </span>
@@ -342,7 +342,7 @@ export default function MissionVision() {
 
               {/* Text Content (Right on Desktop, Top on Mobile) */}
               <div className="order-1 lg:order-2 flex flex-col items-start justify-center h-full">
-                <div className="font-sans font-medium text-lg sm:text-xl lg:text-[2rem] leading-snug lg:leading-[1.3] uppercase tracking-tight text-balance">
+                <div className="font-sans font-medium text-lg sm:text-xl lg:text-[2rem] leading-snug lg:leading-[1.3] tracking-tight text-balance">
                   <span className="inline-block text-secondary-600 dark:text-secondary-400 mb-2">
                     To become one of the most <strong className="font-black">trusted hospitality marketing partners</strong> by delivering <strong className="font-black">impactful digital experiences</strong>.
                   </span>

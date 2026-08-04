@@ -136,7 +136,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Navigation — Perfectly Centered Absolute Container */}
-          <div className="absolute left-[48%] top-1/2 -translate-x-1/2 -translate-y-1/2 hidden lg:flex z-40">
+          <div className="absolute left-[48%] top-1/2 -translate-x-1/2 -translate-y-1/2 hidden lg:flex items-center gap-4 z-40">
             <nav 
               onMouseLeave={() => setHoveredIndex(null)}
               className="flex flex-none items-center gap-1 relative p-1.5 rounded-full bg-black/[0.04] dark:bg-white/[0.06] border border-black/5 dark:border-white/10 shadow-inner"
@@ -152,7 +152,7 @@ export default function Navbar() {
                   href={link.href}
                   onMouseEnter={() => setHoveredIndex(index)}
                   className={cn(
-                    "relative px-4 py-2 text-xs xl:text-sm font-semibold rounded-full transition-colors duration-200 z-10 flex items-center justify-center whitespace-nowrap",
+                    "relative px-4 py-2 text-xs xl:text-sm font-semibold rounded-full transition-colors duration-200 z-10 flex items-center justify-center whitespace-nowrap tracking-tight",
                     isActive 
                       ? "text-white dark:text-white" 
                       : "text-gray-700 dark:text-gray-200 hover:text-gray-950 dark:hover:text-white"
@@ -185,16 +185,16 @@ export default function Navbar() {
                 </Link>
               );
             })}
-          </nav>
-          </div>
-
-          {/* Right Actions (Theme Toggle & Tactile CTA) */}
-          <div className="flex justify-end items-center gap-1.5 sm:gap-3 pr-0.5 sm:pr-2 relative z-50">
-            {/* Theme Toggle Container */}
+            </nav>
+            
+            {/* Theme Toggle Container - Grouped with Nav for perfect symmetry */}
             <div className="hidden md:block">
               <ThemeToggle />
             </div>
+          </div>
 
+          {/* Right Actions (Tactile CTA) */}
+          <div className="flex justify-end items-center gap-1.5 sm:gap-3 pr-0.5 sm:pr-2 relative z-50">
             {/* Mobile & Tablet CTA Button: Get Free Audit */}
             <button
               onClick={() => window.dispatchEvent(new Event("openLeadModal"))}
