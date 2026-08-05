@@ -109,7 +109,8 @@ export default function ChatWidget() {
             exit={{ opacity: 0, y: 20, scale: 0.95, transition: { duration: 0.2 } }}
             transition={{ type: "spring", stiffness: 350, damping: 25 }}
             style={Object.keys(vvStyle).length > 0 ? vvStyle : {}}
-            className="fixed top-0 left-0 z-[1000] w-full h-[100dvh] sm:h-[550px] sm:max-h-[calc(100vh-140px)] sm:inset-auto sm:bottom-24 sm:right-6 sm:w-[380px] origin-bottom-right flex flex-col overscroll-none shadow-2xl"
+            data-lenis-prevent="true"
+            className="fixed top-0 left-0 z-[1000] w-full h-[100dvh] sm:h-[550px] sm:max-h-[calc(100vh-140px)] sm:inset-auto sm:bottom-24 sm:right-6 sm:w-[380px] origin-bottom-right flex flex-col shadow-2xl"
           >
             <ChatInterface 
               state={state}

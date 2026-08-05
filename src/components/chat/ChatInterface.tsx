@@ -105,7 +105,8 @@ export default function ChatInterface({
         ref={scrollRef}
         role="log"
         aria-live="polite"
-        className="flex-1 overflow-y-auto overscroll-none p-4 bg-gray-50 dark:bg-gray-900/50 relative"
+        data-lenis-prevent="true"
+        className="flex-1 min-h-0 overflow-y-auto chat-scrollbar overscroll-contain p-4 bg-gray-50 dark:bg-gray-900/50 relative scroll-smooth"
       >
         <div className="flex flex-col space-y-2 pb-2">
           {state.messages.map((msg) => (
