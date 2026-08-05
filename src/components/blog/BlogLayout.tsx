@@ -31,13 +31,9 @@ export default function BlogLayout({
     return initialBlogs.filter(b => b.category === activeCategory);
   }, [activeCategory, initialBlogs]);
 
-  // Featured post logic: Only show featured hero banner when viewing "All" and we have 2+ posts
-  const showFeaturedHero = activeCategory === "All" && filteredBlogs.length >= 2;
-  const featuredPost = showFeaturedHero ? (filteredBlogs.find(post => post.is_featured) || filteredBlogs[0]) : null;
-  const displayGridPosts = featuredPost 
-    ? filteredBlogs.filter(post => post.id !== featuredPost.id) 
-    : filteredBlogs;
-
+  // The user requested to disable the large featured hero banner and show all posts uniformly in the small grid layout
+  const featuredPost = null;
+  const displayGridPosts = filteredBlogs;
   return (
     <div className="w-full max-w-full overflow-x-hidden">
       <style dangerouslySetInnerHTML={{ __html: `
@@ -80,7 +76,7 @@ export default function BlogLayout({
       </section>
 
       {/* Category Filter Pills */}
-      <section className="hidden container mx-auto px-4 md:px-8 pb-8 sm:pb-12 z-10 relative">
+      <section className="container mx-auto px-4 md:px-8 pb-8 sm:pb-12 z-10 relative">
         <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3 py-2">
           {categories.map((category) => (
             <button
@@ -133,83 +129,6 @@ export default function BlogLayout({
         </section>
       )}
 
-      {/* Featured Hero Banner (Only when activeCategory === 'All' and multiple posts exist) */}
-      {featuredPost && (
-        <section className="container mx-auto px-4 md:px-8 pb-12 sm:pb-16 md:pb-20 z-10 relative">
-          <Link href={`/blog/${featuredPost.slug}`} className="group block relative rounded-2xl sm:rounded-[2.5rem] overflow-hidden bg-white dark:bg-[#0a1220] border border-gray-200/80 dark:border-white/10 transition-all hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.12)] dark:hover:shadow-[0_0_50px_rgba(0,0,0,0.5)]">
-            
-            {/* Rotating Featured Badge */}
-            <div className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8 z-20 w-16 h-16 sm:w-24 sm:h-24 md:w-28 md:h-28 pointer-events-none drop-shadow-xl">
-              <div className="w-full h-full animate-[spin_14s_linear_infinite] bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-full flex items-center justify-center p-1 border border-gray-200 dark:border-gray-700">
-                 <svg viewBox="0 0 100 100" className="w-full h-full fill-gray-900 dark:fill-white font-bold tracking-[0.2em] text-[11px] uppercase">
-                  <path id="circlePath" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" fill="transparent" />
-                  <text>
-                    <textPath href="#circlePath" startOffset="0%">
-                      Read Latest • Featured Post • 
-                    </textPath>
-                  </text>
-                </svg>
-                <svg className="absolute w-4 h-4 sm:w-6 sm:h-6 text-primary-600" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
-                </svg>
-              </div>
-            </div>
-
-            <div className="flex flex-col lg:flex-row min-h-0 lg:min-h-[460px]">
-              {/* Featured Image */}
-              <div className="relative w-full lg:w-1/2 aspect-[16/10] sm:aspect-[16/9] lg:aspect-auto min-h-[220px] sm:min-h-[300px] lg:min-h-full overflow-hidden bg-gray-100 dark:bg-gray-800">
-                <Image 
-                  src={featuredPost.cover_image || "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2000&auto=format&fit=crop"} 
-                  alt={featuredPost.title}
-                  fill
-                  priority
-                  className="object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-105"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
-                <div className="absolute inset-0 bg-linear-to-t lg:bg-linear-to-r from-gray-900/60 lg:from-transparent to-transparent" />
-              </div>
-
-              {/* Featured Content */}
-              <div className="w-full lg:w-1/2 p-6 sm:p-10 md:p-12 flex flex-col justify-center bg-white dark:bg-[#0a1220] z-10 relative">
-                <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs font-bold text-primary-600 dark:text-primary-400 mb-4">
-                  <span className="px-3.5 py-1 rounded-full bg-primary-100 dark:bg-primary-500/20 uppercase tracking-wider">
-                    ★ Featured Article
-                  </span>
-                  <span className="px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 uppercase tracking-wider">
-                    {featuredPost.category}
-                  </span>
-                </div>
-
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-4 leading-tight tracking-tight group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                  {featuredPost.title}
-                </h2>
-
-                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-6 line-clamp-3 leading-relaxed font-normal">
-                  {featuredPost.excerpt}
-                </p>
-
-                <div className="mt-auto flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-800/80">
-                  <div className="flex items-center gap-3">
-                    <div className="relative w-10 h-10 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shrink-0">
-                      {featuredPost.author_avatar && (
-                        <Image src={featuredPost.author_avatar} alt={featuredPost.author_name} fill className="object-cover" />
-                      )}
-                    </div>
-                    <div>
-                      <div className="text-xs sm:text-sm font-bold text-gray-900 dark:text-white">{featuredPost.author_name}</div>
-                      <div className="text-[11px] sm:text-xs font-medium text-gray-500 flex items-center gap-1.5 mt-0.5"><Clock size={12} /> {featuredPost.read_time || "5 min read"}</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs font-bold text-primary-600 dark:text-primary-400 group-hover:translate-x-1 transition-transform">
-                    <span>Read Article</span>
-                    <ArrowRight size={16} />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Link>
-        </section>
-      )}
 
       {/* Professional Blog Grid List */}
       {displayGridPosts.length > 0 && (
