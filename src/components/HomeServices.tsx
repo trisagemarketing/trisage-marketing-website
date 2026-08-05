@@ -106,9 +106,9 @@ export default function HomeServices() {
       }
     });
 
-    textTl.to(headingReveal1Ref.current, { clipPath: "inset(0 0% 0 0)", ease: "none", duration: 0.25 })
-      .to(headingReveal2Ref.current, { clipPath: "inset(0 0% 0 0)", ease: "none", duration: 0.05 })
-      .to(headingReveal3Ref.current, { clipPath: "inset(0 0% 0 0)", ease: "none", duration: 0.20 })
+    textTl.to(headingReveal1Ref.current, { clipPath: "inset(-20% -20% -20% -20%)", ease: "none", duration: 0.25 })
+      .to(headingReveal2Ref.current, { clipPath: "inset(-20% -20% -20% -20%)", ease: "none", duration: 0.05 })
+      .to(headingReveal3Ref.current, { clipPath: "inset(-20% -20% -20% -20%)", ease: "none", duration: 0.20 })
       .to(".reveal-word", { opacity: 1, stagger: 0.05, ease: "none", duration: 0.50 });
 
     // ----------------------------------------------------------------------
@@ -247,9 +247,9 @@ export default function HomeServices() {
             className="text-center max-w-2xl mx-auto"
           >
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight">
-              <span className="text-secondary-600 dark:text-secondary-400">From Hotel Challenges</span>{" "}
-              <span>to</span>{" "}
-              <span className="text-primary-600 dark:text-primary-400">Hospitality Growth</span>
+              <span className="text-primary-600 dark:text-primary-400">From Hotel Challenges</span>{" "}
+              <span>To</span>{" "}
+              <span className="text-secondary-600 dark:text-secondary-400">Hospitality Growth</span>
             </h2>
             <p className="font-sans font-medium text-lg leading-snug uppercase tracking-tight text-balance text-primary-700 dark:text-primary-200">
               Most <strong className="font-black">hospitality brands</strong> struggle because the digital ecosystem around the brand is incomplete.
@@ -342,24 +342,24 @@ export default function HomeServices() {
               </div>
 
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-4 md:mb-6 tracking-tight flex flex-wrap justify-center gap-x-2 md:gap-x-3">
-                <span className="relative inline-block whitespace-nowrap">
-                  <span className="opacity-50 text-transparent bg-clip-text bg-gradient-to-r from-secondary-600 to-secondary-400 dark:from-secondary-400 dark:to-secondary-300">
+                <span className="relative inline-block whitespace-nowrap pb-2">
+                  <span className="opacity-50 text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-primary-400 dark:from-primary-400 dark:to-primary-300">
                     From Hotel Challenges
                   </span>
-                  <span ref={headingReveal1Ref} className="absolute inset-0 text-transparent bg-clip-text bg-gradient-to-r from-secondary-600 to-secondary-400 dark:from-secondary-400 dark:to-secondary-300" style={{ clipPath: "inset(0 100% 0 0)", WebkitClipPath: "inset(0 100% 0 0)" }}>
+                  <span ref={headingReveal1Ref} className="absolute inset-0 text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-primary-400 dark:from-primary-400 dark:to-primary-300" style={{ clipPath: "inset(-20% 100% -20% -20%)", WebkitClipPath: "inset(-20% 100% -20% -20%)" }}>
                     From Hotel Challenges
                   </span>
                 </span>
-                <span className="relative inline-block whitespace-nowrap">
-                  <span className="opacity-50">to</span>
-                  <span ref={headingReveal2Ref} className="absolute inset-0" style={{ clipPath: "inset(0 100% 0 0)", WebkitClipPath: "inset(0 100% 0 0)" }}>to</span>
+                <span className="relative inline-block whitespace-nowrap pb-2">
+                  <span className="opacity-50">To</span>
+                  <span ref={headingReveal2Ref} className="absolute inset-0" style={{ clipPath: "inset(-20% 100% -20% -20%)", WebkitClipPath: "inset(-20% 100% -20% -20%)" }}>To</span>
                 </span>
                 <br className="md:hidden w-full basis-full h-0" />
-                <span className="relative inline-block whitespace-nowrap">
-                  <span className="opacity-50 text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-primary-400 dark:from-primary-400 dark:to-primary-300">
+                <span className="relative inline-block whitespace-nowrap pb-2">
+                  <span className="opacity-50 text-transparent bg-clip-text bg-gradient-to-r from-secondary-600 to-secondary-400 dark:from-secondary-400 dark:to-secondary-300">
                     Hospitality Growth
                   </span>
-                  <span ref={headingReveal3Ref} className="absolute inset-0 text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-primary-400 dark:from-primary-400 dark:to-primary-300" style={{ clipPath: "inset(0 100% 0 0)", WebkitClipPath: "inset(0 100% 0 0)" }}>
+                  <span ref={headingReveal3Ref} className="absolute inset-0 text-transparent bg-clip-text bg-gradient-to-r from-secondary-600 to-secondary-400 dark:from-secondary-400 dark:to-secondary-300" style={{ clipPath: "inset(-20% 100% -20% -20%)", WebkitClipPath: "inset(-20% 100% -20% -20%)" }}>
                     Hospitality Growth
                   </span>
                 </span>
