@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Sparkles, Send, CheckCircle2, Building2, Phone, Mail, User } from "lucide-react";
+import { X, Sparkles, Send, CheckCircle2, Building2, Phone, Mail, User, ChevronDown } from "lucide-react";
 import { submitContactForm } from "@/app/actions/contact";
 import { toast } from "sonner";
 
@@ -18,6 +18,15 @@ export default function LeadPopupModal() {
     service: "Performance Marketing & Direct Bookings",
     message: "",
   });
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const serviceOptions = [
+    "Performance Marketing & Direct Bookings",
+    "Local SEO & GEO AI Optimization",
+    "Hospitality Website Design",
+    "Revenue Management & Yield Optimization",
+    "Full Digital Audit"
+  ];
 
   useEffect(() => {
     // 1. Custom Event Listener: On-demand CTA button clicks ALWAYS open modal unconditionally
@@ -100,15 +109,18 @@ export default function LeadPopupModal() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 15 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-full max-w-lg bg-white dark:bg-[#081222] border border-gray-200 dark:border-cyan-500/30 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.35)] overflow-hidden z-10 my-auto transform-gpu will-change-transform"
+            className="relative w-full max-w-lg bg-white dark:bg-[#081222] border border-gray-200 dark:border-cyan-500/30 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.35)] z-10 my-auto transform-gpu will-change-transform"
           >
-            {/* Top Glowing Mesh Orb Background */}
-            <div 
-              className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-cyan-500/20 blur-3xl pointer-events-none" 
-            />
-            <div 
-              className="absolute -bottom-20 -left-20 w-60 h-60 rounded-full bg-indigo-500/20 blur-3xl pointer-events-none" 
-            />
+            {/* Background Wrapper (Clipped to prevent mesh orb bleed) */}
+            <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none z-0">
+              {/* Top Glowing Mesh Orb Background */}
+              <div 
+                className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-cyan-500/20 blur-3xl" 
+              />
+              <div 
+                className="absolute -bottom-20 -left-20 w-60 h-60 rounded-full bg-indigo-500/20 blur-3xl" 
+              />
+            </div>
 
             {/* Close Button */}
             <button
@@ -235,17 +247,73 @@ export default function LeadPopupModal() {
                       <label className="block text-[11px] font-bold uppercase tracking-wider text-gray-600 dark:text-gray-400 mb-1">
                         Primary Service Needed
                       </label>
-                      <select
-                        value={formData.service}
-                        onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                        className="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/60 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all cursor-pointer"
-                      >
-                        <option value="Performance Marketing & Direct Bookings">Performance Marketing & Direct Bookings</option>
-                        <option value="Local SEO & GEO AI Optimization">Local SEO & GEO AI Optimization</option>
-                        <option value="Hospitality Website Design">Hospitality Website Design</option>
-                        <option value="Revenue Management & Yield Optimization">Revenue Management & Yield Optimization</option>
-                        <option value="Full Digital Audit">Full Digital Audit</option>
-                      </select>
+                      <div className="relative">
+                        {/* Custom Trigger (Visible everywhere) */}
+                        <button
+                          type="button"
+                          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                          className="w-full px-3.5 py-2.5 text-xs sm:text-sm text-left rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/60 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all cursor-pointer flex items-center justify-between"
+                        >
+                          <span className="truncate">{formData.service}</span>
+                          <ChevronDown size={15} className={`text-gray-400 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                        </button>
+
+                        {/* MURPHY'S LAW FIX 1: Invisible Native Select for Mobile. 
+                            100% bulletproof: relies on native iOS/Android OS pickers instead of custom UI on small screens. */}
+                        <select
+                          value={formData.service}
+                          onChange={(e) => {
+                            setFormData({ ...formData, service: e.target.value });
+                            setIsDropdownOpen(false);
+                          }}
+                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer sm:hidden z-20"
+                        >
+                          {serviceOptions.map((option) => (
+                            <option key={option} value={option}>{option}</option>
+                          ))}
+                        </select>
+
+                        {/* Desktop Custom Dropdown Menu */}
+                        <div className="hidden sm:block">
+                          <AnimatePresence>
+                            {isDropdownOpen && (
+                              <>
+                                <div 
+                                  className="fixed inset-0 z-40" 
+                                  onClick={() => setIsDropdownOpen(false)} 
+                                />
+                                {/* MURPHY'S LAW FIX 2: max-h-48 & overflow-y-auto prevents clipping on small desktop viewports. 
+                                    Opens UPWARDS (bottom-[calc...]) because the input is at the bottom of the modal! */}
+                                <motion.div
+                                  initial={{ opacity: 0, y: 10 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  exit={{ opacity: 0, y: 10 }}
+                                  transition={{ duration: 0.15 }}
+                                  className="absolute left-0 right-0 bottom-[calc(100%+4px)] z-50 py-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-[0_-10px_40px_rgba(0,0,0,0.15)] max-h-48 overflow-y-auto"
+                                >
+                                  {serviceOptions.map((option) => (
+                                    <button
+                                      key={option}
+                                      type="button"
+                                      onClick={() => {
+                                        setFormData({ ...formData, service: option });
+                                        setIsDropdownOpen(false);
+                                      }}
+                                      className={`w-full px-4 py-2 text-left text-xs sm:text-sm transition-colors ${
+                                        formData.service === option 
+                                          ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 font-medium' 
+                                          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
+                                      }`}
+                                    >
+                                      {option}
+                                    </button>
+                                  ))}
+                                </motion.div>
+                              </>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      </div>
                     </div>
 
                     {/* Submit Button */}

@@ -39,7 +39,7 @@ export default function HomeBlog({ recentPosts = [] }: HomeBlogProps) {
 
   return (
     <section
-      className="relative pt-20 pb-16 sm:pt-24 sm:pb-20 md:py-28 bg-white dark:bg-[#050b14] overflow-hidden normal-case!"
+      className="relative py-12 sm:py-16 md:py-20 bg-white dark:bg-[#050b14] overflow-hidden normal-case!"
       id="insights"
     >
       {/* ── Mesh Orbs — same pattern as Testimonials & FAQ ── */}
@@ -70,7 +70,7 @@ export default function HomeBlog({ recentPosts = [] }: HomeBlogProps) {
       <div className="container relative z-10 mx-auto px-4 md:px-8 max-w-300">
 
         {/* ── Section Header — exact same pattern as Testimonials ── */}
-        <div className="text-center max-w-4xl mx-auto mb-12 md:mb-16 pt-4 sm:pt-6">
+        <div className="text-center max-w-4xl mx-auto mb-8 md:mb-10">
           <motion.h2
             initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={fadeUp}
             className="text-3xl sm:text-4xl md:text-6xl font-black mb-4 md:mb-6 tracking-tight text-center leading-[1.2]"
@@ -96,7 +96,7 @@ export default function HomeBlog({ recentPosts = [] }: HomeBlogProps) {
         </div>
 
         {/* ── Blog Cards Grid ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-14 md:mb-16 normal-case!">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-12 normal-case!">
           {displayPosts.map((post, index) => (
             <motion.div
               key={post.id}
@@ -172,7 +172,7 @@ export default function HomeBlog({ recentPosts = [] }: HomeBlogProps) {
         {/* ── CTA ── */}
         <motion.div
           initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={fadeUp}
-          className="text-center pb-4 md:pb-8"
+          className="text-center"
         >
           <Link
             href="/blog"

@@ -51,14 +51,14 @@ export default function GlobalPresence() {
   }
 
   return (
-    <section className="relative w-full pt-24 pb-0 bg-transparent overflow-hidden">
+    <section className="relative w-full pt-12 md:pt-20 pb-0 bg-transparent overflow-hidden">
       {/* Background Ambience (Adaptive) - Positioned behind the Title */}
       <div className="absolute top-10 left-1/2 -translate-x-1/2 w-full max-w-5xl h-100 pointer-events-none -z-10 opacity-40 dark:opacity-20 blur-[80px] flex items-center justify-between px-10">
         <div className="w-75 h-75 bg-secondary-300/60 dark:bg-secondary-500/40 rounded-full mix-blend-multiply dark:mix-blend-screen" />
         <div className="w-100 h-100 bg-primary-200/60 dark:bg-primary-600/30 rounded-full mix-blend-multiply dark:mix-blend-screen" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 lg:px-24 mb-10 md:mb-20 text-center md:text-left">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 lg:px-24 mb-8 md:mb-12 text-center md:text-left">
         <h4 className="flex items-center justify-center md:justify-start gap-4 text-secondary-600 dark:text-secondary-400 font-mono tracking-[0.2em] text-sm uppercase mb-6" aria-label="Section Title">
           <span className="w-8 h-px bg-secondary-600/50 dark:bg-secondary-400/50"></span>
           India Presence
@@ -97,7 +97,7 @@ export default function GlobalPresence() {
         `}
       </style>
       {/* Reduced bottom padding on mobile to fix the massive empty gap; added top padding so top ring/border is never clipped */}
-      <div className="relative z-10 w-full pt-3 md:pt-4 pb-4 md:pb-16 overflow-hidden">
+      <div className="relative z-10 w-full pt-3 md:pt-4 pb-4 md:pb-8 overflow-hidden">
         {/* MURPHY'S LAW FIX: Reduced quadrupled array to doubled array. 
             Quadrupling created 20+ heavy DOM nodes which caused massive memory lag and jitter on mobile.
             Doubling is perfectly sufficient for a seamless 50% translation width. */}
