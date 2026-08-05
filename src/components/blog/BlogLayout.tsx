@@ -168,12 +168,12 @@ export default function BlogLayout({
                     
                     {/* Card Content Area */}
                     <div className="flex flex-col flex-1 p-5 sm:p-6 md:p-7">
-                      <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors leading-snug tracking-tight">
+                      <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors leading-snug tracking-tight line-clamp-2" title={post.title}>
                         {post.title}
                       </h3>
 
-                      <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-6 line-clamp-3 leading-relaxed flex-1 font-normal">
-                        {post.excerpt}
+                      <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-6 line-clamp-3 leading-relaxed font-normal">
+                        {post.excerpt || "Dive deep into our latest strategies and actionable insights on how to scale your brand and accelerate revenue growth."}
                       </p>
 
                       {/* Author & Footer Info */}
