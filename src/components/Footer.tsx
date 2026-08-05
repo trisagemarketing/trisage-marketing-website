@@ -244,10 +244,15 @@ export default function Footer() {
                 </div>
                 <div>
                   <span className="block font-black text-[10px] uppercase tracking-widest text-primary-600 dark:text-primary-400 mb-0.5">Address</span>
-                  <span className="font-medium text-gray-700 dark:text-gray-300 leading-relaxed block">
+                  <a 
+                    href="https://www.google.com/maps/search/?api=1&query=B-11,+Amaltash+Marg,+Block+B,+Sector+4,+Noida,+Uttar+Pradesh+201301" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="font-medium text-gray-700 dark:text-gray-300 leading-relaxed block hover:text-secondary-600 dark:hover:text-secondary-400 transition-colors"
+                  >
                     B-11, Amaltash Marg, <br /> &amp; Block B, Sector 4,<br />
                     Noida, Uttar Pradesh 201301
-                  </span>
+                  </a>
                 </div>
               </li>
             </ul>

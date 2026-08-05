@@ -56,11 +56,16 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900 dark:text-white mb-1">Office</h4>
-                    <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                    <a 
+                      href="https://www.google.com/maps/search/?api=1&query=B-11,+Amaltash+Marg,+Block+B,+Sector+4,+Noida,+Uttar+Pradesh+201301"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-700 dark:text-gray-300 leading-relaxed block hover:text-secondary-600 dark:hover:text-secondary-400 transition-colors"
+                    >
                       B-11, Amaltash Marg,<br/>
                       Block B, Sector 4,<br/>
                       Noida, Uttar Pradesh 201301
-                    </p>
+                    </a>
                   </div>
                 </div>
               </div>
