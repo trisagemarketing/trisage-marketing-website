@@ -367,29 +367,29 @@ Alongside the revenue growth, the resort recorded 13.89 million Meta views, more
                 key={idx} 
                 className={`p-8 sm:p-10 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200/80 dark:border-gray-800/80 shadow-md hover:shadow-lg transition-transform duration-300 ease-out flex flex-col justify-between group relative contain-content`}
               >
-                <div className="absolute top-6 right-8 text-4xl font-black text-gray-200 dark:text-gray-800 pointer-events-none select-none">
+                <div className="absolute top-4 right-4 sm:top-6 sm:right-6 text-7xl sm:text-8xl font-black text-gray-100 dark:text-gray-800/40 pointer-events-none select-none z-0 transition-all duration-300 group-hover:scale-110 group-hover:-rotate-3 origin-top-right">
                   {pillar.number}
                 </div>
 
                 <div className="space-y-5 relative z-10">
-                  <div className="flex items-center gap-4">
-                    <div className={`w-14 h-14 rounded-2xl ${pillar.iconBg} flex items-center justify-center shadow-lg`}>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                    <div className={`w-14 h-14 shrink-0 rounded-2xl ${pillar.iconBg} flex items-center justify-center shadow-lg relative z-10`}>
                       <pillar.icon size={26} />
                     </div>
-                    <div>
-                      <span className={`inline-block px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider border ${pillar.badgeColor} leading-relaxed`}>
+                    <div className="relative z-10 max-w-full">
+                      <span className={`inline-block px-3 py-1 rounded-full text-[10px] sm:text-xs font-extrabold uppercase tracking-wider border ${pillar.badgeColor} leading-relaxed break-words max-w-full`}>
                         {pillar.subtitle}
                       </span>
                     </div>
                   </div>
 
-                  <div className="min-h-13 flex items-center">
+                  <div className="min-h-[60px] sm:min-h-[64px] flex items-center">
                     <h3 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
                       {pillar.title}
                     </h3>
                   </div>
 
-                  <div className="min-h-25 sm:min-h-26 flex items-start">
+                  <div className="min-h-[120px] sm:min-h-[130px] flex items-start">
                     <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed font-normal">
                       {pillar.description}
                     </p>
@@ -401,13 +401,13 @@ Alongside the revenue growth, the resort recorded 13.89 million Meta views, more
                       onClick={() => setSelectedProof(pillar.number === "01" ? proofItems[0] : proofItems[1])}
                       className="my-3 rounded-2xl overflow-hidden border border-teal-500/30 dark:border-teal-500/40 bg-gray-50 dark:bg-gray-950 p-2.5 shadow-md relative group/img cursor-pointer transition-colors duration-300 hover:border-teal-500 dark:hover:border-teal-400"
                     >
-                      <div className="flex items-center justify-between px-3 py-1.5 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900/90 rounded-t-xl mb-2 text-[11px] font-bold">
-                        <span className="uppercase tracking-widest text-[10px] text-teal-700 dark:text-teal-400">
+                      <div className="flex items-center justify-between px-3 py-2 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900/90 rounded-t-xl mb-2 text-[11px] font-bold overflow-hidden gap-3">
+                        <span className="uppercase tracking-widest text-[10px] text-teal-700 dark:text-teal-400 truncate flex-1">
                           {pillar.subtitle}
                         </span>
-                        <div className="flex items-center gap-1.5 text-teal-700 dark:text-teal-400 font-extrabold text-xs">
+                        <div className="flex items-center gap-1.5 text-teal-700 dark:text-teal-400 font-extrabold text-[10px] sm:text-xs shrink-0">
                           <span>{pillar.analyticsTitle}</span>
-                          <Maximize2 size={12} />
+                          <Maximize2 size={12} className="shrink-0" />
                         </div>
                       </div>
 
@@ -424,11 +424,11 @@ Alongside the revenue growth, the resort recorded 13.89 million Meta views, more
                   )}
                 </div>
 
-                <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800/80 flex items-center justify-between">
-                  <div className="text-xs font-bold text-gray-500 dark:text-gray-400">Key Pillar Metric</div>
-                  <div className="flex items-baseline gap-1.5">
-                    <span className="text-2xl font-black text-gray-900 dark:text-white">{pillar.stat}</span>
-                    <span className="text-xs font-bold text-teal-600 dark:text-teal-400 uppercase tracking-wider">{pillar.statLabel}</span>
+                <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
+                  <div className="text-[11px] sm:text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Key Pillar Metric</div>
+                  <div className="flex items-baseline gap-2 flex-wrap sm:flex-nowrap">
+                    <span className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white whitespace-nowrap">{pillar.stat}</span>
+                    <span className="text-[10px] sm:text-xs font-bold text-teal-600 dark:text-teal-400 uppercase tracking-wider whitespace-nowrap">{pillar.statLabel}</span>
                   </div>
                 </div>
               </div>
@@ -760,7 +760,7 @@ Alongside the revenue growth, the resort recorded 13.89 million Meta views, more
                 </span>
                 <button
                   onClick={() => setSelectedProof(null)}
-                  className="w-11 h-11 rounded-full bg-gray-100 dark:bg-gray-800/80 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500 flex items-center justify-center transition-colors cursor-pointer"
+                  className="w-11 h-11 shrink-0 rounded-full bg-gray-100 dark:bg-gray-800/80 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500 flex items-center justify-center transition-colors cursor-pointer"
                   aria-label="Close proof detail"
                 >
                   <X size={20} />
