@@ -123,7 +123,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
               </div>
               <ShareButton 
                 title={post.title} 
-                url={post.canonical_url || `https://trisage.com/blog/${post.slug}`} 
+                url={post.canonical_url || `https://trisagemarketing.com/blog/${post.slug}`} 
               />
             </div>
           </div>
