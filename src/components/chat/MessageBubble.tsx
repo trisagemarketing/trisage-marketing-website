@@ -1,3 +1,4 @@
+import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ChatMessage } from "@/types/chatbot";
 import Image from "next/image";
@@ -7,9 +8,12 @@ import { motion } from "framer-motion";
 interface MessageBubbleProps {
   message: ChatMessage;
   onOptionSelect?: (option: string) => void;
+  currentInput?: string;
+  showNextButton?: boolean;
+  onNext?: () => void;
 }
 
-export default function MessageBubble({ message, onOptionSelect }: MessageBubbleProps) {
+export default function MessageBubble({ message, onOptionSelect, currentInput, showNextButton, onNext }: MessageBubbleProps) {
   const isBot = message.type === "bot";
 
   return (
@@ -25,8 +29,8 @@ export default function MessageBubble({ message, onOptionSelect }: MessageBubble
             <Image 
               src={BOT_AVATAR} 
               alt="Bot Avatar" 
-              width={24} 
-              height={24} 
+              width={20} 
+              height={20} 
               className="w-full h-full object-contain"
             />
           </div>
@@ -48,15 +52,33 @@ export default function MessageBubble({ message, onOptionSelect }: MessageBubble
         {/* Render selectable options if present (e.g. Services) */}
         {message.isOptions && message.options && message.options.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-3 w-full max-w-[260px]">
-            {message.options.map((option, idx) => (
+            {message.options.map((option, idx) => {
+              const isSelected = currentInput && currentInput.includes(option);
+              return (
               <button
                 key={idx}
                 onClick={() => onOptionSelect?.(option)}
-                className="text-xs font-medium px-3 py-1.5 rounded-full border border-primary-200 dark:border-primary-800 bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 hover:bg-primary-100 dark:hover:bg-primary-800/50 transition-colors shadow-sm text-left"
+                className={cn(
+                  "text-xs font-medium px-3 py-1.5 rounded-full border transition-all duration-200 shadow-sm text-left flex items-center gap-1.5",
+                  isSelected 
+                    ? "border-primary-500 bg-primary-600 text-white shadow-primary-500/25 dark:bg-primary-500 scale-95" 
+                    : "border-primary-200 dark:border-primary-800 bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 hover:bg-primary-100 dark:hover:bg-primary-800/50"
+                )}
               >
+                {isSelected && <Check size={14} className="shrink-0 stroke-[3]" />}
                 {option}
               </button>
-            ))}
+            )})}
+            {showNextButton && (
+              <div className="w-full mt-1.5 flex justify-end">
+                <button
+                  onClick={onNext}
+                  className="text-xs font-bold px-4 py-1.5 rounded-full bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-md hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors flex items-center gap-1"
+                >
+                  Confirm <span className="text-[10px]">→</span>
+                </button>
+              </div>
+            )}
           </div>
         )}
         

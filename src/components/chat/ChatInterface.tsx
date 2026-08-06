@@ -109,11 +109,14 @@ export default function ChatInterface({
         className="flex-1 min-h-0 overflow-y-auto chat-scrollbar overscroll-contain p-4 bg-gray-50 dark:bg-gray-900/50 relative scroll-smooth"
       >
         <div className="flex flex-col space-y-2 pb-2">
-          {state.messages.map((msg) => (
+          {state.messages.map((msg, index) => (
             <MessageBubble 
               key={msg.id} 
               message={msg} 
-              onOptionSelect={onOptionSelect} 
+              onOptionSelect={onOptionSelect}
+              currentInput={inputValue}
+              showNextButton={state.step === 4 && index === state.messages.length - 1 && inputValue.trim().length > 0}
+              onNext={onSubmit}
             />
           ))}
           
@@ -152,6 +155,7 @@ export default function ChatInterface({
             placeholder={
               state.step === CHAT_STEPS.EMAIL ? "Enter your email..." : 
               state.step === CHAT_STEPS.PHONE ? "Enter your phone..." : 
+              state.step === CHAT_STEPS.SERVICE ? "Type or select services..." : 
               "Type a message..."
             }
             type={
@@ -159,7 +163,7 @@ export default function ChatInterface({
               state.step === CHAT_STEPS.PHONE ? "tel" : 
               "text"
             }
-            disabled={state.step === CHAT_STEPS.SERVICE}
+            disabled={false}
             isLocked={state.isTyping || state.step === CHAT_STEPS.SUBMITTING}
             isLoading={state.step === CHAT_STEPS.SUBMITTING}
             error={state.error}

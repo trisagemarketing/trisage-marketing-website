@@ -116,8 +116,26 @@ export default function ChatWidget() {
               state={state}
               inputValue={inputValue}
               onInputChange={setInputValue}
-              onSubmit={onSubmit}
-              onOptionSelect={handleOptionSelect}
+              onSubmit={() => {
+                if (!inputValue.trim()) return;
+                handleInputSubmit(inputValue);
+                setInputValue("");
+              }}
+              onOptionSelect={(option) => {
+                if (state.step === 4) { // CHAT_STEPS.SERVICE
+                  setInputValue((prev) => {
+                    if (!prev) return option;
+                    const items = prev.split(',').map(s => s.trim()).filter(Boolean);
+                    if (items.includes(option)) {
+                      return items.filter(s => s !== option).join(', ');
+                    } else {
+                      return `${prev}, ${option}`;
+                    }
+                  });
+                } else {
+                  handleOptionSelect(option);
+                }
+              }}
               onClose={toggleOpen}
               onReset={resetSession}
             />

@@ -25,11 +25,11 @@ export const SERVICES_LIST = [
 export const BOT_AVATAR = "/logo.png"; // Standard Trisage Avatar
 
 export const CHATBOT_MESSAGES = {
-  WELCOME: "Hi there! 👋 Welcome to Trisage Marketing. How can I help you grow today?",
-  ASK_NAME: "Great! I can connect you with the right expert. To get started, what's your name?",
-  ASK_EMAIL: "Nice to meet you! What's the best email to reach you at?",
-  ASK_PHONE: "Got it. And a phone number we can call you on?",
-  ASK_SERVICE: "Thanks! What area are you looking to grow?",
+  WELCOME: "Welcome to Trisage Marketing. How can I help you grow today?",
+  ASK_NAME: "What's your name?",
+  ASK_EMAIL: "What's the Email Id",
+  ASK_PHONE: "What's your phone number we can call you on?",
+  ASK_SERVICE: "Thanks You! ",
   ASK_MESSAGE: "Awesome. Anything specific you'd like us to know before we hop on a call?",
   SUCCESS: "All set! 🎉 Our team will review your details and reach out shortly. Have a great day!",
   ERROR_GENERIC: "Oops! Something went wrong on our end. Please try again or reach out to us directly.",
