@@ -12,20 +12,27 @@ export interface ContactMessage {
   meeting_booked: boolean;
 }
 
+import Link from "next/link";
 import MessageActions from "./MessageActions";
 
-export default async function MessagesTableBody({ limit }: { limit?: number }) {
+interface MessagesTableBodyProps {
+  limit?: number;
+  page?: number;
+  baseUrl?: string;
+}
+
+export default async function MessagesTableBody({ limit = 9, page = 1, baseUrl = "/admin/dashboard" }: MessagesTableBodyProps) {
   const supabase = await createClient();
+  const from = (page - 1) * limit;
+  const to = from + limit - 1;
+
   let query = supabase
     .from('contact_messages')
-    .select('*')
-    .order('created_at', { ascending: false });
-    
-  if (limit) {
-    query = query.limit(limit);
-  }
+    .select('*', { count: 'exact' })
+    .order('created_at', { ascending: false })
+    .range(from, to);
 
-  const { data: messages, error } = await query;
+  const { data: messages, count, error } = await query;
 
   if (error || !messages || messages.length === 0) {
     return (
@@ -149,6 +156,42 @@ export default async function MessagesTableBody({ limit }: { limit?: number }) {
           </div>
         );
       })}
+
+      {/* Pagination Controls */}
+      {count && count > limit && (
+        <div className="col-span-full flex items-center justify-between pt-6 border-t border-gray-200/50 dark:border-white/5 mt-4">
+          <div className="text-sm text-gray-500 dark:text-gray-400">
+            Showing <span className="font-bold text-gray-900 dark:text-white">{(page - 1) * limit + 1}</span> to <span className="font-bold text-gray-900 dark:text-white">{Math.min(page * limit, count)}</span> of <span className="font-bold text-gray-900 dark:text-white">{count}</span> inquiries
+          </div>
+          <div className="flex items-center gap-2">
+            {page > 1 ? (
+              <Link 
+                href={`${baseUrl}?page=${page - 1}`}
+                className="px-4 py-2 text-sm font-bold text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              >
+                Previous
+              </Link>
+            ) : (
+              <button disabled className="px-4 py-2 text-sm font-bold text-gray-400 dark:text-gray-600 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg cursor-not-allowed">
+                Previous
+              </button>
+            )}
+            
+            {page * limit < count ? (
+              <Link 
+                href={`${baseUrl}?page=${page + 1}`}
+                className="px-4 py-2 text-sm font-bold text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-lg shadow-md shadow-primary-500/20 transition-all"
+              >
+                Next
+              </Link>
+            ) : (
+              <button disabled className="px-4 py-2 text-sm font-bold text-gray-400 dark:text-gray-600 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg cursor-not-allowed">
+                Next
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </>
   );
 }

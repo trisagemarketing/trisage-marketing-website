@@ -14,7 +14,10 @@ const iconMap: Record<string, LucideIcon> = {
   UserPlus,
 };
 
-export default async function AdminDashboard() {
+export default async function AdminDashboard(props: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
+  const searchParams = await props.searchParams;
+  const page = Number(searchParams?.page) || 1;
+
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -218,7 +221,7 @@ export default async function AdminDashboard() {
         
         <div className="p-3 sm:p-6 lg:p-8 bg-gray-50/30 dark:bg-black/10">
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
-            <MessagesTableBody limit={5} />
+            <MessagesTableBody limit={9} page={page} />
           </div>
         </div>
       </div>
