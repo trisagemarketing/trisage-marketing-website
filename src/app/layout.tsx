@@ -15,13 +15,11 @@ export const metadata: Metadata = {
   description: "Trisage Marketing is a premium digital agency specializing in SEO, Performance Marketing, and Growth Strategies.",
   icons: {
     icon: [
-      { url: '/icon.png', type: 'image/png', sizes: '512x512' },
-      { url: '/icon.svg', type: 'image/svg+xml' },
-      { url: '/favicon.ico', sizes: '48x48' }
+      { url: '/favicon.ico' },
+      { url: '/icon.png', type: 'image/png', sizes: '512x512' }
     ],
-    shortcut: [{ url: '/icon.png', type: 'image/png' }],
     apple: [
-      { url: '/icon.png', sizes: '180x180', type: 'image/png' }
+      { url: '/icon.png', type: 'image/png' }
     ]
   },
   openGraph: {
