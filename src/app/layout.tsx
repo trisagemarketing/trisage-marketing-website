@@ -13,6 +13,11 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://trisagemarketing.com'),
   title: "Trisage Marketing | Premium Digital Agency in India",
   description: "Trisage Marketing is a premium digital agency specializing in SEO, Performance Marketing, and Growth Strategies.",
+  appleWebApp: {
+    title: 'Trisage Marketing',
+    statusBarStyle: 'default',
+    capable: true,
+  },
   openGraph: {
     title: "Trisage Marketing | Premium Digital Agency in India",
     description: "Trisage Marketing is a premium digital agency specializing in SEO, Performance Marketing, and Growth Strategies.",
