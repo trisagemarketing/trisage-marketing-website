@@ -13,15 +13,6 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://trisagemarketing.com'),
   title: "Trisage Marketing | Premium Digital Agency in India",
   description: "Trisage Marketing is a premium digital agency specializing in SEO, Performance Marketing, and Growth Strategies.",
-  icons: {
-    icon: [
-      { url: '/favicon.ico' },
-      { url: '/icon.png', type: 'image/png', sizes: '512x512' }
-    ],
-    apple: [
-      { url: '/icon.png', type: 'image/png' }
-    ]
-  },
   openGraph: {
     title: "Trisage Marketing | Premium Digital Agency in India",
     description: "Trisage Marketing is a premium digital agency specializing in SEO, Performance Marketing, and Growth Strategies.",

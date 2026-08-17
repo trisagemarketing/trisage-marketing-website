@@ -13,6 +13,7 @@ import OurClients from "@/components/OurClients";
 import HomeBlog from "@/components/HomeBlog";
 import CTA from "@/components/CTA";
 import HomeBackground from "@/components/HomeBackground";
+import IndianFlagPlanes from "@/components/IndianFlagPlanes";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function Home() {
@@ -30,6 +31,7 @@ export default async function Home() {
 
   return (
     <main className="relative min-h-screen bg-white dark:bg-[#050b14]">
+      {/* <IndianFlagPlanes /> */}
 
       {/* ── Creative Animated Background (Hero Only) ── */}
       <div className="absolute top-0 left-0 w-full h-[120vh] overflow-hidden pointer-events-none z-0">
