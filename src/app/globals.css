@@ -7,9 +7,74 @@
 
 @layer base {
   body {
-    text-transform: capitalize;
-    letter-spacing: -0.035em;
+    letter-spacing: -0.02em;
   }
+}
+
+/* ── Sonner Single-Line Toast & Loading Icon Overrides ── */
+[data-sonner-toaster] {
+  width: max-content !important;
+  max-width: none !important;
+}
+
+[data-sonner-toast] {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 0.75rem !important;
+  width: max-content !important;
+  max-width: none !important;
+  min-width: max-content !important;
+  white-space: nowrap !important;
+  position: relative !important;
+}
+
+[data-sonner-toast] [data-icon],
+[data-sonner-toast] [data-loading-icon],
+[data-sonner-toast] .sonner-loading-icon,
+[data-sonner-toast] [data-spinner] {
+  position: static !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  flex-shrink: 0 !important;
+  order: -1 !important;
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+}
+
+[data-sonner-toast] [data-icon] svg,
+[data-sonner-toast] [data-loading-icon] svg,
+[data-sonner-toast] .sonner-loading-icon svg,
+[data-sonner-toast] svg {
+  position: static !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  flex-shrink: 0 !important;
+  width: 1.1rem !important;
+  height: 1.1rem !important;
+}
+
+[data-sonner-toast] [data-content],
+[data-sonner-toast] [data-title],
+[data-sonner-toast] div {
+  position: static !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  margin: 0 !important;
+  white-space: nowrap !important;
 }
 
 @theme {

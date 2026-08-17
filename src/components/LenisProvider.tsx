@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -10,7 +11,14 @@ if (typeof window !== "undefined") {
 }
 
 export default function LenisProvider({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+
   useEffect(() => {
+    // Disable Lenis smooth scroll hijacking on Dashboard and Admin EMS routes so mouse wheel and touchpad gestures work 100% natively!
+    if (pathname.startsWith('/admin') || pathname.startsWith('/dashboard')) {
+      return;
+    }
+
     const shouldUseNativeScroll = window.matchMedia(
       "(pointer: coarse), (max-width: 767px), (prefers-reduced-motion: reduce)"
     ).matches;
@@ -41,7 +49,7 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
       lenis.off("scroll", ScrollTrigger.update);
       lenis.destroy();
     };
-  }, []);
+  }, [pathname]);
 
   return <>{children}</>;
 }

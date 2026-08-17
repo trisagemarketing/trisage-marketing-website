@@ -4,7 +4,7 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
 
-export function ThemeToggle() {
+export function ThemeToggle({ showLabel = false }: { showLabel?: boolean }) {
   const [mounted, setMounted] = useState(false);
   const { theme, resolvedTheme, setTheme } = useTheme();
 
@@ -14,25 +14,46 @@ export function ThemeToggle() {
   }, []);
 
   if (!mounted) {
-    return <div className="w-9 h-9" />;
+    return <div className="h-8 w-24 rounded-full bg-slate-200/50 dark:bg-slate-800/50 animate-pulse" />;
   }
 
-  // Use resolvedTheme to handle the case where theme === 'system'
   const currentTheme = resolvedTheme || theme;
+  const isDark = currentTheme === "dark";
 
   const toggleTheme = () => {
-    const nextTheme = currentTheme === "dark" ? "light" : "dark";
-    setTheme(nextTheme);
+    setTheme(isDark ? "light" : "dark");
   };
 
   return (
     <button
       onClick={toggleTheme}
-      className="w-9 h-9 flex items-center justify-center p-0 m-0 leading-none rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-      aria-label="Toggle dark mode"
-      style={{ letterSpacing: 'normal' }}
+      type="button"
+      className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-white/90 dark:bg-[#1f2a3e]/90 border border-slate-200 dark:border-slate-700/80 shadow-sm hover:shadow transition-all duration-300 cursor-pointer group select-none"
+      aria-label="Toggle theme mode"
     >
-      {currentTheme === "dark" ? <Sun size={18} className="block m-auto" /> : <Moon size={18} className="block m-auto" />}
+      <span className="text-xs font-bold tracking-tight text-slate-700 dark:text-slate-200">
+        {isDark ? "Dark Mode" : "Light Mode"}
+      </span>
+
+      {/* Realme UI / iOS Settings Style Sliding Pill Switch Track */}
+      <div
+        className={`relative w-11 h-6 rounded-full transition-colors duration-300 p-0.5 flex items-center ${
+          isDark ? "bg-slate-800 border border-slate-700" : "bg-slate-200 border border-slate-300"
+        }`}
+      >
+        {/* Sliding Knob Handle */}
+        <div
+          className={`w-4.5 h-4.5 rounded-full bg-white shadow-md transform transition-transform duration-300 flex items-center justify-center ${
+            isDark ? "translate-x-5 bg-indigo-600 text-amber-300" : "translate-x-0 bg-white text-amber-500"
+          }`}
+        >
+          {isDark ? (
+            <Moon size={11} className="text-indigo-400 fill-indigo-400" />
+          ) : (
+            <Sun size={11} className="text-amber-500 fill-amber-500" />
+          )}
+        </div>
+      </div>
     </button>
   );
 }

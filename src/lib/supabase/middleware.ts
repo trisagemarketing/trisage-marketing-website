@@ -36,24 +36,44 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  // Protection logic: if the user accesses /admin (except /admin/login) and is not logged in, redirect to login.
-  if (
-    request.nextUrl.pathname.startsWith('/admin') &&
-    !request.nextUrl.pathname.startsWith('/admin/login') &&
-    !user
-  ) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/admin/login'
-    return NextResponse.redirect(url)
+  let isHrOrAdmin = false;
+  if (user) {
+    const metaRole = user.user_metadata?.role;
+    if (metaRole === 'hr' || metaRole === 'admin') {
+      isHrOrAdmin = true;
+    } else {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', user.id)
+        .maybeSingle();
+
+      if (profile?.role === 'hr' || profile?.role === 'admin') {
+        isHrOrAdmin = true;
+      }
+    }
   }
 
-  // If the user is logged in and tries to access /admin/login, redirect to /admin.
+  // Protection logic: if accessing /admin (except /admin/login) and not authenticated as HR/Admin, redirect to /admin/login.
+  if (
+    request.nextUrl.pathname.startsWith('/admin') &&
+    !request.nextUrl.pathname.startsWith('/admin/login')
+  ) {
+    if (!user || !isHrOrAdmin) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/admin/login'
+      return NextResponse.redirect(url)
+    }
+  }
+
+  // If the user is logged in as valid HR/Admin and tries to access /admin/login, redirect directly to /admin/dashboard.
   if (
     request.nextUrl.pathname.startsWith('/admin/login') &&
-    user
+    user &&
+    isHrOrAdmin
   ) {
     const url = request.nextUrl.clone()
-    url.pathname = '/admin'
+    url.pathname = '/admin/dashboard'
     return NextResponse.redirect(url)
   }
 

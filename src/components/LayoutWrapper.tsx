@@ -8,17 +8,17 @@ import LeadPopupModal from "./LeadPopupModal";
 
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isAdmin = pathname?.startsWith("/admin");
+  const isEmsPage = pathname?.startsWith("/admin") || pathname?.startsWith("/login") || pathname?.startsWith("/dashboard");
 
   return (
     <>
-      {!isAdmin && <Navbar />}
+      {!isEmsPage && <Navbar />}
       <div id="page-wrapper">
         {children}
       </div>
-      {!isAdmin && <Footer />}
-      {!isAdmin && <FloatingToggleHub />}
-      {!isAdmin && <LeadPopupModal />}
+      {!isEmsPage && <Footer />}
+      {!isEmsPage && <FloatingToggleHub />}
+      {!isEmsPage && <LeadPopupModal />}
     </>
   );
 }

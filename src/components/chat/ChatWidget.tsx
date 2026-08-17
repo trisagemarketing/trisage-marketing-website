@@ -19,9 +19,13 @@ const ChatInterface = dynamic(() => import("./ChatInterface"), {
 
 export default function ChatWidget() {
   const pathname = usePathname();
+  const isEmsPage = pathname?.startsWith("/admin") || pathname?.startsWith("/login") || pathname?.startsWith("/dashboard");
+
   const [inputValue, setInputValue] = useState("");
   const [vvStyle, setVvStyle] = useState<React.CSSProperties>({});
   const { state, toggleOpen, handleInputSubmit, handleOptionSelect, resetSession } = useChatbot();
+
+  if (isEmsPage) return null;
 
   // Prevent background scrolling and rubber-banding when chat is open on mobile
   useEffect(() => {

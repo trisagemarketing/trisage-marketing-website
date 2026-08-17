@@ -117,15 +117,28 @@ export default function RootLayout({
           <LenisProvider>
             <Toaster 
               position="top-center" 
-              theme="system" 
-              closeButton
-              richColors
-              offset={20}
+              expand={false}
+              duration={3500}
+              offset={80}
               toastOptions={{
-                className: "font-sans shadow-2xl rounded-2xl border text-xs sm:text-sm font-semibold",
+                unstyled: true,
                 style: {
-                  zIndex: 999999,
-                }
+                  width: "max-content",
+                  maxWidth: "none",
+                  minWidth: "max-content",
+                  whiteSpace: "nowrap",
+                },
+                classNames: {
+                  toast: "!w-auto !max-w-none !whitespace-nowrap flex items-center justify-center gap-2.5 px-6 py-3 rounded-full bg-white/95 dark:bg-[#1f2a3e]/95 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800 shadow-2xl text-slate-900 dark:text-white font-sans text-xs sm:text-sm font-extrabold z-[999999] mx-auto shrink-0",
+                  title: "!whitespace-nowrap font-extrabold text-slate-900 dark:text-white",
+                  description: "!whitespace-nowrap text-slate-500 dark:text-slate-400 text-xs font-normal",
+                  actionButton: "!whitespace-nowrap bg-secondary-500 text-white font-bold text-xs px-3 py-1.5 rounded-xl",
+                  cancelButton: "!whitespace-nowrap bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs px-3 py-1.5 rounded-xl",
+                  success: "border-l-4 border-l-emerald-500",
+                  error: "border-l-4 border-l-rose-500",
+                  info: "border-l-4 border-l-secondary-500",
+                  warning: "border-l-4 border-l-amber-500",
+                },
               }}
             />
             {/* <GlobalClickSpark /> */}
