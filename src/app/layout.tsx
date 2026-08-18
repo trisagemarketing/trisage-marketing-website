@@ -8,6 +8,7 @@ import LayoutWrapper from "@/components/LayoutWrapper";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
 import { Toaster } from "sonner";
 import ChatWidget from "@/components/chat/ChatWidget";
+import CookieConsentBanner from "@/components/CookieConsentBanner";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://trisagemarketing.com'),
@@ -141,6 +142,7 @@ export default function RootLayout({
               {children}
             </LayoutWrapper>
             <ChatWidget />
+            <CookieConsentBanner />
           </LenisProvider>
         </ThemeProvider>
       </body>

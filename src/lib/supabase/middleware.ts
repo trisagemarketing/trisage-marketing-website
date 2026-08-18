@@ -7,6 +7,8 @@ export async function updateSession(request: NextRequest) {
     request,
   })
 
+  const THIRTY_DAYS_IN_SECONDS = 60 * 60 * 24 * 30; // 30 Days
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -21,7 +23,12 @@ export async function updateSession(request: NextRequest) {
             request,
           })
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
+            supabaseResponse.cookies.set(name, value, {
+              ...options,
+              maxAge: THIRTY_DAYS_IN_SECONDS,
+              sameSite: 'lax',
+              path: '/',
+            })
           )
         },
       },
