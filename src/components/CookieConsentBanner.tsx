@@ -1,24 +1,42 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { ShieldCheck, Cookie, X } from "lucide-react";
 
 export default function CookieConsentBanner() {
   const [isVisible, setIsVisible] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
-    // Check if user has already made a cookie consent choice
+    // Only trigger cookie consent prompt AFTER user has logged in (on /dashboard or /admin routes)
     if (typeof window !== "undefined") {
+      const isPublicOrLoginRoute =
+        pathname === "/login" ||
+        pathname === "/admin/login" ||
+        pathname === "/" ||
+        pathname.startsWith("/services") ||
+        pathname.startsWith("/about") ||
+        pathname.startsWith("/contact") ||
+        pathname.startsWith("/case-studies") ||
+        pathname.startsWith("/privacy") ||
+        pathname.startsWith("/terms");
+
+      if (isPublicOrLoginRoute) {
+        setIsVisible(false);
+        return;
+      }
+
       const consent = localStorage.getItem("trisage_cookie_consent");
       if (!consent) {
-        // Show consent popup after a slight delay for smooth entry
+        // Show consent popup after a slight delay once logged into dashboard
         const timer = setTimeout(() => {
           setIsVisible(true);
-        }, 800);
+        }, 1000);
         return () => clearTimeout(timer);
       }
     }
-  }, []);
+  }, [pathname]);
 
   const handleAccept = () => {
     if (typeof window !== "undefined") {
