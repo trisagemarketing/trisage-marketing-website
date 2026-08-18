@@ -269,12 +269,29 @@ function CustomDatePicker({ label, value, onChange, required }: CustomDatePicker
 
 export default function EmployeeDashboard() {
   const router = useRouter();
+  const tabsSectionRef = useRef<HTMLDivElement>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
   const [todayRecord, setTodayRecord] = useState<AttendanceRecord | null>(null);
   const [attendanceHistory, setAttendanceHistory] = useState<AttendanceRecord[]>([]);
   const [leaveRequests, setLeaveRequests] = useState<LeaveRequest[]>([]);
+
+  const scrollToTabsSection = (targetTab?: 'attendance' | 'leaves') => {
+    if (targetTab) {
+      setActiveTab(targetTab);
+    }
+    setTimeout(() => {
+      if (tabsSectionRef.current) {
+        const rect = tabsSectionRef.current.getBoundingClientRect();
+        // Only scroll if tabs section is outside comfortable viewport bounds
+        if (rect.top < 0 || rect.top > 140) {
+          const y = rect.top + window.pageYOffset - 80;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+      }
+    }, 50);
+  };
   
   // Action States
   const [isPunching, setIsPunching] = useState(false);
@@ -841,7 +858,7 @@ export default function EmployeeDashboard() {
         </div>
 
         {/* Data Navigation Tabs */}
-        <div className="bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-800 rounded-3xl p-4 sm:p-6 shadow-sm space-y-4 sm:space-y-6">
+        <div ref={tabsSectionRef} className="bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-800 rounded-3xl p-4 sm:p-6 shadow-sm space-y-4 sm:space-y-6">
           <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4 gap-3 flex-wrap">
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-1.5 sm:gap-2 w-full xs:w-auto">
               <button
@@ -872,7 +889,7 @@ export default function EmployeeDashboard() {
 
           {/* TAB 1: ATTENDANCE HISTORY */}
           {activeTab === 'attendance' && (
-            <div>
+            <div className="space-y-4 animate-in fade-in zoom-in-95 duration-150">
               {/* Mobile Card List View (Natural Top-to-Bottom Scroll, Executive Layout) */}
               <div className="space-y-3 block sm:hidden">
                 {attendanceHistory.length === 0 ? (
@@ -1029,7 +1046,7 @@ export default function EmployeeDashboard() {
 
           {/* TAB 2: LEAVE APPLICATIONS */}
           {activeTab === 'leaves' && (
-            <div>
+            <div className="space-y-4 animate-in fade-in zoom-in-95 duration-150">
               {/* Mobile Card List View (Natural Top-to-Bottom Scroll, Executive Focused Layout) */}
               <div className="space-y-3 block sm:hidden">
                 {leaveRequests.length === 0 ? (
@@ -1492,66 +1509,41 @@ export default function EmployeeDashboard() {
         </div>
       )}
 
-      {/* CONNECTED MOBILE BOTTOM NAVIGATION BAR (DOCKED TO BOTTOM EDGE) */}
+      {/* CONNECTED MOBILE BOTTOM NAVIGATION BAR (DOCKED TO BOTTOM EDGE - 2 TABS STRICTLY: LOGS & APPLY) */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 w-full">
-        <nav className="bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] dark:shadow-[0_-4px_20px_rgba(0,0,0,0.35)] px-2 py-2 flex items-center justify-around relative overflow-hidden transition-colors duration-300">
-          {/* Item 1: Attendance Log */}
+        <nav className="bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] dark:shadow-[0_-4px_20px_rgba(0,0,0,0.35)] px-4 py-2.5 grid grid-cols-2 items-center justify-center gap-4 relative overflow-hidden transition-colors duration-300">
+          {/* Tab 1: Logs */}
           <button
             onClick={() => {
-              setActiveTab('attendance');
-              window.scrollTo({ top: 400, behavior: 'smooth' });
+              if (showLeaveModal) setShowLeaveModal(false);
+              scrollToTabsSection('attendance');
             }}
-            className={`flex flex-col items-center justify-center py-1 px-3 transition-all relative group cursor-pointer ${
-              activeTab === 'attendance' ? "text-secondary-600 dark:text-secondary-400" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
+            className={`flex flex-col items-center justify-center py-1 px-4 transition-all relative group cursor-pointer ${
+              !showLeaveModal ? "text-secondary-600 dark:text-secondary-400" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
             }`}
           >
-            {activeTab === 'attendance' && (
-              <span className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-secondary-500 to-cyan-400 rounded-full shadow-[0_0_8px_rgba(56,189,248,0.8)] animate-in fade-in zoom-in-75 duration-200" />
+            {!showLeaveModal && (
+              <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-secondary-500 to-cyan-400 rounded-full shadow-[0_0_8px_rgba(56,189,248,0.8)] animate-in fade-in zoom-in-75 duration-200" />
             )}
-            <CheckCircle2 className={`w-5 h-5 transition-transform duration-200 ${activeTab === 'attendance' ? "scale-110 text-secondary-600 dark:text-secondary-400" : "group-hover:scale-105"}`} />
-            <span className={`text-[10px] font-bold tracking-tight mt-1 transition-colors ${activeTab === 'attendance' ? "text-slate-900 dark:text-white font-black" : "text-slate-500 dark:text-slate-400"}`}>
+            <CheckCircle2 className={`w-5 h-5 transition-transform duration-200 ${!showLeaveModal ? "scale-110 text-secondary-600 dark:text-secondary-400" : "group-hover:scale-105"}`} />
+            <span className={`text-[11px] font-extrabold tracking-wide mt-1 transition-colors ${!showLeaveModal ? "text-slate-900 dark:text-white font-black" : "text-slate-500 dark:text-slate-400"}`}>
               Logs
             </span>
           </button>
 
-          {/* Item 2: Unpaid Leaves */}
-          <button
-            onClick={() => {
-              setActiveTab('leaves');
-              window.scrollTo({ top: 400, behavior: 'smooth' });
-            }}
-            className={`flex flex-col items-center justify-center py-1 px-3 transition-all relative group cursor-pointer ${
-              activeTab === 'leaves' ? "text-secondary-600 dark:text-secondary-400" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
-            }`}
-          >
-            {activeTab === 'leaves' && (
-              <span className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-secondary-500 to-cyan-400 rounded-full shadow-[0_0_8px_rgba(56,189,248,0.8)] animate-in fade-in zoom-in-75 duration-200" />
-            )}
-            <CalendarIcon className={`w-5 h-5 transition-transform duration-200 ${activeTab === 'leaves' ? "scale-110 text-secondary-600 dark:text-secondary-400" : "group-hover:scale-105"}`} />
-            <span className={`text-[10px] font-bold tracking-tight mt-1 transition-colors ${activeTab === 'leaves' ? "text-slate-900 dark:text-white font-black" : "text-slate-500 dark:text-slate-400"}`}>
-              Leaves
-            </span>
-          </button>
-
-          {/* Item 3: Apply Leave Trigger */}
+          {/* Tab 2: Apply */}
           <button
             onClick={() => setShowLeaveModal(true)}
-            className="flex flex-col items-center justify-center py-1 px-3 text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-all relative group cursor-pointer"
+            className={`flex flex-col items-center justify-center py-1 px-4 transition-all relative group cursor-pointer ${
+              showLeaveModal ? "text-amber-600 dark:text-amber-400" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
+            }`}
           >
-            <PlusCircle className="w-5 h-5 transition-transform group-hover:scale-110 text-amber-600 dark:text-amber-400" />
-            <span className="text-[10px] font-extrabold tracking-tight mt-1 text-amber-600 dark:text-amber-400">
+            {showLeaveModal && (
+              <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-amber-500 to-orange-400 rounded-full shadow-[0_0_8px_rgba(245,158,11,0.8)] animate-in fade-in zoom-in-75 duration-200" />
+            )}
+            <PlusCircle className={`w-5 h-5 transition-transform duration-200 ${showLeaveModal ? "scale-110 text-amber-500" : "group-hover:scale-105 text-amber-600 dark:text-amber-400"}`} />
+            <span className={`text-[11px] font-extrabold tracking-wide mt-1 transition-colors ${showLeaveModal ? "text-amber-600 dark:text-amber-400 font-black" : "text-slate-500 dark:text-slate-400"}`}>
               Apply
-            </span>
-          </button>
-
-          {/* Item 4: Profile Settings */}
-          <button
-            onClick={() => setShowProfileModal(true)}
-            className="flex flex-col items-center justify-center py-1 px-3 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-all relative group cursor-pointer"
-          >
-            <User className="w-5 h-5 transition-transform group-hover:scale-105" />
-            <span className="text-[10px] font-bold tracking-tight mt-1 text-slate-500 dark:text-slate-400">
-              Profile
             </span>
           </button>
         </nav>
