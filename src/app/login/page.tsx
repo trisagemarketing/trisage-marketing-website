@@ -221,7 +221,7 @@ export default function LoginPage() {
                         setEmail(e.target.value);
                         if (fieldErrors.email) setFieldErrors((prev) => ({ ...prev, email: undefined }));
                       }}
-                      placeholder="himanshu@trisagemarketing.com"
+                      placeholder="name@trisagemarketing.com"
                       className={`w-full pl-10 pr-3.5 py-3 sm:py-3.5 bg-slate-50 dark:bg-[#141b29]/90 border rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-xs sm:text-sm font-sans font-medium focus:outline-none transition-all duration-200 ${
                         fieldErrors.email
                           ? "border-rose-500 ring-2 ring-rose-500/20 bg-rose-500/5 dark:bg-rose-500/10"
