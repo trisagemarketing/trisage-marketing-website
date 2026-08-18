@@ -46,14 +46,26 @@ function CustomStatusDropdown({
     if (!buttonRef.current) return null;
     const rect = buttonRef.current.getBoundingClientRect();
     const dropdownHeight = 156;
-    const openUpwards = window.innerHeight - rect.bottom < dropdownHeight + 20;
+    const viewWidth = window.innerWidth;
+    const viewHeight = window.innerHeight;
+
+    const targetWidth = 144;
+    let left = rect.right - targetWidth;
+    if (left + targetWidth > viewWidth - 12) {
+      left = viewWidth - targetWidth - 12;
+    }
+    if (left < 12) left = 12;
+
+    const spaceBelow = viewHeight - rect.bottom;
+    const openUpwards = spaceBelow < dropdownHeight + 16 && rect.top > dropdownHeight + 16;
+    const top = openUpwards ? rect.top - dropdownHeight - 6 : rect.bottom + 6;
 
     return {
       position: "fixed" as const,
-      top: openUpwards ? `${rect.top - dropdownHeight - 6}px` : `${rect.bottom + 6}px`,
-      left: `${Math.max(10, rect.right - 144)}px`,
-      width: "144px",
-      zIndex: 99999,
+      top: `${top}px`,
+      left: `${left}px`,
+      width: `${targetWidth}px`,
+      zIndex: 9999999,
     };
   }, []);
 
@@ -111,18 +123,18 @@ function CustomStatusDropdown({
         ref={buttonRef}
         type="button"
         onClick={handleToggle}
-        className={`px-3 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider border transition-all flex items-center gap-1.5 cursor-pointer shadow-xs ${currentOpt.bg}`}
+        className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-extrabold uppercase tracking-wider border transition-all flex items-center gap-1 sm:gap-1.5 cursor-pointer shadow-xs shrink-0 active:scale-95 ${currentOpt.bg}`}
       >
-        <IconComponent className="w-3.5 h-3.5" />
-        <span>{currentOpt.label}</span>
-        <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
+        <IconComponent className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+        <span className="truncate">{currentOpt.label}</span>
+        <ChevronDown className={`w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform duration-200 shrink-0 ${isOpen ? "rotate-180" : ""}`} />
       </button>
 
       {isOpen && mounted && menuStyle && createPortal(
         <div
           ref={menuRef}
           style={menuStyle}
-          className="rounded-2xl bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-700 shadow-2xl py-1.5 animate-in fade-in zoom-in-95 duration-150 font-sans text-left"
+          className="rounded-2xl bg-white/95 dark:bg-[#1a2333]/95 backdrop-blur-xl border border-slate-200/90 dark:border-slate-700/80 shadow-2xl py-1.5 animate-in fade-in zoom-in-95 duration-150 font-sans text-left z-[9999999]"
         >
           {options.map((opt) => {
             const OptIcon = opt.icon;
@@ -138,7 +150,7 @@ function CustomStatusDropdown({
                 className={`w-full px-3 py-2 text-left text-xs font-bold flex items-center justify-between transition-colors cursor-pointer ${
                   isSelected
                     ? "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white font-extrabold"
-                    : "text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white"
+                    : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white"
                 }`}
               >
                 <div className="flex items-center gap-2">
@@ -250,9 +262,9 @@ export default function HRAdminDashboard() {
       }
 
       if (data.markedCount === 0) {
-        toast.success("All active employees are accounted for today!", { id: toastId });
+        toast.success("All active staff accounted for today!", { id: toastId });
       } else {
-        toast.success(`Marked ${data.markedCount} employee(s) as ABSENT for today.`, { id: toastId });
+        toast.success(`Marked ${data.markedCount} employee(s) as ABSENT today`, { id: toastId });
       }
 
       fetchHRDashboardData();
@@ -312,11 +324,11 @@ export default function HRAdminDashboard() {
         </div>
 
         {/* Quick Action Buttons */}
-        <div className="flex items-center gap-3 shrink-0 flex-wrap">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0 w-full md:w-auto">
           <button
             onClick={handleAutoMarkAbsent}
             disabled={isMarkingAbsent}
-            className="px-4 py-3 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold text-xs uppercase tracking-wide transition-all border border-amber-500/20 flex items-center gap-2 cursor-pointer disabled:opacity-50"
+            className="w-full sm:w-auto px-4 py-3 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold text-xs uppercase tracking-wide transition-all border border-amber-500/20 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
             title="Auto-flag active staff who did not punch in today"
           >
             <RefreshCw className={`w-4 h-4 ${isMarkingAbsent ? 'animate-spin' : ''}`} />
@@ -325,7 +337,7 @@ export default function HRAdminDashboard() {
 
           <Link
             href="/admin/employees"
-            className="px-5 py-3 rounded-2xl bg-gradient-to-r from-primary-600 via-primary-700 to-secondary-600 text-white font-extrabold text-xs uppercase tracking-wide hover:opacity-95 transition-all flex items-center gap-2 shadow-md cursor-pointer"
+            className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-gradient-to-r from-primary-600 via-primary-700 to-secondary-600 text-white font-extrabold text-xs uppercase tracking-wide hover:opacity-95 transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer"
           >
             <UserPlus className="w-4 h-4" />
             <span>Onboard New Employee</span>
@@ -398,19 +410,24 @@ export default function HRAdminDashboard() {
         </div>
       </div>
 
-      {/* Today's Live Attendance Table */}
-      <div className="bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-6">
-        <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4 gap-4 flex-wrap">
-          <div className="flex items-center gap-2">
-            <Clock className="w-5 h-5 text-secondary-500" />
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white">Today's Live Attendance Monitor</h2>
+      {/* Today's Live Attendance Monitor */}
+      <div className="bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-800 rounded-3xl p-4 sm:p-6 shadow-sm space-y-4 sm:space-y-6">
+        <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3 sm:pb-4 gap-2">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="p-2 rounded-xl bg-secondary-500/10 text-secondary-500 shrink-0">
+              <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
+            </div>
+            <h2 className="text-sm xs:text-base sm:text-lg font-black text-slate-900 dark:text-white truncate">
+              Today's Live Attendance Monitor
+            </h2>
           </div>
 
           <button
             onClick={fetchHRDashboardData}
-            className="px-3.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold flex items-center gap-1.5 cursor-pointer"
+            className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-extrabold flex items-center gap-1.5 cursor-pointer shrink-0 transition-all active:scale-95 group"
+            title="Refresh live attendance"
           >
-            <RefreshCw className="w-3.5 h-3.5" />
+            <RefreshCw className="w-3.5 h-3.5 group-hover:rotate-180 transition-transform duration-300" />
             <span>Refresh</span>
           </button>
         </div>
@@ -421,106 +438,196 @@ export default function HRAdminDashboard() {
             <span className="text-xs font-semibold">Loading live attendance records...</span>
           </div>
         ) : (
-          <div className="overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-            <table className="w-full text-left text-xs sm:text-sm">
-              <thead>
-                <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-400 uppercase text-[10px] tracking-wider">
-                  <th className="py-3 px-4">Employee</th>
-                  <th className="py-3 px-4">Employee ID</th>
-                  <th className="py-3 px-4">Check In</th>
-                  <th className="py-3 px-4">Check Out</th>
-                  <th className="py-3 px-4">Location & IP Address</th>
-                  <th className="py-3 px-4">Current Status</th>
-                  <th className="py-3 px-4 text-right">HR Status Override</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium">
-                {todayAttendance.length === 0 ? (
-                  <tr>
-                    <td colSpan={7} className="py-8 text-center text-slate-400 text-xs">
-                      No attendance records logged for today yet. Use "Mark Absent Today" to process non-punched staff.
-                    </td>
-                  </tr>
-                ) : (
-                  todayAttendance.map((rec) => (
-                    <tr key={rec.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-colors">
-                      <td className="py-3.5 px-4">
-                        <div className="flex items-center gap-3">
-                          <div className="relative w-8 h-8 rounded-full overflow-hidden border border-slate-200 dark:border-slate-700 shrink-0 bg-slate-100 dark:bg-slate-800">
-                            {rec.employee?.avatar_url ? (
-                              <Image
-                                src={rec.employee.avatar_url}
-                                alt={rec.employee.full_name || 'Avatar'}
-                                fill
-                                sizes="32px"
-                                className="object-contain object-center p-0.5"
-                              />
-                            ) : (
-                              <div className="w-full h-full bg-gradient-to-br from-primary-600 to-secondary-600 flex items-center justify-center text-white font-extrabold text-xs">
-                                {rec.employee?.full_name?.substring(0, 2).toUpperCase() || "EM"}
-                              </div>
-                            )}
-                          </div>
-                          <div className="flex flex-col">
-                            <span className="font-bold text-slate-900 dark:text-white">
-                              {rec.employee?.full_name || "Employee"}
-                            </span>
-                            <span className="text-[11px] text-slate-400">{rec.employee?.email}</span>
-                          </div>
+          <div>
+            {/* Mobile Card List View for HR Attendance Monitor (Top-to-Bottom Scroll, Zero Horizontal Overflow) */}
+            <div className="space-y-3 block sm:hidden">
+              {todayAttendance.length === 0 ? (
+                <div className="py-8 text-center text-slate-400 text-xs bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-slate-200 dark:border-slate-800">
+                  No attendance records logged for today yet. Use "Mark Absent Today" to process non-punched staff.
+                </div>
+              ) : (
+                todayAttendance.map((rec) => (
+                  <div
+                    key={rec.id}
+                    className="p-3.5 rounded-2xl bg-gradient-to-br from-slate-50/90 via-white to-slate-100/50 dark:from-[#172132]/90 dark:via-[#1f2a3e] dark:to-[#172132]/50 border border-slate-200/80 dark:border-slate-800 shadow-xs relative overflow-hidden space-y-3"
+                  >
+                    {/* Row 1: Employee Avatar & Name/ID (Uncompressed) + HR Override Dropdown */}
+                    <div className="flex items-center justify-between border-b border-slate-200/60 dark:border-slate-800/60 pb-2.5 gap-2">
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <div className="relative w-9 h-9 rounded-full overflow-hidden border border-slate-200 dark:border-slate-700 shrink-0 bg-slate-100 dark:bg-slate-800">
+                          {rec.employee?.avatar_url ? (
+                            <Image
+                              src={rec.employee.avatar_url}
+                              alt={rec.employee.full_name || 'Avatar'}
+                              fill
+                              sizes="36px"
+                              className="object-cover object-center rounded-full"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gradient-to-br from-primary-600 to-secondary-600 flex items-center justify-center text-white font-extrabold text-xs">
+                              {rec.employee?.full_name?.substring(0, 2).toUpperCase() || "EM"}
+                            </div>
+                          )}
                         </div>
-                      </td>
-                      <td className="py-3.5 px-4 font-mono font-bold text-secondary-600 dark:text-secondary-400">
-                        {rec.employee?.employee_id || "TR-EMP"}
-                      </td>
-                      <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300 font-mono">
-                        {rec.check_in_time ? new Date(rec.check_in_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--'}
-                      </td>
-                      <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300 font-mono">
-                        {rec.check_out_time ? new Date(rec.check_out_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--'}
-                      </td>
-                      <td className="py-3.5 px-4 text-slate-500 text-xs">
-                        {rec.location_check_in?.address ? (
-                          <div className="flex flex-col gap-0.5 max-w-xs">
-                            <span className="font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-1">
-                              <MapPin className="w-3.5 h-3.5 text-teal-500 shrink-0" />
-                              {rec.location_check_in.address}
-                            </span>
-                            {rec.location_check_in.ip && (
-                              <span className="text-[10px] text-slate-400 font-mono pl-4">
-                                IP: {rec.location_check_in.ip}
-                              </span>
-                            )}
-                          </div>
-                        ) : (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-semibold border border-slate-200 dark:border-slate-700 text-[10px]">
-                            🌐 Web Portal
+                        <div className="flex flex-col min-w-0 pr-1">
+                          <span className="font-extrabold text-slate-900 dark:text-white text-xs truncate leading-tight">
+                            {rec.employee?.full_name || "Employee"}
                           </span>
-                        )}
-                      </td>
-                      <td className="py-3.5 px-4">
-                        <span
-                          className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                            rec.status === 'present'
-                              ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
-                              : rec.status === 'absent'
-                              ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20'
-                              : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'
-                          }`}
-                        >
-                          {rec.status}
-                        </span>
-                      </td>
-                      <td className="py-3.5 px-4 text-right">
+                          <span className="inline-flex items-center w-max text-[10px] font-mono font-bold text-secondary-600 dark:text-secondary-400 bg-secondary-500/10 px-1.5 py-0.5 rounded-md mt-0.5 whitespace-nowrap">
+                            {rec.employee?.employee_id || "TR-EMP"}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* HR Status Override Dropdown */}
+                      <div className="shrink-0 min-w-max">
                         <CustomStatusDropdown
                           value={rec.status}
                           onChange={(newStatus) => handleStatusOverride(rec.id, newStatus)}
                         />
+                      </div>
+                    </div>
+
+                    {/* Row 2: Check In & Check Out Times */}
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      <div className="p-2.5 rounded-xl bg-white/80 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-700/50 flex flex-col justify-center">
+                        <span className="text-[10px] font-bold text-slate-400 uppercase mb-0.5 flex items-center gap-1">
+                          <CheckCircle2 className="w-3 h-3 text-emerald-500" />
+                          Check In
+                        </span>
+                        <span className="font-extrabold text-slate-800 dark:text-slate-200 font-mono">
+                          {rec.check_in_time ? new Date(rec.check_in_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--'}
+                        </span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-white/80 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-700/50 flex flex-col justify-center">
+                        <span className="text-[10px] font-bold text-slate-400 uppercase mb-0.5 flex items-center gap-1">
+                          <Clock className="w-3 h-3 text-rose-500" />
+                          Check Out
+                        </span>
+                        <span className="font-extrabold text-slate-800 dark:text-slate-200 font-mono">
+                          {rec.check_out_time ? new Date(rec.check_out_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--'}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Row 3: Location / Web Portal Badge */}
+                    {rec.location_check_in?.address ? (
+                      <div className="flex items-center gap-1.5 text-[11px] text-slate-500 dark:text-slate-400 bg-white/80 dark:bg-slate-900/60 p-2.5 rounded-xl border border-slate-200/50 dark:border-slate-700/50">
+                        <MapPin className="w-3.5 h-3.5 text-teal-500 shrink-0" />
+                        <span className="truncate">{rec.location_check_in.address}</span>
+                      </div>
+                    ) : (
+                      <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400 px-1">
+                        🌐 Web Portal Check-In
+                      </div>
+                    )}
+                  </div>
+                ))
+              )}
+            </div>
+
+            {/* Desktop Table View */}
+            <div className="hidden sm:block overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden border border-slate-200/80 dark:border-slate-800 rounded-2xl">
+              <table className="w-full text-left text-xs sm:text-sm min-w-[700px]">
+                <thead>
+                  <tr className="bg-slate-50/80 dark:bg-slate-900/60 border-b border-slate-200 dark:border-slate-800 text-slate-400 uppercase text-[10px] tracking-wider">
+                    <th className="py-3 px-4 whitespace-nowrap">Employee</th>
+                    <th className="py-3 px-4 whitespace-nowrap">Employee ID</th>
+                    <th className="py-3 px-4 whitespace-nowrap">Check In</th>
+                    <th className="py-3 px-4 whitespace-nowrap">Check Out</th>
+                    <th className="py-3 px-4 whitespace-nowrap">Location & IP Address</th>
+                    <th className="py-3 px-4 whitespace-nowrap">Current Status</th>
+                    <th className="py-3 px-4 text-right whitespace-nowrap">HR Status Override</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium">
+                  {todayAttendance.length === 0 ? (
+                    <tr>
+                      <td colSpan={7} className="py-8 text-center text-slate-400 text-xs">
+                        No attendance records logged for today yet. Use "Mark Absent Today" to process non-punched staff.
                       </td>
                     </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
+                  ) : (
+                    todayAttendance.map((rec) => (
+                      <tr key={rec.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-colors">
+                        <td className="py-3.5 px-4 whitespace-nowrap">
+                          <div className="flex items-center gap-3">
+                            <div className="relative w-8 h-8 rounded-full overflow-hidden border border-slate-200 dark:border-slate-700 shrink-0 bg-slate-100 dark:bg-slate-800">
+                              {rec.employee?.avatar_url ? (
+                                <Image
+                                  src={rec.employee.avatar_url}
+                                  alt={rec.employee.full_name || 'Avatar'}
+                                  fill
+                                  sizes="32px"
+                                  className="object-cover object-center rounded-full"
+                                />
+                              ) : (
+                                <div className="w-full h-full bg-gradient-to-br from-primary-600 to-secondary-600 flex items-center justify-center text-white font-extrabold text-xs">
+                                  {rec.employee?.full_name?.substring(0, 2).toUpperCase() || "EM"}
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="font-bold text-slate-900 dark:text-white">
+                                {rec.employee?.full_name || "Employee"}
+                              </span>
+                              <span className="text-[11px] text-slate-400">{rec.employee?.email}</span>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="py-3.5 px-4 whitespace-nowrap font-mono font-bold text-secondary-600 dark:text-secondary-400">
+                          {rec.employee?.employee_id || "TR-EMP"}
+                        </td>
+                        <td className="py-3.5 px-4 whitespace-nowrap text-slate-600 dark:text-slate-300 font-mono">
+                          {rec.check_in_time ? new Date(rec.check_in_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--'}
+                        </td>
+                        <td className="py-3.5 px-4 whitespace-nowrap text-slate-600 dark:text-slate-300 font-mono">
+                          {rec.check_out_time ? new Date(rec.check_out_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--'}
+                        </td>
+                        <td className="py-3.5 px-4 text-slate-500 text-xs">
+                          {rec.location_check_in?.address ? (
+                            <div className="flex flex-col gap-0.5 max-w-xs">
+                              <span className="font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-1 truncate">
+                                <MapPin className="w-3.5 h-3.5 text-teal-500 shrink-0" />
+                                {rec.location_check_in.address}
+                              </span>
+                              {rec.location_check_in.ip && (
+                                <span className="text-[10px] text-slate-400 font-mono pl-4">
+                                  IP: {rec.location_check_in.ip}
+                                </span>
+                              )}
+                            </div>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-semibold border border-slate-200 dark:border-slate-700 text-[10px]">
+                              🌐 Web Portal
+                            </span>
+                          )}
+                        </td>
+                        <td className="py-3.5 px-4 whitespace-nowrap">
+                          <span
+                            className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                              rec.status === 'present'
+                                ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
+                                : rec.status === 'absent'
+                                ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20'
+                                : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'
+                            }`}
+                          >
+                            {rec.status}
+                          </span>
+                        </td>
+                        <td className="py-3.5 px-4 text-right whitespace-nowrap">
+                          <CustomStatusDropdown
+                            value={rec.status}
+                            onChange={(newStatus) => handleStatusOverride(rec.id, newStatus)}
+                          />
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
       </div>

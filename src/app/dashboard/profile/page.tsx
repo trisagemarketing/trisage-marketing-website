@@ -227,21 +227,17 @@ export default function ProfileSettingsPage() {
     <div className="min-h-screen bg-slate-100 dark:bg-[#141b29] text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-300 selection:bg-secondary-500 selection:text-white">
       {/* Navbar */}
       <header className="sticky top-0 z-30 w-full bg-white/90 dark:bg-[#1f2a3e]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 px-4 sm:px-8 py-3.5 flex items-center justify-between shadow-sm">
-        <div className="flex items-center gap-3 sm:gap-4">
+        <div className="flex items-center gap-3">
           <Link
             href={profile?.role === 'hr' || profile?.role === 'admin' ? "/admin/dashboard" : "/dashboard"}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 transition-colors cursor-pointer"
+            className="h-9 px-3.5 sm:px-4 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:opacity-90 transition-all text-xs font-bold shadow-xs cursor-pointer active:scale-95 whitespace-nowrap inline-flex items-center justify-center gap-2"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-3.5 h-3.5 shrink-0" />
             <span>Back to Dashboard</span>
           </Link>
-          <div className="h-5 w-px bg-slate-300 dark:bg-slate-700 hidden xs:block" />
-          <span className="hidden xs:inline-block text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">
-            Profile Settings
-          </span>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 shrink-0">
           <ThemeToggle />
         </div>
       </header>
@@ -249,9 +245,9 @@ export default function ProfileSettingsPage() {
       {/* Main Container */}
       <main className="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-8 py-8 space-y-6">
         {/* Profile Card Header Banner */}
-        <div className="relative bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col sm:flex-row items-center gap-6">
+        <div className="relative bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-800 rounded-3xl p-5 sm:p-8 shadow-sm flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left">
           {/* Avatar Upload / Preview */}
-          <div className="relative group shrink-0">
+          <div className="relative group shrink-0 mx-auto sm:mx-0">
             <input
               type="file"
               ref={fileInputRef}
@@ -269,7 +265,7 @@ export default function ProfileSettingsPage() {
                   alt={fullName}
                   fill
                   sizes="112px"
-                  className="object-contain object-center p-1.5"
+                  className="object-cover object-center rounded-3xl"
                 />
               ) : (
                 fullName.substring(0, 2).toUpperCase() || "EM"
@@ -288,14 +284,14 @@ export default function ProfileSettingsPage() {
           </div>
 
           {/* Profile Overview Details */}
-          <div className="space-y-2 text-center sm:text-left flex-1">
+          <div className="space-y-2 flex-1 w-full min-w-0">
             <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
-              <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white font-sans tracking-normal [letter-spacing:-0.03em]">
+              <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white font-sans tracking-normal">
                 {profile?.full_name || "Employee Profile"}
               </h1>
-              <span className="px-3 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold uppercase tracking-wider flex items-center gap-1">
-                <BadgeCheck className="w-3.5 h-3.5" />
-                Active Staff
+              <span className="p-1 sm:px-3 sm:py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold uppercase tracking-wider flex items-center gap-1 shrink-0" title="Active Staff">
+                <BadgeCheck className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
+                <span className="hidden sm:inline">Active Staff</span>
               </span>
             </div>
 
@@ -303,17 +299,19 @@ export default function ProfileSettingsPage() {
               {bio || "No employee bio set yet. Add a short summary below."}
             </p>
 
-            <div className="flex items-center justify-center sm:justify-start gap-4 text-xs text-slate-500 dark:text-slate-400 flex-wrap font-medium pt-1">
-              <span className="flex items-center gap-1.5">
-                <User className="w-3.5 h-3.5 text-secondary-500" />
+            <div className="flex flex-row items-center justify-center sm:justify-start gap-2.5 sm:gap-4 text-xs text-slate-500 dark:text-slate-400 font-medium pt-1 flex-wrap">
+              <span className="flex items-center gap-1.5 shrink-0">
+                <User className="w-3.5 h-3.5 text-secondary-500 shrink-0" />
                 Emp ID: <strong className="text-slate-800 dark:text-slate-200">{profile?.employee_id || "TR-EMP"}</strong>
               </span>
-              <span className="flex items-center gap-1.5">
-                <Building className="w-3.5 h-3.5 text-secondary-500" />
+              <span className="text-slate-300 dark:text-slate-700">•</span>
+              <span className="flex items-center gap-1.5 shrink-0">
+                <Building className="w-3.5 h-3.5 text-secondary-500 shrink-0" />
                 Dept: <strong className="text-slate-800 dark:text-slate-200">{profile?.departments?.name || "General"}</strong>
               </span>
-              <span className="flex items-center gap-1.5">
-                <Shield className="w-3.5 h-3.5 text-secondary-500" />
+              <span className="text-slate-300 dark:text-slate-700">•</span>
+              <span className="flex items-center gap-1.5 shrink-0">
+                <Shield className="w-3.5 h-3.5 text-secondary-500 shrink-0" />
                 Role: <strong className="text-slate-800 dark:text-slate-200 uppercase">{profile?.role}</strong>
               </span>
             </div>
@@ -323,16 +321,18 @@ export default function ProfileSettingsPage() {
         {/* Dedicated Profile Settings Form */}
         <form onSubmit={handleSaveProfile} className="space-y-6">
           {/* SECTION 1: PERSONAL INFORMATION */}
-          <div className="bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-sm space-y-5">
-            <div className="flex items-center gap-3 border-b border-slate-200 dark:border-slate-800 pb-4">
-              <div className="p-2 rounded-xl bg-secondary-500/10 text-secondary-500">
-                <User className="w-5 h-5" />
+          <div className="bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-800 rounded-3xl p-4 sm:p-8 shadow-sm space-y-5">
+            <div className="flex items-center gap-2.5 sm:gap-3 border-b border-slate-200 dark:border-slate-800 pb-3.5 sm:pb-4">
+              <div className="p-2 sm:p-2.5 rounded-xl bg-secondary-500/10 text-secondary-500 shrink-0">
+                <User className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
-              <div>
-                <h2 className="text-base font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+              <div className="flex-1 min-w-0">
+                <h2 className="text-xs sm:text-base font-extrabold text-slate-900 dark:text-white uppercase tracking-wider">
                   Personal Information
                 </h2>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Update your public employee profile details</p>
+                <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium leading-snug">
+                  Update your public employee profile details
+                </p>
               </div>
             </div>
 
@@ -352,7 +352,7 @@ export default function ProfileSettingsPage() {
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     placeholder="John Doe"
-                    className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-[#141b29] border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-sm font-medium focus:outline-none focus:border-secondary-500"
+                    className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-[#141b29] border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:border-secondary-500"
                   />
                 </div>
               </div>
@@ -372,7 +372,7 @@ export default function ProfileSettingsPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="name@trisagemarketing.com"
-                    className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-[#141b29] border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-sm font-medium focus:outline-none focus:border-secondary-500"
+                    className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-[#141b29] border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:border-secondary-500 truncate"
                   />
                 </div>
               </div>
@@ -391,7 +391,7 @@ export default function ProfileSettingsPage() {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="+91 98765 43210"
-                    className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-[#141b29] border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-sm font-medium focus:outline-none focus:border-secondary-500"
+                    className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-[#141b29] border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:border-secondary-500"
                   />
                 </div>
               </div>
@@ -410,7 +410,7 @@ export default function ProfileSettingsPage() {
                     value={emergencyContact}
                     onChange={(e) => setEmergencyContact(e.target.value)}
                     placeholder="Parent / Spouse - +91 98765 00000"
-                    className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-[#141b29] border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-sm font-medium focus:outline-none focus:border-secondary-500"
+                    className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-[#141b29] border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:border-secondary-500"
                   />
                 </div>
               </div>
@@ -427,7 +427,7 @@ export default function ProfileSettingsPage() {
                   value={bio}
                   onChange={(e) => setBio(e.target.value)}
                   placeholder="Share a short summary about your role, skills, or experience..."
-                  className="w-full py-3 px-4 bg-slate-50 dark:bg-[#141b29] border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-sm font-medium focus:outline-none focus:border-secondary-500"
+                  className="w-full py-3 px-4 bg-slate-50 dark:bg-[#141b29] border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:border-secondary-500"
                 />
               </div>
             </div>
@@ -446,7 +446,7 @@ export default function ProfileSettingsPage() {
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   placeholder="House / Flat No., Street, City, State"
-                  className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-[#141b29] border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-sm font-medium focus:outline-none focus:border-secondary-500"
+                  className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-[#141b29] border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:border-secondary-500 truncate"
                 />
               </div>
             </div>
@@ -465,23 +465,25 @@ export default function ProfileSettingsPage() {
                   value={avatarUrl}
                   onChange={(e) => setAvatarUrl(e.target.value)}
                   placeholder="https://example.com/avatar.jpg"
-                  className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-[#141b29] border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-sm font-medium focus:outline-none focus:border-secondary-500"
+                  className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-[#141b29] border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:border-secondary-500 truncate"
                 />
               </div>
             </div>
           </div>
 
           {/* SECTION 2: SECURITY & PASSWORD CHANGE */}
-          <div className="bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-sm space-y-5">
-            <div className="flex items-center gap-3 border-b border-slate-200 dark:border-slate-800 pb-4">
-              <div className="p-2 rounded-xl bg-amber-500/10 text-amber-500">
-                <Key className="w-5 h-5" />
+          <div className="bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-800 rounded-3xl p-4 sm:p-8 shadow-sm space-y-5">
+            <div className="flex items-center gap-2.5 sm:gap-3 border-b border-slate-200 dark:border-slate-800 pb-3.5 sm:pb-4">
+              <div className="p-2 sm:p-2.5 rounded-xl bg-amber-500/10 text-amber-500 shrink-0">
+                <Key className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
-              <div>
-                <h2 className="text-base font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+              <div className="flex-1 min-w-0">
+                <h2 className="text-xs sm:text-base font-extrabold text-slate-900 dark:text-white uppercase tracking-wider">
                   Security & Password Update
                 </h2>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Leave password fields blank if you do not wish to change it</p>
+                <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium leading-snug">
+                  Leave password fields blank if you do not wish to change it
+                </p>
               </div>
             </div>
 
@@ -495,7 +497,7 @@ export default function ProfileSettingsPage() {
                   placeholder="••••••••••••"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="w-full py-3 px-4 bg-slate-50 dark:bg-[#141b29] border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-sm font-medium focus:outline-none focus:border-secondary-500"
+                  className="w-full py-3 px-4 bg-slate-50 dark:bg-[#141b29] border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:border-secondary-500"
                 />
               </div>
 
@@ -508,17 +510,17 @@ export default function ProfileSettingsPage() {
                   placeholder="••••••••••••"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full py-3 px-4 bg-slate-50 dark:bg-[#141b29] border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-sm font-medium focus:outline-none focus:border-secondary-500"
+                  className="w-full py-3 px-4 bg-slate-50 dark:bg-[#141b29] border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:border-secondary-500"
                 />
               </div>
             </div>
           </div>
 
-          {/* SUBMIT BUTTON */}
-          <div className="flex items-center justify-end gap-4 pt-2">
+          {/* SUBMIT BUTTON BAR */}
+          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-3 pt-2 w-full">
             <Link
               href="/dashboard"
-              className="px-6 py-3.5 rounded-2xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs uppercase tracking-wider hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors"
+              className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs uppercase tracking-wider hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors flex items-center justify-center text-center"
             >
               Cancel
             </Link>
@@ -526,10 +528,9 @@ export default function ProfileSettingsPage() {
             <button
               type="submit"
               disabled={isSaving}
-              className="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-primary-600 via-primary-700 to-secondary-600 text-white font-extrabold text-xs uppercase tracking-wide shadow-lg shadow-primary-600/20 hover:opacity-95 transition-all disabled:opacity-50 cursor-pointer flex items-center gap-2"
+              className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-gradient-to-r from-primary-600 via-primary-700 to-secondary-600 text-white font-extrabold text-xs uppercase tracking-wide shadow-lg shadow-primary-600/20 hover:opacity-95 transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center text-center"
             >
-              <Save className="w-4 h-4" />
-              <span>{isSaving ? "Saving Profile..." : "Save All Profile Settings"}</span>
+              <span>{isSaving ? "Saving Profile..." : "Save Profile Settings"}</span>
             </button>
           </div>
         </form>

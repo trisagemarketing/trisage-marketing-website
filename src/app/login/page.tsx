@@ -122,7 +122,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen w-full overflow-x-hidden bg-slate-100 dark:bg-[#141b29] text-slate-900 dark:text-slate-100 flex flex-col justify-between relative font-sans selection:bg-secondary-500 selection:text-white transition-colors duration-300 normal-case">
+    <div className="min-h-[100dvh] w-full overflow-x-hidden bg-slate-100 dark:bg-[#141b29] text-slate-900 dark:text-slate-100 flex flex-col justify-between relative font-sans selection:bg-secondary-500 selection:text-white transition-colors duration-300 normal-case pb-[env(safe-area-inset-bottom)]">
       {/* Background Ambient Glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[800px] h-[500px] bg-gradient-to-b from-primary-500/15 via-secondary-500/10 to-transparent dark:from-[#2D4164]/30 dark:via-[#008080]/15 blur-3xl rounded-full transition-all duration-300" />
@@ -131,80 +131,80 @@ export default function LoginPage() {
       </div>
 
       {/* Top Header */}
-      <header className="relative z-10 w-full max-w-7xl mx-auto px-6 py-6 shrink-0 flex items-center justify-between">
-        <div className="flex items-center gap-3.5">
+      <header className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-5 shrink-0 flex items-center justify-between">
+        <div className="flex items-center gap-2.5 sm:gap-3.5">
           <Image
             src="/logo.png"
             alt="Trisage Marketing Logo"
-            width={200}
-            height={55}
+            width={180}
+            height={50}
             priority
-            className="h-12 sm:h-14 w-auto shrink-0 object-contain mix-blend-multiply dark:mix-blend-screen dark:brightness-125 dark:contrast-125"
+            className="h-8 sm:h-12 w-auto shrink-0 object-contain mix-blend-multiply dark:mix-blend-screen dark:brightness-125 dark:contrast-125"
           />
-          <div className="h-6 w-px bg-slate-300 dark:bg-slate-700/60 hidden xs:block" />
-          <span className="hidden xs:inline-block text-xs font-bold tracking-widest text-secondary-600 dark:text-secondary-400 uppercase">
+          <div className="h-5 w-px bg-slate-300 dark:bg-slate-700/60 hidden xs:block" />
+          <span className="hidden xs:inline-block text-[10px] sm:text-xs font-bold tracking-widest text-secondary-600 dark:text-secondary-400 uppercase">
             EMS Portal
           </span>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <ThemeToggle />
         </div>
       </header>
 
       {/* Main Centered Login Card Container */}
-      <main className="relative z-10 flex-1 flex items-center justify-center p-4 sm:p-6 my-auto">
-        <div className="w-full max-w-md sm:max-w-lg my-auto">
+      <main className="relative z-10 flex-1 flex items-center justify-center p-3 sm:p-6 my-auto">
+        <div className="w-full max-w-sm sm:max-w-md my-auto">
           <div className="relative group">
             {/* Ambient Ring Glow */}
             <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-700 dark:from-[#2D4164] dark:via-[#008080] dark:to-[#263654] rounded-3xl blur opacity-20 dark:opacity-30 group-hover:opacity-40 transition duration-500" />
 
-            <div className="relative bg-white/95 dark:bg-[#1f2a3e]/95 backdrop-blur-2xl border border-slate-200/90 dark:border-slate-700/90 rounded-3xl p-6 sm:p-8 shadow-xl dark:shadow-2xl transition-colors duration-300">
+            <div className="relative bg-white/95 dark:bg-[#1f2a3e]/95 backdrop-blur-2xl border border-slate-200/90 dark:border-slate-700/90 rounded-2xl sm:rounded-3xl p-4 sm:p-7 shadow-xl dark:shadow-2xl transition-colors duration-300">
               {/* Card Header with 100% Transparent Logo Container */}
-              <div className="text-center mb-6">
-                <div className="inline-flex items-center justify-center mb-4 w-24 h-24 sm:w-28 sm:h-28 bg-transparent p-0 transition-all">
+              <div className="text-center mb-4 sm:mb-6">
+                <div className="inline-flex items-center justify-center mb-2 sm:mb-3 w-16 h-16 sm:w-24 sm:h-24 bg-transparent p-0 transition-all">
                   <Image
                     src="/logo.png"
                     alt="Trisage Marketing Logo"
-                    width={160}
-                    height={160}
+                    width={140}
+                    height={140}
                     priority
                     className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-screen dark:brightness-125 dark:contrast-125"
                   />
                 </div>
-                <h1 className="text-2xl sm:text-3xl font-extrabold tracking-normal text-slate-900 dark:text-white mb-2 font-sans uppercase">
+                <h1 className="text-xl sm:text-2xl font-extrabold tracking-normal text-slate-900 dark:text-white mb-1 sm:mb-2 font-sans uppercase">
                   Employee Login
                 </h1>
-                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed max-w-sm mx-auto">
+                <p className="text-[11px] sm:text-xs text-slate-600 dark:text-slate-300 leading-relaxed max-w-xs sm:max-w-sm mx-auto">
                   Sign in with your official Trisage Marketing credentials to access attendance & leave management.
                 </p>
               </div>
 
               {/* Output Component: Error Alert Box */}
               {errorMessage && (
-                <div className="mb-5 p-3.5 rounded-2xl bg-rose-500/10 dark:bg-rose-500/15 border border-rose-500/20 dark:border-rose-500/30 text-rose-700 dark:text-rose-200 text-xs sm:text-sm font-medium flex items-start gap-3 animate-in fade-in slide-in-from-top-2 duration-300 shadow-sm">
-                  <AlertCircle className="w-5 h-5 text-rose-500 dark:text-rose-400 mt-0.5 shrink-0" />
-                  <div className="flex-1 leading-relaxed">{errorMessage}</div>
+                <div className="mb-4 p-3 rounded-xl bg-rose-500/10 dark:bg-rose-500/15 border border-rose-500/20 dark:border-rose-500/30 text-rose-700 dark:text-rose-200 text-xs font-medium flex items-start gap-2.5 animate-in fade-in slide-in-from-top-2 duration-300 shadow-sm">
+                  <AlertCircle className="w-4.5 h-4.5 text-rose-500 dark:text-rose-400 mt-0.5 shrink-0" />
+                  <div className="flex-1 leading-snug">{errorMessage}</div>
                 </div>
               )}
 
               {/* Login Form */}
-              <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+              <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4" noValidate>
                 {/* Work Email Input Component */}
                 <div className="group">
-                  <div className="flex items-center justify-between mb-2">
-                    <label htmlFor="email" className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label htmlFor="email" className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
                       Work Email
                     </label>
                     {fieldErrors.email && (
-                      <span className="text-xs text-rose-500 dark:text-rose-400 font-semibold animate-in fade-in">
+                      <span className="text-[11px] text-rose-500 dark:text-rose-400 font-semibold animate-in fade-in">
                         {fieldErrors.email}
                       </span>
                     )}
                   </div>
                   <div className="relative flex items-center">
-                    <div className="absolute left-4 text-slate-400 dark:text-slate-400 pointer-events-none group-focus-within:text-secondary-600 dark:group-focus-within:text-secondary-400 transition-colors">
-                      <Mail className="w-5 h-5" />
+                    <div className="absolute left-3.5 text-slate-400 dark:text-slate-400 pointer-events-none group-focus-within:text-secondary-600 dark:group-focus-within:text-secondary-400 transition-colors">
+                      <Mail className="w-4 h-4" />
                     </div>
                     <input
                       id="email"
@@ -221,8 +221,8 @@ export default function LoginPage() {
                         setEmail(e.target.value);
                         if (fieldErrors.email) setFieldErrors((prev) => ({ ...prev, email: undefined }));
                       }}
-                      placeholder="name@trisagemarketing.com"
-                      className={`w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-[#141b29]/90 border rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm font-sans font-medium focus:outline-none transition-all duration-200 ${
+                      placeholder="himanshu@trisagemarketing.com"
+                      className={`w-full pl-10 pr-3.5 py-3 sm:py-3.5 bg-slate-50 dark:bg-[#141b29]/90 border rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-xs sm:text-sm font-sans font-medium focus:outline-none transition-all duration-200 ${
                         fieldErrors.email
                           ? "border-rose-500 ring-2 ring-rose-500/20 bg-rose-500/5 dark:bg-rose-500/10"
                           : "border-slate-300 dark:border-slate-700/80 focus:border-secondary-500 dark:focus:border-secondary-400 focus:ring-2 focus:ring-secondary-500/20 focus:bg-white dark:focus:bg-[#141b29]"
@@ -233,19 +233,19 @@ export default function LoginPage() {
 
                 {/* Password Input Component */}
                 <div className="group">
-                  <div className="flex items-center justify-between mb-2">
-                    <label htmlFor="password" className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label htmlFor="password" className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
                       Password
                     </label>
                     {fieldErrors.password && (
-                      <span className="text-xs text-rose-500 dark:text-rose-400 font-semibold animate-in fade-in">
+                      <span className="text-[11px] text-rose-500 dark:text-rose-400 font-semibold animate-in fade-in">
                         {fieldErrors.password}
                       </span>
                     )}
                   </div>
                   <div className="relative flex items-center">
-                    <div className="absolute left-4 text-slate-400 dark:text-slate-400 pointer-events-none group-focus-within:text-secondary-600 dark:group-focus-within:text-secondary-400 transition-colors">
-                      <Lock className="w-5 h-5" />
+                    <div className="absolute left-3.5 text-slate-400 dark:text-slate-400 pointer-events-none group-focus-within:text-secondary-600 dark:group-focus-within:text-secondary-400 transition-colors">
+                      <Lock className="w-4 h-4" />
                     </div>
                     <input
                       id="password"
@@ -262,7 +262,7 @@ export default function LoginPage() {
                         if (fieldErrors.password) setFieldErrors((prev) => ({ ...prev, password: undefined }));
                       }}
                       placeholder="••••••••••••"
-                      className={`w-full pl-11 pr-12 py-3.5 bg-slate-50 dark:bg-[#141b29]/90 border rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm font-sans font-medium focus:outline-none transition-all duration-200 ${
+                      className={`w-full pl-10 pr-11 py-3 sm:py-3.5 bg-slate-50 dark:bg-[#141b29]/90 border rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-xs sm:text-sm font-sans font-medium focus:outline-none transition-all duration-200 ${
                         fieldErrors.password
                           ? "border-rose-500 ring-2 ring-rose-500/20 bg-rose-500/5 dark:bg-rose-500/10"
                           : "border-slate-300 dark:border-slate-700/80 focus:border-secondary-500 dark:focus:border-secondary-400 focus:ring-2 focus:ring-secondary-500/20 focus:bg-white dark:focus:bg-[#141b29]"
@@ -271,18 +271,18 @@ export default function LoginPage() {
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors focus:outline-none p-1 rounded-lg hover:bg-slate-200/50 dark:hover:bg-slate-800/50 cursor-pointer"
+                      className="absolute right-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors focus:outline-none p-1 rounded-lg hover:bg-slate-200/50 dark:hover:bg-slate-800/50 cursor-pointer"
                       tabIndex={-1}
                       aria-label={showPassword ? "Hide password" : "Show password"}
                     >
-                      {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                      {showPassword ? <EyeOff className="w-4.5 h-4.5" /> : <Eye className="w-4.5 h-4.5" />}
                     </button>
                   </div>
                 </div>
 
                 {/* Session Option */}
-                <div className="flex items-center justify-between text-xs sm:text-sm pt-1">
-                  <label className="flex items-center gap-2.5 cursor-pointer text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors font-medium">
+                <div className="flex items-center justify-between text-xs pt-0.5">
+                  <label className="flex items-center gap-2 cursor-pointer text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors font-medium">
                     <input
                       type="checkbox"
                       checked={rememberMe}
@@ -305,17 +305,17 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-primary-600 via-primary-700 to-secondary-600 text-white font-bold text-sm tracking-wide shadow-lg shadow-primary-600/30 hover:shadow-secondary-600/40 hover:from-primary-500 hover:to-secondary-500 active:scale-[0.99] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-2 cursor-pointer uppercase"
+                  className="w-full py-3.5 sm:py-4 px-5 sm:px-6 rounded-xl bg-gradient-to-r from-primary-600 via-primary-700 to-secondary-600 text-white font-bold text-sm tracking-wide shadow-lg shadow-primary-600/30 hover:shadow-secondary-600/40 hover:from-primary-500 hover:to-secondary-500 active:scale-[0.99] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-2 cursor-pointer uppercase relative z-10"
                 >
                   {isLoading ? (
                     <>
-                      <div className="w-4.5 h-4.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                       <span className="normal-case">Authenticating...</span>
                     </>
                   ) : (
                     <>
-                      <span className="normal-case text-base font-bold">Sign in to Portal</span>
-                      <ArrowRight className="w-5 h-5" />
+                      <span className="normal-case text-sm sm:text-base font-extrabold">Sign in to Portal</span>
+                      <ArrowRight className="w-4.5 h-4.5" />
                     </>
                   )}
                 </button>
@@ -356,7 +356,7 @@ export default function LoginPage() {
       )}
 
       {/* Footer */}
-      <footer className="relative z-10 w-full max-w-7xl mx-auto px-6 py-4 shrink-0 text-center text-xs text-slate-500 dark:text-slate-400">
+      <footer className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 py-2 sm:py-4 shrink-0 text-center text-[11px] sm:text-xs text-slate-500 dark:text-slate-400">
         <p>© {new Date().getFullYear()} Trisage Marketing Pvt. Ltd. All rights reserved. EMS Portal v1.0</p>
       </footer>
     </div>

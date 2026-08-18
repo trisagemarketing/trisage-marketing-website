@@ -11,22 +11,12 @@
   }
 }
 
-/* ── Sonner Single-Line Toast & Loading Icon Overrides ── */
-[data-sonner-toaster] {
-  width: max-content !important;
-  max-width: none !important;
-}
-
+/* ── Sonner Toast Base Overrides ── */
 [data-sonner-toast] {
-  display: inline-flex !important;
+  display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
-  justify-content: flex-start !important;
   gap: 0.75rem !important;
-  width: max-content !important;
-  max-width: none !important;
-  min-width: max-content !important;
-  white-space: nowrap !important;
   position: relative !important;
 }
 
@@ -71,10 +61,9 @@
 [data-sonner-toast] [data-title],
 [data-sonner-toast] div {
   position: static !important;
-  display: inline-flex !important;
+  display: flex !important;
   align-items: center !important;
   margin: 0 !important;
-  white-space: nowrap !important;
 }
 
 @theme {

@@ -171,8 +171,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 priority
                 className="h-7 w-auto object-contain mix-blend-multiply dark:mix-blend-screen"
               />
-              <span className="px-2 py-0.5 rounded-md bg-secondary-500/10 text-[10px] font-bold uppercase tracking-wider text-secondary-600 dark:text-secondary-400 border border-secondary-500/20">
-                HR
+              <span className="px-2.5 py-0.5 rounded-lg bg-secondary-500/10 text-[10px] font-black uppercase tracking-wider text-secondary-600 dark:text-secondary-400 border border-secondary-500/20 whitespace-nowrap">
+                HR Dashboard
               </span>
             </div>
 
@@ -204,7 +204,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </header>
 
         {/* Main Content Viewport */}
-        <main className="flex-1 overflow-y-auto relative z-10 w-full p-4 sm:p-8" data-lenis-prevent="true">
+        <main className="flex-1 overflow-y-auto relative z-10 w-full p-4 sm:p-8 pb-24 md:pb-8" data-lenis-prevent="true">
           {isNavigating && (
             <div className="fixed inset-0 z-50 bg-[#f8fafc]/95 dark:bg-[#0f172a]/95 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-slate-900 dark:text-white font-sans animate-in fade-in duration-150">
               <div className="flex flex-col items-center gap-4 text-center">
@@ -220,6 +220,40 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           )}
           {children}
         </main>
+
+        {/* CONNECTED MOBILE BOTTOM NAVIGATION BAR (DOCKED TO BOTTOM EDGE) */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 w-full">
+          <nav className="bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] dark:shadow-[0_-4px_20px_rgba(0,0,0,0.35)] px-2 py-2 flex items-center justify-around relative overflow-hidden transition-colors duration-300">
+            {navItems.map((item, idx) => {
+              const isActive = item.href === "/admin/dashboard"
+                ? (pathname === "/admin/dashboard" || pathname === "/admin")
+                : pathname.startsWith(item.href);
+
+              return (
+                <Link
+                  key={idx}
+                  href={item.href}
+                  onClick={() => {
+                    if (pathname !== item.href) setIsNavigating(true);
+                  }}
+                  className={`flex flex-col items-center justify-center py-1 px-2.5 transition-all relative group cursor-pointer ${
+                    isActive ? "text-secondary-600 dark:text-secondary-400" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
+                  }`}
+                >
+                  {/* Top Active Indicator Line */}
+                  {isActive && (
+                    <span className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-secondary-500 to-cyan-400 rounded-full shadow-[0_0_8px_rgba(56,189,248,0.8)] animate-in fade-in zoom-in-75 duration-200" />
+                  )}
+
+                  <item.icon className={`w-5 h-5 transition-transform duration-200 ${isActive ? "scale-110 text-secondary-600 dark:text-secondary-400" : "group-hover:scale-105"}`} />
+                  <span className={`text-[10px] font-bold tracking-tight mt-1 transition-colors ${isActive ? "text-slate-900 dark:text-white font-black" : "text-slate-500 dark:text-slate-400"}`}>
+                    {item.name === "EMS Dashboard" ? "Home" : item.name === "Employee Directory" ? "Staff" : item.name === "Unpaid Leaves Queue" ? "Leaves" : item.name === "Monthly Calendar" ? "Calendar" : "Profile"}
+                  </span>
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
       </div>
     </div>
   );

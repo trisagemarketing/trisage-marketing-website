@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
-import { Menu, X, Gift, Sparkles, ArrowUpRight } from "lucide-react";
+import { Menu, X, Gift, Sparkles, ArrowUpRight, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import MobileMenu from "./MobileMenu";
 import { ThemeToggle } from "./ThemeToggle";

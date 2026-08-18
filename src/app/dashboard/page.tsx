@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import {
   Clock,
   MapPin,
-  Calendar,
+  Calendar as CalendarIcon,
   LogOut,
   CheckCircle2,
   AlertCircle,
@@ -21,7 +21,9 @@ import {
   History,
   Briefcase,
   RefreshCw,
-  Info
+  Info,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 import { toast } from "sonner";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -66,6 +68,205 @@ interface LeaveRequest {
   created_at: string;
 }
 
+interface CustomDatePickerProps {
+  label: string;
+  value: string; // YYYY-MM-DD
+  onChange: (dateStr: string) => void;
+  required?: boolean;
+}
+
+function CustomDatePicker({ label, value, onChange, required }: CustomDatePickerProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const initialDate = value ? new Date(value) : new Date();
+  const [currentMonth, setCurrentMonth] = useState(
+    isNaN(initialDate.getTime()) ? new Date().getMonth() : initialDate.getMonth()
+  );
+  const [currentYear, setCurrentYear] = useState(
+    isNaN(initialDate.getTime()) ? new Date().getFullYear() : initialDate.getFullYear()
+  );
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  const daysOfWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+
+  const handlePrevMonth = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (currentMonth === 0) {
+      setCurrentMonth(11);
+      setCurrentYear(currentYear - 1);
+    } else {
+      setCurrentMonth(currentMonth - 1);
+    }
+  };
+
+  const handleNextMonth = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (currentMonth === 11) {
+      setCurrentMonth(0);
+      setCurrentYear(currentYear + 1);
+    } else {
+      setCurrentMonth(currentMonth + 1);
+    }
+  };
+
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+  const firstDayOfWeek = new Date(currentYear, currentMonth, 1).getDay();
+
+  const handleSelectDay = (day: number) => {
+    const formattedMonth = String(currentMonth + 1).padStart(2, "0");
+    const formattedDay = String(day).padStart(2, "0");
+    const selectedDateStr = `${currentYear}-${formattedMonth}-${formattedDay}`;
+    onChange(selectedDateStr);
+    setIsOpen(false);
+  };
+
+  const handleSelectToday = () => {
+    const today = new Date();
+    const formattedMonth = String(today.getMonth() + 1).padStart(2, "0");
+    const formattedDay = String(today.getDate()).padStart(2, "0");
+    const todayStr = `${today.getFullYear()}-${formattedMonth}-${formattedDay}`;
+    setCurrentMonth(today.getMonth());
+    setCurrentYear(today.getFullYear());
+    onChange(todayStr);
+    setIsOpen(false);
+  };
+
+  const handleClear = () => {
+    onChange("");
+    setIsOpen(false);
+  };
+
+  const displayDate = value
+    ? new Date(value).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+    : "Select date...";
+
+  return (
+    <div className="relative w-full" ref={dropdownRef}>
+      <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5 sm:mb-1">
+        {label}
+      </label>
+
+      {/* Trigger Button */}
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full py-3 sm:py-2.5 px-3.5 rounded-xl bg-slate-50 dark:bg-[#141b29] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs font-medium focus:outline-none focus:border-secondary-500 flex items-center justify-between shadow-xs transition-colors cursor-pointer"
+      >
+        <span className={value ? "font-bold text-slate-900 dark:text-white" : "text-slate-400"}>
+          {displayDate}
+        </span>
+        <CalendarIcon className="w-4 h-4 text-secondary-500 shrink-0" />
+      </button>
+
+      {/* Hidden input for HTML form validation */}
+      <input type="text" readOnly value={value} required={required} className="sr-only" />
+
+      {/* Glassmorphism Date Picker Popover Dropdown */}
+      {isOpen && (
+        <div className="absolute top-full left-0 mt-2 z-50 w-72 p-4 bg-white/95 dark:bg-[#1f2a3e]/95 backdrop-blur-xl border border-slate-200 dark:border-slate-700 rounded-2xl shadow-2xl animate-in fade-in zoom-in-95 duration-150">
+          {/* Header Month/Year Selector */}
+          <div className="flex items-center justify-between mb-3">
+            <button
+              type="button"
+              onClick={handlePrevMonth}
+              className="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors cursor-pointer"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <span className="text-xs font-extrabold text-slate-900 dark:text-white uppercase tracking-wider">
+              {monthNames[currentMonth]} {currentYear}
+            </span>
+            <button
+              type="button"
+              onClick={handleNextMonth}
+              className="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors cursor-pointer"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Days of Week Header */}
+          <div className="grid grid-cols-7 gap-1 text-center mb-1">
+            {daysOfWeek.map((day) => (
+              <span key={day} className="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-500">
+                {day}
+              </span>
+            ))}
+          </div>
+
+          {/* Days Grid */}
+          <div className="grid grid-cols-7 gap-1 text-center">
+            {Array.from({ length: firstDayOfWeek }).map((_, idx) => (
+              <div key={`empty-${idx}`} className="h-7 w-7" />
+            ))}
+
+            {Array.from({ length: daysInMonth }).map((_, idx) => {
+              const dayNum = idx + 1;
+              const formattedMonth = String(currentMonth + 1).padStart(2, "0");
+              const formattedDay = String(dayNum).padStart(2, "0");
+              const dateStr = `${currentYear}-${formattedMonth}-${formattedDay}`;
+
+              const isSelected = value === dateStr;
+              const isToday =
+                new Date().toISOString().split("T")[0] === dateStr;
+
+              return (
+                <button
+                  key={dayNum}
+                  type="button"
+                  onClick={() => handleSelectDay(dayNum)}
+                  className={`h-7 w-7 rounded-xl text-xs font-bold flex items-center justify-center transition-all cursor-pointer ${
+                    isSelected
+                      ? "bg-secondary-500 text-white shadow-md shadow-secondary-500/30 scale-105"
+                      : isToday
+                      ? "bg-secondary-500/15 text-secondary-600 dark:text-secondary-400 border border-secondary-500/30"
+                      : "hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200"
+                  }`}
+                >
+                  {dayNum}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Footer Shortcuts */}
+          <div className="flex items-center justify-between border-t border-slate-200 dark:border-slate-800 pt-2.5 mt-3 text-xs">
+            <button
+              type="button"
+              onClick={handleClear}
+              className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-medium transition-colors cursor-pointer"
+            >
+              Clear
+            </button>
+            <button
+              type="button"
+              onClick={handleSelectToday}
+              className="text-secondary-600 dark:text-secondary-400 font-extrabold hover:underline transition-all cursor-pointer"
+            >
+              Today
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function EmployeeDashboard() {
   const router = useRouter();
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -79,6 +280,8 @@ export default function EmployeeDashboard() {
   const [isPunching, setIsPunching] = useState(false);
   const [activeTab, setActiveTab] = useState<'attendance' | 'leaves'>('attendance');
   const [showLeaveModal, setShowLeaveModal] = useState(false);
+  const [selectedLeaveDetail, setSelectedLeaveDetail] = useState<LeaveRequest | null>(null);
+  const [selectedAttendanceDetail, setSelectedAttendanceDetail] = useState<AttendanceRecord | null>(null);
   
   // Profile Settings States
   const [showProfileModal, setShowProfileModal] = useState(false);
@@ -301,7 +504,7 @@ export default function EmployeeDashboard() {
     }
 
     setIsSubmittingLeave(true);
-    const toastId = toast.loading("Submitting Unpaid Leave (LOP) request...");
+    const toastId = toast.loading("Submitting leave request...");
 
     try {
       const res = await fetch("/api/leave/request", {
@@ -322,7 +525,7 @@ export default function EmployeeDashboard() {
         return;
       }
 
-      toast.success("Unpaid Leave request submitted for HR review!", { id: toastId });
+      toast.success("Leave request submitted for HR review!", { id: toastId });
       setShowLeaveModal(false);
       setLeaveForm({ startDate: '', endDate: '', reason: '' });
       fetchData();
@@ -382,26 +585,26 @@ export default function EmployeeDashboard() {
   return (
     <div className="min-h-screen bg-slate-100 dark:bg-[#141b29] text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-300 selection:bg-secondary-500 selection:text-white">
       {/* Top Navbar */}
-      <header className="sticky top-0 z-30 w-full bg-white/90 dark:bg-[#1f2a3e]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 px-4 sm:px-8 py-3.5 flex items-center justify-between shadow-sm">
-        <div className="flex items-center gap-3 sm:gap-4">
+      <header className="sticky top-0 z-30 w-full bg-white/90 dark:bg-[#1f2a3e]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 px-3.5 sm:px-8 py-3 flex items-center justify-between shadow-sm">
+        <div className="flex items-center gap-2 sm:gap-3.5 min-w-0">
           <Image
             src="/logo.png"
             alt="Trisage Marketing Logo"
             width={160}
             height={45}
             priority
-            className="h-8 sm:h-10 w-auto object-contain mix-blend-multiply dark:mix-blend-screen"
+            className="h-7 sm:h-10 w-auto object-contain mix-blend-multiply dark:mix-blend-screen shrink-0"
           />
-          <div className="h-6 w-px bg-slate-200 dark:bg-slate-700 hidden xs:block" />
-          <span className="hidden xs:inline-block text-xs font-bold tracking-wider text-slate-500 dark:text-slate-400 uppercase">
-            Employee Portal
+          <div className="h-5 w-px bg-slate-200 dark:bg-slate-700/80 shrink-0" />
+          <span className="text-[11px] sm:text-xs font-black tracking-wider text-secondary-600 dark:text-secondary-400 uppercase truncate">
+            Dashboard
           </span>
         </div>
 
-        <div className="flex items-center gap-3 sm:gap-4">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           {/* Live Date/Time Badge */}
-          <div className="hidden md:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 text-xs font-semibold text-slate-700 dark:text-slate-300">
-            <Calendar className="w-3.5 h-3.5 text-secondary-500" />
+          <div className="hidden lg:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 text-xs font-semibold text-slate-700 dark:text-slate-300">
+            <CalendarIcon className="w-3.5 h-3.5 text-secondary-500" />
             <span>
               {currentTime ? currentTime.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric" }) : "--"}
             </span>
@@ -412,62 +615,66 @@ export default function EmployeeDashboard() {
           {/* Logout Button */}
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-500/20 text-xs font-bold transition-all cursor-pointer"
+            className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-500/20 text-xs font-extrabold transition-all cursor-pointer shadow-2xs"
+            title="Sign out of Employee Portal"
           >
-            <LogOut className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Sign Out</span>
+            <LogOut className="w-3.5 h-3.5 shrink-0" />
+            <span className="text-xs font-extrabold whitespace-nowrap">Sign Out</span>
           </button>
         </div>
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-8 py-6 space-y-6">
+      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-8 py-6 pb-24 md:pb-6 space-y-6">
         {/* Header Profile Banner */}
-        <div className="relative bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-sm overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="flex items-center gap-4 sm:gap-5">
+        <div className="relative bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-800 rounded-3xl p-5 sm:p-8 shadow-sm overflow-hidden flex flex-col md:flex-row items-center justify-between gap-5">
+          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5 text-center sm:text-left w-full md:w-auto">
             {/* Avatar Pill */}
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-800 dark:text-white font-extrabold text-2xl shadow-md shrink-0 overflow-hidden relative">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-800 dark:text-white font-extrabold text-xl sm:text-2xl shadow-md shrink-0 overflow-hidden relative mx-auto sm:mx-0">
               {profile?.avatar_url ? (
                 <Image
                   src={profile.avatar_url}
                   alt={profile?.full_name || "Avatar"}
                   fill
                   sizes="80px"
-                  className="object-contain object-center p-1"
+                  className="object-cover object-center rounded-2xl"
                 />
               ) : (
                 profile?.full_name?.substring(0, 2).toUpperCase() || "EM"
               )}
             </div>
 
-            <div className="space-y-1">
-              <div className="flex items-center gap-2 flex-wrap">
-                <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white font-sans tracking-normal [letter-spacing:-0.03em]">
+            <div className="space-y-1.5 flex flex-col items-center sm:items-start w-full min-w-0">
+              {/* Single Row Title & Badge */}
+              <div className="flex flex-row items-center justify-center sm:justify-start gap-2 flex-wrap">
+                <h1 className="text-lg sm:text-2xl font-extrabold text-slate-900 dark:text-white font-sans tracking-normal shrink-0">
                   Welcome, {profile?.full_name || "Employee"}!
                 </h1>
-                <span className="px-2.5 py-0.5 rounded-full bg-secondary-500/10 border border-secondary-500/20 text-secondary-600 dark:text-secondary-400 text-xs font-bold uppercase tracking-wider">
+                <span className="px-2.5 py-0.5 rounded-full bg-secondary-500/10 border border-secondary-500/20 text-secondary-600 dark:text-secondary-400 text-[10px] sm:text-xs font-bold uppercase tracking-wider whitespace-nowrap shrink-0">
                   {profile?.departments?.name || profile?.role || "Team Member"}
                 </span>
               </div>
 
-              <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400 flex-wrap font-medium">
-                <span className="flex items-center gap-1.5">
-                  <User className="w-3.5 h-3.5 text-slate-400" />
+              {/* Single Row ID & Email Details */}
+              <div className="flex flex-row items-center justify-center sm:justify-start gap-2.5 sm:gap-3 text-xs text-slate-500 dark:text-slate-400 font-medium flex-wrap">
+                <span className="flex items-center gap-1.5 shrink-0">
+                  <User className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                   ID: <strong className="text-slate-700 dark:text-slate-200">{profile?.employee_id || "TR-EMP"}</strong>
                 </span>
-                <span className="flex items-center gap-1.5">
-                  <Building className="w-3.5 h-3.5 text-slate-400" />
+                <span className="text-slate-300 dark:text-slate-700">•</span>
+                <span className="flex items-center gap-1.5 shrink-0">
+                  <Building className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                   Email: <strong className="text-slate-700 dark:text-slate-200">{profile?.email}</strong>
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Quick Actions: Apply Leave & My Profile Settings */}
-          <div className="flex items-center gap-3 shrink-0 flex-wrap">
+          {/* Quick Actions */}
+          <div className="flex flex-col xs:flex-row items-stretch sm:items-center gap-2.5 shrink-0 w-full md:w-auto">
             <Link
               href="/dashboard/profile"
-              className="w-full md:w-auto px-4 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs uppercase tracking-wide transition-all flex items-center justify-center gap-2 border border-slate-200 dark:border-slate-700 cursor-pointer"
+              className="w-full sm:w-auto px-4 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs uppercase tracking-wide transition-all flex items-center justify-center gap-2 border border-slate-200 dark:border-slate-700 cursor-pointer shadow-xs whitespace-nowrap"
             >
               <User className="w-4 h-4 text-secondary-500" />
               <span>Edit Full Profile</span>
@@ -475,7 +682,7 @@ export default function EmployeeDashboard() {
 
             <button
               onClick={() => setShowLeaveModal(true)}
-              className="w-full md:w-auto px-5 py-3 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-xs uppercase tracking-wide hover:opacity-90 transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer"
+              className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-xs uppercase tracking-wide hover:opacity-90 transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer whitespace-nowrap"
             >
               <PlusCircle className="w-4 h-4" />
               <span>Apply Unpaid Leave (LOP)</span>
@@ -486,67 +693,69 @@ export default function EmployeeDashboard() {
         {/* Hero Section: Live Attendance Punch Clock & Status Card */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Punch In/Out Main Action Card */}
-          <div className="lg:col-span-2 bg-gradient-to-br from-white via-white to-slate-50 dark:from-[#1f2a3e] dark:via-[#1f2a3e] dark:to-[#172132] border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col justify-between relative overflow-hidden">
-            <div className="flex items-center justify-between gap-4 mb-6">
-              <div className="flex items-center gap-2.5">
-                <div className="p-2 rounded-xl bg-secondary-500/10 text-secondary-600 dark:text-secondary-400">
-                  <Timer className="w-5 h-5" />
+          <div className="lg:col-span-2 bg-gradient-to-br from-white via-white to-slate-50 dark:from-[#1f2a3e] dark:via-[#1f2a3e] dark:to-[#172132] border border-slate-200 dark:border-slate-800 rounded-3xl p-4 sm:p-8 shadow-sm flex flex-col justify-between relative overflow-hidden">
+            <div className="flex items-center justify-between gap-3 mb-4">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-secondary-500/10 text-secondary-600 dark:text-secondary-400 flex items-center justify-center shrink-0">
+                  <Timer className="w-6 h-6 sm:w-7 sm:h-7" />
                 </div>
-                <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white uppercase tracking-wider">
-                  Today's Attendance Punch Clock
-                </h2>
-              </div>
+                <div className="flex flex-col justify-center gap-1 min-w-0">
+                  <h2 className="text-xs sm:text-base font-extrabold text-slate-900 dark:text-white uppercase tracking-wider">
+                    Today's Punch Clock
+                  </h2>
 
-              {/* Status Badge */}
-              <div className="flex items-center gap-2">
-                {isCheckedIn ? (
-                  <span className="px-3 py-1 rounded-full bg-teal-500/15 border border-teal-500/30 text-teal-600 dark:text-teal-400 text-xs font-bold flex items-center gap-1.5 animate-pulse">
-                    <span className="w-2 h-2 rounded-full bg-teal-500" />
-                    PUNCHED IN (ACTIVE)
-                  </span>
-                ) : isCompletedToday ? (
-                  <span className="px-3 py-1 rounded-full bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold flex items-center gap-1.5">
-                    <BadgeCheck className="w-4 h-4 text-emerald-500" />
-                    PUNCHED OUT (COMPLETED)
-                  </span>
-                ) : (
-                  <span className="px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-600 dark:text-amber-400 text-xs font-bold flex items-center gap-1.5">
-                    <AlertCircle className="w-4 h-4 text-amber-500" />
-                    NOT PUNCHED IN YET
-                  </span>
-                )}
+                  {/* Status Badge below title, fully covered by icon container */}
+                  <div>
+                    {isCheckedIn ? (
+                      <span className="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-teal-500/15 border border-teal-500/30 text-teal-600 dark:text-teal-400 text-[10px] sm:text-xs font-extrabold inline-flex items-center gap-1.5 animate-pulse whitespace-nowrap">
+                        <span className="w-1.5 h-1.5 rounded-full bg-teal-500" />
+                        PUNCHED IN (ACTIVE)
+                      </span>
+                    ) : isCompletedToday ? (
+                      <span className="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-[10px] sm:text-xs font-extrabold inline-flex items-center gap-1.5 whitespace-nowrap">
+                        <BadgeCheck className="w-3.5 h-3.5 text-emerald-500" />
+                        PUNCHED OUT
+                      </span>
+                    ) : (
+                      <span className="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-600 dark:text-amber-400 text-[10px] sm:text-xs font-extrabold inline-flex items-center gap-1.5 whitespace-nowrap">
+                        <AlertCircle className="w-3.5 h-3.5 text-amber-500" />
+                        NOT PUNCHED IN
+                      </span>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
 
             {/* Live Clock Display */}
-            <div className="my-4 text-center py-6 px-4 rounded-3xl bg-slate-100/70 dark:bg-[#141b29]/80 border border-slate-200/80 dark:border-slate-800">
-              <span className="block text-xs font-bold tracking-widest text-slate-400 dark:text-slate-500 uppercase mb-1">
+            <div className="my-3 text-center py-5 px-3 sm:px-4 rounded-3xl bg-slate-100/70 dark:bg-[#141b29]/80 border border-slate-200/80 dark:border-slate-800">
+              <span className="block text-[10px] sm:text-xs font-bold tracking-widest text-slate-400 dark:text-slate-500 uppercase mb-1">
                 Real-Time Clock
               </span>
-              <div className="text-4xl sm:text-5xl font-extrabold tracking-wider text-slate-900 dark:text-white font-mono">
+              <div className="text-2xl xs:text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white font-mono whitespace-nowrap">
                 {currentTime ? currentTime.toLocaleTimeString() : "--:--:--"}
               </div>
-              <span className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mt-2">
+              <span className="block text-[11px] sm:text-xs font-bold text-slate-500 dark:text-slate-400 mt-2">
                 Today: {todayRecord?.work_date || new Date().toISOString().split('T')[0]}
               </span>
             </div>
 
             {/* Action Buttons */}
-            <div className="mt-4 flex flex-col sm:flex-row items-center gap-4">
+            <div className="mt-3 flex flex-col sm:flex-row items-center gap-4 relative z-10">
               {!isCheckedIn ? (
                 <button
                   onClick={handlePunchIn}
                   disabled={isPunching || isCompletedToday}
-                  className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-sm tracking-wide shadow-lg shadow-emerald-600/20 active:scale-[0.99] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2.5 uppercase cursor-pointer"
+                  className="w-full py-3.5 sm:py-4 px-5 sm:px-6 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-xs sm:text-sm tracking-wide shadow-lg shadow-emerald-600/20 active:scale-[0.99] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 uppercase cursor-pointer relative z-10"
                 >
                   {isPunching ? (
                     <>
-                      <RefreshCw className="w-5 h-5 animate-spin" />
+                      <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
                       <span>Recording Punch In...</span>
                     </>
                   ) : (
                     <>
-                      <CheckCircle2 className="w-5 h-5" />
+                      <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" />
                       <span>{isCompletedToday ? "Day Session Completed" : "Punch In Now"}</span>
                     </>
                   )}
@@ -555,16 +764,16 @@ export default function EmployeeDashboard() {
                 <button
                   onClick={handlePunchOut}
                   disabled={isPunching}
-                  className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white font-extrabold text-sm tracking-wide shadow-lg shadow-rose-600/20 active:scale-[0.99] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2.5 uppercase cursor-pointer"
+                  className="w-full py-3.5 sm:py-4 px-5 sm:px-6 rounded-2xl bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white font-extrabold text-xs sm:text-sm tracking-wide shadow-lg shadow-rose-600/20 active:scale-[0.99] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 uppercase cursor-pointer relative z-10"
                 >
                   {isPunching ? (
                     <>
-                      <RefreshCw className="w-5 h-5 animate-spin" />
+                      <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
                       <span>Recording Punch Out...</span>
                     </>
                   ) : (
                     <>
-                      <LogOut className="w-5 h-5" />
+                      <LogOut className="w-4 h-4 sm:w-5 sm:h-5" />
                       <span>Punch Out Now</span>
                     </>
                   )}
@@ -574,51 +783,54 @@ export default function EmployeeDashboard() {
           </div>
 
           {/* Today's Punch Summary Stats Widget */}
-          <div className="bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm flex flex-col justify-start space-y-4">
+          <div className="bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-800 rounded-3xl p-4 sm:p-6 shadow-sm flex flex-col justify-start space-y-3.5 sm:space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                <Briefcase className="w-4 h-4 text-secondary-500" />
-                Shift Metrics
+              <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                <Briefcase className="w-4 h-4 text-secondary-500 shrink-0" />
+                <span>Shift Metrics</span>
               </h3>
               <button
                 onClick={fetchData}
-                className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors cursor-pointer"
+                className="p-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-all cursor-pointer active:scale-95 shrink-0"
                 title="Refresh Metrics"
               >
-                <RefreshCw className="w-4 h-4" />
+                <RefreshCw className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </button>
             </div>
 
-            <div className="space-y-3">
-              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 flex items-center justify-between">
-                <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Punch In Time</span>
-                <span className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200 font-mono">
+            <div className="space-y-2.5 sm:space-y-3">
+              <div className="px-3.5 py-3 sm:px-4 sm:py-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 flex items-center justify-between gap-2">
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-medium shrink-0">Punch In Time</span>
+                <span className="text-xs sm:text-sm font-extrabold text-slate-800 dark:text-slate-200 font-mono shrink-0">
                   {todayRecord?.check_in_time
                     ? new Date(todayRecord.check_in_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                     : "--:--"}
                 </span>
               </div>
 
-              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 flex items-center justify-between">
-                <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Punch Out Time</span>
-                <span className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200 font-mono">
+              <div className="px-3.5 py-3 sm:px-4 sm:py-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 flex items-center justify-between gap-2">
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-medium shrink-0">Punch Out Time</span>
+                <span className="text-xs sm:text-sm font-extrabold text-slate-800 dark:text-slate-200 font-mono shrink-0">
                   {todayRecord?.check_out_time
                     ? new Date(todayRecord.check_out_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                     : "--:--"}
                 </span>
               </div>
 
-              <div className="p-3.5 rounded-2xl bg-secondary-500/10 border border-secondary-500/20 flex items-center justify-between">
-                <span className="text-xs text-secondary-700 dark:text-secondary-300 font-bold">Total Work Duration</span>
-                <span className="text-sm font-extrabold text-secondary-600 dark:text-secondary-400 font-mono">
+              <div className="px-3.5 py-3 sm:px-4 sm:py-3.5 rounded-2xl bg-secondary-500/10 border border-secondary-500/20 flex items-center justify-between gap-2">
+                <span className="text-xs text-secondary-700 dark:text-secondary-300 font-bold shrink-0">Total Work Duration</span>
+                <span className="text-xs sm:text-sm font-extrabold text-secondary-600 dark:text-secondary-400 font-mono shrink-0">
                   {getElapsedWorkTime()}
                 </span>
               </div>
 
               {todayRecord?.location_check_in?.address && (
-                <div className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-900/40 text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                <div
+                  className="px-3 py-2.5 rounded-xl bg-slate-100/80 dark:bg-slate-900/50 border border-slate-200/60 dark:border-slate-800/60 text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-2 font-medium min-w-0"
+                  title={`${todayRecord.location_check_in.address}${todayRecord.location_check_in.ip ? ` (${todayRecord.location_check_in.ip})` : ''}`}
+                >
                   <MapPin className="w-3.5 h-3.5 text-teal-500 shrink-0" />
-                  <span className="truncate">
+                  <span className="truncate min-w-0">
                     {todayRecord.location_check_in.address}
                     {todayRecord.location_check_in.ip ? ` (${todayRecord.location_check_in.ip})` : ''}
                   </span>
@@ -629,152 +841,214 @@ export default function EmployeeDashboard() {
         </div>
 
         {/* Data Navigation Tabs */}
-        <div className="bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-6">
-          <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4 gap-4 flex-wrap">
-            <div className="flex items-center gap-2">
+        <div className="bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-800 rounded-3xl p-4 sm:p-6 shadow-sm space-y-4 sm:space-y-6">
+          <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4 gap-3 flex-wrap">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-1.5 sm:gap-2 w-full xs:w-auto">
               <button
                 onClick={() => setActiveTab('attendance')}
-                className={`px-4 py-2 rounded-2xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer ${
+                className={`w-full sm:w-auto px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl text-[10px] xs:text-[11px] sm:text-xs font-black uppercase tracking-wider transition-all flex items-center justify-center sm:justify-start gap-1.5 sm:gap-2 cursor-pointer ${
                   activeTab === 'attendance'
                     ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-sm'
-                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-900/60'
                 }`}
               >
-                <History className="w-4 h-4" />
+                <History className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
                 <span>Attendance Log</span>
               </button>
 
               <button
                 onClick={() => setActiveTab('leaves')}
-                className={`px-4 py-2 rounded-2xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer ${
+                className={`w-full sm:w-auto px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl text-[10px] xs:text-[11px] sm:text-xs font-black uppercase tracking-wider transition-all flex items-center justify-center sm:justify-start gap-1.5 sm:gap-2 cursor-pointer ${
                   activeTab === 'leaves'
                     ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-sm'
-                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-900/60'
                 }`}
               >
-                <FileText className="w-4 h-4" />
+                <FileText className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
                 <span>Unpaid Leave Applications ({leaveRequests.length})</span>
               </button>
             </div>
           </div>
 
-          {/* TAB 1: ATTENDANCE HISTORY TABLE */}
+          {/* TAB 1: ATTENDANCE HISTORY */}
           {activeTab === 'attendance' && (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs sm:text-sm">
-                <thead>
-                  <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-400 uppercase text-[10px] tracking-wider">
-                    <th className="py-3 px-4">Date</th>
-                    <th className="py-3 px-4">Check In</th>
-                    <th className="py-3 px-4">Check Out</th>
-                    <th className="py-3 px-4">Location & IP Address</th>
-                    <th className="py-3 px-4">Status</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium">
-                  {attendanceHistory.length === 0 ? (
-                    <tr>
-                      <td colSpan={5} className="py-8 text-center text-slate-400 text-xs">
-                        No recent attendance records found.
-                      </td>
-                    </tr>
-                  ) : (
-                    attendanceHistory.map((rec) => (
-                      <tr key={rec.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-colors">
-                        <td className="py-3.5 px-4 font-bold text-slate-800 dark:text-slate-200">
-                          <div className="flex flex-col">
-                            <span>{rec.work_date}</span>
-                            <span className="text-[10px] text-secondary-600 dark:text-secondary-400 font-bold uppercase tracking-wider">
+            <div>
+              {/* Mobile Card List View (Natural Top-to-Bottom Scroll, Executive Layout) */}
+              <div className="space-y-3 block sm:hidden">
+                {attendanceHistory.length === 0 ? (
+                  <div className="py-8 text-center text-slate-400 text-xs bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-slate-200 dark:border-slate-800">
+                    No recent attendance records found.
+                  </div>
+                ) : (
+                  attendanceHistory.map((rec) => (
+                    <div
+                      key={rec.id}
+                      onClick={() => setSelectedAttendanceDetail(rec)}
+                      className="p-4 rounded-2xl bg-gradient-to-br from-slate-50/90 via-white to-slate-100/50 dark:from-[#172132]/90 dark:via-[#1f2a3e] dark:to-[#172132]/50 border border-slate-200/80 dark:border-slate-800 shadow-xs relative overflow-hidden space-y-3 cursor-pointer hover:border-secondary-500/50 transition-all active:scale-[0.99] group"
+                    >
+                      {/* Row 1: Date & Day Badge on Left, Status Pill on Right */}
+                      <div className="flex items-center justify-between border-b border-slate-200/60 dark:border-slate-800/60 pb-2.5">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full bg-secondary-500" />
+                          <div>
+                            <span className="block text-xs font-black text-slate-900 dark:text-white">
+                              {rec.work_date}
+                            </span>
+                            <span className="text-[10px] font-bold text-secondary-600 dark:text-secondary-400 uppercase tracking-wider">
                               {new Date(rec.work_date + "T00:00:00").toLocaleDateString("en-US", { weekday: "long" })}
                             </span>
                           </div>
-                        </td>
-                        <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300 font-mono">
-                          {rec.check_in_time ? new Date(rec.check_in_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--'}
-                        </td>
-                        <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300 font-mono">
-                          {rec.check_out_time ? new Date(rec.check_out_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--'}
-                        </td>
-                        <td className="py-3.5 px-4 text-slate-500 text-xs">
-                          {rec.location_check_in?.address ? (
-                            <div className="flex flex-col gap-0.5 max-w-xs">
-                              <span className="font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-1">
-                                <MapPin className="w-3.5 h-3.5 text-teal-500 shrink-0" />
-                                {rec.location_check_in.address}
-                              </span>
-                              {rec.location_check_in.ip && (
-                                <span className="text-[10px] text-slate-400 font-mono pl-4">
-                                  IP: {rec.location_check_in.ip}
-                                </span>
-                              )}
-                            </div>
-                          ) : (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-semibold border border-slate-200 dark:border-slate-700 text-[10px]">
-                              🌐 Web Portal
-                            </span>
-                          )}
-                        </td>
-                        <td className="py-3.5 px-4">
-                          <span
-                            className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                              rec.status === 'present'
-                                ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
-                                : rec.status === 'late'
-                                ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'
-                                : 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
-                            }`}
-                          >
-                            {rec.status}
+                        </div>
+                        <span
+                          className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                            rec.status === 'present'
+                              ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
+                              : rec.status === 'late'
+                              ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'
+                              : 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
+                          }`}
+                        >
+                          {rec.status}
+                        </span>
+                      </div>
+
+                      {/* Row 2: Check In & Check Out Times Side-by-Side */}
+                      <div className="grid grid-cols-2 gap-2 text-xs">
+                        <div className="p-2.5 rounded-xl bg-white/80 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-700/50 flex flex-col justify-center">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase mb-0.5 flex items-center gap-1">
+                            <CheckCircle2 className="w-3 h-3 text-emerald-500" />
+                            Check In
                           </span>
+                          <span className="font-extrabold text-slate-800 dark:text-slate-200 font-mono">
+                            {rec.check_in_time ? new Date(rec.check_in_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--'}
+                          </span>
+                        </div>
+                        <div className="p-2.5 rounded-xl bg-white/80 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-700/50 flex flex-col justify-center">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase mb-0.5 flex items-center gap-1">
+                            <LogOut className="w-3 h-3 text-rose-500" />
+                            Check Out
+                          </span>
+                          <span className="font-extrabold text-slate-800 dark:text-slate-200 font-mono">
+                            {rec.check_out_time ? new Date(rec.check_out_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--'}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Row 3: Location / Web Portal Badge */}
+                      {rec.location_check_in?.address ? (
+                        <div className="flex items-center gap-1.5 text-[11px] text-slate-500 dark:text-slate-400 bg-white/80 dark:bg-slate-900/60 p-2.5 rounded-xl border border-slate-200/50 dark:border-slate-700/50">
+                          <MapPin className="w-3.5 h-3.5 text-teal-500 shrink-0" />
+                          <span className="truncate">{rec.location_check_in.address}</span>
+                        </div>
+                      ) : (
+                        <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400 px-1">
+                          🌐 Web Portal Check-In
+                        </div>
+                      )}
+                    </div>
+                  ))
+                )}
+              </div>
+
+              {/* Desktop Table View */}
+              <div className="hidden sm:block overflow-x-auto hide-scrollbar w-full border border-slate-200/80 dark:border-slate-800 rounded-2xl">
+                <table className="w-full text-left text-xs sm:text-sm min-w-[620px]">
+                  <thead>
+                    <tr className="bg-slate-50/80 dark:bg-slate-900/60 border-b border-slate-200 dark:border-slate-800 text-slate-400 uppercase text-[10px] tracking-wider">
+                      <th className="py-3 px-4 whitespace-nowrap">Date</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Check In</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Check Out</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Location & IP Address</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium">
+                    {attendanceHistory.length === 0 ? (
+                      <tr>
+                        <td colSpan={5} className="py-8 text-center text-slate-400 text-xs">
+                          No recent attendance records found.
                         </td>
                       </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
+                    ) : (
+                      attendanceHistory.map((rec) => (
+                        <tr key={rec.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-colors">
+                          <td className="py-3.5 px-4 whitespace-nowrap font-bold text-slate-800 dark:text-slate-200">
+                            <div className="flex flex-col">
+                              <span>{rec.work_date}</span>
+                              <span className="text-[10px] text-secondary-600 dark:text-secondary-400 font-bold uppercase tracking-wider">
+                                {new Date(rec.work_date + "T00:00:00").toLocaleDateString("en-US", { weekday: "long" })}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="py-3.5 px-4 whitespace-nowrap text-slate-600 dark:text-slate-300 font-mono">
+                            {rec.check_in_time ? new Date(rec.check_in_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--'}
+                          </td>
+                          <td className="py-3.5 px-4 whitespace-nowrap text-slate-600 dark:text-slate-300 font-mono">
+                            {rec.check_out_time ? new Date(rec.check_out_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--'}
+                          </td>
+                          <td className="py-3.5 px-4 text-slate-500 text-xs">
+                            {rec.location_check_in?.address ? (
+                              <div className="flex flex-col gap-0.5 max-w-xs">
+                                <span className="font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-1 truncate">
+                                  <MapPin className="w-3.5 h-3.5 text-teal-500 shrink-0" />
+                                  {rec.location_check_in.address}
+                                </span>
+                                {rec.location_check_in.ip && (
+                                  <span className="text-[10px] text-slate-400 font-mono pl-4">
+                                    IP: {rec.location_check_in.ip}
+                                  </span>
+                                )}
+                              </div>
+                            ) : (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-semibold border border-slate-200 dark:border-slate-700 text-[10px]">
+                                🌐 Web Portal
+                              </span>
+                            )}
+                          </td>
+                          <td className="py-3.5 px-4 whitespace-nowrap">
+                            <span
+                              className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                                rec.status === 'present'
+                                  ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
+                                  : rec.status === 'late'
+                                  ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'
+                                  : 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
+                              }`}
+                            >
+                              {rec.status}
+                            </span>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
 
-          {/* TAB 2: LEAVE APPLICATIONS TABLE */}
+          {/* TAB 2: LEAVE APPLICATIONS */}
           {activeTab === 'leaves' && (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs sm:text-sm">
-                <thead>
-                  <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-400 uppercase text-[10px] tracking-wider">
-                    <th className="py-3 px-4">Type</th>
-                    <th className="py-3 px-4">Start Date</th>
-                    <th className="py-3 px-4">End Date</th>
-                    <th className="py-3 px-4">Duration</th>
-                    <th className="py-3 px-4">Reason</th>
-                    <th className="py-3 px-4">Status</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium">
-                  {leaveRequests.length === 0 ? (
-                    <tr>
-                      <td colSpan={6} className="py-8 text-center text-slate-400 text-xs">
-                        No leave applications submitted yet.
-                      </td>
-                    </tr>
-                  ) : (
-                    leaveRequests.map((req) => (
-                      <tr key={req.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-colors">
-                        <td className="py-3.5 px-4 font-bold text-slate-800 dark:text-slate-200">
+            <div>
+              {/* Mobile Card List View (Natural Top-to-Bottom Scroll, Executive Focused Layout) */}
+              <div className="space-y-3 block sm:hidden">
+                {leaveRequests.length === 0 ? (
+                  <div className="py-8 text-center text-slate-400 text-xs bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-slate-200 dark:border-slate-800">
+                    No leave applications submitted yet.
+                  </div>
+                ) : (
+                  leaveRequests.map((req) => (
+                    <div
+                      key={req.id}
+                      onClick={() => setSelectedLeaveDetail(req)}
+                      className="p-4 rounded-2xl bg-gradient-to-br from-slate-50/90 via-white to-slate-100/50 dark:from-[#172132]/90 dark:via-[#1f2a3e] dark:to-[#172132]/50 border border-slate-200/80 dark:border-slate-800 shadow-xs relative overflow-hidden space-y-3 cursor-pointer hover:border-secondary-500/50 transition-all active:scale-[0.99] group"
+                    >
+                      {/* Row 1: Type Pill on Left, Status Pill on Right */}
+                      <div className="flex items-center justify-between border-b border-slate-200/60 dark:border-slate-800/60 pb-2.5">
+                        <span className="px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-300 text-[10px] font-black uppercase tracking-wider">
                           Unpaid Leave (LOP)
-                        </td>
-                        <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300 font-mono">
-                          {req.start_date}
-                        </td>
-                        <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300 font-mono">
-                          {req.end_date}
-                        </td>
-                        <td className="py-3.5 px-4 font-bold text-slate-700 dark:text-slate-300">
-                          {req.total_days} {req.total_days === 1 ? 'day' : 'days'}
-                        </td>
-                        <td className="py-3.5 px-4 text-slate-500 max-w-xs truncate">
-                          {req.reason}
-                        </td>
-                        <td className="py-3.5 px-4">
+                        </span>
+                        <div className="flex items-center gap-1.5">
                           <span
                             className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
                               req.status === 'approved'
@@ -786,12 +1060,98 @@ export default function EmployeeDashboard() {
                           >
                             {req.status}
                           </span>
+                          <span className="text-[10px] text-secondary-500 font-extrabold group-hover:translate-x-0.5 transition-transform">
+                            →
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Row 2: Sleek Uncompressed Date & Duration Banner */}
+                      <div className="p-3 rounded-xl bg-white/80 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <div className="p-1.5 rounded-lg bg-secondary-500/10 text-secondary-600 dark:text-secondary-400 shrink-0">
+                            <CalendarIcon className="w-4 h-4" />
+                          </div>
+                          <div className="flex flex-col min-w-0">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Leave Duration</span>
+                            <span className="font-extrabold text-slate-800 dark:text-slate-200 font-mono text-xs truncate">
+                              {req.start_date} <span className="text-secondary-500 font-bold">→</span> {req.end_date}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="px-3 py-1 rounded-xl bg-secondary-500/10 border border-secondary-500/20 text-secondary-600 dark:text-secondary-400 text-xs font-black shrink-0 whitespace-nowrap">
+                          {req.total_days} {req.total_days === 1 ? 'day' : 'days'}
+                        </div>
+                      </div>
+
+                      {/* Row 3: Styled Reason Quote Callout */}
+                      <div className="p-3 rounded-xl bg-white/80 dark:bg-slate-900/60 border-l-3 border-l-secondary-500 border border-slate-200/60 dark:border-slate-800/60 text-xs space-y-0.5">
+                        <span className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">Reason for Leave (Tap to expand)</span>
+                        <p className="font-semibold text-slate-800 dark:text-slate-200 leading-snug line-clamp-2">{req.reason}</p>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              {/* Desktop Table View */}
+              <div className="hidden sm:block overflow-x-auto hide-scrollbar w-full border border-slate-200/80 dark:border-slate-800 rounded-2xl">
+                <table className="w-full text-left text-xs sm:text-sm min-w-[620px]">
+                  <thead>
+                    <tr className="bg-slate-50/80 dark:bg-slate-900/60 border-b border-slate-200 dark:border-slate-800 text-slate-400 uppercase text-[10px] tracking-wider">
+                      <th className="py-3 px-4 whitespace-nowrap">Type</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Start Date</th>
+                      <th className="py-3 px-4 whitespace-nowrap">End Date</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Duration</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Reason</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium">
+                    {leaveRequests.length === 0 ? (
+                      <tr>
+                        <td colSpan={6} className="py-8 text-center text-slate-400 text-xs">
+                          No leave applications submitted yet.
                         </td>
                       </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
+                    ) : (
+                      leaveRequests.map((req) => (
+                        <tr key={req.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-colors">
+                          <td className="py-3.5 px-4 whitespace-nowrap font-bold text-slate-800 dark:text-slate-200">
+                            Unpaid Leave (LOP)
+                          </td>
+                          <td className="py-3.5 px-4 whitespace-nowrap text-slate-600 dark:text-slate-300 font-mono">
+                            {req.start_date}
+                          </td>
+                          <td className="py-3.5 px-4 whitespace-nowrap text-slate-600 dark:text-slate-300 font-mono">
+                            {req.end_date}
+                          </td>
+                          <td className="py-3.5 px-4 whitespace-nowrap font-bold text-slate-700 dark:text-slate-300">
+                            {req.total_days} {req.total_days === 1 ? 'day' : 'days'}
+                          </td>
+                          <td className="py-3.5 px-4 text-slate-500 max-w-xs truncate" title={req.reason}>
+                            {req.reason}
+                          </td>
+                          <td className="py-3.5 px-4 whitespace-nowrap">
+                            <span
+                              className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                                req.status === 'approved'
+                                  ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
+                                  : req.status === 'rejected'
+                                  ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20'
+                                  : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 animate-pulse'
+                              }`}
+                            >
+                              {req.status}
+                            </span>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
         </div>
@@ -799,79 +1159,78 @@ export default function EmployeeDashboard() {
 
       {/* UNPAID LEAVE (LOP) APPLICATION MODAL OVERLAY */}
       {showLeaveModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-700 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative">
-            <button
-              onClick={() => setShowLeaveModal(false)}
-              className="absolute top-5 right-5 p-1 rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
-            >
-              <X className="w-5 h-5" />
-            </button>
-
-            <div className="flex items-center gap-3 mb-4 text-slate-900 dark:text-white">
-              <div className="p-2 rounded-xl bg-secondary-500/10 text-secondary-500">
-                <FileText className="w-5 h-5" />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold">Apply Unpaid Leave (LOP)</h3>
-                <span className="text-xs text-slate-500 dark:text-slate-400">Trisage SOP: Only Unpaid Leave (Code: UL) is active</span>
-              </div>
-            </div>
-
-            <form onSubmit={handleLeaveSubmit} className="space-y-4 mt-4">
-              <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-300 text-xs flex items-start gap-2">
-                <Info className="w-4 h-4 shrink-0 mt-0.5" />
-                <span>Note: Unpaid leave will result in Loss of Pay (LOP) for requested dates upon HR approval.</span>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
-                  Start Date
-                </label>
-                <input
-                  type="date"
-                  required
-                  value={leaveForm.startDate}
-                  onChange={(e) => setLeaveForm({ ...leaveForm, startDate: e.target.value })}
-                  className="w-full py-3 px-4 rounded-xl bg-slate-50 dark:bg-[#141b29] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-sm font-medium focus:outline-none focus:border-secondary-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
-                  End Date
-                </label>
-                <input
-                  type="date"
-                  required
-                  value={leaveForm.endDate}
-                  onChange={(e) => setLeaveForm({ ...leaveForm, endDate: e.target.value })}
-                  className="w-full py-3 px-4 rounded-xl bg-slate-50 dark:bg-[#141b29] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-sm font-medium focus:outline-none focus:border-secondary-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
-                  Reason for Unpaid Leave
-                </label>
-                <textarea
-                  required
-                  rows={3}
-                  value={leaveForm.reason}
-                  onChange={(e) => setLeaveForm({ ...leaveForm, reason: e.target.value })}
-                  placeholder="State clear reason for your leave request..."
-                  className="w-full py-3 px-4 rounded-xl bg-slate-50 dark:bg-[#141b29] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-sm font-medium focus:outline-none focus:border-secondary-500"
-                />
-              </div>
-
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-0 sm:p-4 bg-slate-950/75 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="bg-white dark:bg-[#1f2a3e] border-0 sm:border border-slate-200 dark:border-slate-700 rounded-none sm:rounded-3xl p-6 sm:p-7 w-full h-full sm:h-auto max-w-none sm:max-w-md shadow-2xl relative overflow-y-auto flex flex-col justify-between sm:block">
+            <div>
               <button
-                type="submit"
-                disabled={isSubmittingLeave}
-                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-primary-600 via-primary-700 to-secondary-600 text-white font-bold text-xs uppercase tracking-wide shadow-md hover:opacity-95 transition-opacity disabled:opacity-50 cursor-pointer"
+                onClick={() => setShowLeaveModal(false)}
+                className="absolute top-5 right-5 p-2 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors cursor-pointer active:scale-95 z-20"
               >
-                {isSubmittingLeave ? "Submitting Request..." : "Submit Unpaid Leave Request"}
+                <X className="w-5 h-5" />
               </button>
-            </form>
+
+              <div className="flex items-center gap-3 mb-4 text-slate-900 dark:text-white pr-10">
+                <div className="p-2.5 sm:p-3 rounded-2xl bg-secondary-500/10 text-secondary-500 shrink-0">
+                  <FileText className="w-5 h-5 sm:w-6 sm:h-6" />
+                </div>
+                <div className="min-w-0">
+                  <h3 className="text-sm xs:text-base sm:text-lg font-extrabold tracking-tight text-slate-900 dark:text-white">
+                    Apply Unpaid Leave (LOP)
+                  </h3>
+                  <span className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 block leading-tight mt-0.5 truncate">
+                    Trisage SOP: Only Unpaid Leave (UL) active
+                  </span>
+                </div>
+              </div>
+
+              <form onSubmit={handleLeaveSubmit} className="space-y-4 sm:space-y-3 mt-3">
+                <div className="p-3 sm:p-2.5 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-800 dark:text-amber-300 text-[11px] sm:text-xs flex items-center gap-2 font-medium leading-snug">
+                  <Info className="w-4 h-4 shrink-0 text-amber-500" />
+                  <span>Note: Unpaid leave results in Loss of Pay (LOP) upon HR approval.</span>
+                </div>
+
+                {/* Side-by-Side 2-Column Custom Date Pickers */}
+                <div className="grid grid-cols-1 xs:grid-cols-2 gap-3.5 sm:gap-3">
+                  <CustomDatePicker
+                    label="Start Date"
+                    required
+                    value={leaveForm.startDate}
+                    onChange={(dateStr) => setLeaveForm({ ...leaveForm, startDate: dateStr })}
+                  />
+
+                  <CustomDatePicker
+                    label="End Date"
+                    required
+                    value={leaveForm.endDate}
+                    onChange={(dateStr) => setLeaveForm({ ...leaveForm, endDate: dateStr })}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5 sm:mb-1">
+                    Reason for Unpaid Leave
+                  </label>
+                  <textarea
+                    required
+                    rows={3}
+                    value={leaveForm.reason}
+                    onChange={(e) => setLeaveForm({ ...leaveForm, reason: e.target.value })}
+                    placeholder="State clear reason for your leave request..."
+                    className="w-full py-3 sm:py-2.5 px-4 sm:px-3 rounded-xl bg-slate-50 dark:bg-[#141b29] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs font-medium focus:outline-none focus:border-secondary-500 resize-none"
+                  />
+                </div>
+
+                <div className="pt-2 sm:pt-0">
+                  <button
+                    type="submit"
+                    disabled={isSubmittingLeave}
+                    className="w-full py-4 sm:py-3.5 rounded-2xl bg-gradient-to-r from-primary-600 via-primary-700 to-secondary-600 text-white font-extrabold text-xs uppercase tracking-wide shadow-lg shadow-primary-600/20 hover:opacity-95 transition-opacity disabled:opacity-50 cursor-pointer active:scale-[0.99] relative z-10"
+                  >
+                    {isSubmittingLeave ? "Submitting Request..." : "Submit Unpaid Leave Request"}
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       )}
@@ -976,6 +1335,227 @@ export default function EmployeeDashboard() {
           </div>
         </div>
       )}
+
+      {/* FOCUSED LEAVE REQUEST DETAILS MODAL (BACKGROUND BLUR & CLEAR CLOSE BUTTONS) */}
+      {selectedLeaveDetail && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-700 rounded-3xl p-6 w-full max-w-sm shadow-2xl space-y-4 relative animate-in zoom-in-95 duration-150">
+            {/* Top Right Close Button */}
+            <button
+              onClick={() => setSelectedLeaveDetail(null)}
+              className="absolute top-4 right-4 p-2 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors cursor-pointer active:scale-95 z-20"
+              aria-label="Close details"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Header Badge & Title */}
+            <div className="space-y-1 pr-10">
+              <span className="px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-300 text-[10px] font-black uppercase tracking-wider">
+                Unpaid Leave (LOP) Details
+              </span>
+              <h3 className="text-base font-extrabold text-slate-900 dark:text-white">
+                Application Overview
+              </h3>
+            </div>
+
+            {/* Status Pill */}
+            <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 flex items-center justify-between">
+              <span className="text-xs font-bold text-slate-500 dark:text-slate-400">Approval Status</span>
+              <span
+                className={`px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider ${
+                  selectedLeaveDetail.status === 'approved'
+                    ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
+                    : selectedLeaveDetail.status === 'rejected'
+                    ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20'
+                    : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 animate-pulse'
+                }`}
+              >
+                {selectedLeaveDetail.status}
+              </span>
+            </div>
+
+            {/* Date Range & Duration */}
+            <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 space-y-2">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-400 font-bold uppercase text-[10px]">Start Date</span>
+                <span className="font-extrabold text-slate-900 dark:text-white font-mono">{selectedLeaveDetail.start_date}</span>
+              </div>
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-400 font-bold uppercase text-[10px]">End Date</span>
+                <span className="font-extrabold text-slate-900 dark:text-white font-mono">{selectedLeaveDetail.end_date}</span>
+              </div>
+              <div className="pt-2 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between text-xs">
+                <span className="text-slate-400 font-bold uppercase text-[10px]">Total Duration</span>
+                <span className="font-black text-secondary-600 dark:text-secondary-400">
+                  {selectedLeaveDetail.total_days} {selectedLeaveDetail.total_days === 1 ? 'day' : 'days'}
+                </span>
+              </div>
+            </div>
+
+            {/* Full Un-truncated Reason Text */}
+            <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border-l-4 border-l-secondary-500 border border-slate-200/80 dark:border-slate-800 space-y-1">
+              <span className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">Full Reason for Leave</span>
+              <p className="text-xs font-semibold text-slate-800 dark:text-slate-200 leading-relaxed whitespace-pre-wrap">
+                {selectedLeaveDetail.reason}
+              </p>
+            </div>
+
+            {/* Rejection Reason if any */}
+            {selectedLeaveDetail.rejection_reason && (
+              <div className="p-3 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-800 dark:text-rose-300 text-xs space-y-1">
+                <span className="block text-[10px] font-extrabold uppercase tracking-wider text-rose-500">HR Rejection Reason</span>
+                <p className="font-semibold leading-relaxed">{selectedLeaveDetail.rejection_reason}</p>
+              </div>
+            )}
+
+            {/* Bottom Close Button */}
+            <button
+              onClick={() => setSelectedLeaveDetail(null)}
+              className="w-full py-3 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-extrabold text-xs tracking-wider uppercase transition-all active:scale-98 cursor-pointer shadow-md"
+            >
+              Close Details
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* FOCUSED ATTENDANCE RECORD DETAILS MODAL */}
+      {selectedAttendanceDetail && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-700 rounded-3xl p-6 w-full max-w-sm shadow-2xl space-y-4 relative animate-in zoom-in-95 duration-150">
+            {/* Top Right Close Button */}
+            <button
+              onClick={() => setSelectedAttendanceDetail(null)}
+              className="absolute top-4 right-4 p-2 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors cursor-pointer active:scale-95 z-20"
+              aria-label="Close details"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Header */}
+            <div className="space-y-1 pr-10">
+              <span className="px-2.5 py-0.5 rounded-full bg-secondary-500/10 border border-secondary-500/20 text-secondary-600 dark:text-secondary-400 text-[10px] font-black uppercase tracking-wider">
+                Attendance Record Details
+              </span>
+              <h3 className="text-base font-extrabold text-slate-900 dark:text-white">
+                {selectedAttendanceDetail.work_date}
+              </h3>
+            </div>
+
+            {/* Punch Times */}
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 space-y-1">
+                <span className="text-[10px] font-bold text-slate-400 uppercase flex items-center gap-1">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+                  Check In
+                </span>
+                <span className="font-extrabold text-slate-900 dark:text-white font-mono text-sm block">
+                  {selectedAttendanceDetail.check_in_time ? new Date(selectedAttendanceDetail.check_in_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--'}
+                </span>
+              </div>
+              <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 space-y-1">
+                <span className="text-[10px] font-bold text-slate-400 uppercase flex items-center gap-1">
+                  <LogOut className="w-3.5 h-3.5 text-rose-500" />
+                  Check Out
+                </span>
+                <span className="font-extrabold text-slate-900 dark:text-white font-mono text-sm block">
+                  {selectedAttendanceDetail.check_out_time ? new Date(selectedAttendanceDetail.check_out_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--'}
+                </span>
+              </div>
+            </div>
+
+            {/* Location */}
+            {selectedAttendanceDetail.location_check_in?.address && (
+              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 text-xs space-y-1">
+                <span className="block text-[10px] font-bold text-slate-400 uppercase">Check-In Location</span>
+                <p className="font-semibold text-slate-800 dark:text-slate-200 flex items-start gap-1.5 leading-snug">
+                  <MapPin className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" />
+                  <span>{selectedAttendanceDetail.location_check_in.address}</span>
+                </p>
+                {selectedAttendanceDetail.location_check_in.ip && (
+                  <span className="block text-[10px] text-slate-400 font-mono pl-5">
+                    IP Address: {selectedAttendanceDetail.location_check_in.ip}
+                  </span>
+                )}
+              </div>
+            )}
+
+            {/* Bottom Close Button */}
+            <button
+              onClick={() => setSelectedAttendanceDetail(null)}
+              className="w-full py-3 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-extrabold text-xs tracking-wider uppercase transition-all active:scale-98 cursor-pointer shadow-md"
+            >
+              Close Details
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* CONNECTED MOBILE BOTTOM NAVIGATION BAR (DOCKED TO BOTTOM EDGE) */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 w-full">
+        <nav className="bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] dark:shadow-[0_-4px_20px_rgba(0,0,0,0.35)] px-2 py-2 flex items-center justify-around relative overflow-hidden transition-colors duration-300">
+          {/* Item 1: Attendance Log */}
+          <button
+            onClick={() => {
+              setActiveTab('attendance');
+              window.scrollTo({ top: 400, behavior: 'smooth' });
+            }}
+            className={`flex flex-col items-center justify-center py-1 px-3 transition-all relative group cursor-pointer ${
+              activeTab === 'attendance' ? "text-secondary-600 dark:text-secondary-400" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
+            }`}
+          >
+            {activeTab === 'attendance' && (
+              <span className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-secondary-500 to-cyan-400 rounded-full shadow-[0_0_8px_rgba(56,189,248,0.8)] animate-in fade-in zoom-in-75 duration-200" />
+            )}
+            <CheckCircle2 className={`w-5 h-5 transition-transform duration-200 ${activeTab === 'attendance' ? "scale-110 text-secondary-600 dark:text-secondary-400" : "group-hover:scale-105"}`} />
+            <span className={`text-[10px] font-bold tracking-tight mt-1 transition-colors ${activeTab === 'attendance' ? "text-slate-900 dark:text-white font-black" : "text-slate-500 dark:text-slate-400"}`}>
+              Logs
+            </span>
+          </button>
+
+          {/* Item 2: Unpaid Leaves */}
+          <button
+            onClick={() => {
+              setActiveTab('leaves');
+              window.scrollTo({ top: 400, behavior: 'smooth' });
+            }}
+            className={`flex flex-col items-center justify-center py-1 px-3 transition-all relative group cursor-pointer ${
+              activeTab === 'leaves' ? "text-secondary-600 dark:text-secondary-400" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
+            }`}
+          >
+            {activeTab === 'leaves' && (
+              <span className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-secondary-500 to-cyan-400 rounded-full shadow-[0_0_8px_rgba(56,189,248,0.8)] animate-in fade-in zoom-in-75 duration-200" />
+            )}
+            <CalendarIcon className={`w-5 h-5 transition-transform duration-200 ${activeTab === 'leaves' ? "scale-110 text-secondary-600 dark:text-secondary-400" : "group-hover:scale-105"}`} />
+            <span className={`text-[10px] font-bold tracking-tight mt-1 transition-colors ${activeTab === 'leaves' ? "text-slate-900 dark:text-white font-black" : "text-slate-500 dark:text-slate-400"}`}>
+              Leaves
+            </span>
+          </button>
+
+          {/* Item 3: Apply Leave Trigger */}
+          <button
+            onClick={() => setShowLeaveModal(true)}
+            className="flex flex-col items-center justify-center py-1 px-3 text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-all relative group cursor-pointer"
+          >
+            <PlusCircle className="w-5 h-5 transition-transform group-hover:scale-110 text-amber-600 dark:text-amber-400" />
+            <span className="text-[10px] font-extrabold tracking-tight mt-1 text-amber-600 dark:text-amber-400">
+              Apply
+            </span>
+          </button>
+
+          {/* Item 4: Profile Settings */}
+          <button
+            onClick={() => setShowProfileModal(true)}
+            className="flex flex-col items-center justify-center py-1 px-3 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-all relative group cursor-pointer"
+          >
+            <User className="w-5 h-5 transition-transform group-hover:scale-105" />
+            <span className="text-[10px] font-bold tracking-tight mt-1 text-slate-500 dark:text-slate-400">
+              Profile
+            </span>
+          </button>
+        </nav>
+      </div>
     </div>
   );
 }

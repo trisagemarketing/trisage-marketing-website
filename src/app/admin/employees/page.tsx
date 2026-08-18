@@ -279,60 +279,60 @@ export default function HREmployeesPage() {
 
   return (
     <div className="max-w-7xl mx-auto space-y-6">
-      {/* Header Banner */}
-      <div className="bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white font-sans tracking-normal [letter-spacing:-0.03em]">
+      {/* Senior Executive Header Banner */}
+      <div className="bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
+        <div className="space-y-1.5 min-w-0">
+          <div className="flex flex-col xs:flex-row xs:items-center gap-2">
+            <h1 className="text-lg xs:text-xl sm:text-2xl font-black text-slate-900 dark:text-white font-sans tracking-tight leading-snug">
               Company Employee Directory
             </h1>
-            <span className="px-3 py-0.5 rounded-full bg-secondary-500/10 border border-secondary-500/20 text-secondary-600 dark:text-secondary-400 text-xs font-bold uppercase tracking-wider">
+            <span className="inline-flex items-center w-max px-2.5 py-0.5 rounded-full bg-secondary-500/10 border border-secondary-500/20 text-secondary-600 dark:text-secondary-400 text-[10px] sm:text-xs font-extrabold uppercase tracking-wider whitespace-nowrap shrink-0">
               {employees.length} Staff Members
             </span>
           </div>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
             Manage active employee profiles, onboard new team members, and manage department assignments.
           </p>
         </div>
 
         <button
           onClick={() => setShowOnboardModal(true)}
-          className="px-5 py-3 rounded-2xl bg-gradient-to-r from-primary-600 via-primary-700 to-secondary-600 text-white font-extrabold text-xs uppercase tracking-wide hover:opacity-95 transition-all flex items-center gap-2 shadow-md cursor-pointer shrink-0"
+          className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-gradient-to-r from-primary-600 via-primary-700 to-secondary-600 text-white font-extrabold text-xs uppercase tracking-wide hover:opacity-95 transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer shrink-0 active:scale-98"
         >
-          <UserPlus className="w-4 h-4" />
+          <UserPlus className="w-4 h-4 shrink-0" />
           <span>Onboard New Employee</span>
         </button>
       </div>
 
       {/* Directory Search & Table */}
-      <div className="bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-6">
-        <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4 gap-4 flex-wrap">
-          <div className="relative flex-1 max-w-md">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+      <div className="bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-3xl p-3.5 sm:p-6 shadow-sm space-y-4 sm:space-y-6">
+        <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3 sm:pb-4 gap-2 flex-wrap">
+          <div className="relative flex-1 min-w-[200px] max-w-md">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
             <input
               type="text"
-              placeholder="Search by name, email, employee ID, department..."
+              placeholder="Search staff, email, ID..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full py-2.5 pl-10 pr-4 rounded-xl bg-slate-50 dark:bg-[#141b29] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-xs font-bold focus:outline-none focus:border-secondary-500"
+              className="w-full py-2 pl-9 pr-3 rounded-xl bg-slate-50 dark:bg-[#141b29] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-xs font-medium focus:outline-none focus:border-secondary-500"
             />
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             {selectedIds.length > 0 && (
               <button
                 onClick={() => promptDeleteEmployees(selectedIds)}
                 disabled={isDeleting}
-                className="px-4 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-500/30 text-xs font-extrabold flex items-center gap-2 transition-all cursor-pointer shadow-xs animate-in fade-in"
+                className="px-3 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-500/30 text-xs font-extrabold flex items-center gap-1.5 transition-all cursor-pointer shadow-xs animate-in fade-in"
               >
                 <Trash2 className="w-3.5 h-3.5" />
-                <span>Delete Selected ({selectedIds.length})</span>
+                <span>Delete ({selectedIds.length})</span>
               </button>
             )}
 
             <button
               onClick={fetchEmployees}
-              className="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold flex items-center gap-1.5 cursor-pointer"
+              className="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold flex items-center gap-1.5 cursor-pointer shrink-0"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               <span>Refresh</span>
@@ -346,132 +346,251 @@ export default function HREmployeesPage() {
             <span className="text-xs font-semibold">Loading employee directory...</span>
           </div>
         ) : (
-          <div className="overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-            <table className="w-full text-left text-xs sm:text-sm">
-              <thead>
-                <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-400 uppercase text-[10px] tracking-wider whitespace-nowrap">
-                  <th className="py-3 px-3 w-10 text-center whitespace-nowrap">
-                    <input
-                      type="checkbox"
-                      checked={isAllSelected}
-                      onChange={toggleSelectAll}
-                      className="w-4 h-4 rounded border-slate-300 dark:border-slate-700 text-secondary-600 focus:ring-secondary-500 cursor-pointer accent-secondary-500"
-                      title="Select All Employees"
-                    />
-                  </th>
-                  <th className="py-3 px-3.5 whitespace-nowrap">Employee Name</th>
-                  <th className="py-3 px-3.5 whitespace-nowrap">Work Email</th>
-                  <th className="py-3 px-3.5 whitespace-nowrap">Employee ID</th>
-                  <th className="py-3 px-3.5 whitespace-nowrap">Department</th>
-                  <th className="py-3 px-3.5 whitespace-nowrap">Role</th>
-                  <th className="py-3 px-3.5 whitespace-nowrap">Status</th>
-                  <th className="py-3 px-3.5 text-right whitespace-nowrap">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium">
-                {filteredEmployees.length === 0 ? (
-                  <tr>
-                    <td colSpan={8} className="py-8 text-center text-slate-400 text-xs">
-                      No employees match your search query.
-                    </td>
-                  </tr>
-                ) : (
-                  filteredEmployees.map((emp) => {
-                    const isSelected = selectedIds.includes(emp.id);
-                    return (
-                      <tr
-                        key={emp.id}
-                        className={`transition-colors ${
-                          isSelected
-                            ? "bg-secondary-500/5 dark:bg-secondary-500/10"
-                            : "hover:bg-slate-50/50 dark:hover:bg-slate-800/40"
-                        }`}
-                      >
-                        <td className="py-3.5 px-3 text-center whitespace-nowrap">
+          <div>
+            {/* Mobile Card List View for Employee Directory */}
+            <div className="space-y-2.5 block sm:hidden">
+              {filteredEmployees.length === 0 ? (
+                <div className="py-8 text-center text-slate-400 text-xs bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-slate-200 dark:border-slate-800">
+                  No employees match your search query.
+                </div>
+              ) : (
+                filteredEmployees.map((emp) => {
+                  const isSelected = selectedIds.includes(emp.id);
+                  return (
+                    <div
+                      key={emp.id}
+                      className={`p-3 rounded-2xl border shadow-xs relative overflow-hidden space-y-2.5 transition-colors ${
+                        isSelected
+                          ? "bg-secondary-500/10 border-secondary-500/40"
+                          : "bg-gradient-to-br from-slate-50/90 via-white to-slate-100/50 dark:from-[#172132]/90 dark:via-[#1f2a3e] dark:to-[#172132]/50 border-slate-200/80 dark:border-slate-800"
+                      }`}
+                    >
+                      {/* Row 1: Vertically Aligned Checkbox + Avatar + Employee Name/Email & Role */}
+                      <div className="flex items-center justify-between border-b border-slate-200/60 dark:border-slate-800/60 pb-2 gap-2">
+                        <div className="flex items-center gap-2.5 min-w-0">
                           <input
                             type="checkbox"
                             checked={isSelected}
                             onChange={() => toggleSelectOne(emp.id)}
-                            className="w-4 h-4 rounded border-slate-300 dark:border-slate-700 text-secondary-600 focus:ring-secondary-500 cursor-pointer accent-secondary-500"
+                            className="w-4 h-4 rounded border-slate-300 dark:border-slate-700 text-secondary-600 focus:ring-secondary-500 cursor-pointer accent-secondary-500 shrink-0 my-auto"
                           />
-                        </td>
-                        <td className="py-3.5 px-4 font-bold text-slate-900 dark:text-white whitespace-nowrap">
-                          <div className="flex items-center gap-3">
-                            <div className="relative w-8 h-8 rounded-full overflow-hidden border border-slate-200 dark:border-slate-700 shrink-0 bg-slate-100 dark:bg-slate-800">
-                              {emp.avatar_url ? (
-                                <Image
-                                  src={emp.avatar_url}
-                                  alt={emp.full_name}
-                                  fill
-                                  sizes="32px"
-                                  className="object-cover object-center"
-                                />
-                              ) : (
-                                <div className="w-full h-full flex items-center justify-center bg-secondary-500/20 text-secondary-600 dark:text-secondary-400 text-xs font-bold">
-                                  {emp.full_name?.substring(0, 2).toUpperCase() || 'TR'}
-                                </div>
-                              )}
-                            </div>
-                            <span className="whitespace-nowrap">{emp.full_name}</span>
+                          <div className="relative w-9 h-9 rounded-full overflow-hidden border border-slate-200 dark:border-slate-700 shrink-0 bg-slate-100 dark:bg-slate-800 my-auto">
+                            {emp.avatar_url ? (
+                              <Image
+                                src={emp.avatar_url}
+                                alt={emp.full_name}
+                                fill
+                                sizes="36px"
+                                className="object-cover object-center"
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center bg-secondary-500/20 text-secondary-600 dark:text-secondary-400 text-xs font-bold">
+                                {emp.full_name?.substring(0, 2).toUpperCase() || 'TR'}
+                              </div>
+                            )}
                           </div>
-                        </td>
-                        <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300 font-mono text-xs whitespace-nowrap">
-                          {emp.email}
-                        </td>
-                        <td className="py-3.5 px-4 font-mono font-bold text-secondary-600 dark:text-secondary-400 whitespace-nowrap">
-                          {emp.employee_id || (emp.role === 'hr' ? 'TR-HR-001' : 'TR-EMP')}
-                        </td>
-                        <td className="py-3.5 px-4 text-slate-700 dark:text-slate-300 font-semibold whitespace-nowrap">
-                          {emp.departments?.name || (emp.role === 'hr' ? 'Human Resources' : 'General')}
-                        </td>
-                        <td className="py-3.5 px-4 whitespace-nowrap">
-                          <span
-                            className={`px-2 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider ${
-                              emp.role === 'hr' || emp.role === 'admin'
-                                ? 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20'
-                                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
-                            }`}
-                          >
-                            {emp.role}
+                          <div className="flex flex-col min-w-0 pr-1">
+                            <span className="font-extrabold text-slate-900 dark:text-white text-xs truncate leading-tight">
+                              {emp.full_name}
+                            </span>
+                            <span className="text-[10px] text-slate-400 font-mono truncate leading-tight mt-0.5">{emp.email}</span>
+                          </div>
+                        </div>
+
+                        <span
+                          className={`px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider shrink-0 whitespace-nowrap self-center ${
+                            emp.role === 'hr' || emp.role === 'admin'
+                              ? 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20'
+                              : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
+                          }`}
+                        >
+                          {emp.role}
+                        </span>
+                      </div>
+
+                      {/* Row 2: Uncompressed Single-Line Employee ID & Department */}
+                      <div className="p-2.5 rounded-xl bg-white/80 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between gap-2 text-xs">
+                        <div className="flex flex-col shrink-0 min-w-0">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Employee ID</span>
+                          <span className="font-mono font-extrabold text-secondary-600 dark:text-secondary-400 text-xs whitespace-nowrap">
+                            {emp.employee_id || (emp.role === 'hr' ? 'TR-HR-001' : 'TR-EMP')}
                           </span>
-                        </td>
-                        <td className="py-3.5 px-4 whitespace-nowrap">
-                          <span
-                            className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                              emp.is_active
-                                ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
-                                : 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20'
-                            }`}
-                          >
-                            {emp.is_active ? 'Active' : 'Inactive'}
+                        </div>
+                        <div className="flex flex-col text-right min-w-0">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Department</span>
+                          <span className="font-semibold text-slate-800 dark:text-slate-200 text-xs truncate">
+                            {emp.departments?.name || (emp.role === 'hr' ? 'Human Resources' : 'General')}
                           </span>
-                        </td>
-                        <td className="py-3.5 px-4 text-right whitespace-nowrap">
+                        </div>
+                      </div>
+
+                      {/* Row 3: Active Status Pill & Compact Action Buttons */}
+                      <div className="flex items-center justify-between gap-2 pt-0.5">
+                        <span
+                          className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider shrink-0 ${
+                            emp.is_active
+                              ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
+                              : 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20'
+                          }`}
+                        >
+                          {emp.is_active ? 'Active' : 'Inactive'}
+                        </span>
+
+                        <div className="flex items-center gap-1.5 shrink-0">
                           <button
                             onClick={() => {
                               setResetTarget(emp);
                               setNewPasswordInput("");
                               setShowResetPasswordText(true);
                             }}
-                            title="Reset Employee Password"
-                            className="p-2 rounded-xl text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-500/10 transition-colors cursor-pointer mr-1"
+                            className="px-2.5 py-1 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/20 text-[11px] font-extrabold transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap shadow-2xs"
                           >
-                            <Key className="w-4 h-4" />
+                            <Key className="w-3.5 h-3.5 shrink-0" />
+                            <span>Reset Password</span>
                           </button>
                           <button
                             onClick={() => promptDeleteEmployees([emp.id])}
+                            className="p-1.5 rounded-xl text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer shrink-0"
                             title="Delete Employee Profile"
-                            className="p-2 rounded-xl text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
-                        </td>
-                      </tr>
-                    );
-                  })
-                )}
-              </tbody>
-            </table>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+
+            {/* Desktop Table View */}
+            <div className="hidden sm:block overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden border border-slate-200/80 dark:border-slate-800 rounded-2xl">
+              <table className="w-full text-left text-xs sm:text-sm min-w-[750px]">
+                <thead>
+                  <tr className="bg-slate-50/80 dark:bg-slate-900/60 border-b border-slate-200 dark:border-slate-800 text-slate-400 uppercase text-[10px] tracking-wider whitespace-nowrap">
+                    <th className="py-3 px-3 w-10 text-center whitespace-nowrap">
+                      <input
+                        type="checkbox"
+                        checked={isAllSelected}
+                        onChange={toggleSelectAll}
+                        className="w-4 h-4 rounded border-slate-300 dark:border-slate-700 text-secondary-600 focus:ring-secondary-500 cursor-pointer accent-secondary-500"
+                        title="Select All Employees"
+                      />
+                    </th>
+                    <th className="py-3 px-3.5 whitespace-nowrap">Employee Name</th>
+                    <th className="py-3 px-3.5 whitespace-nowrap">Work Email</th>
+                    <th className="py-3 px-3.5 whitespace-nowrap">Employee ID</th>
+                    <th className="py-3 px-3.5 whitespace-nowrap">Department</th>
+                    <th className="py-3 px-3.5 whitespace-nowrap">Role</th>
+                    <th className="py-3 px-3.5 whitespace-nowrap">Status</th>
+                    <th className="py-3 px-3.5 text-right whitespace-nowrap">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium">
+                  {filteredEmployees.length === 0 ? (
+                    <tr>
+                      <td colSpan={8} className="py-8 text-center text-slate-400 text-xs">
+                        No employees match your search query.
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredEmployees.map((emp) => {
+                      const isSelected = selectedIds.includes(emp.id);
+                      return (
+                        <tr
+                          key={emp.id}
+                          className={`transition-colors ${
+                            isSelected
+                              ? "bg-secondary-500/5 dark:bg-secondary-500/10"
+                              : "hover:bg-slate-50/50 dark:hover:bg-slate-800/40"
+                          }`}
+                        >
+                          <td className="py-3.5 px-3 text-center whitespace-nowrap">
+                            <input
+                              type="checkbox"
+                              checked={isSelected}
+                              onChange={() => toggleSelectOne(emp.id)}
+                              className="w-4 h-4 rounded border-slate-300 dark:border-slate-700 text-secondary-600 focus:ring-secondary-500 cursor-pointer accent-secondary-500"
+                            />
+                          </td>
+                          <td className="py-3.5 px-4 font-bold text-slate-900 dark:text-white whitespace-nowrap">
+                            <div className="flex items-center gap-3">
+                              <div className="relative w-8 h-8 rounded-full overflow-hidden border border-slate-200 dark:border-slate-700 shrink-0 bg-slate-100 dark:bg-slate-800">
+                                {emp.avatar_url ? (
+                                  <Image
+                                    src={emp.avatar_url}
+                                    alt={emp.full_name}
+                                    fill
+                                    sizes="32px"
+                                    className="object-cover object-center"
+                                  />
+                                ) : (
+                                  <div className="w-full h-full flex items-center justify-center bg-secondary-500/20 text-secondary-600 dark:text-secondary-400 text-xs font-bold">
+                                    {emp.full_name?.substring(0, 2).toUpperCase() || 'TR'}
+                                  </div>
+                                )}
+                              </div>
+                              <span className="whitespace-nowrap">{emp.full_name}</span>
+                            </div>
+                          </td>
+                          <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300 font-mono text-xs whitespace-nowrap">
+                            {emp.email}
+                          </td>
+                          <td className="py-3.5 px-4 font-mono font-bold text-secondary-600 dark:text-secondary-400 whitespace-nowrap">
+                            {emp.employee_id || (emp.role === 'hr' ? 'TR-HR-001' : 'TR-EMP')}
+                          </td>
+                          <td className="py-3.5 px-4 text-slate-700 dark:text-slate-300 font-semibold whitespace-nowrap">
+                            {emp.departments?.name || (emp.role === 'hr' ? 'Human Resources' : 'General')}
+                          </td>
+                          <td className="py-3.5 px-4 whitespace-nowrap">
+                            <span
+                              className={`px-2 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider ${
+                                emp.role === 'hr' || emp.role === 'admin'
+                                  ? 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20'
+                                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
+                              }`}
+                            >
+                              {emp.role}
+                            </span>
+                          </td>
+                          <td className="py-3.5 px-4 whitespace-nowrap">
+                            <span
+                              className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                                emp.is_active
+                                  ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
+                                  : 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20'
+                              }`}
+                            >
+                              {emp.is_active ? 'Active' : 'Inactive'}
+                            </span>
+                          </td>
+                          <td className="py-3.5 px-4 text-right whitespace-nowrap">
+                            <button
+                              onClick={() => {
+                                setResetTarget(emp);
+                                setNewPasswordInput("");
+                                setShowResetPasswordText(true);
+                              }}
+                              title="Reset Employee Password"
+                              className="p-2 rounded-xl text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-500/10 transition-colors cursor-pointer mr-1"
+                            >
+                              <Key className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => promptDeleteEmployees([emp.id])}
+                              title="Delete Employee Profile"
+                              className="p-2 rounded-xl text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
       </div>
@@ -835,18 +954,18 @@ export default function HREmployeesPage() {
       {/* Reset Employee Password Modal */}
       {mounted && resetTarget && createPortal(
         <div className="fixed inset-0 z-[9999999] bg-slate-950/80 backdrop-blur-xl flex items-center justify-center p-3 sm:p-6 overflow-y-auto animate-in fade-in duration-200">
-          <div className="bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-7 max-w-md w-full shadow-2xl space-y-5 relative my-auto animate-in fade-in zoom-in-95 duration-200">
-            {/* Sticky Header */}
-            <div className="flex items-center justify-between border-b border-slate-200/80 dark:border-slate-800 pb-3">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
-                  <Key className="w-5 h-5" />
+          <div className="bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-3xl p-4 sm:p-6 max-w-md w-full shadow-2xl space-y-4 relative my-auto animate-in fade-in zoom-in-95 duration-200">
+            {/* Header */}
+            <div className="flex items-center justify-between border-b border-slate-200/80 dark:border-slate-800 pb-3 gap-2">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+                  <Key className="w-4 h-4" />
                 </div>
-                <div className="space-y-0.5">
-                  <h3 className="text-lg font-extrabold text-slate-900 dark:text-white">
+                <div className="space-y-0.5 min-w-0">
+                  <h3 className="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white truncate">
                     Reset Account Password
                   </h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                  <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium truncate">
                     Issue new credentials for {resetTarget.full_name}
                   </p>
                 </div>
@@ -854,54 +973,54 @@ export default function HREmployeesPage() {
               <button
                 type="button"
                 onClick={() => setResetTarget(null)}
-                className="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                className="p-1.5 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer shrink-0"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             {/* Target Account Info Badge */}
-            <div className="p-3 rounded-2xl bg-slate-50 dark:bg-[#141b29] border border-slate-200/80 dark:border-slate-800 space-y-1">
-              <div className="text-xs font-extrabold text-slate-900 dark:text-white flex items-center justify-between">
-                <span>{resetTarget.full_name}</span>
-                <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-secondary-500/10 text-secondary-600 dark:text-secondary-400 border border-secondary-500/20">
+            <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#141b29] border border-slate-200/80 dark:border-slate-800 space-y-1">
+              <div className="text-xs font-extrabold text-slate-900 dark:text-white flex items-center justify-between gap-2">
+                <span className="truncate">{resetTarget.full_name}</span>
+                <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-secondary-500/10 text-secondary-600 dark:text-secondary-400 border border-secondary-500/20 whitespace-nowrap shrink-0">
                   {resetTarget.employee_id || (resetTarget.role === 'hr' ? 'TR-HR-001' : 'TR-EMP')}
                 </span>
               </div>
-              <div className="text-xs font-mono text-slate-500 dark:text-slate-400 truncate">
+              <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400 truncate">
                 {resetTarget.email}
               </div>
             </div>
 
             <form onSubmit={executeResetPassword} className="space-y-4">
               <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                <div className="flex items-center justify-between gap-2 mb-1.5">
+                  <label className="block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 truncate">
                     New Secure Password *
                   </label>
                   <button
                     type="button"
                     onClick={generateResetPassword}
-                    className="text-[11px] font-bold text-amber-600 dark:text-amber-400 hover:underline flex items-center gap-1 cursor-pointer"
+                    className="text-[11px] font-extrabold text-amber-600 dark:text-amber-400 hover:underline flex items-center gap-1 cursor-pointer whitespace-nowrap shrink-0"
                   >
-                    <Sparkles className="w-3 h-3" />
+                    <Sparkles className="w-3.5 h-3.5" />
                     <span>Generate Random</span>
                   </button>
                 </div>
                 <div className="relative">
-                  <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                  <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
                   <input
                     type={showResetPasswordText ? "text" : "password"}
                     required
-                    placeholder="Enter new password (e.g. Vinay@8811)"
+                    placeholder="Enter new password..."
                     value={newPasswordInput}
                     onChange={(e) => setNewPasswordInput(e.target.value)}
-                    className="w-full py-2.5 pl-10 pr-10 rounded-xl bg-slate-50 dark:bg-[#141b29] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-xs font-bold focus:outline-none focus:border-amber-500 font-mono"
+                    className="w-full py-2 pl-9 pr-9 rounded-xl bg-slate-50 dark:bg-[#141b29] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-xs font-bold focus:outline-none focus:border-amber-500 font-mono"
                   />
                   <button
                     type="button"
                     onClick={() => setShowResetPasswordText(!showResetPasswordText)}
-                    className="absolute right-3 top-2.5 p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
+                    className="absolute right-2.5 top-2 p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
                     title={showResetPasswordText ? "Hide password" : "Show password"}
                   >
                     {showResetPasswordText ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -910,21 +1029,21 @@ export default function HREmployeesPage() {
               </div>
 
               {/* Action Buttons */}
-              <div className="pt-2 border-t border-slate-200/80 dark:border-slate-800 flex items-center justify-end gap-3">
+              <div className="pt-2 border-t border-slate-200/80 dark:border-slate-800 flex items-center justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setResetTarget(null)}
-                  className="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold transition-colors cursor-pointer"
+                  className="px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isResettingPassword}
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 text-white font-extrabold text-xs uppercase tracking-wider hover:opacity-95 transition-all cursor-pointer shadow-md disabled:opacity-50 flex items-center gap-2"
+                  className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 text-white font-extrabold text-xs uppercase tracking-wide hover:opacity-95 transition-all cursor-pointer shadow-md disabled:opacity-50 flex items-center justify-center gap-1.5 whitespace-nowrap active:scale-98"
                 >
                   {isResettingPassword && <RefreshCw className="w-3.5 h-3.5 animate-spin" />}
-                  <span>{isResettingPassword ? "Updating..." : "Confirm & Update Password"}</span>
+                  <span>{isResettingPassword ? "Updating..." : "Update Password"}</span>
                 </button>
               </div>
             </form>
