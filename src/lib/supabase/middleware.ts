@@ -79,12 +79,6 @@ export async function updateSession(request: NextRequest) {
       url.pathname = '/admin/login';
       return NextResponse.redirect(url);
     }
-    if (!isHrOrAdmin) {
-      // Non-HR employees trying to access /admin get redirected cleanly to /dashboard
-      const url = request.nextUrl.clone();
-      url.pathname = '/dashboard';
-      return NextResponse.redirect(url);
-    }
   }
 
   // Rule 3: Login pages when user IS already authenticated
