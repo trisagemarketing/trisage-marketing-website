@@ -397,13 +397,6 @@ export default function EmployeeDashboard() {
       }
 
       setProfile(todayData.profile);
-
-      // Automatically redirect HR Admin away from Employee Punch Clock to HR Management Portal
-      if (todayData.profile?.role === 'hr' || todayData.profile?.role === 'admin') {
-        router.push("/admin/dashboard");
-        return;
-      }
-
       setTodayRecord(todayData.record);
 
       // 2. Fetch Attendance History
