@@ -9,7 +9,12 @@ export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({}));
   const { location, notes } = body;
 
-  const todayStr = new Date().toISOString().split('T')[0];
+  // Calculate local date string in Asia/Kolkata timezone
+  const nowInIndia = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+  const year = nowInIndia.getFullYear();
+  const month = String(nowInIndia.getMonth() + 1).padStart(2, '0');
+  const day = String(nowInIndia.getDate()).padStart(2, '0');
+  const todayStr = `${year}-${month}-${day}`;
 
   // 1. Fetch active session for today
   const { data: activeRecord, error: fetchError } = await supabase
@@ -33,7 +38,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // 2. Perform Check-Out (Postgres trigger auto-calculates working_minutes)
+  // 2. Perform Atomic Check-Out (Conditioned on check_out_time IS NULL to prevent double-checkout race condition)
   const nowIso = new Date().toISOString();
   const { data: updatedRecord, error: updateError } = await supabase
     .from('attendance_records')
@@ -43,13 +48,28 @@ export async function POST(req: NextRequest) {
       notes: notes ? `${activeRecord.notes || ''} [Check-out note: ${notes}]`.trim() : activeRecord.notes,
     })
     .eq('id', activeRecord.id)
+    .is('check_out_time', null)
     .select('*')
-    .single();
+    .maybeSingle();
 
   if (updateError) {
     return NextResponse.json(
       { success: false, error: updateError.message },
       { status: 500 }
+    );
+  }
+
+  if (!updatedRecord) {
+    // Race condition caught: another thread checked out a millisecond earlier
+    const { data: latestRecord } = await supabase
+      .from('attendance_records')
+      .select('*')
+      .eq('id', activeRecord.id)
+      .single();
+
+    return NextResponse.json(
+      { success: false, error: 'You have already checked out for today', record: latestRecord },
+      { status: 409 }
     );
   }
 

@@ -87,8 +87,8 @@ export async function GET(req: NextRequest) {
         dayOfWeek: dateObj.toLocaleDateString('en-US', { weekday: 'short' }),
         isWeekend,
         status,
-        checkIn: record?.check_in_time ? new Date(record.check_in_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : null,
-        checkOut: record?.check_out_time ? new Date(record.check_out_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : null,
+        checkIn: record?.check_in_time ? new Date(record.check_in_time).toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true }) : null,
+        checkOut: record?.check_out_time ? new Date(record.check_out_time).toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true }) : null,
         location: record?.location_check_in?.address || null,
         notes: record?.notes || null,
       });

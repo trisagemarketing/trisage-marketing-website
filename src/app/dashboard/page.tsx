@@ -433,6 +433,7 @@ export default function EmployeeDashboard() {
 
   // Handle Punch In (Check-In)
   const handlePunchIn = async () => {
+    if (isPunching) return;
     setIsPunching(true);
     const toastId = toast.loading("Acquiring GPS location & punching in...");
 
@@ -473,9 +474,9 @@ export default function EmployeeDashboard() {
         },
         (err) => {
           console.warn("Geolocation warning:", err.message);
-          executePunchIn(); // Proceed without coordinates if permission denied
+          executePunchIn(); // Fast fallback to IP check in
         },
-        { timeout: 8000 }
+        { timeout: 1200, maximumAge: 60000, enableHighAccuracy: false }
       );
     } else {
       executePunchIn();
@@ -484,6 +485,7 @@ export default function EmployeeDashboard() {
 
   // Handle Punch Out (Check-Out)
   const handlePunchOut = async () => {
+    if (isPunching) return;
     setIsPunching(true);
     const toastId = toast.loading("Recording punch out time...");
 
@@ -820,7 +822,7 @@ export default function EmployeeDashboard() {
                 <span className="text-xs text-slate-500 dark:text-slate-400 font-medium shrink-0">Punch In Time</span>
                 <span className="text-xs sm:text-sm font-extrabold text-slate-800 dark:text-slate-200 font-mono shrink-0">
                   {todayRecord?.check_in_time
-                    ? new Date(todayRecord.check_in_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                    ? new Date(todayRecord.check_in_time).toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true })
                     : "--:--"}
                 </span>
               </div>
@@ -829,7 +831,7 @@ export default function EmployeeDashboard() {
                 <span className="text-xs text-slate-500 dark:text-slate-400 font-medium shrink-0">Punch Out Time</span>
                 <span className="text-xs sm:text-sm font-extrabold text-slate-800 dark:text-slate-200 font-mono shrink-0">
                   {todayRecord?.check_out_time
-                    ? new Date(todayRecord.check_out_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                    ? new Date(todayRecord.check_out_time).toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true })
                     : "--:--"}
                 </span>
               </div>
@@ -937,7 +939,7 @@ export default function EmployeeDashboard() {
                             Check In
                           </span>
                           <span className="font-extrabold text-slate-800 dark:text-slate-200 font-mono">
-                            {rec.check_in_time ? new Date(rec.check_in_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--'}
+                            {rec.check_in_time ? new Date(rec.check_in_time).toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true }) : '--'}
                           </span>
                         </div>
                         <div className="p-2.5 rounded-xl bg-white/80 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-700/50 flex flex-col justify-center">
@@ -946,7 +948,7 @@ export default function EmployeeDashboard() {
                             Check Out
                           </span>
                           <span className="font-extrabold text-slate-800 dark:text-slate-200 font-mono">
-                            {rec.check_out_time ? new Date(rec.check_out_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--'}
+                            {rec.check_out_time ? new Date(rec.check_out_time).toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true }) : '--'}
                           </span>
                         </div>
                       </div>
@@ -998,10 +1000,10 @@ export default function EmployeeDashboard() {
                             </div>
                           </td>
                           <td className="py-3.5 px-4 whitespace-nowrap text-slate-600 dark:text-slate-300 font-mono">
-                            {rec.check_in_time ? new Date(rec.check_in_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--'}
+                            {rec.check_in_time ? new Date(rec.check_in_time).toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true }) : '--'}
                           </td>
                           <td className="py-3.5 px-4 whitespace-nowrap text-slate-600 dark:text-slate-300 font-mono">
-                            {rec.check_out_time ? new Date(rec.check_out_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--'}
+                            {rec.check_out_time ? new Date(rec.check_out_time).toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true }) : '--'}
                           </td>
                           <td className="py-3.5 px-4 text-slate-500 text-xs">
                             {rec.location_check_in?.address ? (
