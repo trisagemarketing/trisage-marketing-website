@@ -61,8 +61,10 @@ export async function updateSession(request: NextRequest) {
     }
   }
 
-  // Protection logic: if accessing /dashboard and not authenticated, redirect to /login.
-  if (request.nextUrl.pathname.startsWith('/dashboard')) {
+  const pathname = request.nextUrl.pathname;
+
+  // Rule 1: Protected /dashboard route (requires logged in user)
+  if (pathname.startsWith('/dashboard')) {
     if (!user) {
       const url = request.nextUrl.clone();
       url.pathname = '/login';
@@ -70,34 +72,33 @@ export async function updateSession(request: NextRequest) {
     }
   }
 
-  // If already logged in and visiting /login, redirect directly to /dashboard or /admin/dashboard.
-  if (request.nextUrl.pathname === '/login' && user) {
-    const url = request.nextUrl.clone();
-    url.pathname = isHrOrAdmin ? '/admin/dashboard' : '/dashboard';
-    return NextResponse.redirect(url);
-  }
-
-  // Protection logic: if accessing /admin (except /admin/login) and not authenticated as HR/Admin, redirect to /admin/login.
-  if (
-    request.nextUrl.pathname.startsWith('/admin') &&
-    !request.nextUrl.pathname.startsWith('/admin/login')
-  ) {
-    if (!user || !isHrOrAdmin) {
-      const url = request.nextUrl.clone()
-      url.pathname = '/admin/login'
-      return NextResponse.redirect(url)
+  // Rule 2: Protected /admin routes (except /admin/login)
+  if (pathname.startsWith('/admin') && pathname !== '/admin/login') {
+    if (!user) {
+      const url = request.nextUrl.clone();
+      url.pathname = '/admin/login';
+      return NextResponse.redirect(url);
+    }
+    if (!isHrOrAdmin) {
+      // Non-HR employees trying to access /admin get redirected cleanly to /dashboard
+      const url = request.nextUrl.clone();
+      url.pathname = '/dashboard';
+      return NextResponse.redirect(url);
     }
   }
 
-  // If the user is logged in as valid HR/Admin and tries to access /admin/login, redirect directly to /admin/dashboard.
-  if (
-    request.nextUrl.pathname.startsWith('/admin/login') &&
-    user &&
-    isHrOrAdmin
-  ) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/admin/dashboard'
-    return NextResponse.redirect(url)
+  // Rule 3: Login pages when user IS already authenticated
+  if (user) {
+    if (pathname === '/login') {
+      const url = request.nextUrl.clone();
+      url.pathname = '/dashboard';
+      return NextResponse.redirect(url);
+    }
+    if (pathname === '/admin/login') {
+      const url = request.nextUrl.clone();
+      url.pathname = '/admin/dashboard';
+      return NextResponse.redirect(url);
+    }
   }
 
   return supabaseResponse

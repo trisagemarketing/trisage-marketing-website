@@ -93,7 +93,28 @@ export async function POST(req: NextRequest) {
   const calculatedDays = Number(body.total_days || body.totalDays) ||
     Math.max(1, Math.ceil((endMs - startMs) / (1000 * 60 * 60 * 24)) + 1);
 
-  // Insert leave request into database (enforces status = 'pending')
+  // 2. Check for overlapping active leave requests for the same employee
+  const { data: overlappingLeave } = await supabase
+    .from('leave_requests')
+    .select('id, start_date, end_date, status')
+    .eq('user_id', user.id)
+    .lte('start_date', endDate)
+    .gte('end_date', startDate)
+    .neq('status', 'rejected')
+    .maybeSingle();
+
+  if (overlappingLeave) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: `You already have an active leave request (${overlappingLeave.start_date} to ${overlappingLeave.end_date}) overlapping these dates.`,
+        request: overlappingLeave,
+      },
+      { status: 409 }
+    );
+  }
+
+  // 3. Insert leave request into database (enforces status = 'pending')
   const { data: newRequest, error } = await supabase
     .from('leave_requests')
     .insert({
@@ -113,6 +134,18 @@ export async function POST(req: NextRequest) {
 
   if (error) {
     console.error('Leave Request Insert Error:', error);
+
+    // Postgres Unique Constraint / Duplicate Key Error (Code 23505)
+    if (error.code === '23505' || error.message?.includes('duplicate')) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'An active leave request for these dates has already been submitted.',
+        },
+        { status: 409 }
+      );
+    }
+
     return NextResponse.json(
       { success: false, error: error.message },
       { status: 500 }

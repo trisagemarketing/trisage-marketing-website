@@ -517,6 +517,7 @@ export default function EmployeeDashboard() {
   // Handle Leave Application Submit
   const handleLeaveSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmittingLeave) return;
     if (!leaveForm.startDate || !leaveForm.endDate || !leaveForm.reason.trim()) {
       toast.error("Please fill in all leave request details.");
       return;

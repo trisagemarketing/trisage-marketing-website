@@ -35,7 +35,7 @@ async function getAddressFromCoords(lat: number, lng: number): Promise<string | 
   return null;
 }
 
-// Fallback: IP Geolocation Lookup with Ultra-Fast 500ms Timeout
+// Fallback: Secure HTTPS IP Geolocation Lookup with Ultra-Fast 500ms Timeout
 async function getAddressFromIP(ip: string): Promise<string | null> {
   if (!ip || ip === '127.0.0.1' || ip === '::1' || ip.startsWith('192.168.') || ip.startsWith('10.')) {
     return 'Local Network (Dev)';
@@ -44,12 +44,12 @@ async function getAddressFromIP(ip: string): Promise<string | null> {
   const timeoutId = setTimeout(() => controller.abort(), 500);
 
   try {
-    const res = await fetch(`http://ip-api.com/json/${ip}`, { signal: controller.signal });
+    const res = await fetch(`https://ipapi.co/${ip}/json/`, { signal: controller.signal });
     clearTimeout(timeoutId);
     if (res.ok) {
       const data = await res.json();
-      if (data.status === 'success') {
-        return `${data.city || ''}, ${data.regionName || ''}, ${data.country || ''}`.replace(/^,\s*|,\s*$/g, '');
+      if (data.city || data.region) {
+        return `${data.city || ''}, ${data.region || ''}, ${data.country_name || ''}`.replace(/^,\s*|,\s*$/g, '');
       }
     }
   } catch (e) {
@@ -64,9 +64,33 @@ export async function POST(req: NextRequest) {
 
   const { supabase, user } = auth;
   const body = await req.json().catch(() => ({}));
-  
-  const latitude = body.latitude || body.lat || body.location?.lat;
-  const longitude = body.longitude || body.lng || body.location?.lng;
+
+  // 1. Verify Active Profile Status (Murphy's Law: Prevent deactivated staff check-in)
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('is_active')
+    .eq('id', user.id)
+    .maybeSingle();
+
+  if (profile && profile.is_active === false) {
+    return NextResponse.json(
+      { success: false, error: 'Your account has been deactivated by HR' },
+      { status: 403 }
+    );
+  }
+
+  // 2. Strict Coordinate Parsing & Validation
+  const rawLat = body.latitude ?? body.lat ?? body.location?.lat;
+  const rawLng = body.longitude ?? body.lng ?? body.location?.lng;
+
+  const validLat = typeof rawLat === 'number' && !isNaN(rawLat) && rawLat >= -90 && rawLat <= 90
+    ? rawLat
+    : (typeof rawLat === 'string' && !isNaN(Number(rawLat)) ? Number(rawLat) : null);
+
+  const validLng = typeof rawLng === 'number' && !isNaN(rawLng) && rawLng >= -180 && rawLng <= 180
+    ? rawLng
+    : (typeof rawLng === 'string' && !isNaN(Number(rawLng)) ? Number(rawLng) : null);
+
   const notes = body.notes;
 
   // Extract Client IP
@@ -74,14 +98,15 @@ export async function POST(req: NextRequest) {
   const realIp = req.headers.get('x-real-ip');
   const clientIp = forwardedFor ? forwardedFor.split(',')[0].trim() : realIp || '127.0.0.1';
 
-  // Calculate local date string in Asia/Kolkata timezone (prevents UTC midnight shift bug)
-  const nowInIndia = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
-  const year = nowInIndia.getFullYear();
-  const month = String(nowInIndia.getMonth() + 1).padStart(2, '0');
-  const day = String(nowInIndia.getDate()).padStart(2, '0');
-  const todayStr = `${year}-${month}-${day}`;
+  // Calculate local YYYY-MM-DD date string in Asia/Kolkata timezone (prevents UTC midnight shift bug)
+  const todayStr = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(new Date());
 
-  // 1. Check if an attendance record already exists for today
+  // 3. Check if an attendance record already exists for today
   const { data: existingRecord } = await supabase
     .from('attendance_records')
     .select('id, check_in_time, check_out_time, status')
@@ -100,11 +125,11 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // 2. Resolve Human-Readable Location Address & IP Info (Protected by Timeout Controllers)
+  // 4. Resolve Location Address (Protected by Timeout Controllers)
   let resolvedAddress: string | null = null;
 
-  if (latitude && longitude) {
-    resolvedAddress = await getAddressFromCoords(Number(latitude), Number(longitude));
+  if (validLat !== null && validLng !== null) {
+    resolvedAddress = await getAddressFromCoords(validLat, validLng);
   }
 
   if (!resolvedAddress) {
@@ -112,18 +137,18 @@ export async function POST(req: NextRequest) {
   }
 
   if (!resolvedAddress) {
-    resolvedAddress = latitude && longitude ? `${Number(latitude).toFixed(4)}, ${Number(longitude).toFixed(4)}` : 'Office / Remote Web';
+    resolvedAddress = validLat !== null && validLng !== null ? `${validLat.toFixed(4)}, ${validLng.toFixed(4)}` : 'Office / Remote Web';
   }
 
   const locationJson = {
-    lat: latitude ? Number(latitude) : null,
-    lng: longitude ? Number(longitude) : null,
+    lat: validLat,
+    lng: validLng,
     ip: clientIp,
     address: resolvedAddress,
     timestamp: new Date().toISOString(),
   };
 
-  // 3. Create Check-In Record in Supabase (Concurrency & Unique Constraint Guard)
+  // 5. Create Check-In Record in Supabase (Concurrency & Unique Constraint Guard)
   const { data: newRecord, error } = await supabase
     .from('attendance_records')
     .insert({
@@ -153,7 +178,7 @@ export async function POST(req: NextRequest) {
         {
           success: false,
           error: 'You have already checked in for today',
-          record: raceRecord,
+          record: raceRecord || existingRecord || { user_id: user.id, work_date: todayStr, status: 'present' },
         },
         { status: 409 }
       );
