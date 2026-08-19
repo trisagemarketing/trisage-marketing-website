@@ -658,12 +658,14 @@ export default function EmployeeDashboard() {
             </div>
 
             <div className="space-y-1.5 flex flex-col items-center sm:items-start w-full min-w-0">
-              {/* Single Row Title & Badge */}
-              <div className="flex flex-row items-center justify-center sm:justify-start gap-2 flex-wrap">
-                <h1 className="text-lg sm:text-2xl font-extrabold text-slate-900 dark:text-white font-sans tracking-normal shrink-0">
-                  Welcome, {profile?.full_name || "Employee"}!
+              {/* Responsive Welcome Header */}
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 w-full min-w-0 text-center sm:text-left flex-wrap">
+                <h1 className="text-lg sm:text-2xl lg:text-3xl font-black text-slate-900 dark:text-white font-sans tracking-tight leading-snug min-w-0">
+                  Welcome, <span className="text-secondary-600 dark:text-secondary-400 whitespace-normal sm:whitespace-nowrap">
+                    {profile?.full_name ? profile.full_name.replace(/\s*\(.*?\)\s*/g, '').trim() : "Employee"}
+                  </span>!
                 </h1>
-                <span className="px-2.5 py-0.5 rounded-full bg-secondary-500/10 border border-secondary-500/20 text-secondary-600 dark:text-secondary-400 text-[10px] sm:text-xs font-bold uppercase tracking-wider whitespace-nowrap shrink-0">
+                <span className="inline-flex items-center justify-center w-max max-w-full px-3 py-1 rounded-full bg-secondary-500/10 border border-secondary-500/20 text-secondary-600 dark:text-secondary-400 text-[10px] sm:text-xs font-extrabold uppercase tracking-wider whitespace-nowrap shrink-0 mx-auto sm:mx-0 shadow-2xs">
                   {profile?.departments?.name || profile?.role || "Team Member"}
                 </span>
               </div>
@@ -684,20 +686,20 @@ export default function EmployeeDashboard() {
           </div>
 
           {/* Quick Actions */}
-          <div className="flex flex-col xs:flex-row items-stretch sm:items-center gap-2.5 shrink-0 w-full md:w-auto">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 shrink-0 w-full md:w-auto">
             <Link
               href="/dashboard/profile"
-              className="w-full sm:w-auto px-4 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs uppercase tracking-wide transition-all flex items-center justify-center gap-2 border border-slate-200 dark:border-slate-700 cursor-pointer shadow-xs whitespace-nowrap"
+              className="flex-1 sm:flex-initial px-5 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-extrabold text-xs uppercase tracking-wide transition-all flex items-center justify-center gap-2 border border-slate-200 dark:border-slate-700 cursor-pointer shadow-xs whitespace-nowrap text-center"
             >
-              <User className="w-4 h-4 text-secondary-500" />
+              <User className="w-4 h-4 text-secondary-500 shrink-0" />
               <span>Edit Full Profile</span>
             </Link>
 
             <button
               onClick={() => setShowLeaveModal(true)}
-              className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-xs uppercase tracking-wide hover:opacity-90 transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer whitespace-nowrap"
+              className="flex-1 sm:flex-initial px-5 py-3 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-extrabold text-xs uppercase tracking-wide hover:opacity-90 transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer whitespace-nowrap text-center"
             >
-              <PlusCircle className="w-4 h-4" />
+              <PlusCircle className="w-4 h-4 shrink-0" />
               <span>Apply Unpaid Leave (LOP)</span>
             </button>
           </div>
