@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 import { createClient } from '@/lib/supabase/server';
 import { z } from 'zod';
 
@@ -72,7 +73,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       message: 'Login successful',
       user: profile,
@@ -81,6 +82,18 @@ export async function POST(req: NextRequest) {
         expires_at: authData.session.expires_at,
       },
     });
+
+    // Explicitly copy all Supabase session cookies onto the returned NextResponse object with 30-day Max-Age
+    const cookieStore = await cookies();
+    cookieStore.getAll().forEach((cookie: { name: string; value: string }) => {
+      response.cookies.set(cookie.name, cookie.value, {
+        maxAge: 60 * 60 * 24 * 30, // 30 Days (2,592,000s)
+        sameSite: 'lax',
+        path: '/',
+      });
+    });
+
+    return response;
   } catch (error) {
     console.error('Login Error:', error);
     return NextResponse.json(

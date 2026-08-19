@@ -61,6 +61,22 @@ export async function updateSession(request: NextRequest) {
     }
   }
 
+  // Protection logic: if accessing /dashboard and not authenticated, redirect to /login.
+  if (request.nextUrl.pathname.startsWith('/dashboard')) {
+    if (!user) {
+      const url = request.nextUrl.clone();
+      url.pathname = '/login';
+      return NextResponse.redirect(url);
+    }
+  }
+
+  // If already logged in and visiting /login, redirect directly to /dashboard or /admin/dashboard.
+  if (request.nextUrl.pathname === '/login' && user) {
+    const url = request.nextUrl.clone();
+    url.pathname = isHrOrAdmin ? '/admin/dashboard' : '/dashboard';
+    return NextResponse.redirect(url);
+  }
+
   // Protection logic: if accessing /admin (except /admin/login) and not authenticated as HR/Admin, redirect to /admin/login.
   if (
     request.nextUrl.pathname.startsWith('/admin') &&
