@@ -57,12 +57,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   const handleLogout = async () => {
-    toast.success("Successfully signed out. Redirecting...");
-    await supabase.auth.signOut();
+    const toastId = toast.loading("Signing out...");
+    try {
+      await supabase.auth.signOut();
+      await fetch("/api/auth/logout", { method: "POST" });
+    } catch (e) {
+      console.error("HR Logout Error:", e);
+    }
+    toast.success("Successfully signed out. Redirecting...", { id: toastId });
     setTimeout(() => {
-      router.push("/admin/login");
-      router.refresh();
-    }, 800);
+      window.location.href = "/admin/login";
+    }, 400);
   };
 
   if (pathname === "/admin/login") {

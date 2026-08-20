@@ -550,15 +550,16 @@ export default function EmployeeDashboard() {
     }
   };
 
-  // Handle Logout
+  // Handle Logout (Clears client + server cookies and redirects cleanly)
   const handleLogout = async () => {
+    const toastId = toast.loading("Signing out...");
     try {
       await fetch("/api/auth/logout", { method: "POST" });
     } catch (e) {
-      console.error(e);
+      console.error("Logout error:", e);
     }
-    toast.success("Signed out successfully.");
-    router.push("/login");
+    toast.success("Signed out successfully.", { id: toastId });
+    window.location.href = "/login";
   };
 
   // Calculate Punched-In Work Hours Timer with seconds precision
