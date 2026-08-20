@@ -229,8 +229,8 @@ export default function Footer() {
                 <div>
                   <span className="block font-black text-[10px] uppercase tracking-widest text-secondary-600 dark:text-secondary-400 mb-0.5">Phone</span>
                   <div className="flex flex-col gap-1">
-                    <a href="tel:+919217900934" className="font-medium text-gray-700 dark:text-gray-300 hover:text-secondary-600 dark:hover:text-secondary-400 transition-colors">
-                      +91 92179 00934
+                    <a href="tel:+919217900976" className="font-medium text-gray-700 dark:text-gray-300 hover:text-secondary-600 dark:hover:text-secondary-400 transition-colors">
+                      +91 92179 00976
                     </a>
                     <a href="tel:+919217900946" className="font-medium text-gray-700 dark:text-gray-300 hover:text-secondary-600 dark:hover:text-secondary-400 transition-colors">
                       +91 92179 00946
