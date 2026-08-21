@@ -63,7 +63,7 @@ export async function GET(req: NextRequest) {
     for (let day = 1; day <= lastDayNum; day++) {
       const dateStr = `${monthStr}-${String(day).padStart(2, '0')}`;
       const dateObj = new Date(year, month - 1, day);
-      const isWeekend = dateObj.getDay() === 0 || dateObj.getDay() === 6;
+      const isWeekend = dateObj.getDay() === 0; // Only Sunday is the off-day / Weekend (Saturdays are Working Days)
 
       const record = attendanceMap.get(dateStr);
       const isOnLeave = (approvedLeaves || []).some(
