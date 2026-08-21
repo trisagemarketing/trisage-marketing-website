@@ -58,6 +58,21 @@ async function getAddressFromIP(ip: string): Promise<string | null> {
   return null;
 }
 
+// Haversine Spherical Distance Math (Returns distance in meters)
+function calculateDistanceInMeters(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const R = 6371000; // Radius of Earth in meters
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return Math.round(R * c);
+}
+
 export async function POST(req: NextRequest) {
   const auth = await requireAuth();
   if (!auth.success) return auth.response;
@@ -125,26 +140,54 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // 4. Resolve Location Address (Protected by Timeout Controllers)
+  // 4. Resolve Location & Calculate 200m Office Geofencing Radius Distance
+  const officeLat = Number(process.env.OFFICE_LAT) || 28.5837; // Trisage HQ Latitude (B-11, Sector 4, Noida)
+  const officeLng = Number(process.env.OFFICE_LNG) || 77.3230; // Trisage HQ Longitude (B-11, Sector 4, Noida)
+  const allowedRadiusMeters = Number(process.env.OFFICE_RADIUS_METERS) || 200;
+
   let resolvedAddress: string | null = null;
+  let distanceFromOfficeMeters: number | null = null;
+  let isInOfficeRadius = false;
+  let workMode = 'remote';
 
   if (validLat !== null && validLng !== null) {
     resolvedAddress = await getAddressFromCoords(validLat, validLng);
+    distanceFromOfficeMeters = calculateDistanceInMeters(validLat, validLng, officeLat, officeLng);
+    
+    if (distanceFromOfficeMeters <= allowedRadiusMeters) {
+      isInOfficeRadius = true;
+      workMode = 'office';
+    } else {
+      workMode = 'remote';
+    }
   }
 
   if (!resolvedAddress) {
     resolvedAddress = await getAddressFromIP(clientIp);
   }
 
-  if (!resolvedAddress) {
-    resolvedAddress = validLat !== null && validLng !== null ? `${validLat.toFixed(4)}, ${validLng.toFixed(4)}` : 'Office / Remote Web';
+  // Format intelligent human-readable location tag
+  let formattedLocationTag = '';
+  if (validLat !== null && validLng !== null && distanceFromOfficeMeters !== null) {
+    if (isInOfficeRadius) {
+      formattedLocationTag = `🏢 OFFICE PUNCH (${distanceFromOfficeMeters}m from Trisage HQ${resolvedAddress ? ` - ${resolvedAddress}` : ''})`;
+    } else {
+      const kmDistance = (distanceFromOfficeMeters / 1000).toFixed(1);
+      formattedLocationTag = `🌐 REMOTE PUNCH (${kmDistance} km from Office${resolvedAddress ? ` - ${resolvedAddress}` : ''})`;
+    }
+  } else {
+    formattedLocationTag = `🌐 REMOTE WEB / IP (${resolvedAddress || 'Office Network'})`;
   }
 
   const locationJson = {
     lat: validLat,
     lng: validLng,
     ip: clientIp,
-    address: resolvedAddress,
+    address: formattedLocationTag,
+    raw_address: resolvedAddress,
+    work_mode: workMode,
+    distance_from_office_meters: distanceFromOfficeMeters,
+    is_in_office_radius: isInOfficeRadius,
     timestamp: new Date().toISOString(),
   };
 

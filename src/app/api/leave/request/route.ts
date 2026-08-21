@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/supabase/auth-guard';
+import { EmailService } from '@/lib/services/emailService';
 
 export async function GET() {
   const auth = await requireAuth();
@@ -151,6 +152,41 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
+
+  // 4. Trigger Automated Email Notification to HR (Non-blocking async dispatch)
+  (async () => {
+    try {
+      // Fetch employee profile details
+      const { data: userProfile } = await supabase
+        .from('profiles')
+        .select('full_name, employee_id, email')
+        .eq('id', user.id)
+        .maybeSingle();
+
+      // Fetch all HR emails from profiles table
+      const { data: hrProfiles } = await supabase
+        .from('profiles')
+        .select('email')
+        .in('role', ['hr', 'admin']);
+
+      const hrEmails = hrProfiles?.map((h) => h.email).filter(Boolean) as string[] || [];
+      const leaveTypeName = (newRequest as { leave_types?: { name?: string } })?.leave_types?.name || 'Unpaid Leave (LOP)';
+
+      await EmailService.sendLeaveApplicationToHR({
+        employeeName: userProfile?.full_name || user.email || 'Employee',
+        employeeId: userProfile?.employee_id || 'TR-EMP',
+        employeeEmail: userProfile?.email || user.email || undefined,
+        leaveTypeName,
+        startDate: String(startDate),
+        endDate: String(endDate),
+        totalDays: Number(calculatedDays),
+        reason: String(reason).trim(),
+        hrEmails,
+      });
+    } catch (emailErr) {
+      console.error('Failed to trigger HR email notification async:', emailErr);
+    }
+  })();
 
   return NextResponse.json({
     success: true,

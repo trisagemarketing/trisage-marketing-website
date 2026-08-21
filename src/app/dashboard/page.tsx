@@ -469,7 +469,7 @@ export default function EmployeeDashboard() {
           console.warn("Geolocation warning:", err.message);
           executePunchIn(); // Fast fallback to IP check in
         },
-        { timeout: 1200, maximumAge: 60000, enableHighAccuracy: false }
+        { timeout: 3500, maximumAge: 10000, enableHighAccuracy: true }
       );
     } else {
       executePunchIn();
