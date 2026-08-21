@@ -12,7 +12,10 @@ import {
   FileText,
   Users,
   Calendar,
-  Shield
+  Shield,
+  MessageSquare,
+  Newspaper,
+  Layers
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useState, useEffect } from "react";
@@ -74,13 +77,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return <>{children}</>;
   }
 
-  const navItems = [
-    { name: "EMS Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
+  const isCMSMode = pathname.startsWith('/admin/cms') || pathname.startsWith('/admin/leads') || pathname.startsWith('/admin/blog');
+  const isEditorPage = pathname.startsWith('/admin/blog/') && pathname !== '/admin/blog';
+
+  const hrNavItems = [
+    { name: "HR Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
     { name: "Employee Directory", href: "/admin/employees", icon: Users },
     { name: "Unpaid Leaves Queue", href: "/admin/leaves", icon: FileText },
     { name: "Monthly Calendar", href: "/admin/calendar", icon: Calendar },
-    { name: "Profile & Settings", href: "/dashboard/profile", icon: Settings },
   ];
+
+  const cmsNavItems = [
+    { name: "Classic CMS Portal", href: "/admin/cms", icon: Layers },
+    { name: "Leads Database", href: "/admin/leads", icon: MessageSquare },
+    { name: "Blog Management", href: "/admin/blog", icon: Newspaper },
+  ];
+
+  const currentNavItems = isCMSMode ? cmsNavItems : hrNavItems;
+  const allNavItems = [...hrNavItems, ...cmsNavItems];
 
   return (
     <div className="h-screen bg-slate-100 dark:bg-[#141b29] flex flex-col md:flex-row relative overflow-hidden text-slate-900 dark:text-slate-100 font-sans transition-colors duration-300">
@@ -91,7 +105,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       >
         {/* Logo Section */}
         <div className={`h-16 border-b border-slate-200 dark:border-slate-800 flex items-center shrink-0 transition-all duration-300 ${isCollapsed ? "justify-center px-0 w-20" : "justify-between px-5 w-64"}`}>
-          <Link href="/admin/dashboard" className="flex items-center gap-2.5 overflow-hidden">
+          <Link href={isCMSMode ? "/admin/cms" : "/admin/dashboard"} className="flex items-center gap-2.5 overflow-hidden">
             <Image
               src="/logo.png"
               alt="Trisage Logo"
@@ -101,43 +115,56 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               className={`h-7 w-auto object-contain transition-all mix-blend-multiply dark:mix-blend-screen ${isCollapsed ? "max-w-[32px] object-left" : ""}`}
             />
             {!isCollapsed && (
-              <span className="px-2 py-0.5 rounded-md bg-secondary-500/10 text-[10px] font-black uppercase tracking-wider text-secondary-600 dark:text-secondary-400 border border-secondary-500/20 whitespace-nowrap">
-                HR Portal
+              <span className={`px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider border whitespace-nowrap ${
+                isCMSMode 
+                  ? "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20" 
+                  : "bg-secondary-500/10 text-secondary-600 dark:text-secondary-400 border-secondary-500/20"
+              }`}>
+                {isCMSMode ? "Website CMS" : "HR Dashboard"}
               </span>
             )}
           </Link>
         </div>
         
-        {/* Navigation Items */}
-        <nav className="flex-1 p-3 space-y-1.5 overflow-y-auto">
-          {navItems.map((item, idx) => {
-            const isActive = item.href === "/admin/dashboard"
-              ? (pathname === "/admin/dashboard" || pathname === "/admin")
-              : pathname.startsWith(item.href);
-              
-            return (
-              <Link 
-                key={idx}
-                href={item.href}
-                onClick={() => {
-                  if (pathname !== item.href) setIsNavigating(true);
-                }}
-                className={`flex items-center gap-3 rounded-xl transition-all font-bold text-xs uppercase tracking-wider ${
-                  isActive 
-                    ? "bg-secondary-500/10 text-secondary-600 dark:text-secondary-400 border border-secondary-500/30 shadow-xs" 
-                    : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
-                } ${
-                  isCollapsed 
-                    ? "justify-center w-11 h-11 mx-auto p-0" 
-                    : "py-3 px-3.5"
-                }`}
-                title={item.name}
-              >
-                <item.icon className={`w-4 h-4 shrink-0 ${isActive ? "text-secondary-600 dark:text-secondary-400" : ""}`} />
-                {!isCollapsed && <span className="truncate">{item.name}</span>}
-              </Link>
-            );
-          })}
+        {/* Navigation Items (Strictly Isolated by Active Portal Mode) */}
+        <nav className="flex-1 p-3 space-y-4 overflow-y-auto">
+          <div>
+            {!isCollapsed && (
+              <span className="block px-3 mb-2 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">
+                {isCMSMode ? "Website CMS Management" : "HR Management"}
+              </span>
+            )}
+            <div className="space-y-1">
+              {currentNavItems.map((item, idx) => {
+                const isActive = item.href === "/admin/dashboard"
+                  ? (pathname === "/admin/dashboard" || pathname === "/admin")
+                  : (item.href === "/admin/cms" ? pathname === "/admin/cms" : pathname.startsWith(item.href));
+                  
+                return (
+                  <Link 
+                    key={idx}
+                    href={item.href}
+                    onClick={() => {
+                      if (pathname !== item.href) setIsNavigating(true);
+                    }}
+                    className={`flex items-center gap-3 rounded-xl transition-all font-bold text-xs uppercase tracking-wider ${
+                      isActive 
+                        ? "bg-secondary-500/10 text-secondary-600 dark:text-secondary-400 border border-secondary-500/30 shadow-xs" 
+                        : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
+                    } ${
+                      isCollapsed 
+                        ? "justify-center w-11 h-11 mx-auto p-0" 
+                        : "py-2.5 px-3.5"
+                    }`}
+                    title={item.name}
+                  >
+                    <item.icon className={`w-4 h-4 shrink-0 ${isActive ? "text-secondary-600 dark:text-secondary-400" : ""}`} />
+                    {!isCollapsed && <span className="truncate">{item.name}</span>}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
         </nav>
 
         {/* Sidebar Collapse Toggle Footer */}
@@ -161,7 +188,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
       </aside>
 
-      {/* Main App Container */}
+      {/* Main Content Area */}
       <div className="flex-1 flex flex-col h-screen overflow-hidden">
         {/* Top Navbar */}
         <header className="h-16 px-4 sm:px-8 bg-white/90 dark:bg-[#1f2a3e]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center justify-between z-20 shrink-0 shadow-xs">
@@ -176,8 +203,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 priority
                 className="h-7 w-auto object-contain mix-blend-multiply dark:mix-blend-screen"
               />
-              <span className="px-2.5 py-0.5 rounded-lg bg-secondary-500/10 text-[10px] font-black uppercase tracking-wider text-secondary-600 dark:text-secondary-400 border border-secondary-500/20 whitespace-nowrap">
-                HR Dashboard
+              <span className={`px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-wider border whitespace-nowrap ${
+                isCMSMode 
+                  ? "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20" 
+                  : "bg-secondary-500/10 text-secondary-600 dark:text-secondary-400 border-secondary-500/20"
+              }`}>
+                {isCMSMode ? "Website CMS" : "HR Dashboard"}
               </span>
             </div>
 
@@ -209,7 +240,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </header>
 
         {/* Main Content Viewport */}
-        <main className="flex-1 overflow-y-auto relative z-10 w-full p-4 sm:p-8 pb-24 md:pb-8" data-lenis-prevent="true">
+        <main className={`flex-1 overflow-y-auto relative z-10 w-full ${isEditorPage ? 'p-0' : 'p-4 sm:p-8 pb-24 md:pb-8'}`} data-lenis-prevent="true">
           {isNavigating && (
             <div className="fixed inset-0 z-50 bg-[#f8fafc]/95 dark:bg-[#0f172a]/95 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-slate-900 dark:text-white font-sans animate-in fade-in duration-150">
               <div className="flex flex-col items-center gap-4 text-center">
@@ -229,10 +260,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* CONNECTED MOBILE BOTTOM NAVIGATION BAR (DOCKED TO BOTTOM EDGE) */}
         <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 w-full">
           <nav className="bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] dark:shadow-[0_-4px_20px_rgba(0,0,0,0.35)] px-2 py-2 flex items-center justify-around relative overflow-hidden transition-colors duration-300">
-            {navItems.map((item, idx) => {
+            {currentNavItems.map((item, idx) => {
               const isActive = item.href === "/admin/dashboard"
                 ? (pathname === "/admin/dashboard" || pathname === "/admin")
-                : pathname.startsWith(item.href);
+                : (item.href === "/admin/cms" ? pathname === "/admin/cms" : pathname.startsWith(item.href));
 
               return (
                 <Link
@@ -252,7 +283,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
                   <item.icon className={`w-5 h-5 transition-transform duration-200 ${isActive ? "scale-110 text-secondary-600 dark:text-secondary-400" : "group-hover:scale-105"}`} />
                   <span className={`text-[10px] font-bold tracking-tight mt-1 transition-colors ${isActive ? "text-slate-900 dark:text-white font-black" : "text-slate-500 dark:text-slate-400"}`}>
-                    {item.name === "EMS Dashboard" ? "Home" : item.name === "Employee Directory" ? "Staff" : item.name === "Unpaid Leaves Queue" ? "Leaves" : item.name === "Monthly Calendar" ? "Calendar" : "Profile"}
+                    {item.name === "HR Dashboard" ? "HR" : item.name === "Employee Directory" ? "Staff" : item.name === "Unpaid Leaves Queue" ? "Leaves" : item.name === "Monthly Calendar" ? "Calendar" : item.name === "Classic CMS Portal" ? "CMS" : item.name === "Leads Database" ? "Leads" : "Blog"}
                   </span>
                 </Link>
               );

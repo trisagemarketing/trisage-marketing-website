@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import MessagesTableBody from "@/components/admin/MessagesTableBody";
+import { MessageSquare } from "lucide-react";
 
 export default async function LeadsPage(props: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const searchParams = await props.searchParams;
@@ -13,32 +14,46 @@ export default async function LeadsPage(props: { searchParams: Promise<{ [key: s
     redirect("/admin/login");
   }
 
-  // Murphy's Law: We don't fetch data here, the MessagesTableBody handles its own fetching and error boundary.
-  // This page simply provides the UI shell for the Master CRM list.
+  // Count total inquiries
+  const { count: totalLeads } = await supabase
+    .from('contact_messages')
+    .select('*', { count: 'exact', head: true });
 
   return (
-    <div className="p-3 sm:p-6 md:p-10 w-full max-w-7xl mx-auto">
-      <div className="mb-6 sm:mb-10">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-2 tracking-tight">
-          Master Lead Database
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed">
-          View and manage the complete history of every lead acquired.
-        </p>
+    <div className="p-4 sm:p-6 md:p-10 w-full max-w-7xl mx-auto space-y-6">
+      {/* Header Banner */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+              Master Lead Database
+            </h1>
+            <span className="px-3 py-0.5 rounded-full bg-secondary-500/10 border border-secondary-500/20 text-secondary-600 dark:text-secondary-400 text-xs font-extrabold uppercase tracking-wider">
+              {totalLeads || 0} Total Submissions
+            </span>
+          </div>
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">
+            Complete database of incoming website contact inquiries, consultation requests, and booked meeting leads.
+          </p>
+        </div>
       </div>
 
-      <div className="bg-white/60 dark:bg-[#0a1220]/60 backdrop-blur-xl rounded-2xl sm:rounded-[2rem] border border-gray-200/50 dark:border-white/5 shadow-xl overflow-hidden">
-        <div className="p-4 sm:p-6 md:p-8 border-b border-gray-200/50 dark:border-white/5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white tracking-tight mb-1">All Inquiries</h2>
-            <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm">Showing all contact form submissions and booked meetings.</p>
+      {/* Main Content Section */}
+      <div className="bg-white dark:bg-[#1f2a3e] border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-4">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl bg-secondary-500/10 text-secondary-500 flex items-center justify-center shrink-0">
+              <MessageSquare className="w-5 h-5" />
+            </div>
+            <div>
+              <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white">All Inquiries</h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Filterable database view sorted by newest submission first</p>
+            </div>
           </div>
         </div>
         
-        <div className="p-3 sm:p-6 lg:p-8 bg-gray-50/30 dark:bg-black/10">
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
-            <MessagesTableBody limit={12} page={page} baseUrl="/admin/leads" />
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+          <MessagesTableBody limit={12} page={page} baseUrl="/admin/leads" />
         </div>
       </div>
     </div>

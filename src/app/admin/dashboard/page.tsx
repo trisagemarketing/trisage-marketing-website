@@ -10,11 +10,9 @@ import {
   CheckCircle2,
   Clock,
   AlertCircle,
-  FileText,
   UserPlus,
   RefreshCw,
   MapPin,
-  Calendar,
   ChevronRight,
   ChevronDown,
   Check,
@@ -312,7 +310,7 @@ export default function HRAdminDashboard() {
         <div className="space-y-1">
           <div className="flex items-center gap-2 flex-wrap">
             <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white font-sans tracking-normal [letter-spacing:-0.03em]">
-              HR & Admin Executive Dashboard
+              HR Dashboard
             </h1>
             <span className="px-3 py-0.5 rounded-full bg-secondary-500/10 border border-secondary-500/20 text-secondary-600 dark:text-secondary-400 text-xs font-bold uppercase tracking-wider">
               Trisage Marketing Pvt. Ltd.
@@ -439,7 +437,7 @@ export default function HRAdminDashboard() {
           </div>
         ) : (
           <div>
-            {/* Mobile Card List View for HR Attendance Monitor (Top-to-Bottom Scroll, Zero Horizontal Overflow) */}
+            {/* Mobile Card List View for HR Attendance Monitor */}
             <div className="space-y-3 block sm:hidden">
               {todayAttendance.length === 0 ? (
                 <div className="py-8 text-center text-slate-400 text-xs bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-slate-200 dark:border-slate-800">
@@ -451,7 +449,6 @@ export default function HRAdminDashboard() {
                     key={rec.id}
                     className="p-3.5 rounded-2xl bg-gradient-to-br from-slate-50/90 via-white to-slate-100/50 dark:from-[#172132]/90 dark:via-[#1f2a3e] dark:to-[#172132]/50 border border-slate-200/80 dark:border-slate-800 shadow-xs relative overflow-hidden space-y-3"
                   >
-                    {/* Row 1: Employee Avatar & Name/ID (Uncompressed) + HR Override Dropdown */}
                     <div className="flex items-center justify-between border-b border-slate-200/60 dark:border-slate-800/60 pb-2.5 gap-2">
                       <div className="flex items-center gap-2.5 min-w-0">
                         <div className="relative w-9 h-9 rounded-full overflow-hidden border border-slate-200 dark:border-slate-700 shrink-0 bg-slate-100 dark:bg-slate-800">
@@ -479,7 +476,6 @@ export default function HRAdminDashboard() {
                         </div>
                       </div>
 
-                      {/* HR Status Override Dropdown */}
                       <div className="shrink-0 min-w-max">
                         <CustomStatusDropdown
                           value={rec.status}
@@ -488,7 +484,6 @@ export default function HRAdminDashboard() {
                       </div>
                     </div>
 
-                    {/* Row 2: Check In & Check Out Times */}
                     <div className="grid grid-cols-2 gap-2 text-xs">
                       <div className="p-2.5 rounded-xl bg-white/80 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-700/50 flex flex-col justify-center">
                         <span className="text-[10px] font-bold text-slate-400 uppercase mb-0.5 flex items-center gap-1">
@@ -510,7 +505,6 @@ export default function HRAdminDashboard() {
                       </div>
                     </div>
 
-                    {/* Row 3: Location / Web Portal Badge */}
                     {rec.location_check_in?.address ? (
                       <div className="flex items-center gap-1.5 text-[11px] text-slate-500 dark:text-slate-400 bg-white/80 dark:bg-slate-900/60 p-2.5 rounded-xl border border-slate-200/50 dark:border-slate-700/50">
                         <MapPin className="w-3.5 h-3.5 text-teal-500 shrink-0" />

@@ -90,7 +90,8 @@ export async function updateSession(request: NextRequest) {
     }
     if (pathname === '/admin/login') {
       const url = request.nextUrl.clone();
-      url.pathname = '/admin/dashboard';
+      const isCMS = user.email?.toLowerCase() === 'trisagemarketing@gmail.com';
+      url.pathname = isCMS ? '/admin/cms' : '/admin/dashboard';
       return NextResponse.redirect(url);
     }
   }

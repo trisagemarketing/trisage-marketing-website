@@ -49,17 +49,36 @@ export async function login(formData: FormData) {
 
   const supabase = await createClient();
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const { data: authData, error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
-  if (error) {
+  if (error || !authData.user) {
     return { error: "Authentication failed. Please check your email and password." };
   }
 
   // Clear rate limit on successful login
   rateLimitMap.delete(identifier);
 
-  return { success: true };
+  // Smart Role & Email Based Route Redirection
+  const userEmail = (authData.user.email || email).toLowerCase();
+  const isCMSUser = userEmail === 'trisagemarketing@gmail.com';
+  let targetRoute = isCMSUser ? '/admin/cms' : '/admin/dashboard';
+
+  if (!isCMSUser) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', authData.user.id)
+      .maybeSingle();
+
+    if (profile?.role === 'cms' || profile?.role === 'editor') {
+      targetRoute = '/admin/cms';
+    } else {
+      targetRoute = '/admin/dashboard';
+    }
+  }
+
+  return { success: true, redirectUrl: targetRoute };
 }

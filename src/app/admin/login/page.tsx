@@ -23,9 +23,10 @@ export default function LoginPage() {
         toast.error(result.error || "Authentication failed");
       } else if (result?.success) {
         toast.success("Login successful. Redirecting...");
+        const targetRoute = result.redirectUrl || "/admin/dashboard";
         setTimeout(() => {
-          router.push("/admin");
-        }, 1000);
+          router.push(targetRoute);
+        }, 600);
       }
     });
   };

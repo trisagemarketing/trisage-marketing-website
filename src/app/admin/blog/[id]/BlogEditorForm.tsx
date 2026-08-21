@@ -167,19 +167,19 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
   const removeTag = (tag: string) => setTags(tags.filter((t) => t !== tag));
 
   return (
-    <div className="flex min-h-screen bg-gray-50 dark:bg-[#050b14]">
+    <div className="flex min-h-[calc(100vh-4rem)] bg-white dark:bg-[#070d19] w-full">
 
       {/* ── Main Editor ── */}
       <div className="flex-1 min-w-0 flex flex-col">
 
         {/* Top Bar */}
-        <div className="sticky top-0 z-40 bg-white/90 dark:bg-[#0a1220]/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-3 sm:px-6 md:px-8 py-3 flex items-center justify-between gap-2 sm:gap-4">
+        <div className="sticky top-0 z-40 bg-white/95 dark:bg-[#0c1424]/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-4 sm:px-6 md:px-8 py-3.5 flex items-center justify-between gap-2 sm:gap-4">
           <Link
             href="/admin/blog"
-            className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors"
+            className="flex items-center gap-2 text-xs font-bold text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors"
           >
             <ArrowLeft size={15} />
-            <span className="hidden sm:inline">Back</span>
+            <span className="hidden sm:inline">Back to Blog List</span>
           </Link>
 
           {/* Save status */}
@@ -189,12 +189,12 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
                 <Loader2 size={12} className="animate-spin" /> Saving...
               </span>
             ) : lastSaved ? (
-              <span className="flex items-center gap-1.5 text-xs text-gray-400">
+              <span className="flex items-center gap-1.5 text-xs text-gray-400 font-medium">
                 <Check size={12} className="text-green-500" />
-                Saved {lastSaved.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                Draft Saved {lastSaved.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
               </span>
             ) : (
-              <span className="text-xs text-gray-300 dark:text-gray-700">Draft</span>
+              <span className="text-xs text-gray-400 font-medium">Draft Mode</span>
             )}
           </div>
 
@@ -212,7 +212,7 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
             <button
               onClick={handleManualSave}
               disabled={isSaving || isPublishing}
-              className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-xl transition-all disabled:opacity-50 border border-gray-200 dark:border-gray-700 shadow-sm"
+              className="flex items-center gap-2 px-3.5 sm:px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 text-xs font-bold rounded-xl transition-all disabled:opacity-50 border border-gray-200 dark:border-gray-700 shadow-sm cursor-pointer"
               title="Save as Draft"
             >
               <Save size={14} />
@@ -223,16 +223,16 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
             <button
               onClick={handlePublish}
               disabled={isPublishing}
-              className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white text-sm font-semibold rounded-xl transition-all disabled:opacity-50 shadow-sm shadow-primary-500/20"
+              className="flex items-center gap-2 px-4 sm:px-5 py-2 bg-secondary-600 hover:bg-secondary-700 active:bg-secondary-800 text-white text-xs font-extrabold rounded-xl transition-all disabled:opacity-50 shadow-md shadow-secondary-500/20 cursor-pointer"
             >
               {isPublishing ? <Loader2 size={14} className="animate-spin" /> : <Globe size={14} />}
-              <span className="hidden sm:inline">{isPublishing ? "Publishing..." : "Publish"}</span>
+              <span className="hidden sm:inline">{isPublishing ? "Publishing..." : "Publish Article"}</span>
             </button>
           </div>
         </div>
 
         {/* Editor Body */}
-        <div className="flex-1 max-w-4xl mx-auto w-full px-4 md:px-8 py-6 sm:py-10">
+        <div className="flex-1 max-w-4xl mx-auto w-full px-4 sm:px-8 py-8 sm:py-12">
           {/* Title */}
           <textarea
             ref={titleRef}
@@ -240,7 +240,7 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
             placeholder="Article Title..."
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="font-rubik w-full text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-transparent border-none outline-none text-gray-900 dark:text-white placeholder:text-gray-300 dark:placeholder:text-gray-700 mb-6 sm:mb-8 lg:mb-0
+            className="font-rubik w-full text-3xl sm:text-4xl md:text-5xl font-black bg-transparent border-none outline-none text-gray-900 dark:text-white placeholder:text-gray-300 dark:placeholder:text-gray-700 mb-6 sm:mb-8
              px-0 leading-tight resize-none overflow-hidden"
           />
 
@@ -257,16 +257,16 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
       {/* Backdrop */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/40 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/50 backdrop-blur-xs z-40 lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
 
       <aside
         className={`
-          fixed lg:sticky top-0 right-0 h-screen w-[320px] shrink-0
-          bg-white dark:bg-[#0a1220] shadow-2xl lg:shadow-none
-          border-l border-gray-200 dark:border-gray-800
+          fixed lg:sticky top-0 right-0 h-[calc(100vh-4rem)] w-[320px] sm:w-[360px] shrink-0
+          bg-white dark:bg-[#0c1424] shadow-2xl lg:shadow-none
+          border-l border-gray-200 dark:border-gray-800/80
           overflow-y-auto z-50
           transition-transform duration-300 ease-in-out
           ${isSidebarOpen ? "translate-x-0" : "translate-x-full lg:translate-x-0"}
