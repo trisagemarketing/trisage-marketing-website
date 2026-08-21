@@ -19,6 +19,7 @@ const SaveDraftSchema = z.object({
   blogId: z.string().uuid().optional(),
   title: z.string().min(1, "Title is required"),
   content: EditorJSONSchema,
+  excerpt: z.string().nullable().optional(),
   coverImage: z.string().transform(v => v === "" ? null : v).pipe(z.string().url().nullable()).optional(),
   category: z.string().min(1),
   tags: z.array(z.string()).default([]),
@@ -69,6 +70,7 @@ export async function saveDraft(formData: z.infer<typeof SaveDraftSchema>) {
           title: validated.title,
           slug: uniqueSlug,
           content: validated.content,
+          excerpt: validated.excerpt || null,
           status: 'draft',
           author_id: user.id,
           author_name: validated.authorName || user.user_metadata?.full_name || user.email?.split('@')[0] || 'Unknown Author',
@@ -114,6 +116,7 @@ export async function saveDraft(formData: z.infer<typeof SaveDraftSchema>) {
         .from('blogs')
         .update({
           category: validated.category,
+          excerpt: validated.excerpt || null,
           cover_image: validated.coverImage || null,
           tags: validated.tags,
           faqs: validated.faqs || null,
@@ -164,18 +167,19 @@ export async function publishBlog(formData: z.infer<typeof PublishSchema>) {
         .update({
           title: validated.title,
           slug: finalSlug,
-        cover_image: validated.coverImage || null,
-        category: validated.category,
-        tags: validated.tags,
-        faqs: validated.faqs || null,
-        author_name: validated.authorName || user.user_metadata?.full_name || user.email?.split('@')[0] || 'Unknown Author',
-        author_role: validated.authorRole || null,
-        author_avatar: validated.authorAvatar || null,
-        meta_title: validated.metaTitle || null,
-        meta_description: validated.metaDescription || null,
-        canonical_url: validated.canonicalUrl || null,
-      })
-      .eq('id', validated.blogId);
+          excerpt: validated.excerpt || null,
+          cover_image: validated.coverImage || null,
+          category: validated.category,
+          tags: validated.tags,
+          faqs: validated.faqs || null,
+          author_name: validated.authorName || user.user_metadata?.full_name || user.email?.split('@')[0] || 'Unknown Author',
+          author_role: validated.authorRole || null,
+          author_avatar: validated.authorAvatar || null,
+          meta_title: validated.metaTitle || null,
+          meta_description: validated.metaDescription || null,
+          canonical_url: validated.canonicalUrl || null,
+        })
+        .eq('id', validated.blogId);
 
       if (metaError) {
         if (metaError.code === '23505') {

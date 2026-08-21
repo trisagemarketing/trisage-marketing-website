@@ -83,6 +83,7 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
       blogId,
       title,
       content: latestContent,
+      excerpt,
       coverImage,
       category,
       tags,
@@ -108,6 +109,7 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
       blogId,
       title,
       content,
+      excerpt,
       coverImage,
       category,
       tags,
@@ -135,7 +137,7 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
     let targetBlogId = blogId;
 
     if (!targetBlogId) {
-      const draftResult = await saveDraft({ blogId: undefined, title, content, coverImage, category, tags, faqs, authorName, authorRole, authorAvatar });
+      const draftResult = await saveDraft({ blogId: undefined, title, content, excerpt, coverImage, category, tags, faqs, authorName, authorRole, authorAvatar });
       if (!draftResult.success || !draftResult.blogId) {
         toast.error("Failed to prepare article.", { description: draftResult.error });
         setIsPublishing(false);
@@ -146,7 +148,7 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
     }
 
     const finalSlug = slug || title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-    const result = await publishBlog({ blogId: targetBlogId, title, slug: finalSlug, content, coverImage, category, tags, faqs, authorName, authorRole, authorAvatar });
+    const result = await publishBlog({ blogId: targetBlogId, title, slug: finalSlug, content, excerpt, coverImage, category, tags, faqs, authorName, authorRole, authorAvatar });
 
     setIsPublishing(false);
     if (result.error) {
