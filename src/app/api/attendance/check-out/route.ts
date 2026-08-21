@@ -9,12 +9,27 @@ export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({}));
   const { location, notes } = body;
 
-  // Calculate local date string in Asia/Kolkata timezone
-  const nowInIndia = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
-  const year = nowInIndia.getFullYear();
-  const month = String(nowInIndia.getMonth() + 1).padStart(2, '0');
-  const day = String(nowInIndia.getDate()).padStart(2, '0');
-  const todayStr = `${year}-${month}-${day}`;
+  // 1. Verify Active Profile Status
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('is_active')
+    .eq('id', user.id)
+    .maybeSingle();
+
+  if (profile && profile.is_active === false) {
+    return NextResponse.json(
+      { success: false, error: 'Your account has been deactivated by HR' },
+      { status: 403 }
+    );
+  }
+
+  // Calculate local YYYY-MM-DD date string in Asia/Kolkata timezone
+  const todayStr = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(new Date());
 
   // 1. Fetch active session for today
   const { data: activeRecord, error: fetchError } = await supabase
