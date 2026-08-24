@@ -2,8 +2,9 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { handleSessionExpired } from "@/lib/auth-client";
-import { Calendar, RefreshCw, MapPin, ChevronDown, ChevronLeft, ChevronRight, Check, User } from "lucide-react";
+import { Calendar, RefreshCw, MapPin, ChevronDown, ChevronLeft, ChevronRight, Check, User, Download } from "lucide-react";
 import { toast } from "sonner";
+import * as XLSX from "xlsx";
 
 interface EmployeeProfile {
   id: string;
@@ -419,6 +420,73 @@ export default function HRCalendarPage() {
     fetchEmployees();
   }, [fetchEmployees]);
 
+  const handleExportXLSX = () => {
+    if (!calendarData || !calendarData.calendarDays) {
+      toast.error("No calendar data to export.");
+      return;
+    }
+
+    const { employee, month, summary, calendarDays } = calendarData;
+    
+    // 1. Create a new Workbook
+    const wb = XLSX.utils.book_new();
+
+    // 2. Prepare Summary Data (Vertical layout for a professional look)
+    const summaryData = [
+      ["Employee Details", ""],
+      ["Name", employee?.full_name || 'N/A'],
+      ["Employee ID", employee?.employee_id || 'N/A'],
+      ["Department", employee?.departments?.name || 'N/A'],
+      ["Month", month],
+      ["", ""],
+      ["Attendance Summary", ""],
+      ["Present Days", summary?.presentDays || 0],
+      ["Absent Days", summary?.absentDays || 0],
+      ["Leave / Holidays", summary?.leaveDays || 0],
+      ["Total Days in Month", summary?.totalDays || 0]
+    ];
+
+    // 3. Prepare Daily Records Table
+    const attendanceData = calendarDays.map((day: any) => ({
+      "Date": day.date,
+      "Day": day.dayOfWeek,
+      "Status": day.status.toUpperCase(),
+      "Check In": day.checkIn || '-',
+      "Check Out": day.checkOut || '-',
+      "Location": day.location || '-',
+      "Notes": day.notes || '-'
+    }));
+
+    // 4. Create Worksheet and attach Summary Data
+    const ws = XLSX.utils.aoa_to_sheet(summaryData);
+    
+    // 5. Add an empty row between summary and table at row 13
+    XLSX.utils.sheet_add_aoa(ws, [[]], { origin: "A13" });
+    
+    // 6. Append the actual Attendance Data Table starting at row 14
+    XLSX.utils.sheet_add_json(ws, attendanceData, { origin: "A14" });
+    
+    // 7. Set column widths professionally to prevent text cut-offs
+    const wscols = [
+      { wch: 16 }, // Date / Labels
+      { wch: 14 }, // Day / Values
+      { wch: 18 }, // Status
+      { wch: 14 }, // Check In
+      { wch: 14 }, // Check Out
+      { wch: 45 }, // Location
+      { wch: 35 }  // Notes
+    ];
+    ws['!cols'] = wscols;
+
+    XLSX.utils.book_append_sheet(wb, ws, "Attendance Report");
+
+    // 8. Download the compiled XLSX file
+    const safeName = (employee?.full_name || 'Employee').replace(/\s+/g, '_');
+    XLSX.writeFile(wb, `${safeName}_Attendance_${month}.xlsx`);
+    
+    toast.success("Professional Excel report downloaded successfully!");
+  };
+
   return (
     <div className="max-w-7xl mx-auto space-y-6">
       {/* Senior Executive Header Banner */}
@@ -470,6 +538,14 @@ export default function HRCalendarPage() {
               className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-extrabold uppercase tracking-wider hover:opacity-90 transition-all cursor-pointer shadow-sm text-center justify-center flex items-center shrink-0 active:scale-98"
             >
               Load Calendar
+            </button>
+            <button
+              onClick={handleExportXLSX}
+              disabled={!calendarData || isFetchingCalendar}
+              className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20 text-xs font-extrabold uppercase tracking-wider hover:bg-emerald-100 dark:hover:bg-emerald-500/20 transition-all cursor-pointer shadow-sm text-center justify-center flex items-center gap-2 shrink-0 active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed"
+              title="Export as XLSX for Excel"
+            >
+              <Download className="w-4 h-4" /> Export Excel
             </button>
           </div>
         </div>
