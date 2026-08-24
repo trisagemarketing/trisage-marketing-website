@@ -165,8 +165,8 @@ export default async function MessagesTableBody({ limit = 9, page = 1, baseUrl =
             </div>
 
             {/* Action Bar */}
-            <div className="pt-3 mt-4 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between">
-              <span className="text-[10px] font-semibold text-slate-400">ID: {msg.id.substring(0, 8)}...</span>
+            <div className="pt-3 mt-4 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between gap-3">
+              <span className="text-[10px] font-semibold text-slate-400 shrink-0 whitespace-nowrap">ID: {String(msg.id).substring(0, 8)}...</span>
               <MessageActions msg={msg} />
             </div>
           </div>
