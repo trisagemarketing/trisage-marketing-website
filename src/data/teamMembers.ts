@@ -18,12 +18,12 @@ export const teamMembers: TeamMember[] = [
     role: "Senior Graphic Designer",
     image: "https://ik.imagekit.io/rrcdbevrb/ChatGPT%20Image%20Jun%2026,%202026,%2003_02_50%20PM.png",
   },
-  {
-    id: "3",
-    name: "Abhi",
-    role: "Digital Marketer",
-    image: "https://ik.imagekit.io/rrcdbevrb/ChatGPT%20Image%20Jun%2026,%202026,%2003_17_55%20PM.png",
-  },
+  // {
+  //   id: "3",
+  //   name: "Abhi",
+  //   role: "Digital Marketer",
+  //   image: "https://ik.imagekit.io/rrcdbevrb/ChatGPT%20Image%20Jun%2026,%202026,%2003_17_55%20PM.png",
+  // },
   {
     id: "4",
     name: "Himanshu Kumar",

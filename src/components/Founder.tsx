@@ -65,13 +65,13 @@ export default function Founder() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: false, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10 lg:pb-16"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 lg:pb-16"
         >
           {founders.map((founder, index) => (
             <motion.div
               key={founder.id}
               variants={fadeUp}
-              className={`h-full flex flex-col ${index === 0 || index === 3 ? "lg:translate-y-12" : ""}`}
+              className="h-full flex flex-col"
             >
               <motion.div
                 animate={{ y: [0, -15, 0] }}

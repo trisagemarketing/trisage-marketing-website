@@ -2,9 +2,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { motion } from "framer-motion";
-import { Quote } from "lucide-react"; // Using lucide-react Quote icon as a fallback if custom SVG isn't desired, but custom SVG is better for exact match.
+import { Quote } from "lucide-react";
 
-// Custom SVG for the exact quote marks in the image
 const QuoteMark = ({ className }: { className?: string }) => (
   <svg 
     width="48" height="48" viewBox="0 0 24 24" fill="currentColor" 
@@ -27,7 +26,7 @@ export default function DirectorsVision() {
           transition={{ duration: 0.6 }}
           className="relative rounded-3xl md:rounded-[2.5rem] overflow-hidden bg-primary-900 shadow-2xl"
         >
-          {/* Topographical Wavy Background Pattern (CSS SVG generation) */}
+          {/* Topographical Wavy Background Pattern */}
           <div 
             className="absolute inset-0 opacity-20 pointer-events-none"
             style={{
@@ -39,18 +38,15 @@ export default function DirectorsVision() {
 
           <div className="relative z-10 py-10 px-5 sm:px-8 md:py-16 md:px-16 lg:px-24 flex flex-col items-center">
             
-            {/* Title */}
             <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-16 text-center">
               Director&apos;s Vision
             </h2>
 
             <div className="w-full relative px-0 sm:px-4 md:px-12 mt-4 md:mt-0">
-              {/* Top Left Quote */}
               <div className="absolute -top-10 -left-1 md:-top-12 md:-left-6 text-white">
                 <QuoteMark className="w-10 h-10 md:w-16 md:h-16 opacity-90" />
               </div>
 
-              {/* Main Text Content */}
               <div className="text-white space-y-5 md:space-y-8 text-center text-[15px] sm:text-base md:text-lg lg:text-xl font-medium leading-[1.7] md:leading-relaxed px-2 sm:px-4 md:px-8">
                 <p>
                   At Trisage Marketing, we believe every hotel has a unique story, experience, and identity that deserves to be presented in the best possible way.
@@ -63,20 +59,14 @@ export default function DirectorsVision() {
                 </p>
               </div>
 
-              {/* Bottom Right Quote */}
               <div className="absolute -bottom-8 -right-1 md:-bottom-12 md:-right-6 text-white rotate-180">
                 <QuoteMark className="w-10 h-10 md:w-16 md:h-16 opacity-90" />
               </div>
             </div>
 
-            {/* Bottom Signatures */}
-            <div className="w-full flex flex-col sm:flex-row justify-between items-center sm:items-end gap-6 sm:gap-0 mt-16 md:mt-24 px-0 md:px-8">
-              <div className="text-center sm:text-left">
+            <div className="w-full flex flex-col justify-center items-center mt-16 md:mt-24 px-0 md:px-8">
+              <div className="text-center">
                 <h4 className="text-white font-bold text-lg md:text-xl mb-1">Sachin Dubey</h4>
-                <p className="text-white/60 text-xs md:text-sm font-medium">Director</p>
-              </div>
-              <div className="text-center sm:text-right">
-                <h4 className="text-white font-bold text-lg md:text-xl mb-1">Harsh Raj Parmar</h4>
                 <p className="text-white/60 text-xs md:text-sm font-medium">Director</p>
               </div>
             </div>

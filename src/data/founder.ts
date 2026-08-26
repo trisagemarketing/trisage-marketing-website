@@ -1,14 +1,5 @@
 export const founders = [
   {
-    id: 1,
-    name: "Harsh Raj Parmar",
-    position: "Director",
-    story: "Focused on creative direction, branding strategies, operational planning, and ensuring impactful execution of hospitality marketing campaigns.",
-    image: "/Harsh Raj Parmar.svg",
-    linkedin: "https://www.linkedin.com/in/harsh-raj-parmar/",
-    email: "mailto:harsh@trisagemarketing.com"
-  },
-  {
     id: 2,
     name: "Sachin Dubey",
     position: "Director",
