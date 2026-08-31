@@ -27,6 +27,40 @@ const nextConfig: NextConfig = {
       allowedOrigins: ["localhost:3000", "*.devtunnels.ms", "*.localhost:3000"],
     },
   },
+  async headers() {
+    return [
+      {
+        source: '/(.*)\\.(ico|png|svg|webmanifest)',
+        headers: [
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*',
+          },
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=604800, stale-while-revalidate=86400',
+          },
+        ],
+      },
+      {
+        source: '/favicon.ico',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'image/x-icon',
+          },
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*',
+          },
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=604800, stale-while-revalidate=86400',
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
