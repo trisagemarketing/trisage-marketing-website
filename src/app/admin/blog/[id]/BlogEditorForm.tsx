@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { saveDraft, publishBlog, addCategory, deleteCategory, getCategories } from "@/lib/blog/actions";
+import { autoLinkAst } from "@/lib/blog/autolinker";
 
 const BlogEditor = dynamic(() => import("@/components/editor/Editor"), {
   ssr: false,
@@ -53,6 +54,30 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const titleRef = useRef<HTMLTextAreaElement>(null);
+  const contentRef = useRef<TiptapJSONContent | string>(content);
+  const blogIdRef = useRef<string | undefined>(blogId);
+  const categoryRef = useRef(category);
+  const excerptRef = useRef(excerpt);
+  const coverImageRef = useRef(coverImage);
+  const tagsRef = useRef(tags);
+  const faqsRef = useRef(faqs);
+  const authorNameRef = useRef(authorName);
+  const authorRoleRef = useRef(authorRole);
+  const authorAvatarRef = useRef(authorAvatar);
+  const slugRef = useRef(slug);
+
+  // Sync refs with latest state
+  useEffect(() => { contentRef.current = content; }, [content]);
+  useEffect(() => { blogIdRef.current = blogId; }, [blogId]);
+  useEffect(() => { categoryRef.current = category; }, [category]);
+  useEffect(() => { excerptRef.current = excerpt; }, [excerpt]);
+  useEffect(() => { coverImageRef.current = coverImage; }, [coverImage]);
+  useEffect(() => { tagsRef.current = tags; }, [tags]);
+  useEffect(() => { faqsRef.current = faqs; }, [faqs]);
+  useEffect(() => { authorNameRef.current = authorName; }, [authorName]);
+  useEffect(() => { authorRoleRef.current = authorRole; }, [authorRole]);
+  useEffect(() => { authorAvatarRef.current = authorAvatar; }, [authorAvatar]);
+  useEffect(() => { slugRef.current = slug; }, [slug]);
 
   // Auto-resize title textarea
   useEffect(() => {
@@ -75,53 +100,65 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
     }
   }, [title, slug]);
 
-  const handleAutoSave = async (latestContent: TiptapJSONContent) => {
-    if (!title) return;
+  const handleAutoSave = useCallback(async (latestContent: TiptapJSONContent) => {
+    contentRef.current = latestContent;
     setContent(latestContent);
+    const currentTitle = titleRef.current?.value || title;
+    if (!currentTitle) return;
+
     setIsSaving(true);
     const result = await saveDraft({
-      blogId,
-      title,
+      blogId: blogIdRef.current,
+      title: currentTitle,
       content: latestContent,
-      excerpt,
-      coverImage,
-      category,
-      tags,
-      faqs,
-      authorName,
-      authorRole,
-      authorAvatar,
+      excerpt: excerptRef.current,
+      coverImage: coverImageRef.current,
+      category: categoryRef.current || "Uncategorized",
+      tags: tagsRef.current,
+      faqs: faqsRef.current,
+      authorName: authorNameRef.current,
+      authorRole: authorRoleRef.current,
+      authorAvatar: authorAvatarRef.current,
     });
     setIsSaving(false);
     if (result.success) {
       setLastSaved(new Date());
-      if (result.blogId && result.blogId !== blogId) setBlogId(result.blogId);
+      if (result.blogId && result.blogId !== blogIdRef.current) {
+        blogIdRef.current = result.blogId;
+        setBlogId(result.blogId);
+      }
     }
-  };
+  }, [title]);
 
   const handleManualSave = async () => {
-    if (!title) {
+    const currentTitle = titleRef.current?.value || title;
+    if (!currentTitle) {
       toast.error("A title is required to save a draft.");
       return;
     }
     setIsSaving(true);
+    const rawContent = contentRef.current || content;
+    const currentContent = (autoLinkAst(rawContent) || rawContent) as TiptapJSONContent;
     const result = await saveDraft({
-      blogId,
-      title,
-      content,
-      excerpt,
-      coverImage,
-      category,
-      tags,
-      faqs,
-      authorName,
-      authorRole,
-      authorAvatar,
+      blogId: blogIdRef.current || blogId,
+      title: currentTitle,
+      content: currentContent,
+      excerpt: excerptRef.current || excerpt,
+      coverImage: coverImageRef.current || coverImage,
+      category: categoryRef.current || category || "Uncategorized",
+      tags: tagsRef.current || tags,
+      faqs: faqsRef.current || faqs,
+      authorName: authorNameRef.current || authorName,
+      authorRole: authorRoleRef.current || authorRole,
+      authorAvatar: authorAvatarRef.current || authorAvatar,
     });
     setIsSaving(false);
     if (result.success) {
       setLastSaved(new Date());
-      if (result.blogId && result.blogId !== blogId) setBlogId(result.blogId);
+      if (result.blogId && result.blogId !== (blogIdRef.current || blogId)) {
+        blogIdRef.current = result.blogId;
+        setBlogId(result.blogId);
+      }
       toast.success("Draft saved successfully.");
     } else {
       toast.error("Failed to save draft.", { description: result.error });
@@ -129,26 +166,66 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
   };
 
   const handlePublish = async () => {
-    if (!title) {
+    const currentTitle = titleRef.current?.value || title;
+    if (!currentTitle) {
       toast.error("A title is required before publishing.");
       return;
     }
     setIsPublishing(true);
-    let targetBlogId = blogId;
+    let targetBlogId = blogIdRef.current || blogId;
+
+    const rawContent = contentRef.current || content;
+    const currentContent = (autoLinkAst(rawContent) || rawContent) as TiptapJSONContent;
+    const currentCategory = categoryRef.current || category || "Uncategorized";
+    const currentExcerpt = excerptRef.current || excerpt;
+    const currentCoverImage = coverImageRef.current || coverImage;
+    const currentTags = tagsRef.current || tags;
+    const currentFaqs = faqsRef.current || faqs;
+    const currentAuthorName = authorNameRef.current || authorName;
+    const currentAuthorRole = authorRoleRef.current || authorRole;
+    const currentAuthorAvatar = authorAvatarRef.current || authorAvatar;
 
     if (!targetBlogId) {
-      const draftResult = await saveDraft({ blogId: undefined, title, content, excerpt, coverImage, category, tags, faqs, authorName, authorRole, authorAvatar });
+      const draftResult = await saveDraft({
+        blogId: undefined,
+        title: currentTitle,
+        content: currentContent,
+        excerpt: currentExcerpt,
+        coverImage: currentCoverImage,
+        category: currentCategory,
+        tags: currentTags,
+        faqs: currentFaqs,
+        authorName: currentAuthorName,
+        authorRole: currentAuthorRole,
+        authorAvatar: currentAuthorAvatar,
+      });
+
       if (!draftResult.success || !draftResult.blogId) {
         toast.error("Failed to prepare article.", { description: draftResult.error });
         setIsPublishing(false);
         return;
       }
       targetBlogId = draftResult.blogId;
+      blogIdRef.current = targetBlogId;
       setBlogId(targetBlogId);
     }
 
-    const finalSlug = slug || title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-    const result = await publishBlog({ blogId: targetBlogId, title, slug: finalSlug, content, excerpt, coverImage, category, tags, faqs, authorName, authorRole, authorAvatar });
+    const currentSlug = slugRef.current || slug || currentTitle.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
+    const result = await publishBlog({
+      blogId: targetBlogId,
+      title: currentTitle,
+      slug: currentSlug,
+      content: currentContent,
+      excerpt: currentExcerpt,
+      coverImage: currentCoverImage,
+      category: currentCategory,
+      tags: currentTags,
+      faqs: currentFaqs,
+      authorName: currentAuthorName,
+      authorRole: currentAuthorRole,
+      authorAvatar: currentAuthorAvatar,
+    });
 
     setIsPublishing(false);
     if (result.error) {
@@ -175,7 +252,7 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
       <div className="flex-1 min-w-0 flex flex-col">
 
         {/* Top Bar */}
-        <div className="sticky top-0 z-40 bg-white/95 dark:bg-[#0c1424]/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-4 sm:px-6 md:px-8 py-3.5 flex items-center justify-between gap-2 sm:gap-4">
+        <div className="sticky top-0 z-40 bg-white/95 dark:bg-[#0c1424]/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-3.5 sm:px-5 md:px-6 py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-4">
           <Link
             href="/admin/blog"
             className="flex items-center gap-2 text-xs font-bold text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors"
@@ -185,7 +262,7 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
           </Link>
 
           {/* Save status */}
-          <div className="flex-1 flex justify-center">
+          <div className="hidden sm:flex flex-1 justify-center">
             {isSaving ? (
               <span className="flex items-center gap-1.5 text-xs text-gray-400">
                 <Loader2 size={12} className="animate-spin" /> Saving...
@@ -234,7 +311,7 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
         </div>
 
         {/* Editor Body */}
-        <div className="flex-1 max-w-4xl mx-auto w-full px-4 sm:px-8 py-8 sm:py-12">
+        <div className="flex-1 w-full max-w-5xl mx-auto px-3 sm:px-5 lg:px-6 py-3.5 sm:py-4">
           {/* Title */}
           <textarea
             ref={titleRef}
@@ -242,15 +319,18 @@ export default function BlogEditorForm({ initialBlog, blogId: paramBlogId }: Pro
             placeholder="Article Title..."
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="font-rubik w-full text-3xl sm:text-4xl md:text-5xl font-black bg-transparent border-none outline-none text-gray-900 dark:text-white placeholder:text-gray-300 dark:placeholder:text-gray-700 mb-6 sm:mb-8
-             px-0 leading-tight resize-none overflow-hidden"
+            className="font-rubik w-full text-2xl sm:text-3xl font-extrabold bg-transparent border-none outline-none text-gray-900 dark:text-white placeholder:text-gray-300 dark:placeholder:text-gray-700 mb-2 sm:mb-2.5 px-0 leading-tight resize-none overflow-hidden"
           />
 
           {/* Tiptap Editor */}
           <BlogEditor
             initialContent={content}
-            onChange={setContent}
+            onChange={(newContent) => {
+              contentRef.current = newContent;
+              setContent(newContent);
+            }}
             onAutoSave={handleAutoSave}
+            blogId={blogId}
           />
         </div>
       </div>

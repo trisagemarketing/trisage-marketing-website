@@ -20,11 +20,22 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "ujjmtmdtdagshbkyqmto.supabase.co",
       },
+      {
+        protocol: "https",
+        hostname: "*.supabase.co",
+      },
     ],
   },
   experimental: {
     serverActions: {
-      allowedOrigins: ["localhost:3000", "*.devtunnels.ms", "*.localhost:3000"],
+      allowedOrigins: [
+        "localhost:3000",
+        "*.devtunnels.ms",
+        "*.localhost:3000",
+        "trisagemarketing.com",
+        "*.trisagemarketing.com",
+        "*.vercel.app",
+      ],
     },
   },
   async headers() {

@@ -12,15 +12,16 @@ import CookieConsentBanner from "@/components/CookieConsentBanner";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://trisagemarketing.com'),
-  title: "Trisage Marketing | Premium Digital Agency in India",
-  description: "Trisage Marketing is a premium digital agency specializing in SEO, Performance Marketing, and Growth Strategies.",
+  title: "Trisage Marketing | Hospitality Digital Marketing Agency",
+  description: "Trisage Marketing is a hospitality digital marketing agency helping hotels & resorts scale direct bookings through SEO, social media, and performance marketing.",
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.png', sizes: '512x512', type: 'image/png' },
       { url: '/favicon-48x48.png', sizes: '48x48', type: 'image/png' },
       { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
     ],
+    shortcut: ['/favicon.ico'],
     apple: [
       { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
     ],
@@ -31,8 +32,8 @@ export const metadata: Metadata = {
     capable: true,
   },
   openGraph: {
-    title: "Trisage Marketing | Premium Digital Agency in India",
-    description: "Trisage Marketing is a premium digital agency specializing in SEO, Performance Marketing, and Growth Strategies.",
+    title: "Trisage Marketing | Hospitality Digital Marketing Agency",
+    description: "Trisage Marketing is a hospitality digital marketing agency helping hotels & resorts scale direct bookings through SEO, social media, and performance marketing.",
     url: 'https://trisagemarketing.com',
     siteName: 'Trisage Marketing',
     locale: 'en_IN',
@@ -42,14 +43,14 @@ export const metadata: Metadata = {
         url: '/logo.png',
         width: 1200,
         height: 630,
-        alt: 'Trisage Marketing Logo',
+        alt: 'Trisage Marketing - Hospitality Digital Marketing Agency',
       }
     ]
   },
   twitter: {
     card: 'summary_large_image',
-    title: "Trisage Marketing | Premium Digital Agency in India",
-    description: "Trisage Marketing is a premium digital agency specializing in SEO, Performance Marketing, and Growth Strategies.",
+    title: "Trisage Marketing | Hospitality Digital Marketing Agency",
+    description: "Trisage Marketing is a hospitality digital marketing agency helping hotels & resorts scale direct bookings through SEO, social media, and performance marketing.",
     images: ['/logo.png'],
   },
 };
@@ -62,7 +63,7 @@ const globalJsonLd = {
       "@id": "https://trisagemarketing.com/#website",
       "url": "https://trisagemarketing.com/",
       "name": "Trisage Marketing",
-      "description": "Premium digital agency specializing in SEO, Performance Marketing, and Growth Strategies.",
+      "description": "Hospitality digital marketing agency specializing in SEO, social media, performance marketing, and direct booking growth for hotels and resorts.",
       "publisher": {
         "@id": "https://trisagemarketing.com/#organization"
       },
@@ -80,7 +81,7 @@ const globalJsonLd = {
         "height": 1024
       },
       "image": "https://trisagemarketing.com/logo.png",
-      "description": "Trisage Marketing is a premium digital marketing agency in India helping ambitious brands scale through data-driven strategies and exceptional design.",
+      "description": "Trisage Marketing is a hospitality digital marketing agency in India helping hotels, resorts, and hospitality brands scale through SEO, social media, performance marketing, and direct booking growth.",
       "telephone": "+919217900934",
       "email": "admin@trisagemarketing.com",
       "address": {
@@ -94,6 +95,27 @@ const globalJsonLd = {
       "sameAs": [
         "https://linkedin.com/company/trisage-marketing/",
         "https://instagram.com/trisagemarketing"
+      ],
+      "knowsAbout": [
+        "Hospitality Digital Marketing",
+        "Hotel SEO",
+        "Resort Marketing",
+        "Direct Booking Strategy",
+        "Hotel Social Media Marketing",
+        "Performance Marketing for Hotels",
+        "Hotel Revenue Management",
+        "Hospitality Website Design",
+        "Generative Engine Optimization (GEO)"
+      ],
+      "serviceArea": [
+        {
+          "@type": "Country",
+          "name": "India"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Worldwide"
+        }
       ]
     }
   ]

@@ -131,7 +131,7 @@ export default function Hero() {
                 fontSize: 'clamp(5rem, 27.5vw, 420px)',
                 lineHeight: '1',
               }}
-              aria-label="TRISAGE"
+              aria-label="Trisage Marketing - Hospitality Digital Marketing Agency for Hotels and Resorts"
             >
               {['T', 'R', 'I', 'S', 'A', 'G', 'E'].map((letter, i) => (
                 <div key={i} className="overflow-hidden inline-block px-16 -mx-16 pt-24 -mt-24 pb-24 -mb-24">

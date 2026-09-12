@@ -129,9 +129,10 @@ export default function Footer() {
 
             {/* Brand tagline — MissionVision two-tone style */}
             <p className="font-sans font-medium text-[1.125rem] uppercase tracking-tight leading-snug text-balance">
-              <span className="text-primary-600 dark:text-primary-400">Premium digital marketing agency</span>{" "}
-              <span className="text-gray-700 dark:text-gray-300">helping ambitious brands scale through</span>{" "}
-              <strong className="font-black text-primary-950 dark:text-white">data-driven strategies</strong>{" "}
+              <span className="text-primary-600 dark:text-primary-400">Hospitality digital marketing agency</span>{" "}
+              <span className="text-gray-700 dark:text-gray-300">helping hotels, resorts, and hospitality brands scale through</span>{" "}
+              <strong className="font-black text-primary-950 dark:text-white">data-driven strategies,</strong>{" "}
+              <strong className="font-black text-secondary-600 dark:text-secondary-400">direct bookings,</strong>{" "}
               <span className="text-gray-700 dark:text-gray-300">and exceptional</span>{" "}
               <strong className="font-black text-secondary-600 dark:text-secondary-400">design.</strong>
             </p>

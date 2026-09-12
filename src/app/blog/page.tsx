@@ -4,9 +4,15 @@ import { getAllPublishedPosts, getAllCategories } from "@/lib/blog/data";
 import BlogLayout from "@/components/blog/BlogLayout";
 
 export const metadata: Metadata = {
-  title: "Insights & Strategy | Trisage Marketing",
-  description: "Expert perspectives on performance marketing, conversion optimization, and scaling B2B growth.",
+  title: "Hospitality Marketing Insights & Strategy | Trisage Marketing",
+  description: "Expert perspectives on hotel SEO, direct booking strategies, hospitality performance marketing, and scaling hotel revenue growth.",
+  alternates: {
+    canonical: "https://trisagemarketing.com/blog",
+  },
 };
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function BlogPage() {
   const blogs = await getAllPublishedPosts();

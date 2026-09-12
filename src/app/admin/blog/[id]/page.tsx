@@ -1,6 +1,9 @@
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import BlogEditorForm from './BlogEditorForm';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
+
+export const dynamic = 'force-dynamic';
 
 export default async function AdminBlogEditorPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -9,11 +12,17 @@ export default async function AdminBlogEditorPage({ params }: { params: Promise<
     return <BlogEditorForm blogId="new" />;
   }
 
-  // Fetch existing blog (from drafts preferably, fallback to published)
+  // Ensure user is authenticated
   const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    redirect('/auth/login');
+  }
+
+  // Fetch blog data using privileged admin client to ensure accessibility regardless of author_id
+  const adminSupabase = createAdminClient();
   
-  // Fetch the base published version FIRST to get all metadata
-  const { data: publishedData } = await supabase
+  const { data: publishedData } = await adminSupabase
     .from('blogs')
     .select('*')
     .eq('id', id)
@@ -23,21 +32,31 @@ export default async function AdminBlogEditorPage({ params }: { params: Promise<
     notFound();
   }
 
-  // Then check if there is an active draft with newer content/title
-  const { data: draftData } = await supabase
+  // Check if there is an active draft
+  const { data: draftData } = await adminSupabase
     .from('blog_drafts')
     .select('*')
     .eq('blog_id', id)
-    .single();
+    .maybeSingle();
 
-  // If there's a draft, merge it over the base blog data
-  const initialBlog = draftData
-    ? {
+  // Smart Precedence: Only merge draft if the blog is still a 'draft'
+  // OR if the draft was saved strictly AFTER the published blog was last updated!
+  let initialBlog = publishedData;
+
+  if (draftData) {
+    const draftTime = draftData.last_autosaved_at ? new Date(draftData.last_autosaved_at).getTime() : 0;
+    const blogTime = publishedData.updated_at 
+      ? new Date(publishedData.updated_at).getTime() 
+      : (publishedData.published_at ? new Date(publishedData.published_at).getTime() : 0);
+
+    if (publishedData.status === 'draft' || draftTime > blogTime) {
+      initialBlog = {
         ...publishedData,
         title: draftData.draft_title || publishedData.title,
         content: draftData.draft_content || publishedData.content,
-      }
-    : publishedData;
+      };
+    }
+  }
 
   return <BlogEditorForm initialBlog={initialBlog} blogId={id} />;
 }

@@ -59,16 +59,16 @@ export default function VillasitaCaseStudyPage() {
         "dateModified": "2026-07-30T16:00:00+05:30",
         "author": {
           "@type": "Organization",
-          "name": "Trisage Marketing Pvt. Ltd.",
+          "name": "Trisage Marketing",
           "url": "https://trisagemarketing.com"
         },
         "publisher": {
           "@type": "Organization",
-          "name": "Trisage Marketing Pvt. Ltd.",
+          "name": "Trisage Marketing",
           "url": "https://trisagemarketing.com",
           "logo": {
             "@type": "ImageObject",
-            "url": "https://trisagemarketing.com/logo.svg"
+            "url": "https://trisagemarketing.com/logo.png"
           }
         },
         "mainEntityOfPage": "https://trisagemarketing.com/case-studies/villasita-resort-haridwar"

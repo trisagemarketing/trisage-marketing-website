@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import type { Metadata } from "next";
 import Hero from "@/components/Hero";
 import MissionVision from "@/components/MissionVision";
 import BusinessPartners from "@/components/BusinessPartners";
@@ -15,6 +15,38 @@ import CTA from "@/components/CTA";
 import HomeBackground from "@/components/HomeBackground";
 import IndianFlagPlanes from "@/components/IndianFlagPlanes";
 import { createClient } from "@/lib/supabase/server";
+import FaqSchema from "@/components/Schema/FaqSchema";
+import { faqs } from "@/data/faqs";
+
+export const metadata: Metadata = {
+  title: "Trisage Marketing | Hospitality Digital Marketing Agency",
+  description: "Trisage Marketing is a hospitality digital marketing agency helping hotels & resorts scale direct bookings through SEO, social media, and performance marketing.",
+  alternates: {
+    canonical: "https://trisagemarketing.com",
+  },
+  openGraph: {
+    title: "Trisage Marketing | Hospitality Digital Marketing Agency",
+    description: "Trisage Marketing is a hospitality digital marketing agency helping hotels & resorts scale direct bookings through SEO, social media, and performance marketing.",
+    url: "https://trisagemarketing.com",
+    siteName: "Trisage Marketing",
+    locale: "en_IN",
+    type: "website",
+    images: [
+      {
+        url: "/logo.png",
+        width: 1200,
+        height: 630,
+        alt: "Trisage Marketing - Hospitality Digital Marketing Agency",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Trisage Marketing | Hospitality Digital Marketing Agency",
+    description: "Trisage Marketing is a hospitality digital marketing agency helping hotels & resorts scale direct bookings through SEO, social media, and performance marketing.",
+    images: ["/logo.png"],
+  },
+};
 
 export default async function Home() {
   const supabase = await createClient();
@@ -31,6 +63,7 @@ export default async function Home() {
 
   return (
     <main className="relative min-h-screen bg-white dark:bg-[#050b14]">
+      <FaqSchema faqs={faqs} />
       {/* <IndianFlagPlanes /> */}
 
       {/* ── Creative Animated Background (Hero Only) ── */}

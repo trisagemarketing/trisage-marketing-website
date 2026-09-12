@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import imageCompression from "browser-image-compression";
 import { toast } from "sonner";
 import { ImageIcon, UploadCloud, X, Loader2, RefreshCcw, Trash2 } from "lucide-react";
+import { uploadBlogMedia } from "@/lib/blog/actions";
 
 interface NativeUploaderProps {
   onUploadComplete: (url: string) => void;
@@ -79,28 +80,21 @@ export default function NativeUploader({
 
       setProgress(60);
 
-      // 4. Unique Safe Naming
-      const ext = fileToUpload.name.split('.').pop() || 'jpg';
-      const timestamp = Date.now();
-      const randomId = uuidv4().substring(0, 8);
-      const safeBlogId = blogId === 'new' ? 'drafts' : blogId;
-      const filePath = `blogs/${safeBlogId}/${timestamp}-${randomId}.${ext}`;
+      const formData = new FormData();
+      formData.append('file', fileToUpload);
+      formData.append('blogId', blogId === 'new' ? 'drafts' : blogId);
 
-      // 5. Upload to Supabase
-      const { data, error } = await supabase.storage.from(bucket).upload(filePath, fileToUpload, {
-        cacheControl: '3600',
-        upsert: false
-      });
+      setProgress(85);
 
-      if (error) throw error;
+      const result = await uploadBlogMedia(formData);
+
+      if (!result.success || !result.url) {
+        throw new Error(result.error || "Upload failed");
+      }
       
       setProgress(100);
-
-      // 6. Get Public URL
-      const { data: { publicUrl } } = supabase.storage.from(bucket).getPublicUrl(filePath);
-      
       toast.success("Upload Successful!");
-      onUploadComplete(publicUrl);
+      onUploadComplete(result.url);
 
     } catch (error: unknown) {
       console.error("Upload Error:", error);

@@ -1,62 +1,88 @@
 # Trisage Marketing
 
-> Trisage Marketing is a digital agency in India specializing in SEO, Performance Marketing, and Growth Strategies for the hospitality sector.
+> Trisage Marketing is a hospitality-focused digital marketing agency in India specializing in Hotel SEO, Generative Engine Optimization (GEO), Social Media Marketing, Performance Marketing, Custom Hotel Website Design, and Revenue Management to scale direct bookings for hotels and resorts.
 
-## About
+## About Trisage Marketing
 
-Trisage Marketing helps hospitality brands scale through data-driven strategies and design. The agency focuses on increasing direct bookings, optimizing revenue, and building brand identities for hotels and resorts.
+Trisage Marketing helps hospitality properties, luxury resorts, boutique hotels, villas, and homestays scale their online presence and maximize direct revenue. By combining data-backed digital marketing strategies with premium visual design, Trisage helps property owners reduce high OTA commission costs, command higher RevPAR, and build an owned direct-booking guest pipeline.
 
-## Primary Services
+- **Primary Entity**: Trisage Marketing
+- **Category**: Hospitality Digital Marketing Agency
+- **Headquarters**: Noida, Uttar Pradesh, India
+- **Website**: https://trisagemarketing.com
 
-- Brand Strategy & Identity
-- Revenue Management
-- Website Design & SEO
-- Performance Marketing
-- GEO & GMB
-- Content Creation & Copywriting
-- Influencer & PR Outreach
-- Social Media Management
+## Who We Serve
 
-## Industries
+Trisage Marketing specializes exclusively in the hospitality sector, partnering with:
 
-- Hospitality
-- Hotels
-- Resorts
-- Luxury Brands
-- Restaurants
+- Independent Hotels & Boutique Stays
+- Luxury Resorts & Wellness Retreats
+- Villas & Vacation Rentals (Airbnb / Homestays)
+- Glamping & Outdoor Experiential Stays
+- Fine Dining Restaurants & Cafes
+- Hospitality Chains & Travel Brands
+
+## Core Services
+
+Trisage provides full-funnel digital marketing services engineered for hospitality growth:
+
+1. **Website Design, SEO & GEO AI**:
+   - URL: https://trisagemarketing.com/services/website-design-seo
+   - Mobile-first, fast hotel website development with integrated booking engine UX, technical SEO, and Generative Engine Optimization (GEO) ensuring recommendation on ChatGPT, Gemini, and Perplexity.
+
+2. **Revenue Management & Direct Bookings**:
+   - URL: https://trisagemarketing.com/services/revenue-management
+   - Dynamic pricing strategies, yield management, OTA distribution optimization, and TRevPAR growth planning to shift booking share to direct channels.
+
+3. **Performance Marketing (Google & Meta Ads)**:
+   - URL: https://trisagemarketing.com/services/performance-marketing
+   - High-intent Google Search and Hotel Ads, Meta retargeting campaigns, demand generation, and CPA minimization with verified ROAS tracking.
+
+4. **Social Media Management**:
+   - URL: https://trisagemarketing.com/services/social-media-management
+   - Visual storytelling, Instagram reels, content calendars, community building, and wanderlust-driven social campaigns that turn viewers into booked guests.
+
+5. **GEO & Google Business Profile (GMB)**:
+   - URL: https://trisagemarketing.com/services/seo-gmb
+   - Local SEO, Google Map Pack domination, review management, high-resolution visual asset curation, and direct booking link integration.
+
+6. **Brand Strategy & Identity**:
+   - URL: https://trisagemarketing.com/services/brand-strategy
+   - Market positioning, visual identity systems, typography, color palettes, and guest messaging frameworks tailored for premium hospitality brands.
+
+7. **Content Creation & Copywriting**:
+   - URL: https://trisagemarketing.com/services/content-copywriting
+   - Professional hotel photography, video production, promotional reels, storytelling menus, and evocative website copy that converts lookers into bookers.
+
+8. **Influencer & PR Outreach**:
+   - URL: https://trisagemarketing.com/services/influencer-pr
+   - Vetted travel creator collaborations, lifestyle influencer campaigns, and PR outreach securing authentic social proof and authoritative digital features.
+
+## Verified Client Success
+
+- **Villasita Resort Haridwar**: Built an end-to-end digital growth system scaling online property revenue to approximately ₹1 crore with up to 10x ROAS through combined performance marketing, OTA management, and direct booking optimization.
+- Case Study: https://trisagemarketing.com/case-studies/villasita-resort-haridwar
 
 ## Key Resources
 
-- [About](https://trisagemarketing.com/about)
 - [Services](https://trisagemarketing.com/services)
+- [About Trisage](https://trisagemarketing.com/about)
 - [Methodology](https://trisagemarketing.com/methodology)
-- [Blog](https://trisagemarketing.com/blog)
 - [Case Studies](https://trisagemarketing.com/case-studies)
-- [Contact](https://trisagemarketing.com/contact)
+- [Hospitality Insights Blog](https://trisagemarketing.com/blog)
+- [Contact Us](https://trisagemarketing.com/contact)
 
-## Important Topics
-
-- Hotel SEO
-- Hospitality Marketing
-- Direct Booking Generation
-- OTA Dependency Reduction
-- Brand Strategy
-- Website Development
-- Revenue Management
-
-## Policies & Documentation
+## Policies & Compliance
 
 - [Privacy Policy](https://trisagemarketing.com/privacy)
 - [Terms and Conditions](https://trisagemarketing.com/terms-and-conditions)
 - [Robots.txt](https://trisagemarketing.com/robots.txt)
 - [Sitemap](https://trisagemarketing.com/sitemap.xml)
+- [RSS Feed](https://trisagemarketing.com/feed.xml)
 
 ## Contact Information
 
-Email: admin@trisagemarketing.com
-Phone: +919217900934
-Address: B-11, Amaltash Marg, & Block B, Sector 4, Noida, Uttar Pradesh 201301, IN
-
-## Official Website
-
-[Trisage Marketing](https://trisagemarketing.com)
+- **Brand**: Trisage Marketing
+- **Email**: admin@trisagemarketing.com
+- **Phone**: +919217900934
+- **Address**: B-11, Amaltash Marg, & Block B, Sector 4, Noida, Uttar Pradesh 201301, India

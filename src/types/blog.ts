@@ -99,3 +99,38 @@ export const CustomBlockValidationRegistry: Record<string, z.ZodTypeAny> = {
   testimonial: TestimonialBlockSchema,
   youtube: YouTubeEmbedSchema,
 };
+
+// =======================
+// DYNAMIC INTERNAL LINKS & MEDIA TYPES
+// =======================
+export interface InternalLinkAttrs {
+  href: string;
+  blogId?: string | null;
+  targetType?: 'blog' | 'page' | 'external' | null;
+  target?: string | null;
+}
+
+export interface MediaAttrs {
+  src: string;
+  mediaId?: string | null;
+  alt?: string | null;
+  caption?: string | null;
+  width?: number | null;
+  height?: number | null;
+}
+
+export interface MediaLibraryItem {
+  id: string;
+  url: string;
+  name: string;
+  size?: number;
+  created_at?: string | null;
+}
+
+export interface PublishedBlogLinkOption {
+  id: string;
+  title: string;
+  slug: string;
+  category?: string;
+  published_at?: string | null;
+}

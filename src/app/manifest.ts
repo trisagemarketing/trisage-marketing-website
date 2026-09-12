@@ -2,9 +2,9 @@ import type { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Trisage Marketing | Premium Digital Agency in India',
+    name: 'Trisage Marketing | Hospitality Digital Marketing Agency',
     short_name: 'Trisage Marketing',
-    description: 'Trisage Marketing is a premium digital agency specializing in SEO, Performance Marketing, and Growth Strategies.',
+    description: 'Hospitality-focused digital marketing agency helping hotels and resorts scale direct bookings through SEO, social media, and performance marketing.',
     start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',

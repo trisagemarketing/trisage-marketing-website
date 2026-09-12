@@ -4,11 +4,15 @@ import { ArrowLeft, Clock, Calendar, Tag } from "lucide-react";
 import CTA from "@/components/CTA";
 import { notFound } from "next/navigation";
 import { getPublishedPostBySlug } from "@/lib/blog/data";
+import { resolveBlogContent } from "@/lib/blog/resolver";
 import RichTextRenderer from "@/components/blog/RichTextRenderer";
 import ShareButton from "@/components/blog/ShareButton";
 import ArticleSchema from "@/components/Schema/ArticleSchema";
 import BreadcrumbSchema from "@/components/Schema/BreadcrumbSchema";
 import BlogFAQ from "@/components/BlogFAQ";
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 // ==========================================
 // DYNAMIC METADATA + JSON-LD
@@ -39,6 +43,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
   const post = await getPublishedPostBySlug(id);
 
   if (!post) notFound();
+
+  // Dynamically resolve internal blog links and media references
+  const resolvedContent = await resolveBlogContent(post.content);
 
   const publishDate = new Date(post.published_at || post.created_at).toLocaleDateString('en-US', {
     year: 'numeric', month: 'long', day: 'numeric'
@@ -147,7 +154,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
 
         {/* ── Article Body — same CONTAINER, no extra wrapper ── */}
         <div className={`${CONTAINER} pb-24 font-rubik`}>
-          <RichTextRenderer content={post.content} />
+          <RichTextRenderer content={resolvedContent} />
 
           {/* Tags footer */}
           {post.tags && post.tags.length > 0 && (

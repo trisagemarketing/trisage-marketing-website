@@ -11,7 +11,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/private/'],
       },
       {
-        userAgent: ['Googlebot', 'Googlebot-Image'],
+        userAgent: ['Googlebot', 'Googlebot-Image', 'Google Favicon'],
         allow: '/',
       },
     ],

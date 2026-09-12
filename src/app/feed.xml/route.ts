@@ -11,8 +11,8 @@ export async function GET() {
     const posts = await getAllPublishedPosts();
 
     const feed = new Feed({
-      title: "Trisage Marketing Blog",
-      description: "Expert perspectives on performance marketing, conversion optimization, and scaling B2B growth.",
+      title: "Trisage Marketing Blog | Hospitality Marketing Insights",
+      description: "Expert perspectives on hotel SEO, direct booking strategies, hospitality performance marketing, and scaling hotel revenue growth.",
       id: baseUrl,
       link: baseUrl,
       language: "en",
