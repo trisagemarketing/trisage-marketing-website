@@ -10,7 +10,7 @@
       <head>
         <title>XML Sitemap | Trisage Marketing</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
@@ -399,6 +399,228 @@
           .footer-links a:hover {
             color: var(--primary);
             text-decoration: underline;
+          }
+
+          /* ── Tablet & Mobile Responsive Design ── */
+          @media (max-width: 900px) {
+            body {
+              padding: 20px 14px 48px 14px;
+            }
+
+            .header-card {
+              padding: 28px 22px;
+              border-radius: 20px;
+              margin-bottom: 20px;
+            }
+
+            .stats-grid {
+              grid-template-columns: repeat(2, 1fr);
+              gap: 12px;
+              margin-bottom: 20px;
+            }
+
+            .stat-card {
+              padding: 16px 18px;
+            }
+
+            .stat-value {
+              font-size: 24px;
+            }
+          }
+
+          @media (max-width: 768px) {
+            .header-card {
+              padding: 24px 18px;
+            }
+
+            .brand-row {
+              flex-direction: column;
+              align-items: flex-start;
+              gap: 12px;
+              margin-bottom: 16px;
+            }
+
+            .site-link {
+              width: 100%;
+              text-align: center;
+              padding: 8px 16px;
+            }
+
+            h1 {
+              font-size: 26px;
+            }
+
+            .description {
+              font-size: 14px;
+            }
+
+            .control-bar {
+              flex-direction: column;
+              align-items: stretch;
+              padding: 14px;
+              gap: 10px;
+            }
+
+            .search-box {
+              width: 100%;
+              min-width: 0;
+            }
+
+            .search-input {
+              padding: 12px 14px 12px 38px;
+              font-size: 14px;
+            }
+
+            .info-note {
+              text-align: center;
+              font-size: 12px;
+            }
+
+            /* Transform 5-column table into touch-friendly mobile cards */
+            .table-container {
+              background: transparent;
+              border: none;
+              box-shadow: none;
+              border-radius: 0;
+              overflow: visible;
+            }
+
+            table, thead, tbody, th, td, tr {
+              display: block;
+              width: 100%;
+            }
+
+            thead {
+              display: none;
+            }
+
+            tbody {
+              display: flex;
+              flex-direction: column;
+              gap: 12px;
+            }
+
+            tbody tr {
+              background-color: var(--bg-card);
+              border: 1px solid var(--border-color);
+              border-radius: 16px;
+              padding: 16px;
+              box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.04);
+              display: grid;
+              grid-template-columns: 1fr auto;
+              grid-template-areas:
+                "url prio"
+                "freq date";
+              gap: 10px 12px;
+              align-items: center;
+              transition: transform 0.15s ease, border-color 0.15s ease;
+            }
+
+            tbody tr:hover, tbody tr:active {
+              border-color: var(--secondary);
+              transform: translateY(-1px);
+            }
+
+            td {
+              padding: 0;
+              border: none;
+            }
+
+            td.col-idx {
+              display: none;
+            }
+
+            td.col-url {
+              grid-area: url;
+              min-width: 0;
+            }
+
+            td.col-url a {
+              font-size: 14px;
+              font-weight: 700;
+              line-height: 1.4;
+              display: block;
+              word-break: break-all;
+            }
+
+            td.col-prio {
+              grid-area: prio;
+              text-align: right !important;
+            }
+
+            td.col-freq {
+              grid-area: freq;
+              text-align: left !important;
+            }
+
+            td.col-date {
+              grid-area: date;
+              text-align: right !important;
+              font-size: 12px;
+              color: var(--text-muted);
+            }
+
+            .sitemap-footer {
+              margin-top: 24px;
+              gap: 12px;
+            }
+
+            .footer-links {
+              gap: 12px;
+            }
+
+            .footer-links a {
+              font-size: 12px;
+              padding: 4px 6px;
+            }
+          }
+
+          @media (max-width: 480px) {
+            body {
+              padding: 12px 10px 36px 10px;
+            }
+
+            .header-card {
+              padding: 20px 14px;
+              border-radius: 16px;
+            }
+
+            h1 {
+              font-size: 22px;
+            }
+
+            .stats-grid {
+              gap: 8px;
+            }
+
+            .stat-card {
+              padding: 12px 14px;
+              border-radius: 12px;
+              gap: 4px;
+            }
+
+            .stat-label {
+              font-size: 10px;
+            }
+
+            .stat-value {
+              font-size: 18px !important;
+            }
+
+            tbody tr {
+              padding: 14px;
+              border-radius: 14px;
+              gap: 8px 10px;
+            }
+
+            td.col-url a {
+              font-size: 13px;
+            }
+
+            .badge {
+              font-size: 11px;
+              padding: 3px 8px;
+            }
           }
           /* ]]> */
         </style>
