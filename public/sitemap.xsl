@@ -16,6 +16,7 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
         <style type="text/css">
+          /* <![CDATA[ */
           :root {
             --primary: #243384;
             --primary-dark: #192361;
@@ -188,7 +189,7 @@
             color: var(--text-main);
           }
 
-          /* Control Bar (Search & Info) */
+          /* Control Bar (Search and Info) */
           .control-bar {
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -399,6 +400,7 @@
             color: var(--primary);
             text-decoration: underline;
           }
+          /* ]]> */
         </style>
       </head>
       <body>
