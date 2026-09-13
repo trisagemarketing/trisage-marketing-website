@@ -297,7 +297,8 @@ export default function Footer() {
             </Link>
             <span className="w-1 h-1 rounded-full bg-primary-300 dark:bg-primary-800" />
             <Link
-              href="/sitemap.xml"
+              href="/sitemap"
+              onClick={(e) => handleSamePageScroll(e, "/sitemap")}
               className="font-sans font-black text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
             >
               Sitemap

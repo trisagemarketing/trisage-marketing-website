@@ -41,11 +41,6 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: '/sitemap',
-        destination: '/sitemap.xml',
-        permanent: true,
-      },
-      {
         source: '/robots',
         destination: '/robots.txt',
         permanent: true,
@@ -97,6 +92,14 @@ const nextConfig: NextConfig = {
             value: 'application/xml; charset=utf-8',
           },
           {
+            key: 'Content-Disposition',
+            value: 'inline',
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
             key: 'Access-Control-Allow-Origin',
             value: '*',
           },
@@ -131,6 +134,14 @@ const nextConfig: NextConfig = {
             value: 'text/plain; charset=utf-8',
           },
           {
+            key: 'Content-Disposition',
+            value: 'inline',
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
             key: 'Access-Control-Allow-Origin',
             value: '*',
           },
@@ -146,6 +157,14 @@ const nextConfig: NextConfig = {
           {
             key: 'Content-Type',
             value: 'text/plain; charset=utf-8',
+          },
+          {
+            key: 'Content-Disposition',
+            value: 'inline',
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
           },
           {
             key: 'Access-Control-Allow-Origin',
