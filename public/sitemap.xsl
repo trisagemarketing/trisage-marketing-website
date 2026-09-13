@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0"
+<xsl:stylesheet version="1.0"
                 xmlns:html="http://www.w3.org/TR/REC-html40"
                 xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
                 xmlns:sitemap="http://www.sitemaps.org/schemas/sitemap/0.9"
@@ -481,18 +481,14 @@
                     </td>
                     <td class="col-prio" style="text-align: center;">
                       <xsl:variable name="prio" select="sitemap:priority"/>
-                      <span class="badge">
-                        <xsl:choose>
-                          <xsl:when test="$prio &gt;= 0.9">
-                            <xsl:attribute name="class">badge prio-high</xsl:attribute>
-                          </xsl:when>
-                          <xsl:when test="$prio &gt;= 0.7">
-                            <xsl:attribute name="class">badge prio-med</xsl:attribute>
-                          </xsl:when>
-                          <xsl:otherwise>
-                            <xsl:attribute name="class">badge prio-low</xsl:attribute>
-                          </xsl:otherwise>
-                        </xsl:choose>
+                      <span>
+                        <xsl:attribute name="class">
+                          <xsl:choose>
+                            <xsl:when test="$prio &gt;= 0.9">badge prio-high</xsl:when>
+                            <xsl:when test="$prio &gt;= 0.7">badge prio-med</xsl:when>
+                            <xsl:otherwise>badge prio-low</xsl:otherwise>
+                          </xsl:choose>
+                        </xsl:attribute>
                         <xsl:value-of select="sitemap:priority"/>
                       </span>
                     </td>
@@ -502,7 +498,7 @@
                       </span>
                     </td>
                     <td class="col-date">
-                      <xsl:value-of select="substring(sitemap:lastmod, 0, 11)"/>
+                      <xsl:value-of select="substring(sitemap:lastmod, 1, 10)"/>
                     </td>
                   </tr>
                 </xsl:for-each>
@@ -531,6 +527,7 @@
         </div>
 
         <script type="text/javascript">
+          //<![CDATA[
           function filterUrls() {
             var input = document.getElementById("sitemap-search");
             var filter = input.value.toLowerCase();
@@ -538,11 +535,11 @@
             var tr = table.getElementsByTagName("tr");
             var visible = 0;
 
-            for (var i = 1; i &lt; tr.length; i++) {
+            for (var i = 1; i < tr.length; i++) {
               var td = tr[i].getElementsByTagName("td")[1];
               if (td) {
                 var txtValue = td.textContent || td.innerText;
-                if (txtValue.toLowerCase().indexOf(filter) &gt; -1) {
+                if (txtValue.toLowerCase().indexOf(filter) > -1) {
                   tr[i].style.display = "";
                   visible++;
                 } else {
@@ -552,6 +549,7 @@
             }
             document.getElementById("visible-count").innerText = visible;
           }
+          //]]>
         </script>
       </body>
     </html>

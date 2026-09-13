@@ -12,8 +12,11 @@ export const config = {
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
-     * Feel free to modify this pattern to include more paths.
+     * - sitemap (sitemap.xml, sitemap.xsl, sitemap)
+     * - robots (robots.txt, robots)
+     * - llms (llms.txt, llms)
+     * - static file extensions (svg, png, jpg, jpeg, gif, webp, ico, xml, xsl, txt, webmanifest)
      */
-    '/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|sitemap.*|robots.*|llms.*|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|xml|xsl|txt|webmanifest)$).*)',
   ],
 }
